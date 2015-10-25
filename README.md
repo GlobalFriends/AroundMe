@@ -1,2 +1,2 @@
 # AroundMe
-Application to know things around me
+Application to know things around me sdsadsad
