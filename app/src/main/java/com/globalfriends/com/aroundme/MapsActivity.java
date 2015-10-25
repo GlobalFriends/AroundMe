@@ -13,7 +13,7 @@ public class MapsActivity extends FragmentActivity {
 
 
     private void trialFunction() {
-
+        // Testing
     }
 
     @Override
