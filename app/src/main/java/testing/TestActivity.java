@@ -2,7 +2,6 @@ package testing;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -35,6 +34,7 @@ public class TestActivity extends Activity {
                 Logger.i(TAG, "ojclick");
                 Toast.makeText(TestActivity.this, "onCLick", Toast.LENGTH_SHORT).show();
             }
+
         });
     }
 }
