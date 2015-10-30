@@ -23,7 +23,7 @@ public class PlacesService {
     private String API_KEY = "AIzaSyBClyPoExzr_dJcUthcysajecpCcGlodKI";
 
     public PlacesService(String apikey) {
-        this.API_KEY = apikey;
+        //this.API_KEY = apikey;
     }
 
     public void setApiKey(String apikey) {
