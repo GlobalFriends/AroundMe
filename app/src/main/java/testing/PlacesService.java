@@ -20,10 +20,10 @@ import java.util.logging.Logger;
  */
 public class PlacesService {
 
-    private String API_KEY = "AIzaSyBClyPoExzr_dJcUthcysajecpCcGlodKI";
+    private String API_KEY = "AIzaSyBBOveUtIw5LsuYVs4FLw6In7mVQMm3QLQ";
 
     public PlacesService(String apikey) {
-        //this.API_KEY = apikey;
+        this.API_KEY = apikey;
     }
 
     public void setApiKey(String apikey) {

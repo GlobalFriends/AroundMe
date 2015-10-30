@@ -178,9 +178,9 @@ public class MainActivity extends Activity {
         @Override
         protected ArrayList<Places> doInBackground(Void... arg0) {
             PlacesService service = new PlacesService(
-                    "Put your project browser API key here");
+                    getResources().getString(R.string.google_maps_key));
             ArrayList<Places> findPlaces = service.findPlaces(loc.getLatitude(), // 28.632808
-                    loc.getLongitude(), places); // 77.218276
+                    loc.getLongitude(), places); //0 77.218276
 
             for (int i = 0; i < findPlaces.size(); i++) {
 
