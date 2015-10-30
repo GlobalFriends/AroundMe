@@ -11,4 +11,8 @@ public class Logger {
     public static void i(final String tag, final String message) {
         Log.i(TAG + tag, message);
     }
+
+    public static void e(final String tag, final String message) {
+        Log.i(TAG + tag, message);
+    }
 }

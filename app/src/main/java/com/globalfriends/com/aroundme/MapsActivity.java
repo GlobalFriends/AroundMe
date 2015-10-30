@@ -1,7 +1,6 @@
 package com.globalfriends.com.aroundme;
 
 import android.content.ComponentName;
-import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -13,15 +12,26 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import testing.LocationService;
-import testing.TestActivity;
 
 public class MapsActivity extends FragmentActivity {
+    LocationService mService;
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
+    private ServiceConnection mLocationConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            mService = ((LocationService.ServiceBinder) service).getService();
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_maps);
+        setContentView(R.layout.activity_main);
         setUpMapIfNeeded();
 //        this.(new Intent(Binder.this,
 //                LocationService.class), mLocationConnection, Context.BIND_AUTO_CREATE);
@@ -70,17 +80,4 @@ public class MapsActivity extends FragmentActivity {
     private void setUpMap() {
         mMap.addMarker(new MarkerOptions().position(new LatLng(0, 0)).title("Marker"));
     }
-
-    LocationService mService;
-    private ServiceConnection mLocationConnection = new ServiceConnection() {
-        @Override
-        public void onServiceConnected(ComponentName name, IBinder service) {
-            mService = ((LocationService.ServiceBinder)service).getService();
-        }
-
-        @Override
-        public void onServiceDisconnected(ComponentName name) {
-
-        }
-    };
 }
