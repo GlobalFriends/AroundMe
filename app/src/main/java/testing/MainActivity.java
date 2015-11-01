@@ -8,7 +8,6 @@ import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,16 +18,12 @@ import com.globalfriends.com.aroundme.R;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
-import com.google.android.gms.common.api.Status;
 import com.google.android.gms.common.data.DataBufferUtils;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.location.places.AutocompleteFilter;
 import com.google.android.gms.location.places.AutocompletePrediction;
 import com.google.android.gms.location.places.AutocompletePredictionBuffer;
-import com.google.android.gms.location.places.GeoDataApi;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.PlaceBuffer;
-import com.google.android.gms.location.places.PlaceTypes;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
@@ -40,8 +35,6 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
-import java.util.Locale;
 
 import Logging.Logger;
 
@@ -172,8 +165,8 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
             locationManager.requestLocationUpdates(provider, 0, 0, listener);
         } else {
             loc = location;
-            new GetPlaces(MainActivity.this, places[0].toLowerCase().replace(
-                    "-", "_")).execute();
+//            new GetPlaces(MainActivity.this, places[0].toLowerCase().replace(
+//                    "-", "_")).execute();
             Logger.e(TAG, "location : " + location);
         }
 
