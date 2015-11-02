@@ -5,10 +5,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.location.Criteria;
 import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -21,6 +18,8 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.common.data.DataBufferUtils;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.places.AutocompletePrediction;
 import com.google.android.gms.location.places.AutocompletePredictionBuffer;
@@ -47,40 +46,25 @@ import testing.yelp.SearchBarActivity;
  * @author Karn Shah
  * @Date 10/3/2013
  */
-public class MainActivity extends Activity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+public class MainActivity extends Activity implements GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener {
 
+    // For testing purpose its static double...
+    public static double mCurrentLatitude = 0;//location.getLatitude();
+    public static double mCurrentLongitude = 0;//location.getLongitude();
     private final String TAG = getClass().getSimpleName();
-
     private GoogleApiClient mGoogleApiClient;
-    private LatLng SAMSUNG_LOCATION = new LatLng(40.603277, -74.625254);
     private LatLngBounds mBounds;
-
     private GoogleMap mMap;
     private String[] places;
-    private LocationManager locationManager;
+    private LocationRequest mLocationRequest;
     private Location loc;
-    private LocationListener listener = new LocationListener() {
-
-        @Override
-        public void onStatusChanged(String provider, int status, Bundle extras) {
-
-        }
-
-        @Override
-        public void onProviderEnabled(String provider) {
-
-        }
-
-        @Override
-        public void onProviderDisabled(String provider) {
-
-        }
-
+    private LocationListener mLocationListener = new LocationListener() {
         @Override
         public void onLocationChanged(Location location) {
             Logger.e(TAG, "location update : " + location);
-            loc = location;
-            locationManager.removeUpdates(listener);
+            mCurrentLatitude = location.getLatitude();
+            mCurrentLongitude = location.getLongitude();
         }
     };
 
@@ -94,7 +78,10 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
         initCompo();
         places = getResources().getStringArray(R.array.places);
         places = getResources().getStringArray(R.array.places);
-        currentLocation();
+
+        mLocationRequest = LocationRequest.create()
+                .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+
         final ActionBar actionBar = getActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
         actionBar.setListNavigationCallbacks(ArrayAdapter.createFromResource(
@@ -166,28 +153,26 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
                 .build();
     }
 
-    private void currentLocation() {
-        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-
-        String provider = locationManager
-                .getBestProvider(new Criteria(), false);
-
-        Location location = locationManager.getLastKnownLocation(provider);
-
-        if (location == null) {
-            locationManager.requestLocationUpdates(provider, 0, 0, listener);
-        } else {
-            loc = location;
-//            new GetPlaces(MainActivity.this, places[0].toLowerCase().replace(
-//                    "-", "_")).execute();
-            Logger.e(TAG, "location : " + location);
-        }
-
-    }
-
     @Override
     public void onConnected(Bundle bundle) {
         Log.d(TAG, "Google API Client connection established");
+
+        Location location = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+
+        if (location == null) {
+            LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest,
+                    mLocationListener);
+        } else {
+            //If everything went fine lets get latitude and longitude
+            mCurrentLatitude = location.getLatitude();
+            mCurrentLongitude = location.getLongitude();
+        }
+
+
+        Logger.i(TAG, "Current Location Lattitude=" +
+                mCurrentLatitude + "  longitude=" + mCurrentLongitude);
+
+        LatLng SAMSUNG_LOCATION = new LatLng(mCurrentLatitude, mCurrentLongitude);
         mBounds = new LatLngBounds(
                 new LatLng(SAMSUNG_LOCATION.latitude - 2.0, SAMSUNG_LOCATION.longitude - 2.0),
                 new LatLng(SAMSUNG_LOCATION.latitude + 2.0, SAMSUNG_LOCATION.longitude + 2.0));

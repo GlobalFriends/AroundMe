@@ -9,6 +9,8 @@ import android.widget.EditText;
 
 import com.globalfriends.com.aroundme.R;
 
+import testing.MainActivity;
+
 public class SearchBarActivity extends Activity {
 
     private EditText mSearchTerm;
@@ -27,7 +29,9 @@ public class SearchBarActivity extends Activity {
         String term = mSearchTerm.getText().toString();
         String location = mSearchLocation.getText().toString();
         Intent intent = new Intent(this, YelpSearchListActivity.class);
-        intent.setData(new Uri.Builder().appendQueryParameter("term", term).appendQueryParameter("location", location).build());
+        intent.setData(new Uri.Builder().appendQueryParameter("term", term).appendQueryParameter("location", location).
+                appendQueryParameter("lattitude", Double.toString(MainActivity.mCurrentLatitude)).
+                appendQueryParameter("longitude", Double.toString(MainActivity.mCurrentLatitude)).build());
         startActivity(intent);
     }
 

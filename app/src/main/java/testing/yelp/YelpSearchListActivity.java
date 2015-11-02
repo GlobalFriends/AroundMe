@@ -29,12 +29,16 @@ public class YelpSearchListActivity extends ListActivity {
         Intent intent = getIntent();
         final String searchTerm = intent.getData().getQueryParameter("term");
         final String searchLocation = intent.getData().getQueryParameter("location");
+        final String lattitude = intent.getData().getQueryParameter("lattitude");
+        final String longitude = intent.getData().getQueryParameter("longitude");
 
         setProgressBarIndeterminateVisibility(true);
         new AsyncTask<Void, Void, List<Business>>() {
             @Override
             protected List<Business> doInBackground(Void... params) {
                 String businesses = Yelp.getYelp(YelpSearchListActivity.this).search(searchTerm, searchLocation);
+//                String businesses = Yelp.getYelp(YelpSearchListActivity.this).search(searchTerm, Double.valueOf(lattitude),
+//                        Double.valueOf(longitude));
                 try {
                     return processJson(businesses);
                 } catch (JSONException e) {
