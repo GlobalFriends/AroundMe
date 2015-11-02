@@ -27,6 +27,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- Yelp test activities -->
+        <activity android:name="testing.yelp.YelpSearchActivity" />
+        <activity android:name="testing.yelp.SearchBarActivity" />
+        <activity android:name="testing.yelp.YelpSearchListActivity" />
+
         <!--meta-data
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="@string/google_maps_key" /-->
