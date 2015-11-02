@@ -12,6 +12,7 @@
     -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -29,7 +30,6 @@
         </activity>
 
         <!-- Yelp test activities -->
-        <activity android:name="testing.yelp.YelpSearchActivity" />
         <activity android:name="testing.yelp.SearchBarActivity" />
         <activity android:name="testing.yelp.YelpSearchListActivity" />
 

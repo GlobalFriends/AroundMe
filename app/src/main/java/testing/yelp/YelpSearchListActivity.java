@@ -18,7 +18,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import Logging.Logger;
+
 public class YelpSearchListActivity extends ListActivity {
+    private static final String TAG = "YelpSearchListActivity";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -31,14 +34,21 @@ public class YelpSearchListActivity extends ListActivity {
         final String searchLocation = intent.getData().getQueryParameter("location");
         final String lattitude = intent.getData().getQueryParameter("lattitude");
         final String longitude = intent.getData().getQueryParameter("longitude");
+        final boolean isLocationEnabled = intent.getBooleanExtra("current_location", false);
 
+        Logger.i(TAG, "Yelp lattitude=" + lattitude + " Longitude=" + longitude);
         setProgressBarIndeterminateVisibility(true);
         new AsyncTask<Void, Void, List<Business>>() {
             @Override
             protected List<Business> doInBackground(Void... params) {
-                String businesses = Yelp.getYelp(YelpSearchListActivity.this).search(searchTerm, searchLocation);
-//                String businesses = Yelp.getYelp(YelpSearchListActivity.this).search(searchTerm, Double.valueOf(lattitude),
-//                        Double.valueOf(longitude));
+                String businesses = null;
+                if (isLocationEnabled) {
+                    businesses = Yelp.getYelp(YelpSearchListActivity.this).search(searchTerm, Double.valueOf(lattitude),
+                            Double.valueOf(longitude), 2);
+                } else {
+                    businesses = Yelp.getYelp(YelpSearchListActivity.this).search(searchTerm, searchLocation, 10);
+                }
+
                 try {
                     return processJson(businesses);
                 } catch (JSONException e) {

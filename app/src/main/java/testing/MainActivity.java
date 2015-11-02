@@ -174,8 +174,8 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
 
         LatLng SAMSUNG_LOCATION = new LatLng(mCurrentLatitude, mCurrentLongitude);
         mBounds = new LatLngBounds(
-                new LatLng(SAMSUNG_LOCATION.latitude - 2.0, SAMSUNG_LOCATION.longitude - 2.0),
-                new LatLng(SAMSUNG_LOCATION.latitude + 2.0, SAMSUNG_LOCATION.longitude + 2.0));
+                new LatLng(mCurrentLatitude - 2.0, mCurrentLongitude - 2.0),
+                new LatLng(mCurrentLatitude + 2.0, mCurrentLongitude + 2.0));
     }
 
     @Override

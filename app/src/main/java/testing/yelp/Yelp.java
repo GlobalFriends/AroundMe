@@ -5,6 +5,7 @@ package testing.yelp;
  */
 
 import android.content.Context;
+import android.os.Environment;
 
 import com.globalfriends.com.aroundme.R;
 
@@ -15,11 +16,18 @@ import org.scribe.model.Token;
 import org.scribe.model.Verb;
 import org.scribe.oauth.OAuthService;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Date;
+
+import Logging.Logger;
+
 /**
  * Example for accessing the Yelp API.
  */
 public class Yelp {
-
+    private static final String TAG = "Yelp";
     OAuthService service;
     Token accessToken;
 
@@ -65,13 +73,16 @@ public class Yelp {
      * @param longitude Longitude
      * @return JSON string response
      */
-    public String search(String term, double latitude, double longitude) {
+    public String search(final String term, final double latitude, final double longitude, final int limit) {
         OAuthRequest request = new OAuthRequest(Verb.GET, "http://api.yelp.com/v2/search");
         request.addQuerystringParameter("term", term);
         request.addQuerystringParameter("ll", latitude + "," + longitude);
+        request.addQuerystringParameter("limit", Integer.toString(limit));
         this.service.signRequest(this.accessToken, request);
         Response response = request.send();
-        return response.getBody();
+        String body = response.getBody();
+        generateNoteOnSD((new Date(System.currentTimeMillis())).toString() + "_yelp.txt", body);
+        return body;
     }
 
     /**
@@ -81,12 +92,30 @@ public class Yelp {
      * @param location
      * @return
      */
-    public String search(String term, String location) {
+    public String search(final String term, final String location, final int limit) {
         OAuthRequest request = new OAuthRequest(Verb.GET, "http://api.yelp.com/v2/search");
         request.addQuerystringParameter("term", term);
         request.addQuerystringParameter("location", location);
+        request.addQuerystringParameter("limit", Integer.toString(limit));
         this.service.signRequest(this.accessToken, request);
         Response response = request.send();
         return response.getBody();
+    }
+
+    public void generateNoteOnSD(String sFileName, String sBody) {
+        try {
+            File root = new File(Environment.getExternalStorageDirectory(), "AroundMe");
+            if (!root.exists()) {
+                root.mkdirs();
+            }
+            File gpxfile = new File(root, sFileName);
+            Logger.i(TAG, "gpxfile" + gpxfile.getAbsolutePath());
+            FileWriter writer = new FileWriter(gpxfile);
+            writer.append(sBody);
+            writer.flush();
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
