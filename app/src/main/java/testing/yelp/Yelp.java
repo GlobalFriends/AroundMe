@@ -116,10 +116,13 @@ public class Yelp {
         request.addQuerystringParameter("limit", Integer.toString(limit));
         this.service.signRequest(this.accessToken, request);
         Response response = request.send();
-        return response.getBody();
+        String body = response.getBody();
+        generateNoteOnSD((new Date(System.currentTimeMillis())).toString() + "_yelp.txt", body);
+        return body;
     }
 
     public void generateNoteOnSD(String sFileName, String sBody) {
+        Logger.i(TAG, "Yelp Response=" + sBody);
         try {
             File root = new File(Environment.getExternalStorageDirectory(), "AroundMe");
             if (!root.exists()) {

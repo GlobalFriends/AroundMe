@@ -49,13 +49,13 @@ public class YelpSearchListActivity extends ListActivity {
                         businesses = Yelp.getYelp(YelpSearchListActivity.this).search(searchTerm, Double.valueOf(lattitude),
                                 Double.valueOf(longitude), 2);
                     } else {
-                        businesses = Yelp.getYelp(YelpSearchListActivity.this).phoneSearch(phoneNumber);
+                        businesses = Yelp.getYelp(YelpSearchListActivity.this).phoneSearch(phoneNumber, "cc");
                     }
                 } else {
                     if (TextUtils.isEmpty(phoneNumber)) {
                         businesses = Yelp.getYelp(YelpSearchListActivity.this).search(searchTerm, searchLocation, 10);
                     } else {
-                        businesses = Yelp.getYelp(YelpSearchListActivity.this).phoneSearch(phoneNumber);
+                        businesses = Yelp.getYelp(YelpSearchListActivity.this).phoneSearch(phoneNumber, "cc");
                     }
                 }
 
