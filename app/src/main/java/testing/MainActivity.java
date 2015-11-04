@@ -5,7 +5,10 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.location.Criteria;
 import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,28 +17,15 @@ import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 
 import com.globalfriends.com.aroundme.R;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.PendingResult;
-import com.google.android.gms.common.data.DataBufferUtils;
-import com.google.android.gms.location.LocationListener;
-import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.location.places.AutocompletePrediction;
-import com.google.android.gms.location.places.AutocompletePredictionBuffer;
-import com.google.android.gms.location.places.Place;
-import com.google.android.gms.location.places.PlaceBuffer;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
-import java.util.Collection;
 
 import Logging.Logger;
 import testing.yelp.SearchBarActivity;
@@ -46,41 +36,28 @@ import testing.yelp.SearchBarActivity;
  * @author Karn Shah
  * @Date 10/3/2013
  */
-public class MainActivity extends Activity implements GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener {
+public class MainActivity extends Activity {
 
-    // For testing purpose its static double...
-    public static double mCurrentLatitude = 0;//location.getLatitude();
-    public static double mCurrentLongitude = 0;//location.getLongitude();
+    public static double MILE = 1609.34;
+
     private final String TAG = getClass().getSimpleName();
-    private GoogleApiClient mGoogleApiClient;
-    private LatLngBounds mBounds;
     private GoogleMap mMap;
     private String[] places;
-    private LocationRequest mLocationRequest;
     private Location loc;
-    private LocationListener mLocationListener = new LocationListener() {
-        @Override
-        public void onLocationChanged(Location location) {
-            Logger.e(TAG, "location update : " + location);
-            mCurrentLatitude = location.getLatitude();
-            mCurrentLongitude = location.getLongitude();
-        }
-    };
+    private LocationManager locationManager;
+
+    public static double mCurrentLatitude;
+    public static double mCurrentLongitude;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        buildGoogleApiClient();
-
         initCompo();
         places = getResources().getStringArray(R.array.places);
-        places = getResources().getStringArray(R.array.places);
-
-        mLocationRequest = LocationRequest.create()
-                .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        currentLocation();
+        /*mLocationRequest = LocationRequest.create()
+                .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);*/
 
         final ActionBar actionBar = getActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
@@ -96,20 +73,58 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
                                         "_"));
                         if (loc != null) {
                             mMap.clear();
-                            /*new GetPlaces(MainActivity.this,
+                            new GetPlaces(MainActivity.this,
                                     places[itemPosition].toLowerCase().replace(
-                                            "-", "_").replace(" ", "_")).execute();*/
-                            new GetPlacesTask(MainActivity.this).execute(places[itemPosition].toLowerCase());
+                                            "-", "_").replace(" ", "_")).execute();
                         }
-
-                        mMap.clear();
-                        new GetPlacesTask(MainActivity.this).execute(places[itemPosition].toLowerCase());
                         return true;
                     }
 
                 });
 
     }
+
+    private void currentLocation() {
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
+        String provider = locationManager.getBestProvider(new Criteria(), false);
+        Location location = locationManager.getLastKnownLocation(provider);
+        if (location == null) {
+            locationManager.requestLocationUpdates(provider, 0, 0.0f, listener);
+        } else {
+            loc = location;
+            mCurrentLatitude = loc.getLatitude();
+            mCurrentLongitude = loc.getLongitude();
+            new GetPlaces(MainActivity.this, places[0].toLowerCase().replace("-", "_")).execute();
+            Log.e(TAG, "location: " + location);
+        }
+    }
+
+    private LocationListener listener = new LocationListener() {
+        @Override
+        public void onLocationChanged(Location location) {
+            Log.e(TAG, "location update: " + location);
+            loc = location;
+            mCurrentLatitude = loc.getLatitude();
+            mCurrentLongitude = loc.getLongitude();
+            locationManager.removeUpdates(listener);
+        }
+
+        @Override
+        public void onStatusChanged(String s, int i, Bundle bundle) {
+
+        }
+
+        @Override
+        public void onProviderEnabled(String s) {
+
+        }
+
+        @Override
+        public void onProviderDisabled(String s) {
+
+        }
+    };
 
     private void initCompo() {
         mMap = ((MapFragment) getFragmentManager().findFragmentById(R.id.map))
@@ -132,160 +147,6 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        mGoogleApiClient.connect();
-    }
-
-    @Override
-    protected void onStop() {
-        mGoogleApiClient.disconnect();
-        super.onStop();
-    }
-
-    private void buildGoogleApiClient() {
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
-                .addApi(LocationServices.API)
-                .addApi(com.google.android.gms.location.places.Places.GEO_DATA_API)
-                .build();
-    }
-
-    @Override
-    public void onConnected(Bundle bundle) {
-        Log.d(TAG, "Google API Client connection established");
-
-        Location location = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-
-        if (location == null) {
-            LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest,
-                    mLocationListener);
-        } else {
-            //If everything went fine lets get latitude and longitude
-            mCurrentLatitude = location.getLatitude();
-            mCurrentLongitude = location.getLongitude();
-        }
-
-
-        Logger.i(TAG, "Current Location Lattitude=" +
-                mCurrentLatitude + "  longitude=" + mCurrentLongitude);
-
-        LatLng SAMSUNG_LOCATION = new LatLng(mCurrentLatitude, mCurrentLongitude);
-        mBounds = new LatLngBounds(
-                new LatLng(mCurrentLatitude - 2.0, mCurrentLongitude - 2.0),
-                new LatLng(mCurrentLatitude + 2.0, mCurrentLongitude + 2.0));
-    }
-
-    @Override
-    public void onConnectionSuspended(int i) {
-        Log.d(TAG, "Google API Client connection suspended");
-    }
-
-    @Override
-    public void onConnectionFailed(ConnectionResult connectionResult) {
-        Log.d(TAG, "Google API Client connection failed");
-    }
-
-    private class GetPlacesTask extends AsyncTask<String, Void, ArrayList<Place>> {
-
-        private Context mContext;
-        private ProgressDialog dialog;
-
-        public GetPlacesTask(Context context) {
-            this.mContext = context;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            dialog = new ProgressDialog(this.mContext);
-            dialog.setCancelable(false);
-            dialog.setMessage("Loading..");
-            dialog.isIndeterminate();
-            dialog.show();
-        }
-
-        @Override
-        protected ArrayList<Place> doInBackground(String... placeTypes) {
-            Collection<Integer> filterTypes = new ArrayList<Integer>();
-            if (placeTypes[0].equals("atm")) {
-                filterTypes.add(Place.TYPE_ATM);
-            } else if ("bank".equals(placeTypes[0])) {
-                filterTypes.add(Place.TYPE_BANK);
-            }
-
-            if (mGoogleApiClient.isConnected()) {
-                PendingResult<AutocompletePredictionBuffer> results =
-                        com.google.android.gms.location.places.Places.GeoDataApi.getAutocompletePredictions(
-                                mGoogleApiClient,
-                                placeTypes[0],
-                                mBounds,
-                                null/*AutocompleteFilter.create(filterTypes)*/);
-                AutocompletePredictionBuffer autocompletePredictions = results.await();
-                final com.google.android.gms.common.api.Status status = autocompletePredictions.getStatus();
-
-                if (!status.isSuccess()) {
-                    autocompletePredictions.release();
-                    return null;
-                }
-
-                ArrayList<AutocompletePrediction> autocompletePredictionArrayList =
-                        DataBufferUtils.freezeAndClose(autocompletePredictions);
-
-                String[] placeIds = new String[autocompletePredictionArrayList.size()];
-                for (int i = 0; i < autocompletePredictionArrayList.size(); i++) {
-                    AutocompletePrediction autocompletePrediction = autocompletePredictionArrayList.get(i);
-                    placeIds[i] = autocompletePrediction.getPlaceId();
-                }
-
-                PendingResult<PlaceBuffer> result1 = com.google.android.gms.location.places.Places.GeoDataApi.getPlaceById(
-                        mGoogleApiClient,
-                        placeIds);
-                PlaceBuffer places = result1.await();
-                com.google.android.gms.common.api.Status status1 = places.getStatus();
-                if (!status1.isSuccess()) {
-                    places.release();
-                    return null;
-                }
-
-                return DataBufferUtils.freezeAndClose(places);
-            }
-
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(ArrayList<Place> result) {
-            super.onPostExecute(result);
-            if (dialog.isShowing()) {
-                dialog.dismiss();
-            }
-
-            if (result == null) {
-                return;
-            }
-            for (int i = 0; i < result.size(); i++) {
-                mMap.addMarker(new MarkerOptions()
-                        .title(result.get(i).getName().toString())
-                        .position(new LatLng(result.get(i).getLatLng().latitude,
-                                result.get(i).getLatLng().longitude))
-                        .icon(BitmapDescriptorFactory
-                                .fromResource(R.drawable.pin)));
-            }
-            CameraPosition cameraPosition = new CameraPosition.Builder()
-                    .target(new LatLng(result.get(0).getLatLng().latitude, result
-                            .get(0).getLatLng().longitude)) // Sets the center of the map to
-                            // Mountain View
-                    .zoom(14) // Sets the zoom
-                    .tilt(30) // Sets the tilt of the camera to 30 degrees
-                    .build(); // Creates a CameraPosition from the builder
-            mMap.animateCamera(CameraUpdateFactory
-                    .newCameraPosition(cameraPosition));
-        }
-    }
-
     private class GetPlaces extends AsyncTask<Void, Void, ArrayList<Places>> {
 
         private ProgressDialog dialog;
@@ -303,6 +164,12 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
             if (dialog.isShowing()) {
                 dialog.dismiss();
             }
+
+            if (result.size() == 0) {
+                Log.i(TAG, "No results found");
+                return;
+            }
+
             for (int i = 0; i < result.size(); i++) {
                 mMap.addMarker(new MarkerOptions()
                         .title(result.get(i).getName())

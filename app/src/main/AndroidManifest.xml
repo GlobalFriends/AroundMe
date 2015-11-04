@@ -33,11 +33,11 @@
         <activity android:name="testing.yelp.SearchBarActivity" />
         <activity android:name="testing.yelp.YelpSearchListActivity" />
 
-        <!--meta-data
-            android:name="com.google.android.maps.v2.API_KEY"
-            android:value="@string/google_maps_key" /-->
         <meta-data
-            android:name="com.google.android.geo.API_KEY"
+            android:name="com.google.android.maps.v2.API_KEY"
             android:value="@string/google_maps_key" />
+        <!--meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_key" /-->
     </application>
 </manifest>

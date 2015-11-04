@@ -20,7 +20,7 @@ import java.util.logging.Logger;
  */
 public class PlacesService {
 
-    private String API_KEY = "AIzaSyBBOveUtIw5LsuYVs4FLw6In7mVQMm3QLQ";
+    private String API_KEY = "";// "AIzaSyBBOveUtIw5LsuYVs4FLw6In7mVQMm3QLQ";
 
     public PlacesService(String apikey) {
         this.API_KEY = apikey;
@@ -70,7 +70,7 @@ public class PlacesService {
             urlString.append(Double.toString(latitude));
             urlString.append(",");
             urlString.append(Double.toString(longitude));
-            urlString.append("&radius=1000");
+            urlString.append("&radius=5000");
             // urlString.append("&types="+place);
             urlString.append("&sensor=false&key=" + API_KEY);
         } else {
@@ -78,7 +78,7 @@ public class PlacesService {
             urlString.append(Double.toString(latitude));
             urlString.append(",");
             urlString.append(Double.toString(longitude));
-            urlString.append("&radius=1000");
+            urlString.append("&radius=5000");
             urlString.append("&types=" + place);
             urlString.append("&sensor=false&key=" + API_KEY);
         }
