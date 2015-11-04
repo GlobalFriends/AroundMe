@@ -86,6 +86,23 @@ public class Yelp {
     }
 
     /**
+     * @return
+     */
+    public String phoneSearch(final String phoneNumber, final String countryCode) {
+        OAuthRequest request = new OAuthRequest(Verb.GET, "http://api.yelp.com/v2/phone_search");
+        request.addQuerystringParameter("phone", phoneNumber);
+        /**
+         * Outside US and Canada we have to provide this country code with phone number.
+         */
+//        request.addQuerystringParameter("cc", countryCode);
+        this.service.signRequest(this.accessToken, request);
+        Response response = request.send();
+        String body = response.getBody();
+        generateNoteOnSD((new Date(System.currentTimeMillis())).toString() + "_yelp.txt", body);
+        return body;
+    }
+
+    /**
      * Search with term string location.
      *
      * @param term
@@ -99,10 +116,13 @@ public class Yelp {
         request.addQuerystringParameter("limit", Integer.toString(limit));
         this.service.signRequest(this.accessToken, request);
         Response response = request.send();
-        return response.getBody();
+        String body = response.getBody();
+        generateNoteOnSD((new Date(System.currentTimeMillis())).toString() + "_yelp.txt", body);
+        return body;
     }
 
     public void generateNoteOnSD(String sFileName, String sBody) {
+        Logger.i(TAG, "Yelp Response=" + sBody);
         try {
             File root = new File(Environment.getExternalStorageDirectory(), "AroundMe");
             if (!root.exists()) {

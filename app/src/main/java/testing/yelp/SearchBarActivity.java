@@ -16,6 +16,7 @@ public class SearchBarActivity extends Activity {
 
     private EditText mSearchTerm;
     private EditText mSearchLocation;
+    private EditText mPhoneNumber;
     private CheckBox mCurrentLocation;
 
     @Override
@@ -26,6 +27,7 @@ public class SearchBarActivity extends Activity {
         mSearchTerm = (EditText) findViewById(R.id.searchTerm);
         mSearchLocation = (EditText) findViewById(R.id.searchLocation);
         mCurrentLocation = (CheckBox) findViewById(R.id.current_location);
+        mPhoneNumber = (EditText) findViewById(R.id.phone_number_edit_box);
     }
 
     public void search(View v) {
@@ -33,9 +35,12 @@ public class SearchBarActivity extends Activity {
         String location = mSearchLocation.getText().toString();
         Intent intent = new Intent(this, YelpSearchListActivity.class);
         intent.putExtra("current_location", mCurrentLocation.isChecked());
-        intent.setData(new Uri.Builder().appendQueryParameter("term", term).appendQueryParameter("location", location).
-                appendQueryParameter("lattitude", Double.toString(MainActivity.mCurrentLatitude)).
-                appendQueryParameter("longitude", Double.toString(MainActivity.mCurrentLongitude)).build());
+
+        intent.setData(new Uri.Builder().appendQueryParameter("term", term)
+                .appendQueryParameter("location", location)
+                .appendQueryParameter("phone_number", mPhoneNumber.getText() != null ? mPhoneNumber.getText().toString() : null)
+                .appendQueryParameter("lattitude", Double.toString(MainActivity.mCurrentLatitude))
+                .appendQueryParameter("longitude", Double.toString(MainActivity.mCurrentLongitude)).build());
         startActivity(intent);
     }
 

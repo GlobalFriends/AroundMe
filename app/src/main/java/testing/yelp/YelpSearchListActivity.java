@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.Window;
 import android.widget.ArrayAdapter;
@@ -35,6 +36,7 @@ public class YelpSearchListActivity extends ListActivity {
         final String lattitude = intent.getData().getQueryParameter("lattitude");
         final String longitude = intent.getData().getQueryParameter("longitude");
         final boolean isLocationEnabled = intent.getBooleanExtra("current_location", false);
+        final String phoneNumber = intent.getData().getQueryParameter("phone_number");
 
         Logger.i(TAG, "Yelp lattitude=" + lattitude + " Longitude=" + longitude);
         setProgressBarIndeterminateVisibility(true);
@@ -43,10 +45,18 @@ public class YelpSearchListActivity extends ListActivity {
             protected List<Business> doInBackground(Void... params) {
                 String businesses = null;
                 if (isLocationEnabled) {
-                    businesses = Yelp.getYelp(YelpSearchListActivity.this).search(searchTerm, Double.valueOf(lattitude),
-                            Double.valueOf(longitude), 2);
+                    if (TextUtils.isEmpty(phoneNumber)) {
+                        businesses = Yelp.getYelp(YelpSearchListActivity.this).search(searchTerm, Double.valueOf(lattitude),
+                                Double.valueOf(longitude), 2);
+                    } else {
+                        businesses = Yelp.getYelp(YelpSearchListActivity.this).phoneSearch(phoneNumber, "cc");
+                    }
                 } else {
-                    businesses = Yelp.getYelp(YelpSearchListActivity.this).search(searchTerm, searchLocation, 10);
+                    if (TextUtils.isEmpty(phoneNumber)) {
+                        businesses = Yelp.getYelp(YelpSearchListActivity.this).search(searchTerm, searchLocation, 10);
+                    } else {
+                        businesses = Yelp.getYelp(YelpSearchListActivity.this).phoneSearch(phoneNumber, "cc");
+                    }
                 }
 
                 try {
