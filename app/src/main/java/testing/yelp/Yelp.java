@@ -8,6 +8,7 @@ import android.content.Context;
 import android.os.Environment;
 
 import com.globalfriends.com.aroundme.R;
+import com.globalfriends.com.aroundme.logging.Logger;
 
 import org.scribe.builder.ServiceBuilder;
 import org.scribe.model.OAuthRequest;
@@ -20,8 +21,6 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Date;
-
-import Logging.Logger;
 
 /**
  * Example for accessing the Yelp API.

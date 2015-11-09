@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.os.Binder;
 import android.os.IBinder;
 
-import Logging.Logger;
+import com.globalfriends.com.aroundme.logging.Logger;
 
 /**
  * Created by vishal on 10/24/2015.
@@ -16,15 +16,6 @@ public class LocationService extends Service {
 
     public void test() {
 
-    }
-    /**
-     * class for client to access
-     */
-    public class ServiceBinder extends Binder {
-
-        public LocationService getService() {
-            return LocationService.this;
-        }
     }
 
     @Override
@@ -47,5 +38,15 @@ public class LocationService extends Service {
     @Override
     public IBinder onBind(Intent intent) {
         return mBinder;
+    }
+
+    /**
+     * class for client to access
+     */
+    public class ServiceBinder extends Binder {
+
+        public LocationService getService() {
+            return LocationService.this;
+        }
     }
 }

@@ -16,6 +16,7 @@ import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 
 import com.globalfriends.com.aroundme.R;
+import com.globalfriends.com.aroundme.logging.Logger;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -28,7 +29,6 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
 
-import Logging.Logger;
 import testing.yelp.SearchBarActivity;
 
 /**

@@ -11,6 +11,8 @@ import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.globalfriends.com.aroundme.logging.Logger;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -18,8 +20,6 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-import Logging.Logger;
 
 public class YelpSearchListActivity extends ListActivity {
     private static final String TAG = "YelpSearchListActivity";

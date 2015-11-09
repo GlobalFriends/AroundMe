@@ -7,16 +7,15 @@ import android.os.Message;
 import android.os.Messenger;
 import android.support.annotation.Nullable;
 
-import java.util.logging.Handler;
-
-import Logging.Logger;
+import com.globalfriends.com.aroundme.logging.Logger;
 
 /**
  * Created by vishal on 10/27/2015.
  */
 public class LocationMessengerService extends Service {
-    private static final String TAG = "LocationMessengerService";
     public static final int MESSAGE_INIT = 0;
+    private static final String TAG = "LocationMessengerService";
+    Messenger mLocationMessagenger = new Messenger(new LocationHandler());
 
     @Override
     public void onCreate() {
@@ -33,6 +32,12 @@ public class LocationMessengerService extends Service {
         return START_STICKY;
     }
 
+    @Nullable
+    @Override
+    public IBinder onBind(Intent intent) {
+        return mLocationMessagenger.getBinder();
+    }
+
     class LocationHandler extends android.os.Handler {
         @Override
         public void handleMessage(Message msg) {
@@ -47,14 +52,5 @@ public class LocationMessengerService extends Service {
                     break;
             }
         }
-    }
-
-
-    Messenger mLocationMessagenger = new Messenger(new LocationHandler());
-
-    @Nullable
-    @Override
-    public IBinder onBind(Intent intent) {
-        return mLocationMessagenger.getBinder();
     }
 }
