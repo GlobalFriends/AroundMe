@@ -1,5 +1,7 @@
 package testing;
 
+import android.text.TextUtils;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -19,7 +21,7 @@ import java.util.logging.Logger;
  * @Date 10/3/2013
  */
 public class PlacesService {
-
+    private static final String TAG = "PlacesService";
     private String API_KEY = "";// "AIzaSyBBOveUtIw5LsuYVs4FLw6In7mVQMm3QLQ";
 
     public PlacesService(String apikey) {
@@ -38,7 +40,7 @@ public class PlacesService {
         try {
             String json = getJSON(urlString);
 
-            System.out.println(json);
+            Logging.Logger.i(TAG, json);
             JSONObject object = new JSONObject(json);
             JSONArray array = object.getJSONArray("results");
 
@@ -47,7 +49,7 @@ public class PlacesService {
                 try {
                     Places place = Places
                             .jsonToPontoReferencia((JSONObject) array.get(i));
-                    Logging.Logger.i("Places Services ", "" + place);
+//                    Logging.Logger.i("Places Services ", "" + place);
                     arrayList.add(place);
                 } catch (Exception e) {
                 }
@@ -60,6 +62,17 @@ public class PlacesService {
         return null;
     }
 
+    public String placeDetails(String placeId) {
+        StringBuilder urlString = new StringBuilder(
+                "https://maps.googleapis.com/maps/api/place/details/json?");
+        if (!TextUtils.isEmpty(placeId)) {
+            urlString.append("placeid=" + placeId);
+            urlString.append("&key=" + API_KEY);
+        }
+        String json = getJSON(urlString.toString());
+        Logging.Logger.i(TAG + "PlaceDetails >>>", json);
+        return json;
+    }
     // https://maps.googleapis.com/maps/api/place/search/json?location=28.632808,77.218276&radius=500&types=atm&sensor=false&key=apikey
     private String makeUrl(double latitude, double longitude, String place) {
         StringBuilder urlString = new StringBuilder(

@@ -19,6 +19,8 @@ public class Places {
     private String vicinity;
     private Double latitude;
     private Double longitude;
+    private String mPlace_id;
+    private boolean mOpenNow;
 
     static Places jsonToPontoReferencia(JSONObject pontoReferencia) {
         try {
@@ -31,6 +33,7 @@ public class Places {
             result.setName(pontoReferencia.getString("name"));
             result.setVicinity(pontoReferencia.getString("vicinity"));
             result.setId(pontoReferencia.getString("id"));
+            result.setPlace_id(pontoReferencia.getString("place_id"));
             return result;
         } catch (JSONException ex) {
             Logger.getLogger(Places.class.getName()).log(Level.SEVERE, null, ex);
@@ -86,9 +89,19 @@ public class Places {
         this.vicinity = vicinity;
     }
 
+    public void setPlace_id(String id) {
+        this.mPlace_id = id;
+    }
+
+    public String getPlaceId() {
+        return this.mPlace_id;
+    }
+
     @Override
     public String toString() {
-        return "Place{" + "id=" + id + ", icon=" + icon + ", name=" + name + ", latitude=" + latitude + ", longitude=" + longitude + '}';
+        return "Place{" + "id=" + id + ", icon=" + icon + ", name=" + name + ", latitude=" + latitude
+                + ", longitude=" + longitude + " mPlace_id=" + mPlace_id +
+                '}';
     }
 
 }
