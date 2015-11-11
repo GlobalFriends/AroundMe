@@ -73,6 +73,7 @@ public class PlacesService {
         com.globalfriends.com.aroundme.logging.Logger.i(TAG + "PlaceDetails >>>", json);
         return json;
     }
+
     // https://maps.googleapis.com/maps/api/place/search/json?location=28.632808,77.218276&radius=500&types=atm&sensor=false&key=apikey
     private String makeUrl(double latitude, double longitude, String place) {
         StringBuilder urlString = new StringBuilder(

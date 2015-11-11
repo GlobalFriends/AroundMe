@@ -1,7 +1,5 @@
 package testing;
 
-import android.app.ActionBar;
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -11,9 +9,9 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ArrayAdapter;
 
 import com.globalfriends.com.aroundme.R;
 import com.globalfriends.com.aroundme.logging.Logger;
@@ -37,7 +35,8 @@ import testing.yelp.SearchBarActivity;
  * @author Karn Shah
  * @Date 10/3/2013
  */
-public class MainActivity extends Activity implements GoogleApiClient.ConnectionCallbacks,
+public class MainActivity extends AppCompatActivity
+        implements GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener {
 
     public static double MILE = 1609.34;
@@ -83,37 +82,10 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
         places = getResources().getStringArray(R.array.places);
         currentLocation();
         buildGoogleApiClient();
-        /*mLocationRequest = LocationRequest.create()
-                .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);*/
-
-        final ActionBar actionBar = getActionBar();
-        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
-        actionBar.setListNavigationCallbacks(ArrayAdapter.createFromResource(
-                        this, R.array.places, android.R.layout.simple_list_item_1),
-                new ActionBar.OnNavigationListener() {
-
-                    @Override
-                    public boolean onNavigationItemSelected(int itemPosition,
-                                                            long itemId) {
-                        Logger.e(TAG,
-                                places[itemPosition].toLowerCase().replace("-",
-                                        "_"));
-                        if (loc != null) {
-                            mMap.clear();
-                            new GetPlaces(MainActivity.this,
-                                    places[itemPosition].toLowerCase().replace(
-                                            "-", "_").replace(" ", "_")).execute();
-                        }
-                        return true;
-                    }
-
-                });
-
     }
 
     private void currentLocation() {
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-
         String provider = locationManager.getBestProvider(new Criteria(), false);
         Location location = locationManager.getLastKnownLocation(provider);
         if (location == null) {
@@ -161,9 +133,14 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_settings:
+            case R.id.action_yelp:
                 startActivity(new Intent(this, SearchBarActivity.class));
                 break;
+            default:
+                mMap.clear();
+                new GetPlaces(MainActivity.this,
+                        item.getTitle().toString().toLowerCase().replace(
+                                "-", "_").replace(" ", "_")).execute();
         }
         return super.onOptionsItemSelected(item);
     }

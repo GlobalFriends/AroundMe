@@ -14,4 +14,13 @@
         <item>Restaurant</item>
         <item>Shopping-Mall</item>
     </string-array>
+    <!-- User Profile Strings -->
+    <string name="menu_favorite">Favorite</string>
+    <string name="menu_recent">Recent</string>
+    <string name="menu_feedback">Feedback</string>
+    <string name="menu_share">Share</string>
+    <string name="menu_email">Email_us</string>
+    <string name="menu_maps">Maps</string>
+    <string name="navigation_drawer_open">Open drawer</string>
+    <string name="navigation_drawer_close">Close drawer</string>
 </resources>

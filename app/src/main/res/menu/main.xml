@@ -1,9 +1,38 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/action_settings"
-        android:orderInCategory="100"
+        android:id="@+id/action_yelp"
+        android:orderInCategory="1"
         android:showAsAction="always"
         android:title="@string/action_yelp" />
+    <item
+        android:id="@+id/action_atm"
+        android:orderInCategory="2"
+        android:title="ATM" />
+
+    <item
+        android:id="@+id/action_bank"
+        android:orderInCategory="3"
+        android:title="Bank" />
+
+    <item
+        android:id="@+id/action_cafe"
+        android:orderInCategory="4"
+        android:title="Cafe" />
+
+    <item
+        android:id="@+id/action_fire_station"
+        android:orderInCategory="5"
+        android:title="Fire-Station" />
+
+    <item
+        android:id="@+id/action_hospital"
+        android:orderInCategory="6"
+        android:title="Hospital" />
+
+    <item
+        android:id="@+id/action_restaurant"
+        android:orderInCategory="6"
+        android:title="Restaurant" />
 
 </menu>
