@@ -1,5 +1,8 @@
 package testing;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -12,7 +15,7 @@ import java.util.logging.Logger;
  * @author Karn Shah
  * @Date 10/3/2013
  */
-public class Places {
+public class Places implements Parcelable {
     private String id;
     private String icon;
     private String name;
@@ -104,4 +107,14 @@ public class Places {
                 '}';
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(this.name);
+        parcel.writeString(this.vicinity);
+    }
 }

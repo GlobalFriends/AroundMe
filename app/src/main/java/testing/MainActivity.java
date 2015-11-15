@@ -2,6 +2,8 @@ package testing;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -11,12 +13,14 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 
 import com.globalfriends.com.aroundme.R;
 import com.globalfriends.com.aroundme.logging.Logger;
+import com.globalfriends.com.aroundme.ui.PlacesListFragment;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -28,6 +32,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import testing.yelp.SearchBarActivity;
 
@@ -99,7 +104,7 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
                                 places[itemPosition].toLowerCase().replace("-",
                                         "_"));
                         if (loc != null) {
-                            mMap.clear();
+                            //mMap.clear();
                             new GetPlaces(MainActivity.this,
                                     places[itemPosition].toLowerCase().replace(
                                             "-", "_").replace(" ", "_")).execute();
@@ -148,8 +153,10 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
     }
 
     private void initCompo() {
-        mMap = ((MapFragment) getFragmentManager().findFragmentById(R.id.map))
-                .getMap();
+        /*mMap = ((MapFragment) getFragmentManager().findFragmentById(R.id.map))
+                .getMap();*/
+
+
     }
 
     @Override
@@ -183,6 +190,19 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
         Logger.i(TAG, "onConnectionFailed");
     }
 
+    private void populatePlacesList(List<Places> places) {
+        Parcelable[] parcelables = new Parcelable[places.size()];
+        for (int i = 0; i < places.size(); i++) {
+            parcelables[i] = places.get(i);
+        }
+
+        Bundle bundle = new Bundle();
+        bundle.putParcelableArray("PLACES_LIST", parcelables);
+
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        ft.replace(R.id.fragment_holder, PlacesListFragment.instantiate(MainActivity.this, "com.globalfriends.com.aroundme.ui.PlacesListFragment", bundle));
+        ft.commit();
+    }
 
     private class getPlaceDetails extends AsyncTask<Void, Void, String> {
         private String mPlaceId;
@@ -225,7 +245,8 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
                 return;
             }
 
-            for (int i = 0; i < result.size(); i++) {
+            populatePlacesList(result);
+            /*for (int i = 0; i < result.size(); i++) {
                 mMap.addMarker(new MarkerOptions()
                         .title(result.get(i).getName())
                         .position(
@@ -259,7 +280,7 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
                     .tilt(30) // Sets the tilt of the camera to 30 degrees
                     .build(); // Creates a CameraPosition from the builder
             mMap.animateCamera(CameraUpdateFactory
-                    .newCameraPosition(cameraPosition));
+                    .newCameraPosition(cameraPosition));*/
         }
 
         @Override
