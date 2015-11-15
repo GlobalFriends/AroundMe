@@ -42,7 +42,13 @@ public class Launcher extends AppCompatActivity implements
         updateFragment(new SelectionFragment(), true, false);
     }
 
-
+    /**
+     * Create or update fragement aand provide a back stack as per request
+     *
+     * @param fragment
+     * @param first
+     * @param isBackStack
+     */
     private void updateFragment(final Fragment fragment, final boolean first,
                                 boolean isBackStack) {
         if (findViewById(R.id.fragment_container) != null) {
