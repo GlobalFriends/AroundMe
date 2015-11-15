@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<places>
+    <placeType>
+        <name>Bank</name>
+        <intent>com.globalfriends.com.aroundme.bank</intent>
+        <extra>Bank</extra>
+        <description></description>
+    </placeType>
+    <placeType>
+        <name>ATM</name>
+        <intent>com.globalfriends.com.aroundme.atm</intent>
+        <extra>ATM</extra>
+        <description></description>
+    </placeType>
+    <placeType>
+        <name>Police Station</name>
+        <intent>com.globalfriends.com.aroundme.police_station</intent>
+        <extra>Police Station</extra>
+        <description></description>
+    </placeType>
+    <placeType>
+        <name>Airports</name>
+        <intent>com.globalfriends.com.aroundme.airports</intent>
+        <extra>Airports</extra>
+        <description></description>
+    </placeType>
+    <placeType>
+        <name>Aquarium</name>
+        <intent>com.globalfriends.com.aroundme.aquarium</intent>
+        <extra>Aquarium</extra>
+        <description></description>
+    </placeType>
+</places>

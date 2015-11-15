@@ -13,8 +13,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.globalfriends.com.aroundme.Logging.Logger;
 import com.globalfriends.com.aroundme.R;
-import com.globalfriends.com.aroundme.logging.Logger;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.maps.CameraUpdateFactory;

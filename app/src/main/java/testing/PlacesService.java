@@ -40,7 +40,7 @@ public class PlacesService {
         try {
             String json = getJSON(urlString);
 
-            com.globalfriends.com.aroundme.logging.Logger.i(TAG, json);
+            com.globalfriends.com.aroundme.Logging.Logger.i(TAG, json);
             JSONObject object = new JSONObject(json);
             JSONArray array = object.getJSONArray("results");
 
@@ -70,7 +70,7 @@ public class PlacesService {
             urlString.append("&key=" + API_KEY);
         }
         String json = getJSON(urlString.toString());
-        com.globalfriends.com.aroundme.logging.Logger.i(TAG + "PlaceDetails >>>", json);
+        com.globalfriends.com.aroundme.Logging.Logger.i(TAG + "PlaceDetails >>>", json);
         return json;
     }
 
