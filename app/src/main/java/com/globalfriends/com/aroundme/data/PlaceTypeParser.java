@@ -77,7 +77,7 @@ public class PlaceTypeParser {
                         } else if (tagname.equalsIgnoreCase(TAG_PLACE_INTENT)) {
                             placeType.setIntent(text);
                         } else if (tagname.equalsIgnoreCase(TAG_PLACE_ICON)) {
-                            placeType.setIcon(Integer.getInteger(text));
+                            placeType.setIcon(text);
                         } else if (tagname.equalsIgnoreCase(TAG_PLACE_TYPE)) {
                             mList.add(placeType);
                         }

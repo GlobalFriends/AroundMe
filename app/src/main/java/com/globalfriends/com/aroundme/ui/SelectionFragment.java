@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.globalfriends.com.aroundme.Logging.Logger;
@@ -32,18 +33,7 @@ public class SelectionFragment extends Fragment implements AbsListView.OnItemCli
     private static final String TAG = "SelectionFragment";
     PlaceDetailsAdapter mAdapter = null;
     private OnFragmentInteractionListener mListener;
-    /**
-     * The fragment's ListView/GridView.
-     */
     private AbsListView mListView;
-
-    /**
-     * Mandatory empty constructor for the fragment manager to instantiate the
-     * fragment (e.g. upon screen orientation changes).
-     */
-    public SelectionFragment() {
-    }
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -108,11 +98,12 @@ public class SelectionFragment extends Fragment implements AbsListView.OnItemCli
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
         void onFragmentInteraction(String id);
     }
 
-
+    /**
+     * Adapter Details..
+     */
     class PlaceDetailsAdapter extends ArrayAdapter<PlaceTypeDetail> {
         public PlaceDetailsAdapter(Context context, ArrayList<PlaceTypeDetail> places) {
             super(context, 0, places);
@@ -122,14 +113,19 @@ public class SelectionFragment extends Fragment implements AbsListView.OnItemCli
         public View getView(final int position, View convertView, ViewGroup parent) {
             // Get the data item for this position
             PlaceTypeDetail placeDetail = getItem(position);
+
             // Check if an existing view is being reused, otherwise inflate the view
             if (convertView == null) {
                 convertView = LayoutInflater.from(getContext()).inflate(R.layout.place_types_list_layout, parent, false);
             }
 
+            ImageView placeImage = (ImageView) convertView.findViewById(R.id.place_icon);
+            placeImage.setImageDrawable(getResources().getDrawable(getResources().getIdentifier(placeDetail.getIcon(),
+                    "drawable", getActivity().getPackageName())));
+
             // Lookup view for data population
-            TextView tvName = (TextView) convertView.findViewById(R.id.place_name);
-            tvName.setText(placeDetail.getName());
+            TextView placeName = (TextView) convertView.findViewById(R.id.place_name);
+            placeName.setText(placeDetail.getName());
             // Return the completed view to render on screen
             return convertView;
         }
