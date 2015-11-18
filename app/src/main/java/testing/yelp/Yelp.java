@@ -7,8 +7,8 @@ package testing.yelp;
 import android.content.Context;
 import android.os.Environment;
 
+import com.globalfriends.com.aroundme.Logging.Logger;
 import com.globalfriends.com.aroundme.R;
-import com.globalfriends.com.aroundme.logging.Logger;
 
 import org.scribe.builder.ServiceBuilder;
 import org.scribe.model.OAuthRequest;

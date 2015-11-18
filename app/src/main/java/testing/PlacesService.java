@@ -40,7 +40,7 @@ public class PlacesService {
         try {
             String json = getJSON(urlString);
 
-            com.globalfriends.com.aroundme.logging.Logger.i(TAG, json);
+            com.globalfriends.com.aroundme.Logging.Logger.i(TAG, json);
             JSONObject object = new JSONObject(json);
             JSONArray array = object.getJSONArray("results");
 
@@ -70,9 +70,10 @@ public class PlacesService {
             urlString.append("&key=" + API_KEY);
         }
         String json = getJSON(urlString.toString());
-        com.globalfriends.com.aroundme.logging.Logger.i(TAG + "PlaceDetails >>>", json);
+        com.globalfriends.com.aroundme.Logging.Logger.i(TAG + "PlaceDetails >>>", json);
         return json;
     }
+
     // https://maps.googleapis.com/maps/api/place/search/json?location=28.632808,77.218276&radius=500&types=atm&sensor=false&key=apikey
     private String makeUrl(double latitude, double longitude, String place) {
         StringBuilder urlString = new StringBuilder(

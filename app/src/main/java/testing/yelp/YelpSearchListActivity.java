@@ -11,7 +11,7 @@ import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import com.globalfriends.com.aroundme.logging.Logger;
+import com.globalfriends.com.aroundme.Logging.Logger;
 
 import org.json.JSONArray;
 import org.json.JSONException;

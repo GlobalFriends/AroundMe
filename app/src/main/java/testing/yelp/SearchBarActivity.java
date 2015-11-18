@@ -22,7 +22,7 @@ public class SearchBarActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.search_layout);
+        setContentView(R.layout.yelp_search_layout);
         setTitle("Search teh yelpz");
         mSearchTerm = (EditText) findViewById(R.id.searchTerm);
         mSearchLocation = (EditText) findViewById(R.id.searchLocation);
