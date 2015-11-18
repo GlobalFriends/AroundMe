@@ -1,33 +1,184 @@
 <?xml version="1.0" encoding="utf-8"?>
 <places>
     <placetype>
-        <name>Bank</name>
-        <intent>com.globalfriends.com.aroundme.bank</intent>
-        <extra>Bank</extra>
+        <name>Airport</name>
+        <intent>com.globalfriends.com.aroundme.Airport</intent>
+        <extra>Airport</extra>
+        <icon>airport</icon>
         <description></description>
     </placetype>
     <placetype>
-        <name>ATM</name>
+        <name>Atm</name>
         <intent>com.globalfriends.com.aroundme.atm</intent>
-        <extra>ATM</extra>
+        <extra>atm</extra>
+        <icon>atm</icon>
         <description></description>
     </placetype>
     <placetype>
-        <name>Police Station</name>
-        <intent>com.globalfriends.com.aroundme.police_station</intent>
-        <extra>Police Station</extra>
+        <name>Bakery</name>
+        <intent>com.globalfriends.com.aroundme.bakery</intent>
+        <extra>bakery</extra>
+        <icon>bakery</icon>
         <description></description>
     </placetype>
     <placetype>
-        <name>Airports</name>
-        <intent>com.globalfriends.com.aroundme.airports</intent>
-        <extra>Airports</extra>
+        <name>Bar</name>
+        <intent>com.globalfriends.com.aroundme.bar</intent>
+        <extra>bar,liquor_store</extra>
+        <icon>bar</icon>
         <description></description>
     </placetype>
     <placetype>
-        <name>Aquarium</name>
-        <intent>com.globalfriends.com.aroundme.aquarium</intent>
-        <extra>Aquarium</extra>
+        <name>Cafe</name>
+        <intent>com.globalfriends.com.aroundme.cafe</intent>
+        <extra>cafe</extra>
+        <icon>cafe</icon>
+        <description></description>
+    </placetype>
+    <placetype>
+        <name>Education</name>
+        <intent>com.globalfriends.com.aroundme.education</intent>
+        <extra>school,university</extra>
+        <icon>university</icon>
+        <description></description>
+    </placetype>
+    <placetype>
+        <name>Entertainment</name>
+        <intent>com.globalfriends.com.aroundme.entertainment</intent>
+        <extra>
+            amusement_park,bowling_alley,campground,movie_rental,movie_theater,moving_company,museum,stadium
+        </extra>
+        <icon>amusement_park</icon>
+        <description></description>
+    </placetype>
+    <placetype>
+        <name>Finance</name>
+        <intent>com.globalfriends.com.aroundme.finance</intent>
+        <extra>bank,finance</extra>
+        <icon>bank</icon>
+        <description></description>
+    </placetype>
+    <placetype>
+        <name>Food</name>
+        <intent>com.globalfriends.com.aroundme.food</intent>
+        <extra>food,restaurant</extra>
+        <icon>food</icon>
+        <description></description>
+    </placetype>
+    <placetype>
+        <name>Gas Station</name>
+        <intent>com.globalfriends.com.aroundme.gas_station</intent>
+        <extra>gas_station</extra>
+        <icon>gas_station</icon>
+        <description></description>
+    </placetype>
+    <placetype>
+        <name>Government Places</name>
+        <intent>com.globalfriends.com.aroundme.goverment</intent>
+        <extra>city_hall,courthouse,embassy,local_government_office,post_office,cemetery</extra>
+        <icon>government</icon>
+        <description></description>
+    </placetype>
+    <placetype>
+        <name>Gym and Spa</name>
+        <intent>com.globalfriends.com.aroundme.fitness</intent>
+        <extra>gym,spa</extra>
+        <icon>gym_spa</icon>
+        <description></description>
+    </placetype>
+    <placetype>
+        <name>Medical Care</name>
+        <intent>com.globalfriends.com.aroundme.medical_care</intent>
+        <extra>dentist,doctor,pharmacy,hospital,health,physiotherapist</extra>
+        <icon>medical</icon>
+        <description></description>
+    </placetype>
+    <placetype>
+        <name>Movie</name>
+        <intent>com.globalfriends.com.aroundme.movie</intent>
+        <extra>Cinema</extra>
+        <icon>cinema</icon>
+        <description></description>
+    </placetype>
+    <placetype>
+        <name>Meal</name>
+        <intent>com.globalfriends.com.aroundme.meal</intent>
+        <extra>meal_delivery,meal_takeaway</extra>
+        <icon>meal</icon>
+        <description></description>
+    </placetype>
+    <placetype>
+        <name>Museum and Zoo</name>
+        <intent>com.globalfriends.com.aroundme.museum</intent>
+        <extra>aquarium,art_gallery,zoo,park</extra>
+        <icon>meuseum</icon>
+        <description></description>
+    </placetype>
+    <placetype>
+        <name>Night Club</name>
+        <intent>com.globalfriends.com.aroundme.night_club</intent>
+        <extra>night_club,casino</extra>
+        <icon>night_club</icon>
+        <description></description>
+    </placetype>
+    <placetype>
+        <name>Parking</name>
+        <intent>com.globalfriends.com.aroundme.parking</intent>
+        <extra>parking</extra>
+        <icon>parking</icon>
+        <description></description>
+    </placetype>
+    <placetype>
+        <name>Police</name>
+        <intent>com.globalfriends.com.aroundme.police</intent>
+        <extra>police</extra>
+        <icon>police</icon>
+        <description></description>
+    </placetype>
+    <placetype>
+        <name>Personal Care</name>
+        <intent>com.globalfriends.com.aroundme.personal_care</intent>
+        <extra>beauty_salon,hair_care</extra>
+        <icon>personal_care</icon>
+        <description></description>
+    </placetype>
+    <placetype>
+        <name>Repair and Contractors</name>
+        <intent>com.globalfriends.com.aroundme.repair_construction</intent>
+        <extra>electrician,general_contractor,painter,plumber,roofing_contractor,car_repair</extra>
+        <icon>repair_construction</icon>
+        <description></description>
+    </placetype>
+    <placetype>
+        <name>Shopping</name>
+        <intent>com.globalfriends.com.aroundme.shopping</intent>
+        <extra>
+            clothing_store,convenience_store,department_store,electronics_store,grocery_or_supermarket,furniture_store,jewelry_store,shoe_store,shopping_mall,home_goods_store,hardware_store,bicycle_store,book_store
+        </extra>
+        <icon>shopping</icon>
+        <description></description>
+    </placetype>
+    <placetype>
+        <name>Transportation</name>
+        <intent>com.globalfriends.com.aroundme.transportation</intent>
+        <extra>car_dealer,car_rental,subway_station,train_station,taxi_stand,bus_station</extra>
+        <icon>transportation</icon>
+        <description></description>
+    </placetype>
+    <placetype>
+        <name>Worship</name>
+        <intent>com.globalfriends.com.aroundme.worship</intent>
+        <extra>church,hindu_temple,mosque,place_of_worship</extra>
+        <icon>worship</icon>
+        <description></description>
+    </placetype>
+    <placetype>
+        <name>General</name>
+        <intent>com.globalfriends.com.aroundme.general</intent>
+        <extra>
+            car_wash,establishment,fire_station,florist,funeral_home,insurance_agency,laundry,lawyer,library,locksmith,lodging,pet_store,real_estate_agency,rv_park,storage,store,synagogue,travel_agency,veterinary_care
+        </extra>
+        <icon>general</icon>
         <description></description>
     </placetype>
 </places>

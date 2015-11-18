@@ -6,7 +6,7 @@ package com.globalfriends.com.aroundme.data;
 public class PlaceTypeDetail {
     private String mName;
     private String mIntent;
-    private int mIconId;
+    private String mIconId;
     private String mDescription;
 
     public String getName() {
@@ -25,11 +25,11 @@ public class PlaceTypeDetail {
         this.mIntent = intent;
     }
 
-    public int getIcon() {
+    public String getIcon() {
         return mIconId;
     }
 
-    public void setIcon(final int iconId) {
+    public void setIcon(final String iconId) {
         this.mIconId = iconId;
     }
 
