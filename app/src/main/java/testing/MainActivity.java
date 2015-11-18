@@ -92,7 +92,7 @@ public class MainActivity extends AppCompatActivity
         /*mLocationRequest = LocationRequest.create()
                 .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);*/
 
-        final ActionBar actionBar = getActionBar();
+        /*final ActionBar actionBar = getActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
         actionBar.setListNavigationCallbacks(ArrayAdapter.createFromResource(
                         this, R.array.places, android.R.layout.simple_list_item_1),
@@ -113,7 +113,7 @@ public class MainActivity extends AppCompatActivity
                         return true;
                     }
 
-                });
+                });*/
 
     }
 
@@ -173,7 +173,7 @@ public class MainActivity extends AppCompatActivity
                 startActivity(new Intent(this, SearchBarActivity.class));
                 break;
             default:
-                mMap.clear();
+                //mMap.clear();
                 new GetPlaces(MainActivity.this,
                         item.getTitle().toString().toLowerCase().replace(
                                 "-", "_").replace(" ", "_")).execute();

@@ -16,7 +16,8 @@
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
-</resources>    <style name="PlacesResult" />
+
+    <style name="PlacesResult" />
 
     <style name="PlacesResult.Name">
         <item name="android:textAppearance">@android:style/TextAppearance.Medium</item>
