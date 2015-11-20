@@ -7,7 +7,7 @@ public enum PriceRangeEnum {
     PRICE_LOW(0),
     PRICE_LOW_MEDIUM(1),
     PRICE_HIGH_MEDIUM(2),
-    PRICE_HIGHT(4);
+    PRICE_HIGH(4);
 
     private int mPrice;
 
