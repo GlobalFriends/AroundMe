@@ -1,4 +1,4 @@
-package com.globalfriends.com.aroundme.Logging;
+package com.globalfriends.com.aroundme.logging;
 
 import android.util.Log;
 

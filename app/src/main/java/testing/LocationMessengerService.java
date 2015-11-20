@@ -7,7 +7,7 @@ import android.os.Message;
 import android.os.Messenger;
 import android.support.annotation.Nullable;
 
-import com.globalfriends.com.aroundme.Logging.Logger;
+import com.globalfriends.com.aroundme.logging.Logger;
 
 /**
  * Created by vishal on 10/27/2015.

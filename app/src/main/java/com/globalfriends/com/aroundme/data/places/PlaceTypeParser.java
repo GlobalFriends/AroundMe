@@ -1,4 +1,4 @@
-package com.globalfriends.com.aroundme.data;
+package com.globalfriends.com.aroundme.data.places;
 
 import android.content.Context;
 

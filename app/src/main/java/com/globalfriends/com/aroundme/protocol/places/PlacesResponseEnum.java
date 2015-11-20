@@ -1,4 +1,4 @@
-package com.globalfriends.com.aroundme.protocol;
+package com.globalfriends.com.aroundme.protocol.places;
 
 /**
  * Created by vishal on 11/19/2015.

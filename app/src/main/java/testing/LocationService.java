@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.os.Binder;
 import android.os.IBinder;
 
-import com.globalfriends.com.aroundme.Logging.Logger;
+import com.globalfriends.com.aroundme.logging.Logger;
 
 /**
  * Created by vishal on 10/24/2015.

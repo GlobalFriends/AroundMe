@@ -1,4 +1,4 @@
-package testing.yelp;
+package com.globalfriends.com.aroundme.protocol.yelp;
 
 import org.scribe.builder.api.DefaultApi10a;
 import org.scribe.model.Token;

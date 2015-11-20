@@ -1,4 +1,4 @@
-package testing.yelp;
+package com.globalfriends.com.aroundme.protocol.yelp;
 /*
  Example code based on code from Nicholas Smith at http://imnes.blogspot.com/2011/01/how-to-use-yelp-v2-from-java-including.html
  For a more complete example (how to integrate with GSON, etc) see the blog post above.
@@ -7,8 +7,8 @@ package testing.yelp;
 import android.content.Context;
 import android.os.Environment;
 
-import com.globalfriends.com.aroundme.Logging.Logger;
 import com.globalfriends.com.aroundme.R;
+import com.globalfriends.com.aroundme.logging.Logger;
 
 import org.scribe.builder.ServiceBuilder;
 import org.scribe.model.OAuthRequest;

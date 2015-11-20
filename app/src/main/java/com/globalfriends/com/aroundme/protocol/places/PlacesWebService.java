@@ -1,4 +1,4 @@
-package com.globalfriends.com.aroundme.protocol;
+package com.globalfriends.com.aroundme.protocol.places;
 
 import android.text.TextUtils;
 

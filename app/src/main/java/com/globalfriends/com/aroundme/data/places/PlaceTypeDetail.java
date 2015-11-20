@@ -1,4 +1,4 @@
-package com.globalfriends.com.aroundme.data;
+package com.globalfriends.com.aroundme.data.places;
 
 /**
  * Created by vishal on 11/14/2015.

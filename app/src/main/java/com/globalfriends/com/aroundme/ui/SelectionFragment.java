@@ -13,10 +13,10 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.globalfriends.com.aroundme.Logging.Logger;
 import com.globalfriends.com.aroundme.R;
-import com.globalfriends.com.aroundme.data.PlaceTypeDetail;
-import com.globalfriends.com.aroundme.data.PlaceTypeParser;
+import com.globalfriends.com.aroundme.data.places.PlaceTypeDetail;
+import com.globalfriends.com.aroundme.data.places.PlaceTypeParser;
+import com.globalfriends.com.aroundme.logging.Logger;
 
 import java.util.ArrayList;
 
