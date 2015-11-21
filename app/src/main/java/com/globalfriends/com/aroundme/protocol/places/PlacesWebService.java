@@ -77,10 +77,10 @@ public class PlacesWebService {
      * Supportive Builder Class for making Places Query
      */
     public static class Builder {
-        //Url and query type
+        //Set default URL an Query types
         private String mUrl = "https://maps.googleapis.com/maps/api/place/";
-        private String mSearchType;
-        private String mResponseType;
+        private String mSearchType = PlaceSearchTypeEnum.SEARCH_TYPE_NEARBY.getSearchType();
+        private String mResponseType = PlaceResponseEnum.RESP_JSON.getResponseType();
         //Params
         private String mQuery;
         private String mKey;
@@ -102,7 +102,7 @@ public class PlacesWebService {
             return this;
         }
 
-        public Builder setResponseType(final PlacesResponseEnum mResponseType) {
+        public Builder setResponseType(final PlaceResponseEnum mResponseType) {
             this.mResponseType = mResponseType.getResponseType();
             return this;
         }
