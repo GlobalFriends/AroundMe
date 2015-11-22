@@ -38,4 +38,11 @@ public class PlacesListFragment extends ListFragment {
 
         return super.onCreateView(inflater, container, savedInstanceState);
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        getListView().setDivider(null);
+    }
 }
