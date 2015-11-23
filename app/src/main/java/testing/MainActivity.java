@@ -4,10 +4,6 @@ import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.location.Criteria;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -16,10 +12,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.globalfriends.com.aroundme.R;
+import com.globalfriends.com.aroundme.data.PreferenceManager;
+import com.globalfriends.com.aroundme.data.places.Places;
 import com.globalfriends.com.aroundme.logging.Logger;
 import com.globalfriends.com.aroundme.ui.PlacesListFragment;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.maps.GoogleMap;
 
 import java.util.ArrayList;
@@ -33,44 +29,12 @@ import testing.yelp.SearchBarActivity;
  * @author Karn Shah
  * @Date 10/3/2013
  */
-public class MainActivity extends AppCompatActivity
-        implements GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener {
+public class MainActivity extends AppCompatActivity {
 
     public static double MILE = 1609.34;
-    public static double mCurrentLatitude;
-    public static double mCurrentLongitude;
     private final String TAG = getClass().getSimpleName();
-    private GoogleApiClient mGoogleApiClient;
     private GoogleMap mMap;
     private String[] places;
-    private Location loc;
-    private LocationManager locationManager;
-    private LocationListener listener = new LocationListener() {
-        @Override
-        public void onLocationChanged(Location location) {
-            Logger.e(TAG, "location update: " + location);
-            loc = location;
-            mCurrentLatitude = loc.getLatitude();
-            mCurrentLongitude = loc.getLongitude();
-            locationManager.removeUpdates(listener);
-        }
-
-        @Override
-        public void onStatusChanged(String s, int i, Bundle bundle) {
-
-        }
-
-        @Override
-        public void onProviderEnabled(String s) {
-
-        }
-
-        @Override
-        public void onProviderDisabled(String s) {
-
-        }
-    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,8 +42,7 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         initCompo();
         places = getResources().getStringArray(R.array.places);
-        currentLocation();
-        buildGoogleApiClient();
+        new GetPlaces(MainActivity.this, places[0].toLowerCase().replace("-", "_")).execute();
         /*mLocationRequest = LocationRequest.create()
                 .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);*/
 
@@ -108,42 +71,6 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-    private void currentLocation() {
-        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-
-        String provider = locationManager.getBestProvider(new Criteria(), false);
-        Location location = locationManager.getLastKnownLocation(provider);
-        if (location == null) {
-            locationManager.requestLocationUpdates(provider, 0, 0.0f, listener);
-        } else {
-            loc = location;
-            mCurrentLatitude = loc.getLatitude();
-            mCurrentLongitude = loc.getLongitude();
-            new GetPlaces(MainActivity.this, places[0].toLowerCase().replace("-", "_")).execute();
-            Logger.e(TAG, "location: " + location);
-        }
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        mGoogleApiClient.connect();
-    }
-
-    @Override
-    protected void onStop() {
-        mGoogleApiClient.disconnect();
-        super.onStop();
-    }
-
-    private void buildGoogleApiClient() {
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
-                .addApi(com.google.android.gms.location.places.Places.GEO_DATA_API)
-                .build();
-    }
-
     private void initCompo() {
         /*mMap = ((MapFragment) getFragmentManager().findFragmentById(R.id.map))
                 .getMap();*/
@@ -170,21 +97,6 @@ public class MainActivity extends AppCompatActivity
                                 "-", "_").replace(" ", "_")).execute();
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onConnected(Bundle bundle) {
-        Logger.i(TAG, "onConnected");
-    }
-
-    @Override
-    public void onConnectionSuspended(int i) {
-        Logger.i(TAG, "onConnectionSuspended");
-    }
-
-    @Override
-    public void onConnectionFailed(ConnectionResult connectionResult) {
-        Logger.i(TAG, "onConnectionFailed");
     }
 
     private void populatePlacesList(List<Places> places) {
@@ -294,8 +206,7 @@ public class MainActivity extends AppCompatActivity
         protected ArrayList<Places> doInBackground(Void... arg0) {
             PlacesService service = new PlacesService(
                     getResources().getString(R.string.google_maps_key));
-            ArrayList<Places> findPlaces = service.findPlaces(loc.getLatitude(), // 28.632808
-                    loc.getLongitude(), places); //0 77.218276
+            ArrayList<Places> findPlaces = service.findPlaces(PreferenceManager.getLocation(), places); //0 77.218276
             return findPlaces;
         }
 

@@ -117,8 +117,8 @@ public class PlacesWebService {
             return this;
         }
 
-        public Builder setRadius(final String val) {
-            this.mRadius = "radius" + ASSIGNMENT + val;
+        public Builder setRadius(final Double val) {
+            this.mRadius = "radius" + ASSIGNMENT + Double.toString(val);
             return this;
         }
 
@@ -139,11 +139,6 @@ public class PlacesWebService {
 
         public Builder setOpenNow(final boolean val) {
             this.mOpenNow = "opennow" + ASSIGNMENT + ((val) ? "true" : "false");
-            return this;
-        }
-
-        public Builder setRankBy(String mRankBy) {
-            this.mRankBy = "rankby" + ASSIGNMENT + mRankBy;
             return this;
         }
 

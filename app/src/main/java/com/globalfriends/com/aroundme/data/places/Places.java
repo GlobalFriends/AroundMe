@@ -1,4 +1,4 @@
-package testing;
+package com.globalfriends.com.aroundme.data.places;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -25,7 +25,7 @@ public class Places implements Parcelable {
     private String mPlace_id;
     private boolean mOpenNow;
 
-    static Places jsonToPontoReferencia(JSONObject pontoReferencia) {
+    public static Places jsonToPontoReferencia(JSONObject pontoReferencia) {
         try {
             Places result = new Places();
             JSONObject geometry = (JSONObject) pontoReferencia.get("geometry");

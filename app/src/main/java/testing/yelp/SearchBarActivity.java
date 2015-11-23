@@ -9,8 +9,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 
 import com.globalfriends.com.aroundme.R;
-
-import testing.MainActivity;
+import com.globalfriends.com.aroundme.data.PreferenceManager;
 
 public class SearchBarActivity extends Activity {
 
@@ -39,8 +38,8 @@ public class SearchBarActivity extends Activity {
         intent.setData(new Uri.Builder().appendQueryParameter("term", term)
                 .appendQueryParameter("location", location)
                 .appendQueryParameter("phone_number", mPhoneNumber.getText() != null ? mPhoneNumber.getText().toString() : null)
-                .appendQueryParameter("lattitude", Double.toString(MainActivity.mCurrentLatitude))
-                .appendQueryParameter("longitude", Double.toString(MainActivity.mCurrentLongitude)).build());
+                .appendQueryParameter("lattitude", PreferenceManager.getLatitude())
+                .appendQueryParameter("longitude", PreferenceManager.getLongitude()).build());
         startActivity(intent);
     }
 

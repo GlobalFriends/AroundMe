@@ -2,6 +2,8 @@ package testing;
 
 import android.text.TextUtils;
 
+import com.globalfriends.com.aroundme.data.places.Places;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -32,10 +34,10 @@ public class PlacesService {
         this.API_KEY = apikey;
     }
 
-    public ArrayList<Places> findPlaces(double latitude, double longitude,
+    public ArrayList<Places> findPlaces(String location,
                                         String placeSpacification) {
 
-        String urlString = makeUrl(latitude, longitude, placeSpacification);
+        String urlString = makeUrl(location, placeSpacification);
 
         try {
             String json = getJSON(urlString);
@@ -75,23 +77,17 @@ public class PlacesService {
     }
 
     // https://maps.googleapis.com/maps/api/place/search/json?location=28.632808,77.218276&radius=500&types=atm&sensor=false&key=apikey
-    private String makeUrl(double latitude, double longitude, String place) {
+    private String makeUrl(String location, String place) {
         StringBuilder urlString = new StringBuilder(
                 "https://maps.googleapis.com/maps/api/place/search/json?");
 
         if (place.equals("")) {
-            urlString.append("&location=");
-            urlString.append(Double.toString(latitude));
-            urlString.append(",");
-            urlString.append(Double.toString(longitude));
+            urlString.append("&location=" + location);
             urlString.append("&radius=5000");
             // urlString.append("&types="+place);
             urlString.append("&sensor=false&key=" + API_KEY);
         } else {
-            urlString.append("&location=");
-            urlString.append(Double.toString(latitude));
-            urlString.append(",");
-            urlString.append(Double.toString(longitude));
+            urlString.append("&location=" + location);
             urlString.append("&radius=5000");
             urlString.append("&types=" + place);
             urlString.append("&sensor=false&key=" + API_KEY);

@@ -1,6 +1,7 @@
 package com.globalfriends.com.aroundme.protocol;
 
 import com.globalfriends.com.aroundme.protocol.places.PlaceManager;
+import com.globalfriends.com.aroundme.protocol.places.PlaceSearchTypeEnum;
 import com.globalfriends.com.aroundme.protocol.yelp.YelpManager;
 
 import org.json.JSONObject;
@@ -31,13 +32,31 @@ public class TransactionManager implements Listener {
         return sInstance;
     }
 
-    public void nearByPlacesSearchQuery() {
+    /**
+     * @param placeType
+     */
+    public void findByNearBy(final String placeType) {
+        for (IFeatureManager feature : mManagerList) {
+            feature.findPlaces(PlaceSearchTypeEnum.SEARCH_TYPE_NEARBY, placeType, null);
+        }
     }
 
-    public void radarSearchQuery() {
+    /**
+     * @param query
+     */
+    public void findBySearch(final String query) {
+        for (IFeatureManager feature : mManagerList) {
+            feature.findPlaces(PlaceSearchTypeEnum.SEARCH_TYPE_TEXT, null, query);
+        }
     }
 
-    public void textSearchQuery() {
+    /**
+     * Find places by radar. This is specifically used for finding 200 places with less details
+     */
+    public void findByRadar() {
+        for (IFeatureManager feature : mManagerList) {
+            feature.findPlaces(PlaceSearchTypeEnum.SEARCH_TYPE_RADAR, null, null);
+        }
     }
 
     @Override
