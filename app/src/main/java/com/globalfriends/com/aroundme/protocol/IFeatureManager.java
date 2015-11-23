@@ -1,6 +1,6 @@
 package com.globalfriends.com.aroundme.protocol;
 
-import com.globalfriends.com.aroundme.protocol.places.PlaceSearchTypeEnum;
+import com.globalfriends.com.aroundme.protocol.places.PlaceRequestTypeEnum;
 
 /**
  * Created by vishal on 11/19/2015.
@@ -13,7 +13,7 @@ public interface IFeatureManager {
      * @param placeType
      * @param query      @return
      */
-    void findPlaces(final PlaceSearchTypeEnum searchType, String placeType, String query);
+    void findPlaces(final PlaceRequestTypeEnum searchType, String placeType, String query);
 
     /**
      * Return place details based on provided unique identifications
@@ -23,4 +23,18 @@ public interface IFeatureManager {
      * @return
      */
     void findPlaceDetails(final String placeId, final String contactNumber);
+
+    /**
+     * Query for getting photo details
+     *
+     * @param photoReference
+     */
+    void findPlacePhoto(final String photoReference); //TODO: Should this be a array
+
+    /**
+     * Returns a special tag related to Manager for UI identification
+     *
+     * @return
+     */
+    String getManagerTag();
 }

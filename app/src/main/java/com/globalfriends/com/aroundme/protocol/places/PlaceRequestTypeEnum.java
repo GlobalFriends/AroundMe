@@ -3,14 +3,16 @@ package com.globalfriends.com.aroundme.protocol.places;
 /**
  * Created by vishal on 11/19/2015.
  */
-public enum PlaceSearchTypeEnum {
+public enum PlaceRequestTypeEnum {
     SEARCH_TYPE_NEARBY("nearbysearch"),
     SEARCH_TYPE_TEXT("textsearch"),
-    SEARCH_TYPE_RADAR("radarsearch");
+    SEARCH_TYPE_RADAR("radarsearch"),
+    SEARCH_TYPE_PHOTO("photo"),
+    SEARCH_TYPE_DETAILS("details");
 
     private String mSearchType;
 
-    PlaceSearchTypeEnum(final String name) {
+    PlaceRequestTypeEnum(final String name) {
         this.mSearchType = name;
     }
 

@@ -6,9 +6,9 @@ import org.json.JSONObject;
  * Created by vishal on 11/20/2015.
  */
 public interface Listener {
-    void onResponse(String response);
+    void onPlaceDetailsResponse(String response);
 
-    void onResponse(JSONObject response);
+    void onPlaceDetailsResponse(JSONObject response);
 
-    void onError();
+    void onRequestError();
 }

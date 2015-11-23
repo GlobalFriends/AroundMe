@@ -5,10 +5,6 @@ package com.globalfriends.com.aroundme.utils;
  */
 public class Utility {
 
-    public static String getCurrentLocation() {
-        return null;
-    }
-
     /**
      * @param zipCode
      * @return

@@ -1,7 +1,7 @@
 package com.globalfriends.com.aroundme.protocol;
 
 import com.globalfriends.com.aroundme.protocol.places.PlaceManager;
-import com.globalfriends.com.aroundme.protocol.places.PlaceSearchTypeEnum;
+import com.globalfriends.com.aroundme.protocol.places.PlaceRequestTypeEnum;
 import com.globalfriends.com.aroundme.protocol.yelp.YelpManager;
 
 import org.json.JSONObject;
@@ -37,7 +37,7 @@ public class TransactionManager implements Listener {
      */
     public void findByNearBy(final String placeType) {
         for (IFeatureManager feature : mManagerList) {
-            feature.findPlaces(PlaceSearchTypeEnum.SEARCH_TYPE_NEARBY, placeType, null);
+            feature.findPlaces(PlaceRequestTypeEnum.SEARCH_TYPE_NEARBY, placeType, null);
         }
     }
 
@@ -46,7 +46,7 @@ public class TransactionManager implements Listener {
      */
     public void findBySearch(final String query) {
         for (IFeatureManager feature : mManagerList) {
-            feature.findPlaces(PlaceSearchTypeEnum.SEARCH_TYPE_TEXT, null, query);
+            feature.findPlaces(PlaceRequestTypeEnum.SEARCH_TYPE_TEXT, null, query);
         }
     }
 
@@ -55,20 +55,20 @@ public class TransactionManager implements Listener {
      */
     public void findByRadar() {
         for (IFeatureManager feature : mManagerList) {
-            feature.findPlaces(PlaceSearchTypeEnum.SEARCH_TYPE_RADAR, null, null);
+            feature.findPlaces(PlaceRequestTypeEnum.SEARCH_TYPE_RADAR, null, null);
         }
     }
 
     @Override
-    public void onResponse(String response) {
+    public void onPlaceDetailsResponse(String response) {
     }
 
     @Override
-    public void onResponse(JSONObject response) {
+    public void onPlaceDetailsResponse(JSONObject response) {
     }
 
     @Override
-    public void onError() {
+    public void onRequestError() {
     }
 
     /**

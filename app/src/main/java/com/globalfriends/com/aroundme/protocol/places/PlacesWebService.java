@@ -63,6 +63,22 @@ public class PlacesWebService {
             mUrl.append(OPERATION_SEPARATOR).append(b.mQuery);
         }
 
+        if (!TextUtils.isEmpty(b.mPlaceId)) {
+            mUrl.append(OPERATION_SEPARATOR).append(b.mPlaceId);
+        }
+
+        if (!TextUtils.isEmpty(b.mPhotoReference)) {
+            mUrl.append(OPERATION_SEPARATOR).append(b.mPhotoReference);
+        }
+
+        if (!TextUtils.isEmpty(b.mPhotoMaxHeight)) {
+            mUrl.append(OPERATION_SEPARATOR).append(b.mPhotoMaxHeight);
+        }
+
+        if (!TextUtils.isEmpty(b.mPhotoMaxWidth)) {
+            mUrl.append(OPERATION_SEPARATOR).append(b.mPhotoMaxWidth);
+        }
+
         //Last one has to be API Key...
         if (!TextUtils.isEmpty(b.mKey)) {
             mUrl.append(OPERATION_SEPARATOR).append(b.mKey);
@@ -79,7 +95,7 @@ public class PlacesWebService {
     public static class Builder {
         //Set default URL an Query types
         private String mUrl = "https://maps.googleapis.com/maps/api/place/";
-        private String mSearchType = PlaceSearchTypeEnum.SEARCH_TYPE_NEARBY.getSearchType();
+        private String mSearchType = PlaceRequestTypeEnum.SEARCH_TYPE_NEARBY.getSearchType();
         private String mResponseType = PlaceResponseEnum.RESP_JSON.getResponseType();
         //Params
         private String mQuery;
@@ -96,8 +112,12 @@ public class PlacesWebService {
         private String mMinPrice;
         private String mMaxPrice;
         private String mSensor;
+        private String mPlaceId;
+        private String mPhotoReference;
+        private String mPhotoMaxWidth;
+        private String mPhotoMaxHeight;
 
-        public Builder setSearchType(final PlaceSearchTypeEnum mOperation) {
+        public Builder setSearchType(final PlaceRequestTypeEnum mOperation) {
             this.mSearchType = mOperation.getSearchType();
             return this;
         }
@@ -132,8 +152,8 @@ public class PlacesWebService {
             return this;
         }
 
-        public Builder setName(final String mName) {
-            this.mName = "name" + ASSIGNMENT + mName;
+        public Builder setName(final String val) {
+            this.mName = "name" + ASSIGNMENT + val;
             return this;
         }
 
@@ -162,18 +182,38 @@ public class PlacesWebService {
             return this;
         }
 
-        public Builder setSensor(final boolean mSensor) {
-            this.mSensor = "sensor=" + ASSIGNMENT + (mSensor ? "true" : "false");
+        public Builder setSensor(final boolean val) {
+            this.mSensor = "sensor" + ASSIGNMENT + (val ? "true" : "false");
             return this;
         }
 
-        public Builder setQuery(String mQuery) {
-            this.mQuery = "query" + ASSIGNMENT + mQuery;
+        public Builder setQuery(String val) {
+            this.mQuery = "query" + ASSIGNMENT + val;
             return this;
         }
 
-        public Builder setLanguage(final String mLanguage) {
-            this.mLanguage = "language" + ASSIGNMENT + PlacesSupportedLanguages.getLanguage(mLanguage);
+        public Builder setLanguage(final String val) {
+            this.mLanguage = "language" + ASSIGNMENT + PlacesSupportedLanguages.getLanguage(val);
+            return this;
+        }
+
+        public Builder setPlaceId(final String val) {
+            this.mPlaceId = "placeid" + ASSIGNMENT + val;
+            return this;
+        }
+
+        public Builder setPhotoReference(final String val) {
+            this.mPhotoReference = "photoreference" + ASSIGNMENT + val;
+            return this;
+        }
+
+        public Builder setPhotoMaxWidth(final String val) {
+            this.mPhotoMaxWidth = "maxwidth" + ASSIGNMENT + val;
+            return this;
+        }
+
+        public Builder setPhotoMaxHeight(final String val) {
+            this.mPhotoMaxHeight = "maxheight" + ASSIGNMENT + val;
             return this;
         }
 
