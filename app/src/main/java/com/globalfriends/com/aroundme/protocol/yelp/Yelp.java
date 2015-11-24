@@ -5,10 +5,9 @@ package com.globalfriends.com.aroundme.protocol.yelp;
  */
 
 import android.content.Context;
-import android.os.Environment;
 
 import com.globalfriends.com.aroundme.R;
-import com.globalfriends.com.aroundme.logging.Logger;
+import com.globalfriends.com.aroundme.utils.Utility;
 
 import org.scribe.builder.ServiceBuilder;
 import org.scribe.model.OAuthRequest;
@@ -17,9 +16,6 @@ import org.scribe.model.Token;
 import org.scribe.model.Verb;
 import org.scribe.oauth.OAuthService;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.Date;
 
 /**
@@ -80,7 +76,7 @@ public class Yelp {
         this.service.signRequest(this.accessToken, request);
         Response response = request.send();
         String body = response.getBody();
-        generateNoteOnSD((new Date(System.currentTimeMillis())).toString() + "_yelp.txt", body);
+        Utility.generateNoteOnSD((new Date(System.currentTimeMillis())).toString() + "_yelp.txt", body);
         return body;
     }
 
@@ -90,14 +86,11 @@ public class Yelp {
     public String phoneSearch(final String phoneNumber, final String countryCode) {
         OAuthRequest request = new OAuthRequest(Verb.GET, "http://api.yelp.com/v2/phone_search");
         request.addQuerystringParameter("phone", phoneNumber);
-        /**
-         * Outside US and Canada we have to provide this country code with phone number.
-         */
-//        request.addQuerystringParameter("cc", countryCode);
+        request.addQuerystringParameter("cc", countryCode);
         this.service.signRequest(this.accessToken, request);
         Response response = request.send();
         String body = response.getBody();
-        generateNoteOnSD((new Date(System.currentTimeMillis())).toString() + "_yelp.txt", body);
+        Utility.generateNoteOnSD((new Date(System.currentTimeMillis())).toString() + "_yelp.txt", body);
         return body;
     }
 
@@ -116,25 +109,7 @@ public class Yelp {
         this.service.signRequest(this.accessToken, request);
         Response response = request.send();
         String body = response.getBody();
-        generateNoteOnSD((new Date(System.currentTimeMillis())).toString() + "_yelp.txt", body);
+        Utility.generateNoteOnSD((new Date(System.currentTimeMillis())).toString() + "_yelp.txt", body);
         return body;
-    }
-
-    public void generateNoteOnSD(String sFileName, String sBody) {
-        Logger.i(TAG, "Yelp Response=" + sBody);
-        try {
-            File root = new File(Environment.getExternalStorageDirectory(), "AroundMe");
-            if (!root.exists()) {
-                root.mkdirs();
-            }
-            File gpxfile = new File(root, sFileName);
-            Logger.i(TAG, "gpxfile" + gpxfile.getAbsolutePath());
-            FileWriter writer = new FileWriter(gpxfile);
-            writer.append(sBody);
-            writer.flush();
-            writer.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 }

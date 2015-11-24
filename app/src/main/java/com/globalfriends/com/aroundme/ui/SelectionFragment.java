@@ -17,7 +17,6 @@ import com.globalfriends.com.aroundme.R;
 import com.globalfriends.com.aroundme.data.places.PlaceTypeDetail;
 import com.globalfriends.com.aroundme.data.places.PlaceTypeParser;
 import com.globalfriends.com.aroundme.logging.Logger;
-import com.globalfriends.com.aroundme.protocol.TransactionManager;
 
 import java.util.ArrayList;
 
@@ -81,7 +80,7 @@ public class SelectionFragment extends Fragment implements AbsListView.OnItemCli
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Logger.i(TAG, "onItemClick");
-        TransactionManager.getInstance().findByNearBy("atm,airport");
+
         if (null != mListener) {
             // Notify the active callbacks interface (the activity, if the
             // fragment is attached to one) that an item has been selected.

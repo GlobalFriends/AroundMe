@@ -71,13 +71,14 @@ public class Launcher extends AppCompatActivity implements
     @Override
     protected void onStart() {
         super.onStart();
-        mGoogleApiClient.connect();
     }
 
     @Override
     protected void onDestroy() {
+        if (mGoogleApiClient != null) {
+            mGoogleApiClient.disconnect();
+        }
         super.onDestroy();
-        mGoogleApiClient.disconnect();
     }
 
     private void validateLocation() {
@@ -135,6 +136,7 @@ public class Launcher extends AppCompatActivity implements
                 .addOnConnectionFailedListener(this)
                 .addApi(com.google.android.gms.location.places.Places.GEO_DATA_API)
                 .build();
+        mGoogleApiClient.connect();
     }
 
     @Override
