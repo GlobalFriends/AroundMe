@@ -3,6 +3,7 @@ package com.globalfriends.com.aroundme.data.places;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -25,6 +26,38 @@ public class Places implements Parcelable {
     private String mPlace_id;
     private boolean mOpenNow;
 
+    public static class PhotoRef {
+        private int mHeight;
+        private int mWidth;
+        private String mReference;
+
+        public int getHeight() {
+            return mHeight;
+        }
+
+        public void setHeight(int height) {
+            mHeight = height;
+        }
+
+        public int getWidth() {
+            return mWidth;
+        }
+
+        public void setWidth(int width) {
+            mWidth = width;
+        }
+
+        public String getReference() {
+            return mReference;
+        }
+
+        public void setReference(String reference) {
+            mReference = reference;
+        }
+    }
+
+    private PhotoRef mPhotoRef;
+
     public static Places jsonToPontoReferencia(JSONObject pontoReferencia) {
         try {
             Places result = new Places();
@@ -37,6 +70,17 @@ public class Places implements Parcelable {
             result.setVicinity(pontoReferencia.getString("vicinity"));
             result.setId(pontoReferencia.getString("id"));
             result.setPlace_id(pontoReferencia.getString("place_id"));
+
+            if (pontoReferencia.has("photos")) {
+                JSONArray photosArray = pontoReferencia.getJSONArray("photos");
+
+                Places.PhotoRef photoRef = new PhotoRef();
+                photoRef.setHeight(((JSONObject) photosArray.get(0)).getInt("height"));
+                photoRef.setWidth(((JSONObject)photosArray.get(0)).getInt("width"));
+                photoRef.setReference(((JSONObject)photosArray.get(0)).getString("photo_reference"));
+                result.setPhotoReference(photoRef);
+            }
+
             return result;
         } catch (JSONException ex) {
             Logger.getLogger(Places.class.getName()).log(Level.SEVERE, null, ex);
@@ -98,6 +142,21 @@ public class Places implements Parcelable {
 
     public String getPlaceId() {
         return this.mPlace_id;
+    }
+
+    public PhotoRef getPhotoReference() {
+        return mPhotoRef;
+    }
+
+    public void setPhotoReference(PhotoRef reference) {
+        mPhotoRef = reference;
+    }
+
+    public String getPhoto(int maxWidth, String key) {
+        if (mPhotoRef == null) {
+            return null;
+        }
+        return "https://maps.googleapis.com/maps/api/place/photo?maxwidth=" + maxWidth + "&photoreference=" + mPhotoRef.getReference() + "&key=" + key;
     }
 
     @Override

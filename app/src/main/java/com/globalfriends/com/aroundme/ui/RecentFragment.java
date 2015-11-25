@@ -15,8 +15,12 @@ import android.widget.TextView;
 
 import com.globalfriends.com.aroundme.R;
 import com.globalfriends.com.aroundme.data.places.Places;
+import com.nostra13.universalimageloader.cache.memory.impl.WeakMemoryCache;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.nostra13.universalimageloader.core.assist.ImageScaleType;
+import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 
 /**
  * Created by vishal on 11/14/2015.
@@ -39,16 +43,24 @@ public class RecentFragment extends Fragment implements AbsListView.OnItemClickL
     public static class PlacesListAdapter extends ArrayAdapter<Places> {
         Context mContext;
         Places[] mPlaces;
-        ImageLoader mImageLoader;
 
         public PlacesListAdapter(Context context, Places[] objects) {
             super(context, R.layout.layout_places_item, objects);
             mContext = context;
             mPlaces = objects;
-            mImageLoader = ImageLoader.getInstance();
-            ImageLoaderConfiguration imageLoaderConfiguration = new ImageLoaderConfiguration.Builder(context)
-                    .build();
-            mImageLoader.init(imageLoaderConfiguration);
+
+            DisplayImageOptions options = new DisplayImageOptions.Builder()
+                    .cacheOnDisk(true)
+                    .cacheInMemory(true)
+                    .imageScaleType(ImageScaleType.EXACTLY)
+                    .displayer(new FadeInBitmapDisplayer(300)).build();
+
+            ImageLoaderConfiguration configuration = new ImageLoaderConfiguration.Builder(getContext())
+                    .defaultDisplayImageOptions(options)
+                    .memoryCache(new WeakMemoryCache())
+                    .discCacheSize(100 * 1024 * 1024).build();
+
+            ImageLoader.getInstance().init(configuration);
         }
 
         @Override
@@ -60,7 +72,7 @@ public class RecentFragment extends Fragment implements AbsListView.OnItemClickL
                 convertView = layoutInflater.inflate(R.layout.layout_places_item, null);
 
                 viewHolder = new ViewHolder();
-                viewHolder.thumbnailImage = (ImageView) convertView.findViewById(R.id.thumbnail_image);
+                viewHolder.photo = (ImageView) convertView.findViewById(R.id.photo);
                 viewHolder.placeName = (TextView) convertView.findViewById(R.id.place_name);
                 viewHolder.vicinity = (TextView) convertView.findViewById(R.id.vincinity);
 
@@ -73,7 +85,9 @@ public class RecentFragment extends Fragment implements AbsListView.OnItemClickL
 
             viewHolder.placeName.setText(place.getName());
             viewHolder.vicinity.setText(place.getVicinity());
-            mImageLoader.displayImage(place.getIcon(), viewHolder.thumbnailImage);
+            if (place.getPhotoReference() != null) {
+                ImageLoader.getInstance().displayImage(place.getPhoto(200, getContext().getResources().getString(R.string.google_maps_key)), viewHolder.photo);
+            }
 
             return convertView;
         }
@@ -96,7 +110,7 @@ public class RecentFragment extends Fragment implements AbsListView.OnItemClickL
         }*/
 
         private static class ViewHolder {
-            public ImageView thumbnailImage;
+            public ImageView photo;
             public TextView placeName;
             public TextView vicinity;
         }
