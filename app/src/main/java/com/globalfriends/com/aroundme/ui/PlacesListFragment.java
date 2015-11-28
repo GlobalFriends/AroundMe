@@ -42,10 +42,9 @@ public class PlacesListFragment extends ListFragment {
         super.onCreate(savedInstanceState);
         mProgress = new ProgressDialog(getActivity());
         mProgress.setCancelable(false);
-        mProgress.setMessage("Loading..");
+        mProgress.setMessage(getResources().getString(R.string.please_wait_progress));
         mProgress.isIndeterminate();
         mProgress.show();
-
         new GetPlaces(getActivity(), getArguments().getString("PLACE_EXTRA")).execute();
     }
 
@@ -53,14 +52,12 @@ public class PlacesListFragment extends ListFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mAdapter = new PlacesListAdapter(getActivity(), mPlaces);
         setListAdapter(mAdapter);
-
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
     @Override
     public void onResume() {
         super.onResume();
-
         getListView().setDivider(null);
     }
 
@@ -134,7 +131,7 @@ public class PlacesListFragment extends ListFragment {
     /**
      * Find places based on Latitude and Longitude
      */
-    private class GetPlaces extends AsyncTask<Void, Void, ArrayList<Places>> {
+    private class GetPlaces extends AsyncTask<Void, Void, Void> {
         private Context context;
         private String places;
 
@@ -144,14 +141,15 @@ public class PlacesListFragment extends ListFragment {
         }
 
         @Override
-        protected void onPostExecute(ArrayList<Places> result) {
+        protected void onPostExecute(Void result) {
             super.onPostExecute(result);
             if (mProgress.isShowing()) {
                 mProgress.dismiss();
             }
 
-            if (result.size() == 0) {
+            if (mPlaces == null || mPlaces.size() == 0) {
                 Logger.i(TAG, "No results found");
+                //TODO: Update List fragment with no results
                 return;
             }
             mAdapter.swapItem(mPlaces);
@@ -159,12 +157,12 @@ public class PlacesListFragment extends ListFragment {
 
 
         @Override
-        protected ArrayList<Places> doInBackground(Void... arg0) {
+        protected Void doInBackground(Void... arg0) {
             PlacesService service = new PlacesService(
                     getResources().getString(R.string.google_maps_key));
-            mPlaces = service.findPlaces(PreferenceManager.getLocation(), TextUtils.isEmpty(places) ? "atm" : places); //0 77.218276
-            return mPlaces;
+            mPlaces = service.findPlaces(PreferenceManager.getLocation(),
+                    TextUtils.isEmpty(places) ? "atm" : places); //0 77.218276
+            return null;
         }
-
     }
 }

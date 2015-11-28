@@ -46,20 +46,6 @@ public class Yelp {
                 context.getString(R.string.yelp_token), context.getString(R.string.yelp_token_secret));
     }
 
-    // CLI
-//    public static void main(String[] args) {
-//        // Update tokens here from Yelp developers site, Manage API access.
-//        String consumerKey = "";
-//        String consumerSecret = "";
-//        String token = "";
-//        String tokenSecret = "";
-//
-//        Yelp yelp = new Yelp(consumerKey, consumerSecret, token, tokenSecret);
-//        String response = yelp.search("burritos", 30.361471, -87.164326);
-//
-//        System.out.println(response);
-//    }
-
     /**
      * Search with term and location.
      *
