@@ -11,7 +11,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Model class for Places data.
+ * Model class for data.
  *
  * @author Karn Shah
  * @Date 10/3/2013
@@ -25,37 +25,6 @@ public class Places implements Parcelable {
     private Double longitude;
     private String mPlace_id;
     private boolean mOpenNow;
-
-    public static class PhotoRef {
-        private int mHeight;
-        private int mWidth;
-        private String mReference;
-
-        public int getHeight() {
-            return mHeight;
-        }
-
-        public void setHeight(int height) {
-            mHeight = height;
-        }
-
-        public int getWidth() {
-            return mWidth;
-        }
-
-        public void setWidth(int width) {
-            mWidth = width;
-        }
-
-        public String getReference() {
-            return mReference;
-        }
-
-        public void setReference(String reference) {
-            mReference = reference;
-        }
-    }
-
     private PhotoRef mPhotoRef;
 
     public static Places jsonToPontoReferencia(JSONObject pontoReferencia) {
@@ -76,8 +45,8 @@ public class Places implements Parcelable {
 
                 Places.PhotoRef photoRef = new PhotoRef();
                 photoRef.setHeight(((JSONObject) photosArray.get(0)).getInt("height"));
-                photoRef.setWidth(((JSONObject)photosArray.get(0)).getInt("width"));
-                photoRef.setReference(((JSONObject)photosArray.get(0)).getString("photo_reference"));
+                photoRef.setWidth(((JSONObject) photosArray.get(0)).getInt("width"));
+                photoRef.setReference(((JSONObject) photosArray.get(0)).getString("photo_reference"));
                 result.setPhotoReference(photoRef);
             }
 
@@ -175,5 +144,35 @@ public class Places implements Parcelable {
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeString(this.name);
         parcel.writeString(this.vicinity);
+    }
+
+    public static class PhotoRef {
+        private int mHeight;
+        private int mWidth;
+        private String mReference;
+
+        public int getHeight() {
+            return mHeight;
+        }
+
+        public void setHeight(int height) {
+            mHeight = height;
+        }
+
+        public int getWidth() {
+            return mWidth;
+        }
+
+        public void setWidth(int width) {
+            mWidth = width;
+        }
+
+        public String getReference() {
+            return mReference;
+        }
+
+        public void setReference(String reference) {
+            mReference = reference;
+        }
     }
 }

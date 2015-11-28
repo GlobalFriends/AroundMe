@@ -6,11 +6,13 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.globalfriends.com.aroundme.R;
@@ -34,6 +36,7 @@ import testing.PlacesService;
 public class PlacesListFragment extends ListFragment {
     private static final String TAG = "PlacesListFragment";
     private ArrayList<Places> mPlaces = new ArrayList<>();
+    private OnPlaceListFragmentSelection mListener;
     private PlacesListAdapter mAdapter;
     private ProgressDialog mProgress;
 
@@ -45,7 +48,7 @@ public class PlacesListFragment extends ListFragment {
         mProgress.setMessage(getResources().getString(R.string.please_wait_progress));
         mProgress.isIndeterminate();
         mProgress.show();
-        new GetPlaces(getActivity(), getArguments().getString("PLACE_EXTRA")).execute();
+        new GetPlaces(getArguments().getString("PLACE_EXTRA")).execute();
     }
 
     @Override
@@ -58,7 +61,33 @@ public class PlacesListFragment extends ListFragment {
     @Override
     public void onResume() {
         super.onResume();
+        getActivity().setTitle(R.string.search_results);
         getListView().setDivider(null);
+    }
+
+    @Override
+    public void onListItemClick(ListView parent, View v, int position, long id) {
+        if (null != mListener) {
+            Places details = (Places) parent.getItemAtPosition(position);
+            Log.i(TAG, ">>>> " + details.toString());
+            mListener.OnPlaceListFragmentSelection(details.getPlaceId(), "");
+        }
+    }
+
+    @Override
+    public void onAttach(Context activity) {
+        super.onAttach(activity);
+        Logger.i(TAG, "onAttach");
+        try {
+            mListener = (OnPlaceListFragmentSelection) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString()
+                    + " must implement OnSelectionFragmentSelection");
+        }
+    }
+
+    public interface OnPlaceListFragmentSelection {
+        void OnPlaceListFragmentSelection(final String placeId, final String phone);
     }
 
     /**
@@ -115,7 +144,8 @@ public class PlacesListFragment extends ListFragment {
             viewHolder.placeName.setText(place.getName());
             viewHolder.vicinity.setText(place.getVicinity());
             if (place.getPhotoReference() != null) {
-                ImageLoader.getInstance().displayImage(place.getPhoto(200, getContext().getResources().getString(R.string.google_maps_key)), viewHolder.photo);
+                ImageLoader.getInstance().displayImage(place.getPhoto(200,
+                        getContext().getResources().getString(R.string.google_maps_key)), viewHolder.photo);
             }
 
             return convertView;
@@ -132,11 +162,9 @@ public class PlacesListFragment extends ListFragment {
      * Find places based on Latitude and Longitude
      */
     private class GetPlaces extends AsyncTask<Void, Void, Void> {
-        private Context context;
         private String places;
 
-        public GetPlaces(Context context, String places) {
-            this.context = context;
+        public GetPlaces(String places) {
             this.places = places;
         }
 

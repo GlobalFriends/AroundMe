@@ -37,6 +37,7 @@
     <string name="google_places_tag">Google</string>
     <string name="four_square_tag">FourSquare</string>
     <string name="zagat_square_tag">Zagat</string>
+    <string name="search_results">Search Results</string>
     <!-- Strings related to Settings -->
     <!-- Example General settings -->
     <string name="pref_header_general">General</string>

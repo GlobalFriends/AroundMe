@@ -8,6 +8,7 @@ import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.design.widget.NavigationView;
@@ -36,6 +37,8 @@ import testing.MainActivity;
 public class Launcher extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener,
         SelectionFragment.OnSelectionFragmentSelection,
+        PlacesListFragment.OnPlaceListFragmentSelection,
+        PlaceDetailsFragment.OnPlaceDetailsFragmentInteractionListener,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener {
     private static final int LOCATION_REQUEST_CODE = 1;
@@ -138,6 +141,12 @@ public class Launcher extends AppCompatActivity implements
                 .addApi(com.google.android.gms.location.places.Places.GEO_DATA_API)
                 .build();
         mGoogleApiClient.connect();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setTitle(R.string.app_name);
     }
 
     @Override
@@ -268,6 +277,21 @@ public class Launcher extends AppCompatActivity implements
 
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
+
+    }
+
+    @Override
+    public void OnPlaceListFragmentSelection(final String placeId, final String phone) {
+        Bundle bundle = new Bundle();
+        bundle.putString("PLACE_ID", placeId);
+        bundle.putString("PHONE", phone);
+        Fragment fragment = new PlaceDetailsFragment();
+        fragment.setArguments(bundle);
+        updateFragment(fragment, false, true);
+    }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
 
     }
 }

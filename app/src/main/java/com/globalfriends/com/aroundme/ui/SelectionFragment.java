@@ -1,6 +1,5 @@
 package com.globalfriends.com.aroundme.ui;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -44,6 +43,12 @@ public class SelectionFragment extends Fragment implements AbsListView.OnItemCli
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        getActivity().setTitle(R.string.app_name);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         Logger.i(TAG, "onCreateView");
@@ -61,7 +66,7 @@ public class SelectionFragment extends Fragment implements AbsListView.OnItemCli
     }
 
     @Override
-    public void onAttach(Activity activity) {
+    public void onAttach(Context activity) {
         super.onAttach(activity);
         Logger.i(TAG, "onAttach");
         try {
