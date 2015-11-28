@@ -30,11 +30,4 @@ public interface IFeatureManager {
      * @param photoReference
      */
     void findPlacePhoto(final String photoReference); //TODO: Should this be a array
-
-    /**
-     * Returns a special tag related to Manager for UI identification
-     *
-     * @return
-     */
-    String getManagerTag();
 }

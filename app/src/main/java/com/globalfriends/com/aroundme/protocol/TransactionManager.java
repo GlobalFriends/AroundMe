@@ -1,5 +1,6 @@
 package com.globalfriends.com.aroundme.protocol;
 
+import com.globalfriends.com.aroundme.data.places.Places;
 import com.globalfriends.com.aroundme.protocol.places.PlaceManager;
 import com.globalfriends.com.aroundme.protocol.places.PlaceRequestTypeEnum;
 import com.globalfriends.com.aroundme.protocol.yelp.YelpManager;
@@ -7,6 +8,7 @@ import com.globalfriends.com.aroundme.protocol.yelp.YelpManager;
 import org.json.JSONObject;
 
 import java.util.HashSet;
+import java.util.List;
 
 /**
  * Created by vishal on 11/19/2015.
@@ -60,15 +62,22 @@ public class TransactionManager implements Listener {
     }
 
     @Override
-    public void onPlaceDetailsResponse(String response) {
+    public void onGetPhoto(JSONObject response, String placeTag) {
+
     }
 
     @Override
-    public void onPlaceDetailsResponse(JSONObject response) {
+    public void onGetPlaceDetails(JSONObject response, String placeTag) {
+
     }
 
     @Override
-    public void onRequestError() {
+    public void onPlacesList(List<Places> placeList) {
+
+    }
+
+    @Override
+    public void onError(final String errorMsg) {
     }
 
     /**

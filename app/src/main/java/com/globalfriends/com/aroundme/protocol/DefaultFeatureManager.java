@@ -1,5 +1,6 @@
 package com.globalfriends.com.aroundme.protocol;
 
+import android.content.Context;
 import android.util.Log;
 
 import com.android.volley.Request;
@@ -7,7 +8,6 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.globalfriends.com.aroundme.AroundMeApplication;
 import com.globalfriends.com.aroundme.protocol.places.PlaceRequestTypeEnum;
@@ -19,7 +19,8 @@ import org.json.JSONObject;
  */
 public class DefaultFeatureManager implements IFeatureManager {
     protected static String TAG;
-    private Listener mListener;
+    protected Listener mListener;
+    protected Context mContext;
     private RequestQueue mQueue;
     private Request mRequest;
 
@@ -30,6 +31,7 @@ public class DefaultFeatureManager implements IFeatureManager {
         mListener = listener;
         TAG = getClass().getSimpleName();
         mQueue = Volley.newRequestQueue(AroundMeApplication.getContext());
+        mContext = AroundMeApplication.getContext();
     }
 
     /**
@@ -42,49 +44,35 @@ public class DefaultFeatureManager implements IFeatureManager {
         mQueue.add(request);
     }
 
-    /**
-     * Handle String request
-     *
-     * @param url
-     * @param tag
-     */
-    final private void handleStringRequest(final String url, final String tag) {
-        mRequest = new StringRequest(Request.Method.GET, url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        mListener.onPlaceDetailsResponse(response);
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                mListener.onRequestError();
-            }
-        });
-
-        mRequest.setTag(tag);
-        scheduleRequest(mRequest);
-    }
-
-    public final void handleJasonRequest(final String url, final String tag) {
+    public final void handleJsonRequest(final String url, final String tag, final OperationEnum operation) {
         Log.i(TAG, "Url=" + url);
         mRequest = new JsonObjectRequest
                 (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
                         Log.i(TAG, "response=" + response);
-                        mListener.onPlaceDetailsResponse(response);
+                        dispatchJsonResponse(operation, response);
                     }
                 }, new Response.ErrorListener() {
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         Log.i(TAG, "response=" + error.toString());
-                        mListener.onRequestError();
+                        mListener.onError(error.toString());
                     }
                 });
         mRequest.setTag(tag);
         scheduleRequest(mRequest);
+    }
+
+
+    /**
+     * Schedule response based on provided operation request
+     *
+     * @param operation
+     * @param response
+     */
+    protected void dispatchJsonResponse(final OperationEnum operation, final JSONObject response) {
     }
 
     @Override
@@ -98,11 +86,5 @@ public class DefaultFeatureManager implements IFeatureManager {
 
     @Override
     public void findPlacePhoto(String photoReference) {
-
-    }
-
-    @Override
-    public String getManagerTag() {
-        return null;
     }
 }

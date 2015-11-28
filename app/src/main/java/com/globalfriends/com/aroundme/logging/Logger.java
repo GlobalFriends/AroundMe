@@ -10,10 +10,6 @@ public class Logger {
         Log.e(tag, message);
     }
 
-    /**
-     * @param tag
-     * @param message
-     */
     public static void i(String tag, String message) {
         Log.i(tag, message);
     }

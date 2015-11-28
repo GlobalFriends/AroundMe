@@ -30,7 +30,10 @@
     <string name="open_location_settings">Enable GPS</string>
     <string name="gps_network_not_enabled">GPS is not enabled. Enable GPS to use application effectively.</string>
     <string name="cancel">Cancel</string>
-    string>
+    <string name="yelp_tag">Yelp</string>
+    <string name="google_places_tag">Google</string>
+    <string name="four_square_tag">FourSquare</string>
+    <string name="zagat_square_tag">Zagat</string>
     <!-- Strings related to Settings -->
     <!-- Example General settings -->
     <string name="pref_header_general">General</string>
