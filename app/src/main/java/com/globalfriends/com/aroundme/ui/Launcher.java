@@ -194,10 +194,12 @@ public class Launcher extends AppCompatActivity implements
                 return;
             }
 
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.fragment_container, fragment).commit();
-            if (isBackStack)
-                getSupportFragmentManager().beginTransaction().addToBackStack(null);
+            android.support.v4.app.FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.fragment_container, fragment);
+            if (isBackStack) {
+                transaction.addToBackStack(null);
+            }
+            transaction.commitAllowingStateLoss();
         }
     }
 
