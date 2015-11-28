@@ -1,6 +1,5 @@
 package testing;
 
-import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -108,9 +107,14 @@ public class MainActivity extends AppCompatActivity {
         Bundle bundle = new Bundle();
         bundle.putParcelableArray("PLACES_LIST", parcelables);
 
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
-        ft.replace(R.id.fragment_holder, PlacesListFragment.instantiate(MainActivity.this, "com.globalfriends.com.aroundme.ui.PlacesListFragment", bundle));
-        ft.commit();
+
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment_holder, PlacesListFragment.instantiate(MainActivity.this, "com.globalfriends.com.aroundme.ui.PlacesListFragment", bundle)).commit();
+//        ft.replace(R.id.fragment_holder, PlacesListFragment.instantiate(MainActivity.this, "com.globalfriends.com.aroundme.ui.PlacesListFragment", bundle));
+//        Fragment fragment = new PlacesListFragment();
+//        fragment.setArguments(bundle);
+//        ft.replace(R.id.fragment_holder, fragment);
+//        ft.commit();
     }
 
     private class getPlaceDetails extends AsyncTask<Void, Void, String> {

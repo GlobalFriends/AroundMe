@@ -8,6 +8,7 @@ public class PlaceTypeDetail {
     private String mIntent;
     private String mIconId;
     private String mDescription;
+    private String mExtra;
 
     public String getName() {
         return mName;
@@ -33,12 +34,25 @@ public class PlaceTypeDetail {
         this.mIconId = iconId;
     }
 
+    public String getExtra() {
+        return mExtra;
+    }
+
+    public void setExtra(final String extra) {
+        this.mExtra = extra;
+    }
+
     public String getDescription() {
         return mDescription;
     }
 
     public void setDescription(final String description) {
         this.mDescription = description;
+    }
+
+    public String toString() {
+        return new StringBuilder().append("mName=" + mName + " mIntent=" + mIntent +
+                " mIconId=" + mIconId + " mExtra=" + mExtra + " mDescription=" + mDescription).toString();
     }
 
 }

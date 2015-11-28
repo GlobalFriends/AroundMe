@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,13 +27,13 @@ import java.util.ArrayList;
  * Large screen devices (such as tablets) are supported by replacing the ListView
  * with a GridView.
  * <p/>
- * Activities containing this fragment MUST implement the {@link OnFragmentInteractionListener}
+ * Activities containing this fragment MUST implement the {@link OnSelectionFragmentSelection}
  * interface.
  */
 public class SelectionFragment extends Fragment implements AbsListView.OnItemClickListener {
     private static final String TAG = "SelectionFragment";
     PlaceDetailsAdapter mAdapter = null;
-    private OnFragmentInteractionListener mListener;
+    private OnSelectionFragmentSelection mListener;
     private AbsListView mListView;
 
     @Override
@@ -64,10 +65,10 @@ public class SelectionFragment extends Fragment implements AbsListView.OnItemCli
         super.onAttach(activity);
         Logger.i(TAG, "onAttach");
         try {
-            mListener = (OnFragmentInteractionListener) activity;
+            mListener = (OnSelectionFragmentSelection) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
-                    + " must implement OnFragmentInteractionListener");
+                    + " must implement OnSelectionFragmentSelection");
         }
     }
 
@@ -82,9 +83,9 @@ public class SelectionFragment extends Fragment implements AbsListView.OnItemCli
         Logger.i(TAG, "onItemClick");
 
         if (null != mListener) {
-            // Notify the active callbacks interface (the activity, if the
-            // fragment is attached to one) that an item has been selected.
-            mListener.onFragmentInteraction("");
+            PlaceTypeDetail details = (PlaceTypeDetail) parent.getItemAtPosition(position);
+            Log.i(TAG, ">>>> " + details.toString());
+            mListener.OnSelectionFragmentSelection(details.getExtra());
         }
     }
 
@@ -98,8 +99,8 @@ public class SelectionFragment extends Fragment implements AbsListView.OnItemCli
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
-    public interface OnFragmentInteractionListener {
-        void onFragmentInteraction(String id);
+    public interface OnSelectionFragmentSelection {
+        void OnSelectionFragmentSelection(String id);
     }
 
     /**

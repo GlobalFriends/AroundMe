@@ -21,6 +21,7 @@ public class PlaceTypeParser {
     private static final String TAG_PLACE_INTENT = "intent";
     private static final String TAG_PLACE_DESCRIPTION = "description";
     private static final String TAG_PLACE_ICON = "icon";
+    private static final String TAG_PLACE_EXTRA = "extra";
 
     private Context mContext;
     private ArrayList<PlaceTypeDetail> mList = new ArrayList<PlaceTypeDetail>();
@@ -78,6 +79,8 @@ public class PlaceTypeParser {
                             placeType.setIntent(text);
                         } else if (tagname.equalsIgnoreCase(TAG_PLACE_ICON)) {
                             placeType.setIcon(text);
+                        } else if (tagname.equalsIgnoreCase(TAG_PLACE_EXTRA)) {
+                            placeType.setExtra(text);
                         } else if (tagname.equalsIgnoreCase(TAG_PLACE_TYPE)) {
                             mList.add(placeType);
                         }

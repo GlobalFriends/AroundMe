@@ -34,7 +34,7 @@ import testing.MainActivity;
  */
 public class Launcher extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener,
-        SelectionFragment.OnFragmentInteractionListener,
+        SelectionFragment.OnSelectionFragmentSelection,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener {
     private static final int LOCATION_REQUEST_CODE = 1;
@@ -234,8 +234,12 @@ public class Launcher extends AppCompatActivity implements
     }
 
     @Override
-    public void onFragmentInteraction(String id) {
-
+    public void OnSelectionFragmentSelection(String stringExtra) {
+        Bundle bundle = new Bundle();
+        bundle.putString("PLACE_EXTRA", stringExtra);
+        Fragment fragment = new PlacesListFragment();
+        fragment.setArguments(bundle);
+        updateFragment(fragment, false, true);
     }
 
     @Override
