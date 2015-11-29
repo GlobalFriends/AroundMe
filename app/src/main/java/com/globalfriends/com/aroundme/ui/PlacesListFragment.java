@@ -2,10 +2,8 @@ package com.globalfriends.com.aroundme.ui;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,9 +14,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.globalfriends.com.aroundme.R;
-import com.globalfriends.com.aroundme.data.PreferenceManager;
 import com.globalfriends.com.aroundme.data.places.Places;
 import com.globalfriends.com.aroundme.logging.Logger;
+import com.globalfriends.com.aroundme.protocol.TransactionManager;
 import com.nostra13.universalimageloader.cache.memory.impl.WeakMemoryCache;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -27,18 +25,18 @@ import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 
 import java.util.ArrayList;
-
-import testing.PlacesService;
+import java.util.List;
 
 /**
  * Created by anup on 11/10/15.
  */
 public class PlacesListFragment extends ListFragment {
     private static final String TAG = "PlacesListFragment";
-    private ArrayList<Places> mPlaces = new ArrayList<>();
+    private List<Places> mPlaces = new ArrayList<>();
     private OnPlaceListFragmentSelection mListener;
     private PlacesListAdapter mAdapter;
     private ProgressDialog mProgress;
+    private ResultCallback mCallBack = new ResultCallback();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -48,7 +46,7 @@ public class PlacesListFragment extends ListFragment {
         mProgress.setMessage(getResources().getString(R.string.please_wait_progress));
         mProgress.isIndeterminate();
         mProgress.show();
-        new GetPlaces(getArguments().getString("PLACE_EXTRA")).execute();
+        TransactionManager.getInstance().addResultCallback(mCallBack);
     }
 
     @Override
@@ -56,6 +54,12 @@ public class PlacesListFragment extends ListFragment {
         mAdapter = new PlacesListAdapter(getActivity(), mPlaces);
         setListAdapter(mAdapter);
         return super.onCreateView(inflater, container, savedInstanceState);
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        TransactionManager.getInstance().findByNearBy(getArguments().getString("PLACE_EXTRA"));
     }
 
     @Override
@@ -86,6 +90,9 @@ public class PlacesListFragment extends ListFragment {
         }
     }
 
+    /**
+     * Handle selection from this fragment to main acitivty
+     */
     public interface OnPlaceListFragmentSelection {
         void OnPlaceListFragmentSelection(final String placeId, final String phone);
     }
@@ -95,9 +102,9 @@ public class PlacesListFragment extends ListFragment {
      */
     public static class PlacesListAdapter extends ArrayAdapter<Places> {
         Context mContext;
-        ArrayList<Places> mPlaces;
+        List<Places> mPlaces;
 
-        public PlacesListAdapter(Context context, ArrayList<Places> objects) {
+        public PlacesListAdapter(Context context, List<Places> objects) {
             super(context, R.layout.layout_places_item, objects);
             mContext = context;
             mPlaces = objects;
@@ -116,7 +123,7 @@ public class PlacesListFragment extends ListFragment {
             ImageLoader.getInstance().init(configuration);
         }
 
-        public void swapItem(ArrayList<Places> object) {
+        public void swapItem(List<Places> object) {
             mPlaces.addAll(object);
             notifyDataSetChanged();
         }
@@ -158,39 +165,15 @@ public class PlacesListFragment extends ListFragment {
         }
     }
 
-    /**
-     * Find places based on Latitude and Longitude
-     */
-    private class GetPlaces extends AsyncTask<Void, Void, Void> {
-        private String places;
-
-        public GetPlaces(String places) {
-            this.places = places;
-        }
-
+    class ResultCallback extends TransactionManager.Result {
         @Override
-        protected void onPostExecute(Void result) {
-            super.onPostExecute(result);
+        public void onPlacesList(List<Places> placeList) {
+            super.onPlacesList(placeList);
+            Log.i(TAG, "onPlacesList ....");
             if (mProgress.isShowing()) {
                 mProgress.dismiss();
             }
-
-            if (mPlaces == null || mPlaces.size() == 0) {
-                Logger.i(TAG, "No results found");
-                //TODO: Update List fragment with no results
-                return;
-            }
-            mAdapter.swapItem(mPlaces);
-        }
-
-
-        @Override
-        protected Void doInBackground(Void... arg0) {
-            PlacesService service = new PlacesService(
-                    getResources().getString(R.string.google_maps_key));
-            mPlaces = service.findPlaces(PreferenceManager.getLocation(),
-                    TextUtils.isEmpty(places) ? "atm" : places); //0 77.218276
-            return null;
+            mAdapter.swapItem(placeList);
         }
     }
 }

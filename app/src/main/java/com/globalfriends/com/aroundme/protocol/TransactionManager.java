@@ -62,40 +62,90 @@ public class TransactionManager implements Listener {
     }
 
     @Override
-    public void onGetPhoto(JSONObject response, String placeTag) {
-
+    public void onGetPhoto(final JSONObject response, final String placeTag) {
+        synchronized (mListeners) {
+            for (Result listener : mListeners) {
+                listener.onGetPhoto(response, placeTag);
+            }
+        }
     }
 
     @Override
     public void onGetPlaceDetails(JSONObject response, String placeTag) {
-
+        synchronized (mListeners) {
+            for (Result listener : mListeners) {
+                listener.onGetPlaceDetails(response, placeTag);
+            }
+        }
     }
 
     @Override
     public void onPlacesList(List<Places> placeList) {
-
+        synchronized (mListeners) {
+            for (Result listener : mListeners) {
+                listener.onPlacesList(placeList);
+            }
+        }
     }
 
     @Override
     public void onError(final String errorMsg) {
+        synchronized (mListeners) {
+            for (Result listener : mListeners) {
+                listener.onError(errorMsg);
+            }
+        }
+    }
+
+    public void addResultCallback(final Result result) {
+        synchronized (mListeners) {
+            result.setRegistered(true);
+            mListeners.add(result);
+        }
+    }
+
+    public void removeResultCallback(final Result result) {
+        synchronized (mListeners) {
+            result.setRegistered(false);
+            mListeners.remove(result);
+        }
+
     }
 
     /**
      * Intermediate hop for callbacks from individual Manager modules.
      * This will be passed to UI elements who ever registered for these.
      */
-    class Result {
-        public void registerListener(final Result result) {
-            synchronized (mListeners) {
-                mListeners.add(result);
-            }
+    public static abstract class Result {
+        private boolean mRegistered = false;
+
+        protected final boolean isRegistered() {
+            return mRegistered;
         }
 
-        public void unregisterListener(final Result result) {
-            synchronized (mListeners) {
-                mListeners.remove(result);
-            }
+        protected void setRegistered(final boolean registered) {
+            mRegistered = registered;
+        }
 
+        /**
+         * @param response
+         */
+        public void onGetPhoto(JSONObject response, final String placeTag) {
+        }
+
+        /**
+         * @param response
+         */
+        public void onGetPlaceDetails(JSONObject response, final String placeTag) {
+        }
+
+        /**
+         * @param placeList
+         */
+        public void onPlacesList(List<Places> placeList) {
+        }
+
+        public void onError(final String errorMsg) {
         }
     }
 
