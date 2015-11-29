@@ -15,7 +15,6 @@ import android.widget.TextView;
 
 import com.globalfriends.com.aroundme.R;
 import com.globalfriends.com.aroundme.data.places.Places;
-import com.globalfriends.com.aroundme.logging.Logger;
 import com.globalfriends.com.aroundme.protocol.TransactionManager;
 import com.nostra13.universalimageloader.cache.memory.impl.WeakMemoryCache;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -81,7 +80,6 @@ public class PlacesListFragment extends ListFragment {
     @Override
     public void onAttach(Context activity) {
         super.onAttach(activity);
-        Logger.i(TAG, "onAttach");
         try {
             mListener = (OnPlaceListFragmentSelection) activity;
         } catch (ClassCastException e) {
