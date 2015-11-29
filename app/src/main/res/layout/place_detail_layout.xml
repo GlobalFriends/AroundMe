@@ -190,7 +190,7 @@
                 android:orientation="vertical">
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical|center_horizontal"
                     android:orientation="horizontal">
@@ -199,24 +199,22 @@
                         android:id="@+id/id_today_hours"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginLeft="5sp"
                         android:gravity="left"
                         android:text="@string/today_timing"
                         android:textAppearance="@style/TextAppearance.AppCompat.Caption" />
 
                     <TextView
                         android:id="@+id/id_hours_more"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="end"
+                        android:layout_marginRight="5sp"
                         android:clickable="true"
+                        android:gravity="right"
                         android:text="@string/more"
                         android:textAppearance="@style/TextAppearance.AppCompat.Caption" />
                 </LinearLayout>
-
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="2sp"
-                    android:src="@color/divider_white" />
 
                 <LinearLayout
                     android:id="@+id/id_week_timing"
@@ -226,10 +224,16 @@
                     android:orientation="vertical"
                     android:visibility="gone">
 
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="2sp"
+                        android:src="@color/divider_white" />
+
                     <TextView
                         android:id="@+id/id_monday_hours"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginLeft="5sp"
                         android:gravity="left"
                         android:text="@string/monday"
                         android:textAppearance="@style/TextAppearance.AppCompat.Caption" />
@@ -243,6 +247,7 @@
                         android:id="@+id/id_tuesday_hours"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginLeft="5sp"
                         android:gravity="left"
                         android:text="@string/tuesday"
                         android:textAppearance="@style/TextAppearance.AppCompat.Caption" />
@@ -256,6 +261,7 @@
                         android:id="@+id/id_wednesday_hours"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginLeft="5sp"
                         android:gravity="left"
                         android:text="@string/wednesday"
                         android:textAppearance="@style/TextAppearance.AppCompat.Caption" />
@@ -269,6 +275,7 @@
                         android:id="@+id/id_thursday_hours"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginLeft="5sp"
                         android:gravity="left"
                         android:text="@string/thursday"
                         android:textAppearance="@style/TextAppearance.AppCompat.Caption" />
@@ -282,6 +289,7 @@
                         android:id="@+id/id_friday_hours"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginLeft="5sp"
                         android:gravity="left"
                         android:text="@string/friday"
                         android:textAppearance="@style/TextAppearance.AppCompat.Caption" />
@@ -295,6 +303,7 @@
                         android:id="@+id/id_saturday_hours"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginLeft="5sp"
                         android:gravity="left"
                         android:text="@string/saturday"
                         android:textAppearance="@style/TextAppearance.AppCompat.Caption" />
@@ -308,6 +317,7 @@
                         android:id="@+id/id_sunday_hours"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginLeft="5sp"
                         android:gravity="left"
                         android:text="@string/sunday"
                         android:textAppearance="@style/TextAppearance.AppCompat.Caption" />
@@ -324,6 +334,7 @@
                 android:id="@+id/id_address"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="10sp"
                 android:layout_marginTop="10sp"
                 android:orientation="horizontal">
 
@@ -353,6 +364,7 @@
                 android:id="@+id/id_distance"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="10sp"
                 android:layout_marginTop="10sp"
                 android:orientation="horizontal">
 
@@ -372,12 +384,62 @@
                     android:textAppearance="@style/TextAppearance.AppCompat.Caption" />
             </LinearLayout>
 
-            <ImageView
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="1sp"
-                android:layout_marginTop="5sp"
-                android:src="@color/divider_black" />
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10sp"
+                android:background="#d3d0d0"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="10sp"
+                    android:src="@drawable/photos" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="10sp"
+                    android:gravity="left"
+                    android:text="@string/photos"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+                <!-- TODO: Add horizontal image layout here-->
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/id_google_review_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10sp"
+                android:background="#d3d0d0"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="10sp"
+                    android:src="@drawable/review" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="10sp"
+                    android:gravity="left"
+                    android:text="@string/reviews"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+            </LinearLayout>
+
+            <ListView
+                android:id="@+id/id_google_review_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"></ListView>
+
         </LinearLayout>
     </ScrollView>
-
 </LinearLayout>

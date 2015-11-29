@@ -56,6 +56,8 @@
     <string name="friday">Friday: </string>
     <string name="saturday">Saturday: </string>
     <string name="sunday">Sunday: </string>
+    <string name="photos">Photos</string>
+    <string name="reviews">Reviews</string>
 
     <!-- Next -->
     <string name="pref_title_social_recommendations">Enable social recommendations</string>
