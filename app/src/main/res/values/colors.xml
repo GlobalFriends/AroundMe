@@ -3,4 +3,7 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+    <!-- Place details screen values -->
+    <color name="divider_white">#FFFFFF</color>
+    <color name="divider_black">#949292</color>
 </resources>
