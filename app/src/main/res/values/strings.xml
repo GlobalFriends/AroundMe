@@ -56,4 +56,7 @@
     <string name="photos">Photos</string>
     <string name="reviews">Reviews</string>
     <!-- Place details end -->
+    <string name="error_dialog_title">Error</string>
+    <string name="action_ok">Ok</string>
+    <string name="action_cancel">Cancel</string>
 </resources>

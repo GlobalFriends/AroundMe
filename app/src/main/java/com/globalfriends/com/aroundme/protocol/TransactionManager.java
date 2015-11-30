@@ -3,6 +3,7 @@ package com.globalfriends.com.aroundme.protocol;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.globalfriends.com.aroundme.data.IPlaceDetails;
 import com.globalfriends.com.aroundme.data.places.Places;
 import com.globalfriends.com.aroundme.protocol.places.PlaceManager;
 import com.globalfriends.com.aroundme.protocol.places.PlaceRequestTypeEnum;
@@ -42,7 +43,7 @@ public class TransactionManager implements Listener {
         if (TextUtils.isEmpty(placeId) && TextUtils.isEmpty(phoneNumber)) {
             Log.e(TAG, "PlaceId and Phone number both are null or empty");
             for (Result listener : mListeners) {
-                listener.onError("Invalid Argument");
+                listener.onError("Invalid Argument", null);
             }
             return;
         }
@@ -89,7 +90,7 @@ public class TransactionManager implements Listener {
     }
 
     @Override
-    public void onGetPlaceDetails(JSONObject response, String placeTag) {
+    public void onGetPlaceDetails(IPlaceDetails response, String placeTag) {
         synchronized (mListeners) {
             for (Result listener : mListeners) {
                 listener.onGetPlaceDetails(response, placeTag);
@@ -107,10 +108,10 @@ public class TransactionManager implements Listener {
     }
 
     @Override
-    public void onError(final String errorMsg) {
+    public void onError(final String errorMsg, String tag) {
         synchronized (mListeners) {
             for (Result listener : mListeners) {
-                listener.onError(errorMsg);
+                listener.onError(errorMsg, tag);
             }
         }
     }
@@ -154,7 +155,7 @@ public class TransactionManager implements Listener {
         /**
          * @param response
          */
-        public void onGetPlaceDetails(JSONObject response, final String placeTag) {
+        public void onGetPlaceDetails(IPlaceDetails response, final String placeTag) {
         }
 
         /**
@@ -163,7 +164,7 @@ public class TransactionManager implements Listener {
         public void onPlacesList(List<Places> placeList) {
         }
 
-        public void onError(final String errorMsg) {
+        public void onError(final String errorMsg, final String tag) {
         }
     }
 

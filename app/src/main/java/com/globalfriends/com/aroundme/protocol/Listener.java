@@ -1,5 +1,6 @@
 package com.globalfriends.com.aroundme.protocol;
 
+import com.globalfriends.com.aroundme.data.IPlaceDetails;
 import com.globalfriends.com.aroundme.data.places.Places;
 
 import org.json.JSONObject;
@@ -18,7 +19,7 @@ public interface Listener {
     /**
      * @param response
      */
-    void onGetPlaceDetails(JSONObject response, final String placeTag);
+    void onGetPlaceDetails(IPlaceDetails response, final String placeTag);
 
     /**
      * @param placeList
@@ -28,5 +29,5 @@ public interface Listener {
     /**
      *
      */
-    void onError(final String errorMsg);
+    void onError(final String errorMsg, String tag);
 }

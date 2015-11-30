@@ -58,7 +58,7 @@ public class DefaultFeatureManager implements IFeatureManager {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         Log.i(TAG, "response=" + error.toString());
-                        mListener.onError(error.toString());
+                        mListener.onError(error.toString(), tag);
                     }
                 });
         mRequest.setTag(tag);

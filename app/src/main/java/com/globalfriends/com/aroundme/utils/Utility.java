@@ -6,6 +6,7 @@ import android.os.Environment;
 
 import com.globalfriends.com.aroundme.AroundMeApplication;
 import com.globalfriends.com.aroundme.data.PreferenceManager;
+import com.globalfriends.com.aroundme.logging.Logger;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -17,6 +18,7 @@ import java.util.Locale;
  * Created by vishal on 11/22/2015.
  */
 public class Utility {
+    private static final String TAG = " Utility";
 
     /**
      * @param zipCode
@@ -29,10 +31,12 @@ public class Utility {
 
     public static void generateNoteOnSD(String sFileName, String sBody) {
         try {
+            Logger.i(TAG, "Response=" + sBody);
             File root = new File(Environment.getExternalStorageDirectory(), "AroundMe");
             if (!root.exists()) {
                 root.mkdirs();
             }
+
             File gpxfile = new File(root, sFileName);
             FileWriter writer = new FileWriter(gpxfile);
             writer.append(sBody);

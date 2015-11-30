@@ -297,6 +297,11 @@ public class Launcher extends AppCompatActivity implements
     }
 
     @Override
+    public void handleFragmentSuicidal(String tag) {
+        getSupportFragmentManager().popBackStackImmediate();
+    }
+
+    @Override
     public void onFragmentInteraction(Uri uri) {
 
     }

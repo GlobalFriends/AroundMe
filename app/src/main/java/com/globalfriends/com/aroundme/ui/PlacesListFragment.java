@@ -2,9 +2,11 @@ package com.globalfriends.com.aroundme.ui;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.support.v7.app.AlertDialog;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -94,6 +96,8 @@ public class PlacesListFragment extends ListFragment {
      */
     public interface OnPlaceListFragmentSelection {
         void OnPlaceListFragmentSelection(final Places place);
+
+        void handleFragmentSuicidal(final String tag);
     }
 
     /**
@@ -167,7 +171,6 @@ public class PlacesListFragment extends ListFragment {
     class ResultCallback extends TransactionManager.Result {
         @Override
         public void onPlacesList(List<Places> placeList) {
-            super.onPlacesList(placeList);
             Log.i(TAG, "onPlacesList ....");
             if (mProgress.isShowing()) {
                 mProgress.dismiss();
@@ -176,11 +179,25 @@ public class PlacesListFragment extends ListFragment {
         }
 
         @Override
-        public void onError(String errorMsg) {
-            super.onError(errorMsg);
+        public void onError(final String errorMsg, final String tag) {
+            if (!TextUtils.isEmpty(tag) && !tag.equalsIgnoreCase(getResources().getString(R.string.google_places_tag))) {
+                Log.e(TAG, "This is not a google response..ust ignore it");
+                return;
+            }
+
+            if (mProgress.isShowing()) {
+                mProgress.dismiss();
+            }
+
             new AlertDialog.Builder(getActivity())
-                    .setTitle("")
+                    .setTitle(getResources().getString(R.string.error_dialog_title))
                     .setMessage(errorMsg)
+                    .setPositiveButton(R.string.action_ok, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            mListener.handleFragmentSuicidal(TAG);
+                        }
+                    })
                     .show();
 
         }
