@@ -1,5 +1,7 @@
 package com.globalfriends.com.aroundme.protocol.places;
 
+import android.text.TextUtils;
+
 import com.globalfriends.com.aroundme.AroundMeApplication;
 import com.globalfriends.com.aroundme.R;
 import com.globalfriends.com.aroundme.data.PreferenceManager;
@@ -64,6 +66,10 @@ public class PlaceManager extends DefaultFeatureManager {
 
     @Override
     public void findPlaceDetails(String placeId, String contactNumber) {
+        if (TextUtils.isEmpty(placeId)) {
+            return;
+        }
+
         PlacesWebService.Builder builder =
                 new PlacesWebService.Builder().
                         setSearchType(PlaceRequestTypeEnum.SEARCH_TYPE_DETAILS).

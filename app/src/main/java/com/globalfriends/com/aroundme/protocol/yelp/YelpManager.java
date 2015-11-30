@@ -1,5 +1,7 @@
 package com.globalfriends.com.aroundme.protocol.yelp;
 
+import android.text.TextUtils;
+
 import com.globalfriends.com.aroundme.protocol.DefaultFeatureManager;
 import com.globalfriends.com.aroundme.protocol.Listener;
 import com.globalfriends.com.aroundme.utils.Utility;
@@ -15,6 +17,9 @@ public class YelpManager extends DefaultFeatureManager {
 
     @Override
     public void findPlaceDetails(String placeId, String contactNumber) {
+        if (TextUtils.isEmpty(contactNumber)) {
+            return; // Not meant for this
+        }
         String response = Yelp.getYelp(mContext).phoneSearch(contactNumber, Utility.getCountryCodeFromLocation());
     }
 }

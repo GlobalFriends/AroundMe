@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -73,7 +74,7 @@ public class PlacesListFragment extends ListFragment {
         if (null != mListener) {
             Places details = (Places) parent.getItemAtPosition(position);
             Log.i(TAG, ">>>> " + details.toString());
-            mListener.OnPlaceListFragmentSelection(details.getPlaceId(), "");
+            mListener.OnPlaceListFragmentSelection(details);
         }
     }
 
@@ -92,7 +93,7 @@ public class PlacesListFragment extends ListFragment {
      * Handle selection from this fragment to main acitivty
      */
     public interface OnPlaceListFragmentSelection {
-        void OnPlaceListFragmentSelection(final String placeId, final String phone);
+        void OnPlaceListFragmentSelection(final Places place);
     }
 
     /**
@@ -172,6 +173,16 @@ public class PlacesListFragment extends ListFragment {
                 mProgress.dismiss();
             }
             mAdapter.swapItem(placeList);
+        }
+
+        @Override
+        public void onError(String errorMsg) {
+            super.onError(errorMsg);
+            new AlertDialog.Builder(getActivity())
+                    .setTitle("")
+                    .setMessage(errorMsg)
+                    .show();
+
         }
     }
 }

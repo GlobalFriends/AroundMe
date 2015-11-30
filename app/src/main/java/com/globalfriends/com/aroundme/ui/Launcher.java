@@ -25,6 +25,7 @@ import android.widget.Toast;
 
 import com.globalfriends.com.aroundme.R;
 import com.globalfriends.com.aroundme.data.PreferenceManager;
+import com.globalfriends.com.aroundme.data.places.Places;
 import com.globalfriends.com.aroundme.logging.Logger;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -287,10 +288,9 @@ public class Launcher extends AppCompatActivity implements
     }
 
     @Override
-    public void OnPlaceListFragmentSelection(final String placeId, final String phone) {
+    public void OnPlaceListFragmentSelection(final Places place) {
         Bundle bundle = new Bundle();
-        bundle.putString("PLACE_ID", placeId);
-        bundle.putString("PHONE", phone);
+        bundle.putParcelable("PLACE", place);
         Fragment fragment = new PlaceDetailsFragment();
         fragment.setArguments(bundle);
         updateFragment(fragment, false, true);

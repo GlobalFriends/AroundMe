@@ -1,5 +1,8 @@
 package com.globalfriends.com.aroundme.protocol;
 
+import android.text.TextUtils;
+import android.util.Log;
+
 import com.globalfriends.com.aroundme.data.places.Places;
 import com.globalfriends.com.aroundme.protocol.places.PlaceManager;
 import com.globalfriends.com.aroundme.protocol.places.PlaceRequestTypeEnum;
@@ -14,6 +17,7 @@ import java.util.List;
  * Created by vishal on 11/19/2015.
  */
 public class TransactionManager implements Listener {
+    private static final String TAG = "TransactionManager";
     private static TransactionManager sInstance = null;
     private HashSet<IFeatureManager> mManagerList = new HashSet<>();
     private HashSet<Result> mListeners = new HashSet<>();
@@ -32,6 +36,20 @@ public class TransactionManager implements Listener {
             sInstance = new TransactionManager();
         }
         return sInstance;
+    }
+
+    public void findPlaceDetails(final String placeId, final String phoneNumber) {
+        if (TextUtils.isEmpty(placeId) && TextUtils.isEmpty(phoneNumber)) {
+            Log.e(TAG, "PlaceId and Phone number both are null or empty");
+            for (Result listener : mListeners) {
+                listener.onError("Invalid Argument");
+            }
+            return;
+        }
+
+        for (IFeatureManager feature : mManagerList) {
+            feature.findPlaceDetails(placeId, phoneNumber);
+        }
     }
 
     /**

@@ -1,5 +1,6 @@
 package com.globalfriends.com.aroundme.ui;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
@@ -10,26 +11,30 @@ import android.view.ViewGroup;
 
 import com.globalfriends.com.aroundme.R;
 
+/**
+ *
+ */
 public class PlaceDetailsFragment extends Fragment {
+    private ProgressDialog mProgress;
+
     private OnPlaceDetailsFragmentInteractionListener mListener;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mProgress = new ProgressDialog(getActivity());
+        mProgress.setCancelable(false);
+        mProgress.setMessage(getResources().getString(R.string.please_wait_progress));
+        mProgress.isIndeterminate();
+        mProgress.show();
+
+//        Bundle bundle =
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.place_detail_layout, container, false);
-    }
-
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
     }
 
     @Override
