@@ -24,8 +24,10 @@ public class Places implements Parcelable {
     private Double latitude;
     private Double longitude;
     private String mPlace_id;
-    private boolean mOpenNow;
     private PhotoRef mPhotoRef;
+    private String mRating;
+    private boolean mOpenNow;
+    private int mPriceLevel;
 
     public static Places jsonToPontoReferencia(JSONObject pontoReferencia) {
         try {
@@ -37,6 +39,22 @@ public class Places implements Parcelable {
             result.setIcon(pontoReferencia.getString("icon"));
             result.setName(pontoReferencia.getString("name"));
             result.setVicinity(pontoReferencia.getString("vicinity"));
+            if (pontoReferencia.has("rating")) {
+                result.setRating(pontoReferencia.getString("rating"));
+            }
+
+            if (pontoReferencia.has("price_level")) {
+                result.setPriceLevel(pontoReferencia.getInt("price_level"));
+            }
+
+            JSONObject openingHours;
+            if (pontoReferencia.has("opening_hours")) {
+                openingHours = (JSONObject) pontoReferencia.get("opening_hours");
+                if (openingHours.has("open_now")) {
+                    result.setOpenNow(openingHours.getBoolean("open_now"));
+                }
+            }
+
             result.setId(pontoReferencia.getString("id"));
             result.setPlace_id(pontoReferencia.getString("place_id"));
 
@@ -121,11 +139,18 @@ public class Places implements Parcelable {
         mPhotoRef = reference;
     }
 
-    public String getPhoto(int maxWidth, String key) {
+    public String getPhoto(String key) {
         if (mPhotoRef == null) {
             return null;
         }
-        return "https://maps.googleapis.com/maps/api/place/photo?maxwidth=" + maxWidth + "&photoreference=" + mPhotoRef.getReference() + "&key=" + key;
+        return "https://maps.googleapis.com/maps/api/place/photo?maxwidth=50&photoreference=" + mPhotoRef.getReference() + "&key=" + key;
+    }
+
+    public String getPhoto(int width, int height, String key) {
+        if (mPhotoRef == null) {
+            return null;
+        }
+        return "https://maps.googleapis.com/maps/api/place/photo?maxwidth=" + width + "&maxheight=" + height + "&photoreference=" + mPhotoRef.getReference() + "&key=" + key;
     }
 
     @Override
@@ -144,6 +169,30 @@ public class Places implements Parcelable {
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeString(this.name);
         parcel.writeString(this.vicinity);
+    }
+
+    public String getRating() {
+        return mRating;
+    }
+
+    public void setRating(String rating) {
+        this.mRating = rating;
+    }
+
+    public boolean isOpenNow() {
+        return mOpenNow;
+    }
+
+    public void setOpenNow(boolean openNow) {
+        this.mOpenNow = openNow;
+    }
+
+    public int getPriceLevel() {
+        return mPriceLevel;
+    }
+
+    public void setPriceLevel(int priceLevel) {
+        this.mPriceLevel = priceLevel;
     }
 
     public static class PhotoRef {

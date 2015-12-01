@@ -3,6 +3,8 @@ package com.globalfriends.com.aroundme.ui;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.support.v7.app.AlertDialog;
@@ -13,9 +15,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.android.volley.toolbox.Volley;
 import com.globalfriends.com.aroundme.R;
 import com.globalfriends.com.aroundme.data.places.Places;
 import com.globalfriends.com.aroundme.protocol.TransactionManager;
@@ -25,6 +29,8 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -140,9 +146,13 @@ public class PlacesListFragment extends ListFragment {
                 convertView = layoutInflater.inflate(R.layout.layout_places_item, null);
 
                 viewHolder = new ViewHolder();
+                viewHolder.icon = (ImageView) convertView.findViewById(R.id.icon);
                 viewHolder.photo = (ImageView) convertView.findViewById(R.id.photo);
                 viewHolder.placeName = (TextView) convertView.findViewById(R.id.place_name);
-                viewHolder.vicinity = (TextView) convertView.findViewById(R.id.vincinity);
+                viewHolder.vicinity = (TextView) convertView.findViewById(R.id.vicinity);
+                viewHolder.openNow = (TextView) convertView.findViewById(R.id.open_now);
+                viewHolder.rating = (TextView) convertView.findViewById(R.id.rating);
+                viewHolder.priceLevel = (LinearLayout) convertView.findViewById(R.id.price_level);
 
                 convertView.setTag(viewHolder);
             } else {
@@ -153,18 +163,37 @@ public class PlacesListFragment extends ListFragment {
 
             viewHolder.placeName.setText(place.getName());
             viewHolder.vicinity.setText(place.getVicinity());
+            viewHolder.rating.setText(place.getRating() == null ? mContext.getString(R.string.not_rated) : mContext.getString(R.string.rating, place.getRating()));
+            viewHolder.openNow.setText(place.isOpenNow() ? R.string.open : R.string.closed);
+            viewHolder.openNow.setTextColor(place.isOpenNow() ? ColorStateList.valueOf(Color.GREEN) : ColorStateList.valueOf(Color.LTGRAY));
+            viewHolder.priceLevel.removeAllViews();
+            for (int i = 0; i < place.getPriceLevel(); i++) {
+                ImageView imageView = new ImageView(mContext);
+                imageView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+                imageView.setImageResource(R.drawable.dollar);
+                viewHolder.priceLevel.addView(imageView);
+            }
+
+            ImageLoader.getInstance().displayImage(place.getIcon(), viewHolder.icon);
             if (place.getPhotoReference() != null) {
-                ImageLoader.getInstance().displayImage(place.getPhoto(200,
-                        getContext().getResources().getString(R.string.google_maps_key)), viewHolder.photo);
+                ImageLoader.getInstance().displayImage(
+                        place.getPhoto(place.getPhotoReference().getWidth(),
+                        place.getPhotoReference().getHeight(),
+                        getContext().getResources().getString(R.string.google_maps_key)),
+                        viewHolder.photo);
             }
 
             return convertView;
         }
 
         private static class ViewHolder {
+            public ImageView icon;
             public ImageView photo;
             public TextView placeName;
             public TextView vicinity;
+            public TextView openNow;
+            public TextView rating;
+            public LinearLayout priceLevel;
         }
     }
 
@@ -180,7 +209,7 @@ public class PlacesListFragment extends ListFragment {
 
         @Override
         public void onError(final String errorMsg, final String tag) {
-            if (!TextUtils.isEmpty(tag) && !tag.equalsIgnoreCase(getResources().getString(R.string.google_places_tag))) {
+            if (!TextUtils.isEmpty(tag) && !tag.equalsIgnoreCase(getActivity().getResources().getString(R.string.google_places_tag))) {
                 Log.e(TAG, "This is not a google response..ust ignore it");
                 return;
             }

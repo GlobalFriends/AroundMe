@@ -59,4 +59,8 @@
     <string name="error_dialog_title">Error</string>
     <string name="action_ok">Ok</string>
     <string name="action_cancel">Cancel</string>
+    <string name="rating">Rating: %s</string>
+    <string name="not_rated">Not rated</string>
+    <string name="open">Open</string>
+    <string name="closed">Closed</string>
 </resources>
