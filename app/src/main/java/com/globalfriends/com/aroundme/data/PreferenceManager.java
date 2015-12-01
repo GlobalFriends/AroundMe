@@ -26,7 +26,7 @@ public class PreferenceManager {
         // check distance format and verify if its a miles or kilometers..
         DistanceFormatEnum format = DistanceFormatEnum.getFormat(mPreference.getInt
                 (PREF_DISTANCE_FORMAT, DistanceFormatEnum.MILES.getValue()));
-        return DistanceFormatEnum.getDistanceInMeters(format, mPreference.getInt(PREF_DISTANCE_VALUE, 2000));
+        return DistanceFormatEnum.getDistanceInMeters(format, mPreference.getInt(PREF_DISTANCE_VALUE, 50));
     }
 
     public static String getLocation() {
