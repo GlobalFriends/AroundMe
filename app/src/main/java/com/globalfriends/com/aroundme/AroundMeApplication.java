@@ -13,6 +13,7 @@ public class AroundMeApplication extends android.app.Application {
         return mContext;
     }
 
+    //Test
     @Override
     public void onCreate() {
         super.onCreate();
