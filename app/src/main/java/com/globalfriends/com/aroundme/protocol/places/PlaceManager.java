@@ -96,9 +96,14 @@ public class PlaceManager extends DefaultFeatureManager {
     protected void dispatchJsonResponse(final OperationEnum operation, final JSONObject response) {
         switch (operation) {
             case OPERATION_PLACE_DETAIL:
-                Utility.generateNoteOnSD("placeDetails_google", response.toString());
-                IPlaceDetails placeDetails = new GooglePlaceDetailsJson(response);
-                mListener.onGetPlaceDetails(placeDetails, mContext.getString(R.string.google_places_tag));
+                Utility.generateNoteOnSD("placeDetails_googles", response.toString());
+                try {
+                    JSONObject result = response.getJSONObject("result");
+                    IPlaceDetails placeDetails = new GooglePlaceDetailsJson(result);
+                    mListener.onGetPlaceDetails(placeDetails, mContext.getString(R.string.google_places_tag));
+                } catch (JSONException e) {
+                    mListener.onError("Jason Parse Exception", mContext.getString(R.string.google_places_tag));
+                }
                 break;
             case OPERATION_PLACE_LIST:
                 Utility.generateNoteOnSD("placeList_google", response.toString());

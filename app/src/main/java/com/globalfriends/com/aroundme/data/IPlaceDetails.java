@@ -14,4 +14,8 @@ public interface IPlaceDetails {
     String getDistance();
 
     String getPlaceName();
+
+    Double getLatitude();
+
+    Double getLongitude();
 }

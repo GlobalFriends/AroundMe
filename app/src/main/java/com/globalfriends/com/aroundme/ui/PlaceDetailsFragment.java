@@ -49,6 +49,11 @@ public class PlaceDetailsFragment extends Fragment {
     }
 
     @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+    }
+
+    @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         if (context instanceof OnPlaceDetailsFragmentInteractionListener) {
@@ -71,13 +76,21 @@ public class PlaceDetailsFragment extends Fragment {
     }
 
 
+    /**
+     * Response handler for getting detailed informaiton about place
+     */
     class ResultResponse extends TransactionManager.Result {
         @Override
         public void onGetPlaceDetails(IPlaceDetails response, String placeTag) {
+            Logger.i(TAG, "Response received");
             if (mProgress.isShowing()) {
                 mProgress.dismiss();
             }
-            Logger.i(TAG, "Response received");
+
+            if (getResources().getString(R.string.google_places_tag).equalsIgnoreCase(placeTag)) {
+                // This will make sure that it fetches responses from Yelp and other modules
+                TransactionManager.getInstance().onGetPlaceDetails(null, response.getPhoneNumber());
+            }
         }
 
         @Override
