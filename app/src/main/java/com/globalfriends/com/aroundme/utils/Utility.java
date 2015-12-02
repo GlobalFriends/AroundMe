@@ -5,6 +5,7 @@ import android.location.Geocoder;
 import android.os.Environment;
 
 import com.globalfriends.com.aroundme.AroundMeApplication;
+import com.globalfriends.com.aroundme.data.DistanceFormatEnum;
 import com.globalfriends.com.aroundme.data.PreferenceManager;
 import com.globalfriends.com.aroundme.logging.Logger;
 
@@ -85,20 +86,47 @@ public class Utility {
         return null;
     }
 
-
-    private double distanceFromLatitudeLongitude(double lat1, double lon1, double lat2, double lon2) {
+    /**
+     * CFInds distance between 2 places based on latitude and longitude
+     *
+     * @param lat1
+     * @param lon1
+     * @param lat2
+     * @param lon2
+     * @return
+     */
+    public static double distanceFromLatitudeLongitude(double lat1, double lon1, double lat2,
+                                                       double lon2, final DistanceFormatEnum type) {
         double theta = lon1 - lon2;
         double dist = Math.sin(deg2rad(lat1)) * Math.sin(deg2rad(lat2)) +
                 Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * Math.cos(deg2rad(theta));
         dist = Math.acos(dist);
         dist = rad2deg(dist);
         dist = dist * 60 * 1.1515;
-//        if (unit == 'K') {
-//            dist = dist * 1.609344;
-//        } else if (unit == 'N') {
-//            dist = dist * 0.8684;
-//        }
+        switch (type) {
+            case MILES:
+                dist = (dist * 60 * 1.1515);
+                break;
+            case KILOMETER:
+                dist = (dist * 1.609344);
+                break;
+            default:
+        }
         return (dist);
+    }
+
+    public static double distanceInMeters(final DistanceFormatEnum type, final int unit) {
+        double meters = 0;
+        switch (type) {
+            case MILES:
+                meters = (unit * 1609.34);
+                break;
+            case KILOMETER:
+                meters = (meters * 1000);
+                break;
+            default:
+        }
+        return meters;
     }
 
     public static double deg2rad(double deg) {

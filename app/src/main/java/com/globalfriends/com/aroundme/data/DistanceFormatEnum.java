@@ -23,20 +23,6 @@ public enum DistanceFormatEnum {
         }
     }
 
-    public static double getDistanceInMeters(final DistanceFormatEnum type, final int unit) {
-        double meters = 0;
-        switch (type) {
-            case MILES:
-                meters = (unit * 1609.34);
-                break;
-            case KILOMETER:
-                meters = (unit * 1000);
-                break;
-            default:
-        }
-        return meters;
-    }
-
     public int getValue() {
         return mType;
     }

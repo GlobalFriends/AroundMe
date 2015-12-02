@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.globalfriends.com.aroundme.AroundMeApplication;
+import com.globalfriends.com.aroundme.utils.Utility;
 
 /**
  * Created by vishal on 11/22/2015.
@@ -26,7 +27,7 @@ public class PreferenceManager {
         // check distance format and verify if its a miles or kilometers..
         DistanceFormatEnum format = DistanceFormatEnum.getFormat(mPreference.getInt
                 (PREF_DISTANCE_FORMAT, DistanceFormatEnum.MILES.getValue()));
-        return DistanceFormatEnum.getDistanceInMeters(format, mPreference.getInt(PREF_DISTANCE_VALUE, 50));
+        return Utility.distanceInMeters(format, mPreference.getInt(PREF_DISTANCE_VALUE, 50));
     }
 
     public static String getLocation() {
