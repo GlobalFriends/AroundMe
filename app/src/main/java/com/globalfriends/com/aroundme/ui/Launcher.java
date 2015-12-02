@@ -259,14 +259,14 @@ public class Launcher extends AppCompatActivity implements
 
     @Override
     public void OnSelectionFragmentSelection(String stringExtra) {
-//        Bundle bundle = new Bundle();
-//        bundle.putString("PLACE_EXTRA", stringExtra);
-//        Fragment fragment = new PlacesListFragment();
-//        fragment.setArguments(bundle);
-//        updateFragment(fragment, false, true);
-
-        Fragment fragment = new PlaceDetailsFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString("PLACE_EXTRA", stringExtra);
+        Fragment fragment = new PlacesListFragment();
+        fragment.setArguments(bundle);
         updateFragment(fragment, false, true);
+
+//        Fragment fragment = new PlaceDetailsFragment();
+//        updateFragment(fragment, false, true);
     }
 
     @Override

@@ -60,12 +60,12 @@ public class PlaceDetailsFragment extends Fragment implements View.OnClickListen
         super.onViewCreated(view, savedInstanceState);
         initView(view);
 
-//        Bundle bundle = getArguments();
-//        if (bundle != null) {
-//            Places place = bundle.getParcelable("PLACE");
-//            TransactionManager.getInstance().findPlaceDetails(place.getPlaceId(), null);
-//        }
-        TransactionManager.getInstance().findPlaceDetails("ChIJH32N7Pa_w4kRlLSXnagOG1U", null);
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            Places place = bundle.getParcelable("PLACE");
+            TransactionManager.getInstance().findPlaceDetails(place.getPlaceId(), null);
+        }
+//        TransactionManager.getInstance().findPlaceDetails("ChIJH32N7Pa_w4kRlLSXnagOG1U", null);
     }
 
 
@@ -137,7 +137,6 @@ public class PlaceDetailsFragment extends Fragment implements View.OnClickListen
                 getActivity().startActivity(intent);
                 break;
             case R.id.id_favorite:
-//                Toast.makeText(getActivity(), "Added to Favorite", Toast.LENGTH_SHORT).show();
                 Snackbar.make(v, "Added to Favorite", Snackbar.LENGTH_SHORT).show();
                 break;
         }
