@@ -161,7 +161,7 @@
     <placetype>
         <name>Transportation</name>
         <intent>com.globalfriends.com.aroundme.transportation</intent>
-        <extra>car_dealer,car_rental,subway_station,train_station,taxi_stand,bus_station</extra>
+        <extra>car_rental,subway_station,train_station,taxi_stand,bus_station</extra>
         <icon>transportation</icon>
         <description></description>
     </placetype>
@@ -176,7 +176,7 @@
         <name>General</name>
         <intent>com.globalfriends.com.aroundme.general</intent>
         <extra>
-            car_wash,establishment,fire_station,florist,funeral_home,insurance_agency,laundry,lawyer,library,locksmith,lodging,pet_store,real_estate_agency,rv_park,storage,store,synagogue,travel_agency,veterinary_care
+            car_dealer,car_wash,establishment,fire_station,florist,funeral_home,insurance_agency,laundry,lawyer,library,locksmith,lodging,pet_store,real_estate_agency,rv_park,storage,store,synagogue,travel_agency,veterinary_care
         </extra>
         <icon>general</icon>
         <description></description>

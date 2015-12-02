@@ -1,10 +1,12 @@
 package com.globalfriends.com.aroundme.utils;
 
+import android.content.Context;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Environment;
 
 import com.globalfriends.com.aroundme.AroundMeApplication;
+import com.globalfriends.com.aroundme.R;
 import com.globalfriends.com.aroundme.data.DistanceFormatEnum;
 import com.globalfriends.com.aroundme.data.PreferenceManager;
 import com.globalfriends.com.aroundme.logging.Logger;
@@ -95,24 +97,26 @@ public class Utility {
      * @param lon2
      * @return
      */
-    public static double distanceFromLatitudeLongitude(double lat1, double lon1, double lat2,
+    public static String distanceFromLatitudeLongitude(double lat1, double lon1, double lat2,
                                                        double lon2, final DistanceFormatEnum type) {
         double theta = lon1 - lon2;
         double dist = Math.sin(deg2rad(lat1)) * Math.sin(deg2rad(lat2)) +
                 Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * Math.cos(deg2rad(theta));
         dist = Math.acos(dist);
         dist = rad2deg(dist);
-        dist = dist * 60 * 1.1515;
         switch (type) {
             case MILES:
                 dist = (dist * 60 * 1.1515);
-                break;
+                return (String.format("%.2f ", dist) + AroundMeApplication.getContext().
+                        getResources().getString(R.string.miles_notation));
             case KILOMETER:
                 dist = (dist * 1.609344);
-                break;
+                return (String.format("%.2f ", dist) + AroundMeApplication.getContext().
+                        getResources().getString(R.string.kilometer_notation));
             default:
         }
-        return (dist);
+
+        return String.format("%.2f", dist);
     }
 
     public static double distanceInMeters(final DistanceFormatEnum type, final int unit) {

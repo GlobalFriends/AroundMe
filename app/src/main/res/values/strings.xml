@@ -63,4 +63,6 @@
     <string name="not_rated">Not rated</string>
     <string name="open">Open</string>
     <string name="closed">Closed</string>
+    <string name="miles_notation">mi</string>
+    <string name="kilometer_notation">km</string>
 </resources>

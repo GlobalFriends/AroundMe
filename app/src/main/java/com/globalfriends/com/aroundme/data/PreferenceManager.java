@@ -28,9 +28,12 @@ public class PreferenceManager {
 
     public static double getRadius() {
         // check distance format and verify if its a miles or kilometers..
-        DistanceFormatEnum format = DistanceFormatEnum.getFormat(mPreference.getInt
+        return Utility.distanceInMeters(getDistanceFormat(), mPreference.getInt(PREF_DISTANCE_VALUE, 5));
+    }
+
+    public static DistanceFormatEnum getDistanceFormat() {
+        return DistanceFormatEnum.getFormat(mPreference.getInt
                 (PREF_DISTANCE_FORMAT, DistanceFormatEnum.MILES.getValue()));
-        return Utility.distanceInMeters(format, mPreference.getInt(PREF_DISTANCE_VALUE, 5));
     }
 
     public static String getLocation() {
