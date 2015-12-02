@@ -35,8 +35,9 @@ public class PlaceManager extends DefaultFeatureManager {
                 new PlacesWebService.Builder().
                         setSearchType(searchType).
                         setResponseType(PlaceResponseEnum.RESP_JSON).
-                        setRadius(PreferenceManager.getRadius()).
+//                        setRadius(PreferenceManager.getRadius()).
                         setLocation(PreferenceManager.getLocation()).
+                        setRankBy(PlacesRankByEnum.RANK_BY_DISTANCE).
                         setSensor(false).
                         setKey(AroundMeApplication.getContext().
                                 getResources().getString(R.string.google_maps_key));

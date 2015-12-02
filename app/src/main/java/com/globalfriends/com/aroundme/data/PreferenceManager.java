@@ -4,7 +4,10 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.globalfriends.com.aroundme.AroundMeApplication;
+import com.globalfriends.com.aroundme.logging.Logger;
 import com.globalfriends.com.aroundme.utils.Utility;
+
+import java.util.Map;
 
 /**
  * Created by vishal on 11/22/2015.
@@ -27,7 +30,7 @@ public class PreferenceManager {
         // check distance format and verify if its a miles or kilometers..
         DistanceFormatEnum format = DistanceFormatEnum.getFormat(mPreference.getInt
                 (PREF_DISTANCE_FORMAT, DistanceFormatEnum.MILES.getValue()));
-        return Utility.distanceInMeters(format, mPreference.getInt(PREF_DISTANCE_VALUE, 50));
+        return Utility.distanceInMeters(format, mPreference.getInt(PREF_DISTANCE_VALUE, 5));
     }
 
     public static String getLocation() {
@@ -47,5 +50,12 @@ public class PreferenceManager {
         editor.putString(PREF_LATITUDE, latitude);
         editor.putString(PREF_LONGITUDE, longitude);
         editor.commit();
+    }
+
+    public static void dump() {
+        Map<String, ?> all = mPreference.getAll();
+        for (Map.Entry<String, ?> entry : all.entrySet()) {
+            Logger.i("Preference:", "" + entry.getKey() + "/" + entry.getValue());
+        }
     }
 }

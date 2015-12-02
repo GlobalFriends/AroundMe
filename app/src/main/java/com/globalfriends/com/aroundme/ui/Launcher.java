@@ -234,6 +234,7 @@ public class Launcher extends AppCompatActivity implements
                 updateFragment(new RecentFragment(), false, true);
                 break;
             case R.id.drawer_favorite:
+                PreferenceManager.dump();
                 updateFragment(new FavoriteFragment(), false, true);
                 break;
             case R.id.drawer_maps:
