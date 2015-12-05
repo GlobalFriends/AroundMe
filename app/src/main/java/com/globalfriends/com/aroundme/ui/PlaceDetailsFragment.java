@@ -15,6 +15,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.toolbox.NetworkImageView;
+import com.globalfriends.com.aroundme.AroundMeApplication;
 import com.globalfriends.com.aroundme.R;
 import com.globalfriends.com.aroundme.data.IPlaceDetails;
 import com.globalfriends.com.aroundme.data.PreferenceManager;
@@ -22,6 +24,8 @@ import com.globalfriends.com.aroundme.data.places.GooglePlaceDetailsJson;
 import com.globalfriends.com.aroundme.data.places.Places;
 import com.globalfriends.com.aroundme.logging.Logger;
 import com.globalfriends.com.aroundme.protocol.TransactionManager;
+import com.globalfriends.com.aroundme.protocol.places.PlaceRequestTypeEnum;
+import com.globalfriends.com.aroundme.protocol.places.PlacesWebService;
 import com.globalfriends.com.aroundme.utils.Utility;
 
 import testing.MainActivity;
@@ -64,14 +68,18 @@ public class PlaceDetailsFragment extends Fragment implements View.OnClickListen
         if (bundle != null) {
             Places place = bundle.getParcelable("PLACE");
             TransactionManager.getInstance().findPlaceDetails(place.getPlaceId(), null);
+            // Update Image
+            mMainDisplayImage.setImageUrl(Utility.getPlacePhotoQuery(place.getPhotoReference().getReference(),
+                    place.getPhotoReference().getHeight(), place.getPhotoReference().getWidth()),
+                    TransactionManager.getInstance().getModuleImageLoader(getResources().getString(R.string.google_places_tag)));
         }
-//        TransactionManager.getInstance().findPlaceDetails("ChIJH32N7Pa_w4kRlLSXnagOG1U", null);
     }
 
 
     private TextView mPlaceName;
     private TextView mAddress;
     private TextView mDistance;
+    private NetworkImageView mMainDisplayImage;
     private LinearLayout mMapButtonLayout;
     private LinearLayout mCallButtonLayout;
     private LinearLayout mWebsiteButtonLayout;
@@ -83,6 +91,7 @@ public class PlaceDetailsFragment extends Fragment implements View.OnClickListen
      * @param view
      */
     private void initView(View view) {
+        mMainDisplayImage = (NetworkImageView) view.findViewById(R.id.id_place_image);
         mPlaceName = (TextView) view.findViewById(R.id.id_place_name);
         mMapButtonLayout = (LinearLayout) view.findViewById(R.id.id_maps);
         mMapButtonLayout.setOnClickListener(this);

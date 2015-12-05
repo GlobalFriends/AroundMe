@@ -1,12 +1,15 @@
 package com.globalfriends.com.aroundme.protocol;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.util.Log;
+import android.util.LruCache;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.globalfriends.com.aroundme.AroundMeApplication;
@@ -18,20 +21,38 @@ import org.json.JSONObject;
  * Created by vishal on 11/19/2015.
  */
 public class DefaultFeatureManager implements IFeatureManager {
-    protected static String TAG;
+    protected static String LOGGING_TAG;
     protected Listener mListener;
     protected Context mContext;
     private RequestQueue mQueue;
     private Request mRequest;
+    private ImageLoader mImageLoader;
+    protected String mModuleTag;
 
     /**
      * @param listener
+     * @param tag
      */
-    public DefaultFeatureManager(final Listener listener) {
-        mListener = listener;
-        TAG = getClass().getSimpleName();
-        mQueue = Volley.newRequestQueue(AroundMeApplication.getContext());
+    public DefaultFeatureManager(final Listener listener, final String tag) {
         mContext = AroundMeApplication.getContext();
+        mListener = listener;
+        mModuleTag = tag;
+        LOGGING_TAG = getClass().getSimpleName();
+        mQueue = Volley.newRequestQueue(AroundMeApplication.getContext());
+        mImageLoader = new ImageLoader(mQueue, new ImageLoader.ImageCache() {
+            private final LruCache<String, Bitmap> mCache = new LruCache<String, Bitmap>(20);
+
+            @Override
+            public Bitmap getBitmap(String url) {
+                return mCache.get(url);
+            }
+
+            @Override
+            public void putBitmap(String url, Bitmap bitmap) {
+                mCache.put(url, bitmap);
+            }
+        });
+        mQueue.start();
     }
 
     /**
@@ -44,24 +65,23 @@ public class DefaultFeatureManager implements IFeatureManager {
         mQueue.add(request);
     }
 
-    public final void handleJsonRequest(final String url, final String tag, final OperationEnum operation) {
-        Log.i(TAG, "Url=" + url);
+    public final void handleJsonRequest(final String url, final OperationEnum operation) {
+        Log.i(LOGGING_TAG, "Url=" + url);
         mRequest = new JsonObjectRequest
                 (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        Log.i(TAG, "response=" + response);
+                        Log.i(LOGGING_TAG, "response=" + response);
                         dispatchJsonResponse(operation, response);
                     }
                 }, new Response.ErrorListener() {
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Log.i(TAG, "response=" + error.toString());
-                        mListener.onError(error.toString(), tag);
+                        Log.i(LOGGING_TAG, "response=" + error.toString());
+                        mListener.onError(error.toString(), mModuleTag);
                     }
                 });
-        mRequest.setTag(tag);
         scheduleRequest(mRequest);
     }
 
@@ -85,6 +105,17 @@ public class DefaultFeatureManager implements IFeatureManager {
     }
 
     @Override
-    public void findPlacePhoto(String photoReference) {
+    public void findPlacePhoto(String photoReference, int maxHeight, int maxWidth) {
+
+    }
+
+    @Override
+    public final ImageLoader getImageLoader() {
+        return mImageLoader;
+    }
+
+    @Override
+    public String getTag() {
+        return mModuleTag;
     }
 }

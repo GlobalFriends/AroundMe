@@ -15,8 +15,12 @@ public class PlacesWebService {
     private StringBuilder mUrl = new StringBuilder();
 
     private PlacesWebService(Builder b) {
-        mUrl.append(b.mUrl).append(b.mSearchType).append(QUERY_SEPARATOR).
-                append(b.mResponseType).append(URL_DELIMITER);
+        mUrl.append(b.mUrl).append(b.mSearchType);
+        if (!b.mSearchType.equalsIgnoreCase(PlaceRequestTypeEnum.SEARCH_TYPE_PHOTO.getSearchType())) {
+            mUrl.append(QUERY_SEPARATOR).append(b.mResponseType);
+        }
+        mUrl.append(URL_DELIMITER);
+
 
         if (!TextUtils.isEmpty(b.mLocation)) {
             mUrl.append(OPERATION_SEPARATOR).append(b.mLocation);
@@ -207,13 +211,25 @@ public class PlacesWebService {
             return this;
         }
 
-        public Builder setPhotoMaxWidth(final String val) {
-            this.mPhotoMaxWidth = "maxwidth" + ASSIGNMENT + val;
+        public Builder setPhotoMaxWidth(final int val) {
+            String value;
+            if (val > 1600) {
+                value = Integer.toString(1600);
+            } else {
+                value = Integer.toString(val);
+            }
+            this.mPhotoMaxWidth = "maxwidth" + ASSIGNMENT + value;
             return this;
         }
 
-        public Builder setPhotoMaxHeight(final String val) {
-            this.mPhotoMaxHeight = "maxheight" + ASSIGNMENT + val;
+        public Builder setPhotoMaxHeight(final int val) {
+            String value;
+            if (val > 1600) {
+                value = Integer.toString(1600);
+            } else {
+                value = Integer.toString(val);
+            }
+            this.mPhotoMaxHeight = "maxheight" + ASSIGNMENT + value;
             return this;
         }
 

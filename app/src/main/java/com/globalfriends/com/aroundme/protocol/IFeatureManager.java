@@ -1,5 +1,6 @@
 package com.globalfriends.com.aroundme.protocol;
 
+import com.android.volley.toolbox.ImageLoader;
 import com.globalfriends.com.aroundme.protocol.places.PlaceRequestTypeEnum;
 
 /**
@@ -25,9 +26,24 @@ public interface IFeatureManager {
     void findPlaceDetails(final String placeId, final String contactNumber);
 
     /**
-     * Query for getting photo details
      *
      * @param photoReference
+     * @param maxHeight
+     * @param maxWidth
      */
-    void findPlacePhoto(final String photoReference); //TODO: Should this be a array
+    public void findPlacePhoto(final String photoReference, final int maxHeight, final int maxWidth);
+
+    /**
+     * Returns Volley Image Loader
+     *
+     * @return
+     */
+    ImageLoader getImageLoader();
+
+    /**
+     * Returns modules specific tag
+     *
+     * @return
+     */
+    public String getTag();
 }

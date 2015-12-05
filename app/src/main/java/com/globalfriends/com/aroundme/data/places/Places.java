@@ -160,17 +160,6 @@ public class Places implements Parcelable {
                 '}';
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeString(this.name);
-        parcel.writeString(this.vicinity);
-    }
-
     public String getRating() {
         return mRating;
     }
@@ -195,7 +184,7 @@ public class Places implements Parcelable {
         this.mPriceLevel = priceLevel;
     }
 
-    public static class PhotoRef {
+    public static class PhotoRef implements Parcelable {
         private int mHeight;
         private int mWidth;
         private String mReference;
@@ -223,5 +212,83 @@ public class Places implements Parcelable {
         public void setReference(String reference) {
             mReference = reference;
         }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            dest.writeInt(this.mHeight);
+            dest.writeInt(this.mWidth);
+            dest.writeString(this.mReference);
+        }
+
+        public PhotoRef() {
+        }
+
+        private PhotoRef(Parcel in) {
+            this.mHeight = in.readInt();
+            this.mWidth = in.readInt();
+            this.mReference = in.readString();
+        }
+
+        public static final Creator<PhotoRef> CREATOR = new Creator<PhotoRef>() {
+            public PhotoRef createFromParcel(Parcel source) {
+                return new PhotoRef(source);
+            }
+
+            public PhotoRef[] newArray(int size) {
+                return new PhotoRef[size];
+            }
+        };
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.id);
+        dest.writeString(this.icon);
+        dest.writeString(this.name);
+        dest.writeString(this.vicinity);
+        dest.writeValue(this.latitude);
+        dest.writeValue(this.longitude);
+        dest.writeString(this.mPlace_id);
+        dest.writeParcelable(this.mPhotoRef, 0);
+        dest.writeString(this.mRating);
+        dest.writeByte(mOpenNow ? (byte) 1 : (byte) 0);
+        dest.writeInt(this.mPriceLevel);
+    }
+
+    public Places() {
+    }
+
+    private Places(Parcel in) {
+        this.id = in.readString();
+        this.icon = in.readString();
+        this.name = in.readString();
+        this.vicinity = in.readString();
+        this.latitude = (Double) in.readValue(Double.class.getClassLoader());
+        this.longitude = (Double) in.readValue(Double.class.getClassLoader());
+        this.mPlace_id = in.readString();
+        this.mPhotoRef = in.readParcelable(PhotoRef.class.getClassLoader());
+        this.mRating = in.readString();
+        this.mOpenNow = in.readByte() != 0;
+        this.mPriceLevel = in.readInt();
+    }
+
+    public static final Creator<Places> CREATOR = new Creator<Places>() {
+        public Places createFromParcel(Parcel source) {
+            return new Places(source);
+        }
+
+        public Places[] newArray(int size) {
+            return new Places[size];
+        }
+    };
 }

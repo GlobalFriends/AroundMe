@@ -4,12 +4,17 @@ import android.content.Context;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Environment;
+import android.text.TextUtils;
 
 import com.globalfriends.com.aroundme.AroundMeApplication;
 import com.globalfriends.com.aroundme.R;
 import com.globalfriends.com.aroundme.data.DistanceFormatEnum;
 import com.globalfriends.com.aroundme.data.PreferenceManager;
 import com.globalfriends.com.aroundme.logging.Logger;
+import com.globalfriends.com.aroundme.protocol.OperationEnum;
+import com.globalfriends.com.aroundme.protocol.places.PlaceRequestTypeEnum;
+import com.globalfriends.com.aroundme.protocol.places.PlaceResponseEnum;
+import com.globalfriends.com.aroundme.protocol.places.PlacesWebService;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -139,5 +144,42 @@ public class Utility {
 
     public static double rad2deg(double rad) {
         return (rad * 180.0 / Math.PI);
+    }
+
+    /**
+     * @param photoReference
+     * @param maxHeight
+     * @param maxWidth
+     */
+    public static String getPlacePhotoQuery(final String photoReference, final int maxHeight, final int maxWidth) {
+        PlacesWebService.Builder builder =
+                new PlacesWebService.Builder().
+                        setSearchType(PlaceRequestTypeEnum.SEARCH_TYPE_PHOTO).
+                        setPhotoMaxHeight(maxHeight).
+                        setPhotoMaxWidth(maxWidth).
+                        setPhotoReference(photoReference).
+                        setKey(AroundMeApplication.getContext().
+                                getResources().getString(R.string.google_maps_key));
+        return builder.build().getUrl();
+    }
+
+    /**
+     * @param placeId
+     * @param contactNumber
+     * @return
+     */
+    public static String findPlaceDetailQuery(String placeId, String contactNumber) {
+        if (TextUtils.isEmpty(placeId)) {
+            return null;
+        }
+
+        PlacesWebService.Builder builder =
+                new PlacesWebService.Builder().
+                        setSearchType(PlaceRequestTypeEnum.SEARCH_TYPE_DETAILS).
+                        setResponseType(PlaceResponseEnum.RESP_JSON).
+                        setPlaceId(placeId).
+                        setKey(AroundMeApplication.getContext().
+                                getResources().getString(R.string.google_maps_key));
+        return builder.build().getUrl();
     }
 }

@@ -2,6 +2,7 @@ package com.globalfriends.com.aroundme.protocol.yelp;
 
 import android.text.TextUtils;
 
+import com.globalfriends.com.aroundme.AroundMeApplication;
 import com.globalfriends.com.aroundme.R;
 import com.globalfriends.com.aroundme.data.IPlaceDetails;
 import com.globalfriends.com.aroundme.data.yelp.YelpDetailsJson;
@@ -18,7 +19,7 @@ import org.json.JSONObject;
 public class YelpManager extends DefaultFeatureManager {
 
     public YelpManager(final Listener listener) {
-        super(listener);
+        super(listener, AroundMeApplication.getContext().getResources().getString(R.string.yelp_consumer_key));
     }
 
     @Override

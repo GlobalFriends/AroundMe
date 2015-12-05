@@ -26,7 +26,7 @@ import java.util.List;
  */
 public class PlaceManager extends DefaultFeatureManager {
     public PlaceManager(final Listener listener) {
-        super(listener);
+        super(listener, AroundMeApplication.getContext().getResources().getString(R.string.google_places_tag));
     }
 
     @Override
@@ -35,7 +35,6 @@ public class PlaceManager extends DefaultFeatureManager {
                 new PlacesWebService.Builder().
                         setSearchType(searchType).
                         setResponseType(PlaceResponseEnum.RESP_JSON).
-//                        setRadius(PreferenceManager.getRadius()).
                         setLocation(PreferenceManager.getLocation()).
                         setRankBy(PlacesRankByEnum.RANK_BY_DISTANCE).
                         setSensor(false).
@@ -52,22 +51,12 @@ public class PlaceManager extends DefaultFeatureManager {
                 break;
             default:
         }
-        handleJsonRequest(builder.build().getUrl(), mContext.getString(R.string.google_places_tag)
-                , OperationEnum.OPERATION_PLACE_LIST);
+        handleJsonRequest(builder.build().getUrl(), OperationEnum.OPERATION_PLACE_LIST);
     }
 
     @Override
-    public void findPlacePhoto(String photoReference) {
-        PlacesWebService.Builder builder =
-                new PlacesWebService.Builder().
-                        setSearchType(PlaceRequestTypeEnum.SEARCH_TYPE_PHOTO).
-                        setResponseType(PlaceResponseEnum.RESP_JSON).
-                        setPhotoReference(photoReference).
-                        setPhotoReference(photoReference).
-                        setKey(AroundMeApplication.getContext().
-                                getResources().getString(R.string.google_maps_key));
-        handleJsonRequest(builder.build().getUrl(), mContext.getString(R.string.google_places_tag),
-                OperationEnum.OPERATION_PLACE_PHOTO);
+    public void findPlacePhoto(final String photoReference, final int maxHeight, final int maxWidth) {
+        handleJsonRequest(Utility.getPlacePhotoQuery(photoReference, maxHeight, maxWidth), OperationEnum.OPERATION_PLACE_PHOTO);
     }
 
     @Override
@@ -83,8 +72,7 @@ public class PlaceManager extends DefaultFeatureManager {
                         setPlaceId(placeId).
                         setKey(AroundMeApplication.getContext().
                                 getResources().getString(R.string.google_maps_key));
-        handleJsonRequest(builder.build().getUrl(), mContext.getString(R.string.google_places_tag),
-                OperationEnum.OPERATION_PLACE_DETAIL);
+        handleJsonRequest(builder.build().getUrl(), OperationEnum.OPERATION_PLACE_DETAIL);
     }
 
     /**
@@ -103,7 +91,7 @@ public class PlaceManager extends DefaultFeatureManager {
                     IPlaceDetails placeDetails = new GooglePlaceDetailsJson(result);
                     mListener.onGetPlaceDetails(placeDetails, mContext.getString(R.string.google_places_tag));
                 } catch (JSONException e) {
-                    mListener.onError("Jason Parse Exception", mContext.getString(R.string.google_places_tag));
+                    mListener.onError("Jason Parse Exception", mModuleTag);
                 }
                 break;
             case OPERATION_PLACE_LIST:
@@ -121,15 +109,15 @@ public class PlaceManager extends DefaultFeatureManager {
                     }
                     mListener.onPlacesList(placeList);
                 } catch (JSONException e) {
-                    mListener.onError("Jason Parse Exception", mContext.getString(R.string.google_places_tag));
+                    mListener.onError("Jason Parse Exception", mModuleTag);
                 }
                 break;
             case OPERATION_PLACE_PHOTO:
-                mListener.onGetPhoto(response, mContext.getString(R.string.google_places_tag));
+                mListener.onGetPhoto(response, mModuleTag);
                 break;
             default:
-                Logger.e(TAG, ">>>> Invalid operation. Should never come here <<<<");
-                mListener.onError("Invalid command type. Internal error", mContext.getString(R.string.google_places_tag));
+                Logger.e(LOGGING_TAG, ">>>> Invalid operation. Should never come here <<<<");
+                mListener.onError("Invalid command type. Internal error", mModuleTag);
         }
     }
 }

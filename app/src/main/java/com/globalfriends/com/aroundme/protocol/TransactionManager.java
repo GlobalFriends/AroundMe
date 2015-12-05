@@ -3,6 +3,7 @@ package com.globalfriends.com.aroundme.protocol;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.android.volley.toolbox.ImageLoader;
 import com.globalfriends.com.aroundme.data.IPlaceDetails;
 import com.globalfriends.com.aroundme.data.places.Places;
 import com.globalfriends.com.aroundme.protocol.places.PlaceManager;
@@ -11,6 +12,8 @@ import com.globalfriends.com.aroundme.protocol.yelp.YelpManager;
 
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
@@ -39,6 +42,10 @@ public class TransactionManager implements Listener {
         return sInstance;
     }
 
+    /**
+     * @param placeId
+     * @param phoneNumber
+     */
     public void findPlaceDetails(final String placeId, final String phoneNumber) {
         if (TextUtils.isEmpty(placeId) && TextUtils.isEmpty(phoneNumber)) {
             Log.e(TAG, "PlaceId and Phone number both are null or empty");
@@ -51,6 +58,36 @@ public class TransactionManager implements Listener {
         for (IFeatureManager feature : mManagerList) {
             feature.findPlaceDetails(placeId, phoneNumber);
         }
+    }
+
+    /**
+     * Returns specfici image loader based on Module key
+     *
+     * @param moduleKey
+     * @return
+     */
+    public ImageLoader getModuleImageLoader(final String moduleKey) {
+        if (TextUtils.isEmpty(moduleKey)) {
+            return null;
+        }
+
+        for (IFeatureManager feature : mManagerList) {
+            if (moduleKey.equalsIgnoreCase(feature.getTag())) {
+                return feature.getImageLoader();
+            }
+        }
+        return null;
+    }
+
+    /**
+     * @return
+     */
+    public HashMap<String, ImageLoader> getModuleImageLoaders() {
+        HashMap<String, ImageLoader> mList = new HashMap();
+        for (IFeatureManager feature : mManagerList) {
+            mList.put(feature.getTag(), feature.getImageLoader());
+        }
+        return mList;
     }
 
     /**
@@ -116,6 +153,9 @@ public class TransactionManager implements Listener {
         }
     }
 
+    /**
+     * @param result
+     */
     public void addResultCallback(final Result result) {
         synchronized (mListeners) {
             result.setRegistered(true);
@@ -123,6 +163,9 @@ public class TransactionManager implements Listener {
         }
     }
 
+    /**
+     * @param result
+     */
     public void removeResultCallback(final Result result) {
         synchronized (mListeners) {
             result.setRegistered(false);
@@ -138,22 +181,30 @@ public class TransactionManager implements Listener {
     public static abstract class Result {
         private boolean mRegistered = false;
 
+        /**
+         * @return
+         */
         protected final boolean isRegistered() {
             return mRegistered;
         }
 
+        /**
+         * @param registered
+         */
         protected void setRegistered(final boolean registered) {
             mRegistered = registered;
         }
 
         /**
          * @param response
+         * @param placeTag
          */
         public void onGetPhoto(JSONObject response, final String placeTag) {
         }
 
         /**
          * @param response
+         * @param placeTag
          */
         public void onGetPlaceDetails(IPlaceDetails response, final String placeTag) {
         }
@@ -164,6 +215,10 @@ public class TransactionManager implements Listener {
         public void onPlacesList(List<Places> placeList) {
         }
 
+        /**
+         * @param errorMsg
+         * @param tag
+         */
         public void onError(final String errorMsg, final String tag) {
         }
     }
