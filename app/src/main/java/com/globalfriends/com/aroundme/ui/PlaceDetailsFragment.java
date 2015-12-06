@@ -15,7 +15,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.android.volley.toolbox.ImageLoader;
@@ -42,6 +41,19 @@ public class PlaceDetailsFragment extends Fragment implements View.OnClickListen
     private IPlaceDetails mGooglePlaceDetails;
     private PlaceInfo mPlace = new PlaceInfo();
     private ImageLoader mGoogleImageLoader;
+
+    // UI Elements
+    private TextView mPlaceName;
+    private TextView mAddress;
+    private TextView mDistance;
+    private NetworkImageView mMainDisplayImage;
+    private LinearLayoutCompat mMapButtonLayout;
+    private LinearLayoutCompat mCallButtonLayout;
+    private LinearLayoutCompat mWebsiteButtonLayout;
+    private LinearLayoutCompat mFavoriteButtonLayout;
+    private LinearLayoutCompat mGooglePhotosLayout;
+    private LinearLayoutCompat mRatingBarLayout;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -95,34 +107,34 @@ public class PlaceDetailsFragment extends Fragment implements View.OnClickListen
                             mPlace.getPhotoReference().getWidth()),
                     mGoogleImageLoader);
         }
-
-        /**
-         * Handle Place Rating symbol and text
-         */
-        LinearLayoutCompat ratingBar = (LinearLayoutCompat) view.findViewById(R.id.rating_bar_layout);
-        if (!TextUtils.isEmpty(mPlace.getRating())) {
-            ratingBar.setVisibility(View.VISIBLE);
-            AppCompatRatingBar ratingStars = (AppCompatRatingBar) view.findViewById(R.id.id_rating_star);
-            ratingStars.setRating(Float.valueOf(mPlace.getRating()));
-
-            TextView ratingText = (TextView) view.findViewById(R.id.id_rating_text);
-            ratingText.setText(mPlace.getRating());
-        } else {
-            ratingBar.setVisibility(View.GONE);
-        }
     }
 
+    /**
+     * Handle Place Rating symbol, and closure status
+     */
+    private void updateRatingBar() {
+        AppCompatRatingBar ratingStars = (AppCompatRatingBar) mRatingBarLayout.findViewById(R.id.id_rating_star);
+        TextView ratingText = (TextView) mRatingBarLayout.findViewById(R.id.id_rating_text);
+        TextView openNow = (TextView) mRatingBarLayout.findViewById(R.id.id_open_now_text);
 
-    private TextView mPlaceName;
-    private TextView mAddress;
-    private TextView mDistance;
-    private NetworkImageView mMainDisplayImage;
-    private LinearLayoutCompat mMapButtonLayout;
-    private LinearLayoutCompat mCallButtonLayout;
-    private LinearLayoutCompat mWebsiteButtonLayout;
-    private LinearLayoutCompat mFavoriteButtonLayout;
-    private LinearLayoutCompat mGooglePhotosLayout;
+        if (mGooglePlaceDetails.isPermanentlyClosed()) {
+            openNow.setText(getActivity().getResources().getString(R.string.permanently_closed));
+        } else {
+            openNow.setText(mPlace.isOpenNow() ? getActivity().getResources().getString(R.string.open) :
+                    getActivity().getResources().getString(R.string.closed));
 
+        }
+
+        ratingStars.setVisibility(View.VISIBLE);
+        ratingText.setVisibility(View.VISIBLE);
+        if (!TextUtils.isEmpty(mPlace.getRating())) {
+            ratingStars.setRating(Float.valueOf(mPlace.getRating()));
+            ratingText.setText(mPlace.getRating());
+        } else {
+            ratingStars.setVisibility(View.INVISIBLE);
+            ratingText.setVisibility(View.INVISIBLE);
+        }
+    }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
@@ -152,6 +164,7 @@ public class PlaceDetailsFragment extends Fragment implements View.OnClickListen
 
         // Non Clickable Layouts
         mGooglePhotosLayout = (LinearLayoutCompat) view.findViewById(R.id.google_photo);
+        mRatingBarLayout = (LinearLayoutCompat) view.findViewById(R.id.rating_bar_layout);
     }
 
     @Override
@@ -200,10 +213,7 @@ public class PlaceDetailsFragment extends Fragment implements View.OnClickListen
         }
     }
 
-    private void updateUi() {
-        mPlaceName.setText(mGooglePlaceDetails.getPlaceName());
-        getActivity().setTitle(mGooglePlaceDetails.getPlaceName());
-
+    private void updateAddressAndDistance() {
         mAddress.setText(mGooglePlaceDetails.getAddress());
         mDistance.setText(Utility.distanceFromLatitudeLongitude(Double.valueOf(PreferenceManager.getLatitude()),
                 Double.valueOf(PreferenceManager.getLongitude()),
@@ -211,27 +221,47 @@ public class PlaceDetailsFragment extends Fragment implements View.OnClickListen
                 mGooglePlaceDetails.getLongitude(),
                 PreferenceManager.getDistanceFormat()));
 
-        updateGooglePhotosUI();
     }
 
+    private void updateUi() {
+        // Photo loading can take time..SO lets first start loading it
+        updateModulePhotoView(mGooglePhotosLayout, mGoogleImageLoader);
+
+        // Update details such as Address, Name, rating and distance
+        mPlaceName.setText(mGooglePlaceDetails.getPlaceName());
+        getActivity().setTitle(mGooglePlaceDetails.getPlaceName());
+
+        updateRatingBar();
+        updateAddressAndDistance();
+    }
+
+
     /**
-     * Update Google photos in
+     * @param layout
+     * @param imageLoader
      */
-    private void updateGooglePhotosUI() {
+    private void updateModulePhotoView(final LinearLayoutCompat layout, final ImageLoader imageLoader) {
         List<PlacePhotoMetadata> mList = mGooglePlaceDetails.getPhotos();
         if (mList == null || mList.size() == 0) {
-            mGooglePhotosLayout.setVisibility(View.GONE);
+            layout.setVisibility(View.GONE);
             return;
         }
 
-        mGooglePhotosLayout.setVisibility(View.VISIBLE);
-        LinearLayoutCompat imageGallery = (LinearLayoutCompat) mGooglePhotosLayout.findViewById(R.id.imageGallery);
+        layout.setVisibility(View.VISIBLE);
+        LinearLayoutCompat imageGallery = (LinearLayoutCompat) layout.findViewById(R.id.imageGallery);
         for (PlacePhotoMetadata photo : mList) {
-            imageGallery.addView(dynamicGoogleImageView(photo));
+            imageGallery.addView(dynamicGoogleImageView(photo, imageLoader));
         }
     }
 
-    private NetworkImageView dynamicGoogleImageView(PlacePhotoMetadata image) {
+    /**
+     * Dynamic Image View addintion for requested modules. Passed image module should be proper for requested module
+     *
+     * @param image
+     * @param imageLoader
+     * @return
+     */
+    private NetworkImageView dynamicGoogleImageView(final PlacePhotoMetadata image, final ImageLoader imageLoader) {
         final NetworkImageView imageView = new NetworkImageView(getActivity());
         LinearLayoutCompat.LayoutParams lp = new LinearLayoutCompat.LayoutParams(
                 (int) Utility.getDpToPixel(getActivity(), 100),
@@ -250,7 +280,7 @@ public class PlaceDetailsFragment extends Fragment implements View.OnClickListen
                 Utility.getPlacePhotoQuery(image.getReference(),
                         (int) Utility.getDpToPixel(getActivity(), 100),
                         (int) Utility.getDpToPixel(getActivity(), 100)),
-                mGoogleImageLoader);
+                imageLoader);
         return imageView;
     }
 

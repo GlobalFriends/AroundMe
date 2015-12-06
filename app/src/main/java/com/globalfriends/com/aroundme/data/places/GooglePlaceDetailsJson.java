@@ -34,6 +34,12 @@ public class GooglePlaceDetailsJson extends DefaultPlaceDetails {
         }
 
         try {
+            mPermanentlyClosed = response.getBoolean("permanently_closed");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        try {
             mPhoneNumber = response.getString("international_phone_number");
         } catch (JSONException e) {
             e.printStackTrace();
@@ -55,7 +61,7 @@ public class GooglePlaceDetailsJson extends DefaultPlaceDetails {
         JSONObject openingHours = null;
         try {
             openingHours = (JSONObject) response.get("opening_hours");
-            mOpneNow = openingHours.getBoolean("open_now");
+            mOpenNow = openingHours.getBoolean("open_now");
             JSONArray weeklyText = openingHours.getJSONArray("weekday_text");
             if (weeklyText != null) {
                 for (int i = 0; i < weeklyText.length(); i++) {

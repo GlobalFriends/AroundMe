@@ -28,4 +28,6 @@ public interface IPlaceDetails {
     void updateReviewToList(PlaceReviewMetadata photo);
 
     List<PlaceReviewMetadata> getReviewList();
+
+    boolean isPermanentlyClosed();
 }

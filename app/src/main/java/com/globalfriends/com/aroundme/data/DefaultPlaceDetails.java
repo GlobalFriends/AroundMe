@@ -17,12 +17,17 @@ public class DefaultPlaceDetails implements IPlaceDetails {
     protected String mNoOfReviews;
     protected Double mLatitude;
     protected Double mLongitude;
-    protected boolean mOpneNow;
+    protected boolean mPermanentlyClosed;
+    protected boolean mOpenNow;
     protected List<String> mWeeklyTimings = new ArrayList<String>();
     protected JSONObject mResponse;
     protected List<PlacePhotoMetadata> mPhotoList = new ArrayList<PlacePhotoMetadata>();
     protected List<PlaceReviewMetadata> mReviewList = new ArrayList<PlaceReviewMetadata>();
 
+    @Override
+    public boolean isPermanentlyClosed() {
+        return mPermanentlyClosed;
+    }
 
     public DefaultPlaceDetails(JSONObject response) {
         mResponse = response;
@@ -70,7 +75,7 @@ public class DefaultPlaceDetails implements IPlaceDetails {
                 .append(" mPhoneNumber" + mPhoneNumber).append(" mWebUrl" + mWebUrl)
                 .append(" mName" + mName).append(" mNoOfReviews=" + mNoOfReviews)
                 .append(" mLatitude=" + mLatitude).append(" mLongitude=" + mLongitude)
-                .append(" mOpneNow=" + mOpneNow);
+                .append(" mOpenNow=" + mOpenNow);
         return builder.toString();
     }
 

@@ -64,7 +64,6 @@
                         android:id="@+id/id_place_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/test"
                         android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 
                     <android.support.v7.widget.LinearLayoutCompat
@@ -72,7 +71,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8sp"
-                        android:gravity="left"
                         android:orientation="horizontal">
 
                         <android.support.v7.widget.AppCompatRatingBar
@@ -82,14 +80,25 @@
                             android:layout_height="wrap_content"
                             android:clickable="false"
                             android:gravity="center_vertical"
-                            android:isIndicator="true" />
+                            android:isIndicator="true"
+                            android:focusableInTouchMode="false"
+                            android:focusable="false"
+                            android:contextClickable="false"
+                            android:progressTint="#f76707" />
 
                         <TextView
                             android:id="@+id/id_rating_text"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="10sp"
-                            android:gravity="center_vertical"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+                        <TextView
+                            android:id="@+id/id_open_now_text"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="right"
+                            android:text="Test"
                             android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
                     </android.support.v7.widget.LinearLayoutCompat>
                 </android.support.v7.widget.LinearLayoutCompat>

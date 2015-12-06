@@ -62,7 +62,8 @@
     <string name="rating">Rating: %s</string>
     <string name="not_rated">Not rated</string>
     <string name="open">Open</string>
-    <string name="closed">Closed</string>
+    <string name="closed">Close</string>
+    <string name="permanently_closed">Permanently Closed</string>
     <string name="miles_notation">mi</string>
     <string name="kilometer_notation">km</string>
 </resources>
