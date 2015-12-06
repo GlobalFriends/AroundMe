@@ -7,28 +7,22 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.TextViewCompat;
+import android.support.v7.widget.LinearLayoutCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.toolbox.NetworkImageView;
-import com.globalfriends.com.aroundme.AroundMeApplication;
 import com.globalfriends.com.aroundme.R;
 import com.globalfriends.com.aroundme.data.IPlaceDetails;
 import com.globalfriends.com.aroundme.data.PreferenceManager;
-import com.globalfriends.com.aroundme.data.places.GooglePlaceDetailsJson;
 import com.globalfriends.com.aroundme.data.places.Places;
 import com.globalfriends.com.aroundme.logging.Logger;
 import com.globalfriends.com.aroundme.protocol.TransactionManager;
-import com.globalfriends.com.aroundme.protocol.places.PlaceRequestTypeEnum;
-import com.globalfriends.com.aroundme.protocol.places.PlacesWebService;
 import com.globalfriends.com.aroundme.utils.Utility;
 
-import testing.MainActivity;
+;
 
 /**
  *
@@ -69,9 +63,11 @@ public class PlaceDetailsFragment extends Fragment implements View.OnClickListen
             Places place = bundle.getParcelable("PLACE");
             TransactionManager.getInstance().findPlaceDetails(place.getPlaceId(), null);
             // Update Image
-            mMainDisplayImage.setImageUrl(Utility.getPlacePhotoQuery(place.getPhotoReference().getReference(),
-                    place.getPhotoReference().getHeight(), place.getPhotoReference().getWidth()),
-                    TransactionManager.getInstance().getModuleImageLoader(getResources().getString(R.string.google_places_tag)));
+            if (place.getPhotoReference() != null) {
+                mMainDisplayImage.setImageUrl(Utility.getPlacePhotoQuery(place.getPhotoReference().getReference(),
+                                place.getPhotoReference().getHeight(), place.getPhotoReference().getWidth()),
+                        TransactionManager.getInstance().getModuleImageLoader(getResources().getString(R.string.google_places_tag)));
+            }
         }
     }
 
@@ -80,10 +76,10 @@ public class PlaceDetailsFragment extends Fragment implements View.OnClickListen
     private TextView mAddress;
     private TextView mDistance;
     private NetworkImageView mMainDisplayImage;
-    private LinearLayout mMapButtonLayout;
-    private LinearLayout mCallButtonLayout;
-    private LinearLayout mWebsiteButtonLayout;
-    private LinearLayout mFavoriteButtonLayout;
+    private LinearLayoutCompat mMapButtonLayout;
+    private LinearLayoutCompat mCallButtonLayout;
+    private LinearLayoutCompat mWebsiteButtonLayout;
+    private LinearLayoutCompat mFavoriteButtonLayout;
 
     /**
      * Initialize Google and other components specific UI
@@ -93,13 +89,13 @@ public class PlaceDetailsFragment extends Fragment implements View.OnClickListen
     private void initView(View view) {
         mMainDisplayImage = (NetworkImageView) view.findViewById(R.id.id_place_image);
         mPlaceName = (TextView) view.findViewById(R.id.id_place_name);
-        mMapButtonLayout = (LinearLayout) view.findViewById(R.id.id_maps);
+        mMapButtonLayout = (LinearLayoutCompat) view.findViewById(R.id.id_maps);
         mMapButtonLayout.setOnClickListener(this);
-        mCallButtonLayout = (LinearLayout) view.findViewById(R.id.id_call);
+        mCallButtonLayout = (LinearLayoutCompat) view.findViewById(R.id.id_call);
         mCallButtonLayout.setOnClickListener(this);
-        mWebsiteButtonLayout = (LinearLayout) view.findViewById(R.id.id_website);
+        mWebsiteButtonLayout = (LinearLayoutCompat) view.findViewById(R.id.id_website);
         mWebsiteButtonLayout.setOnClickListener(this);
-        mFavoriteButtonLayout = (LinearLayout) view.findViewById(R.id.id_favorite);
+        mFavoriteButtonLayout = (LinearLayoutCompat) view.findViewById(R.id.id_favorite);
         mFavoriteButtonLayout.setOnClickListener(this);
         mAddress = (TextView) view.findViewById(R.id.id_address_text);
         mDistance = (TextView) view.findViewById(R.id.id_distance_text);
