@@ -160,12 +160,12 @@ public class PlacesListFragment extends ListFragment {
                 viewHolder.priceLevel.addView(imageView);
             }
 
-            if (place.getPhotoReference() != null) {
-                viewHolder.photo.setImageUrl(Utility.getPlacePhotoQuery(place.getPhotoReference().getReference(),
-                        viewHolder.photo.getHeight() != 0 ? viewHolder.photo.getHeight() : (int)Utility.getDpToPixel(mContext, 80),
-                        viewHolder.photo.getWidth() != 0 ? viewHolder.photo.getWidth() : (int)Utility.getDpToPixel(mContext, 80)),
-                        mImageLoader);
-            }
+//            if (place.getPhotoReference() != null) {
+//                viewHolder.photo.setImageUrl(Utility.getPlacePhotoQuery(place.getPhotoReference().getReference(),
+//                        viewHolder.photo.getHeight() != 0 ? viewHolder.photo.getHeight() : (int)Utility.getDpToPixel(mContext, 80),
+//                        viewHolder.photo.getWidth() != 0 ? viewHolder.photo.getWidth() : (int)Utility.getDpToPixel(mContext, 80)),
+//                        mImageLoader);
+//            }
 
             return convertView;
         }

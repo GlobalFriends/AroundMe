@@ -58,8 +58,12 @@ public class GooglePlaceDetailsJson extends DefaultPlaceDetails {
         try {
             openingHours = (JSONObject) response.get("opening_hours");
             mOpneNow = openingHours.getBoolean("open_now");
-            String weeklyText = openingHours.getString("weekday_text");
-            mWeeklyTimings.addAll(Arrays.asList(weeklyText.split(",")));
+            JSONArray weeklyText = openingHours.getJSONArray("weekday_text");
+            if (weeklyText != null) {
+                for (int i = 0; i < weeklyText.length(); i++) {
+                    mWeeklyTimings.add(weeklyText.get(i).toString());
+                }
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }

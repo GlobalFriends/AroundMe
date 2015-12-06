@@ -74,10 +74,14 @@
                         android:gravity="left"
                         android:orientation="horizontal">
 
-                        <RatingBar
+                        <android.support.v7.widget.AppCompatRatingBar
                             android:id="@+id/id_rating_bar"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
+                            android:layout_height="wrap_content"
+                            style="?android:attr/ratingBarStyleSmall"
+                            android:clickable="false"
+                            android:gravity="center_vertical"
+                            android:isIndicator="true" />
 
                         <TextView
                             android:id="@+id/id_review_count"
@@ -85,7 +89,6 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="10sp"
                             android:gravity="center_vertical"
-                            android:paddingTop="15sp"
                             android:text="@string/test"
                             android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
                     </android.support.v7.widget.LinearLayoutCompat>

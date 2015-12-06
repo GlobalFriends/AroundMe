@@ -3,11 +3,14 @@ package com.globalfriends.com.aroundme.ui;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.media.Rating;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.AppCompatRatingBar;
 import android.support.v7.widget.LinearLayoutCompat;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -68,6 +71,10 @@ public class PlaceDetailsFragment extends Fragment implements View.OnClickListen
                                 place.getPhotoReference().getHeight(), place.getPhotoReference().getWidth()),
                         TransactionManager.getInstance().getModuleImageLoader(getResources().getString(R.string.google_places_tag)));
             }
+
+            if (!TextUtils.isEmpty(place.getRating())) {
+                mRatingBar.setRating(Float.valueOf(place.getRating()));
+            }
         }
     }
 
@@ -76,6 +83,7 @@ public class PlaceDetailsFragment extends Fragment implements View.OnClickListen
     private TextView mAddress;
     private TextView mDistance;
     private NetworkImageView mMainDisplayImage;
+    private AppCompatRatingBar mRatingBar;
     private LinearLayoutCompat mMapButtonLayout;
     private LinearLayoutCompat mCallButtonLayout;
     private LinearLayoutCompat mWebsiteButtonLayout;
@@ -99,6 +107,7 @@ public class PlaceDetailsFragment extends Fragment implements View.OnClickListen
         mFavoriteButtonLayout.setOnClickListener(this);
         mAddress = (TextView) view.findViewById(R.id.id_address_text);
         mDistance = (TextView) view.findViewById(R.id.id_distance_text);
+        mRatingBar = (AppCompatRatingBar) view.findViewById(R.id.id_rating_bar);
     }
 
     @Override
