@@ -1,10 +1,12 @@
 package com.globalfriends.com.aroundme.utils;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Environment;
 import android.text.TextUtils;
+import android.util.TypedValue;
 
 import com.globalfriends.com.aroundme.AroundMeApplication;
 import com.globalfriends.com.aroundme.R;
@@ -21,6 +23,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
+
+import static android.util.TypedValue.*;
 
 /**
  * Created by vishal on 11/22/2015.
@@ -181,5 +185,10 @@ public class Utility {
                         setKey(AroundMeApplication.getContext().
                                 getResources().getString(R.string.google_maps_key));
         return builder.build().getUrl();
+    }
+
+    public static float getDpToPixel(Context context, final int dp) {
+        Resources r = context.getResources();
+        return applyDimension(COMPLEX_UNIT_DIP, dp, r.getDisplayMetrics());
     }
 }

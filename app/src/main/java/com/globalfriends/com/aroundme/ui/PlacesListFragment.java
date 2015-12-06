@@ -19,16 +19,14 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.NetworkImageView;
 import com.android.volley.toolbox.Volley;
+import com.globalfriends.com.aroundme.AroundMeApplication;
 import com.globalfriends.com.aroundme.R;
 import com.globalfriends.com.aroundme.data.places.Places;
 import com.globalfriends.com.aroundme.protocol.TransactionManager;
-import com.nostra13.universalimageloader.cache.memory.impl.WeakMemoryCache;
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
-import com.nostra13.universalimageloader.core.assist.ImageScaleType;
-import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
+import com.globalfriends.com.aroundme.utils.Utility;
 
 import org.w3c.dom.Text;
 
@@ -112,24 +110,13 @@ public class PlacesListFragment extends ListFragment {
     public static class PlacesListAdapter extends ArrayAdapter<Places> {
         Context mContext;
         List<Places> mPlaces;
+        ImageLoader mImageLoader = TransactionManager.getInstance().
+                getModuleImageLoader(AroundMeApplication.getContext().getResources().getString(R.string.google_places_tag));
 
         public PlacesListAdapter(Context context, List<Places> objects) {
             super(context, R.layout.layout_places_item, objects);
             mContext = context;
             mPlaces = objects;
-
-            DisplayImageOptions options = new DisplayImageOptions.Builder()
-                    .cacheOnDisk(true)
-                    .cacheInMemory(true)
-                    .imageScaleType(ImageScaleType.EXACTLY)
-                    .displayer(new FadeInBitmapDisplayer(300)).build();
-
-            ImageLoaderConfiguration configuration = new ImageLoaderConfiguration.Builder(getContext())
-                    .defaultDisplayImageOptions(options)
-                    .memoryCache(new WeakMemoryCache())
-                    .discCacheSize(100 * 1024 * 1024).build();
-
-            ImageLoader.getInstance().init(configuration);
         }
 
         public void swapItem(List<Places> object) {
@@ -147,13 +134,12 @@ public class PlacesListFragment extends ListFragment {
 
                 viewHolder = new ViewHolder();
                 viewHolder.icon = (ImageView) convertView.findViewById(R.id.icon);
-                viewHolder.photo = (ImageView) convertView.findViewById(R.id.photo);
+                viewHolder.photo = (NetworkImageView) convertView.findViewById(R.id.photo);
                 viewHolder.placeName = (TextView) convertView.findViewById(R.id.place_name);
                 viewHolder.vicinity = (TextView) convertView.findViewById(R.id.vicinity);
                 viewHolder.openNow = (TextView) convertView.findViewById(R.id.open_now);
                 viewHolder.rating = (TextView) convertView.findViewById(R.id.rating);
                 viewHolder.priceLevel = (LinearLayout) convertView.findViewById(R.id.price_level);
-
                 convertView.setTag(viewHolder);
             } else {
                 viewHolder = (ViewHolder) convertView.getTag();
@@ -174,13 +160,11 @@ public class PlacesListFragment extends ListFragment {
                 viewHolder.priceLevel.addView(imageView);
             }
 
-            ImageLoader.getInstance().displayImage(place.getIcon(), viewHolder.icon);
             if (place.getPhotoReference() != null) {
-                ImageLoader.getInstance().displayImage(
-                        place.getPhoto(place.getPhotoReference().getWidth(),
-                        place.getPhotoReference().getHeight(),
-                        getContext().getResources().getString(R.string.google_maps_key)),
-                        viewHolder.photo);
+                viewHolder.photo.setImageUrl(Utility.getPlacePhotoQuery(place.getPhotoReference().getReference(),
+                        viewHolder.photo.getHeight() != 0 ? viewHolder.photo.getHeight() : (int)Utility.getDpToPixel(mContext, 80),
+                        viewHolder.photo.getWidth() != 0 ? viewHolder.photo.getWidth() : (int)Utility.getDpToPixel(mContext, 80)),
+                        mImageLoader);
             }
 
             return convertView;
@@ -188,7 +172,7 @@ public class PlacesListFragment extends ListFragment {
 
         private static class ViewHolder {
             public ImageView icon;
-            public ImageView photo;
+            public NetworkImageView photo;
             public TextView placeName;
             public TextView vicinity;
             public TextView openNow;

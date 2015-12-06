@@ -39,19 +39,7 @@ public class DefaultFeatureManager implements IFeatureManager {
         mModuleTag = tag;
         LOGGING_TAG = getClass().getSimpleName();
         mQueue = Volley.newRequestQueue(AroundMeApplication.getContext());
-        mImageLoader = new ImageLoader(mQueue, new ImageLoader.ImageCache() {
-            private final LruCache<String, Bitmap> mCache = new LruCache<String, Bitmap>(20);
-
-            @Override
-            public Bitmap getBitmap(String url) {
-                return mCache.get(url);
-            }
-
-            @Override
-            public void putBitmap(String url, Bitmap bitmap) {
-                mCache.put(url, bitmap);
-            }
-        });
+        mImageLoader = new ImageLoader(mQueue, new LruBitmapCache());
         mQueue.start();
     }
 
