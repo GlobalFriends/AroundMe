@@ -19,7 +19,7 @@ public interface IFeatureManager {
     /**
      * Return place details based on provided unique identifications
      *
-     * @param placeId       Unique identification for Google Places
+     * @param placeId       Unique identification for Google PlaceInfo
      * @param contactNumber unique identification for Yelp
      * @return
      */

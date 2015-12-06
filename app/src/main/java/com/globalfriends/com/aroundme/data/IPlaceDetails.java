@@ -1,5 +1,7 @@
 package com.globalfriends.com.aroundme.data;
 
+import java.util.List;
+
 /**
  * Created by vishal on 11/29/2015.
  */
@@ -18,4 +20,12 @@ public interface IPlaceDetails {
     Double getLatitude();
 
     Double getLongitude();
+
+    void updatePhotoToList(PlacePhotoMetadata photo);
+
+    List<PlacePhotoMetadata> getPhotos();
+
+    void updateReviewToList(PlaceReviewMetadata photo);
+
+    List<PlaceReviewMetadata> getReviewList();
 }

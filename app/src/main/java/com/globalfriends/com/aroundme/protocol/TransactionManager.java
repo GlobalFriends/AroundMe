@@ -5,14 +5,13 @@ import android.util.Log;
 
 import com.android.volley.toolbox.ImageLoader;
 import com.globalfriends.com.aroundme.data.IPlaceDetails;
-import com.globalfriends.com.aroundme.data.places.Places;
+import com.globalfriends.com.aroundme.data.places.PlaceInfo;
 import com.globalfriends.com.aroundme.protocol.places.PlaceManager;
 import com.globalfriends.com.aroundme.protocol.places.PlaceRequestTypeEnum;
 import com.globalfriends.com.aroundme.protocol.yelp.YelpManager;
 
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -136,7 +135,7 @@ public class TransactionManager implements Listener {
     }
 
     @Override
-    public void onPlacesList(List<Places> placeList) {
+    public void onPlacesList(List<PlaceInfo> placeList) {
         synchronized (mListeners) {
             for (Result listener : mListeners) {
                 listener.onPlacesList(placeList);
@@ -212,7 +211,7 @@ public class TransactionManager implements Listener {
         /**
          * @param placeList
          */
-        public void onPlacesList(List<Places> placeList) {
+        public void onPlacesList(List<PlaceInfo> placeList) {
         }
 
         /**

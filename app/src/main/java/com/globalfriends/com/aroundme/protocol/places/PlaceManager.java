@@ -7,7 +7,7 @@ import com.globalfriends.com.aroundme.R;
 import com.globalfriends.com.aroundme.data.IPlaceDetails;
 import com.globalfriends.com.aroundme.data.PreferenceManager;
 import com.globalfriends.com.aroundme.data.places.GooglePlaceDetailsJson;
-import com.globalfriends.com.aroundme.data.places.Places;
+import com.globalfriends.com.aroundme.data.places.PlaceInfo;
 import com.globalfriends.com.aroundme.logging.Logger;
 import com.globalfriends.com.aroundme.protocol.DefaultFeatureManager;
 import com.globalfriends.com.aroundme.protocol.Listener;
@@ -98,10 +98,10 @@ public class PlaceManager extends DefaultFeatureManager {
                 Utility.generateNoteOnSD("placeList_google", response.toString());
                 try {
                     JSONArray array = response.getJSONArray("results");
-                    List<Places> placeList = new ArrayList<Places>();
+                    List<PlaceInfo> placeList = new ArrayList<PlaceInfo>();
                     for (int i = 0; i < array.length(); i++) {
                         try {
-                            placeList.add(Places
+                            placeList.add(PlaceInfo
                                     .jsonToPontoReferencia((JSONObject) array.get(i)));
                         } catch (Exception e) {
                             e.printStackTrace();

@@ -12,7 +12,7 @@ import android.view.MenuItem;
 
 import com.globalfriends.com.aroundme.R;
 import com.globalfriends.com.aroundme.data.PreferenceManager;
-import com.globalfriends.com.aroundme.data.places.Places;
+import com.globalfriends.com.aroundme.data.places.PlaceInfo;
 import com.globalfriends.com.aroundme.logging.Logger;
 import com.globalfriends.com.aroundme.ui.PlacesListFragment;
 import com.google.android.gms.maps.GoogleMap;
@@ -23,7 +23,7 @@ import java.util.List;
 import testing.yelp.SearchBarActivity;
 
 /**
- * This class is used to search places using Places API using keywords like police,hospital etc.
+ * This class is used to search places using PlaceInfo API using keywords like police,hospital etc.
  *
  * @author Karn Shah
  * @Date 10/3/2013
@@ -98,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void populatePlacesList(List<Places> places) {
+    private void populatePlacesList(List<PlaceInfo> places) {
         Parcelable[] parcelables = new Parcelable[places.size()];
         for (int i = 0; i < places.size(); i++) {
             parcelables[i] = places.get(i);
@@ -135,7 +135,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Find places based on Latitude and Longitude
      */
-    private class GetPlaces extends AsyncTask<Void, Void, ArrayList<Places>> {
+    private class GetPlaces extends AsyncTask<Void, Void, ArrayList<PlaceInfo>> {
 
         private ProgressDialog dialog;
         private Context context;
@@ -147,7 +147,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         @Override
-        protected void onPostExecute(ArrayList<Places> result) {
+        protected void onPostExecute(ArrayList<PlaceInfo> result) {
             super.onPostExecute(result);
             if (dialog.isShowing()) {
                 dialog.dismiss();
@@ -170,7 +170,7 @@ public class MainActivity extends AppCompatActivity {
                         .snippet(result.get(i).getVicinity()));
 
                 new getPlaceDetails(result.get(i).getPlaceId()).execute();
-//                com.google.android.gms.location.places.Places.GeoDataApi.
+//                com.google.android.gms.location.places.PlaceInfo.GeoDataApi.
 //                        getPlaceById(mGoogleApiClient, result.get(i).getPlaceId())
 //                        .setResultCallback(new ResultCallback<PlaceBuffer>() {
 //                            @Override
@@ -207,10 +207,10 @@ public class MainActivity extends AppCompatActivity {
         }
 
         @Override
-        protected ArrayList<Places> doInBackground(Void... arg0) {
+        protected ArrayList<PlaceInfo> doInBackground(Void... arg0) {
             PlacesService service = new PlacesService(
                     getResources().getString(R.string.google_maps_key));
-            ArrayList<Places> findPlaces = service.findPlaces(PreferenceManager.getLocation(), places); //0 77.218276
+            ArrayList<PlaceInfo> findPlaces = service.findPlaces(PreferenceManager.getLocation(), places); //0 77.218276
             return findPlaces;
         }
 

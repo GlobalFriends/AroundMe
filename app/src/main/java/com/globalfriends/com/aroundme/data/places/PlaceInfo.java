@@ -16,7 +16,7 @@ import java.util.logging.Logger;
  * @author Karn Shah
  * @Date 10/3/2013
  */
-public class Places implements Parcelable {
+public class PlaceInfo implements Parcelable {
     private String id;
     private String icon;
     private String name;
@@ -29,9 +29,9 @@ public class Places implements Parcelable {
     private boolean mOpenNow;
     private int mPriceLevel;
 
-    public static Places jsonToPontoReferencia(JSONObject pontoReferencia) {
+    public static PlaceInfo jsonToPontoReferencia(JSONObject pontoReferencia) {
         try {
-            Places result = new Places();
+            PlaceInfo result = new PlaceInfo();
             JSONObject geometry = (JSONObject) pontoReferencia.get("geometry");
             JSONObject location = (JSONObject) geometry.get("location");
             result.setLatitude((Double) location.get("lat"));
@@ -61,7 +61,7 @@ public class Places implements Parcelable {
             if (pontoReferencia.has("photos")) {
                 JSONArray photosArray = pontoReferencia.getJSONArray("photos");
 
-                Places.PhotoRef photoRef = new PhotoRef();
+                PlaceInfo.PhotoRef photoRef = new PhotoRef();
                 photoRef.setHeight(((JSONObject) photosArray.get(0)).getInt("height"));
                 photoRef.setWidth(((JSONObject) photosArray.get(0)).getInt("width"));
                 photoRef.setReference(((JSONObject) photosArray.get(0)).getString("photo_reference"));
@@ -70,7 +70,7 @@ public class Places implements Parcelable {
 
             return result;
         } catch (JSONException ex) {
-            Logger.getLogger(Places.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(PlaceInfo.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
     }
@@ -265,10 +265,10 @@ public class Places implements Parcelable {
         dest.writeInt(this.mPriceLevel);
     }
 
-    public Places() {
+    public PlaceInfo() {
     }
 
-    private Places(Parcel in) {
+    private PlaceInfo(Parcel in) {
         this.id = in.readString();
         this.icon = in.readString();
         this.name = in.readString();
@@ -282,13 +282,13 @@ public class Places implements Parcelable {
         this.mPriceLevel = in.readInt();
     }
 
-    public static final Creator<Places> CREATOR = new Creator<Places>() {
-        public Places createFromParcel(Parcel source) {
-            return new Places(source);
+    public static final Creator<PlaceInfo> CREATOR = new Creator<PlaceInfo>() {
+        public PlaceInfo createFromParcel(Parcel source) {
+            return new PlaceInfo(source);
         }
 
-        public Places[] newArray(int size) {
-            return new Places[size];
+        public PlaceInfo[] newArray(int size) {
+            return new PlaceInfo[size];
         }
     };
 }

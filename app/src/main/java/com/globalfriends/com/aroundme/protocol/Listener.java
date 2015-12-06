@@ -1,7 +1,7 @@
 package com.globalfriends.com.aroundme.protocol;
 
 import com.globalfriends.com.aroundme.data.IPlaceDetails;
-import com.globalfriends.com.aroundme.data.places.Places;
+import com.globalfriends.com.aroundme.data.places.PlaceInfo;
 
 import org.json.JSONObject;
 
@@ -24,7 +24,7 @@ public interface Listener {
     /**
      * @param placeList
      */
-    void onPlacesList(List<Places> placeList);
+    void onPlacesList(List<PlaceInfo> placeList);
 
     /**
      *

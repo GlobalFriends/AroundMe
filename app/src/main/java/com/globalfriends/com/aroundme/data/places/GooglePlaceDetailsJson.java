@@ -1,14 +1,12 @@
 package com.globalfriends.com.aroundme.data.places;
 
-import android.widget.TextView;
-
 import com.globalfriends.com.aroundme.data.DefaultPlaceDetails;
+import com.globalfriends.com.aroundme.data.PlacePhotoMetadata;
+import com.globalfriends.com.aroundme.data.PlaceReviewMetadata;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.Arrays;
 
 /**
  * Created by vishal on 11/19/2015.
@@ -61,7 +59,47 @@ public class GooglePlaceDetailsJson extends DefaultPlaceDetails {
             JSONArray weeklyText = openingHours.getJSONArray("weekday_text");
             if (weeklyText != null) {
                 for (int i = 0; i < weeklyText.length(); i++) {
-                    mWeeklyTimings.add(weeklyText.get(i).toString());
+                    String timing = weeklyText.get(i).toString();
+                    mWeeklyTimings.add(timing.replace("\"", ""));
+                }
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            JSONArray jsonPhotoArray = (JSONArray) response.getJSONArray("photos");
+            if (jsonPhotoArray != null) {
+                for (int i = 0; i < jsonPhotoArray.length(); i++) {
+                    JSONObject obj = (JSONObject) jsonPhotoArray.get(i);
+                    PlacePhotoMetadata photo = new PlacePhotoMetadata();
+                    photo.setReference(obj.getString("photo_reference"));
+                    photo.setHeight(obj.getString("height"));
+                    photo.setWidth(obj.getString("width"));
+                    updatePhotoToList(photo);
+                }
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
+        try {
+            JSONArray jsonReviewArray = (JSONArray) response.getJSONArray("reviews");
+            if (jsonReviewArray != null) {
+                for (int i = 0; i < jsonReviewArray.length(); i++) {
+                    JSONObject obj = (JSONObject) jsonReviewArray.get(i);
+                    PlaceReviewMetadata review = new PlaceReviewMetadata();
+                    review.setAuthorName(obj.getString("author_name"));
+                    review.setmAuthorUrl(obj.getString("author_url"));
+                    review.setLanguage(obj.getString("language"));
+                    review.setRating(obj.getString("rating"));
+                    review.setReviewTime(obj.getLong("rating"));
+                    try {
+                        review.setmProfilePhotoUrl(obj.getString("profile_photo_url"));
+                    } catch (JSONException e) {
+                    }
+                    updateReviewToList(review);
                 }
             }
         } catch (JSONException e) {

@@ -20,6 +20,9 @@ public class DefaultPlaceDetails implements IPlaceDetails {
     protected boolean mOpneNow;
     protected List<String> mWeeklyTimings = new ArrayList<String>();
     protected JSONObject mResponse;
+    protected List<PlacePhotoMetadata> mPhotoList = new ArrayList<PlacePhotoMetadata>();
+    protected List<PlaceReviewMetadata> mReviewList = new ArrayList<PlaceReviewMetadata>();
+
 
     public DefaultPlaceDetails(JSONObject response) {
         mResponse = response;
@@ -69,5 +72,26 @@ public class DefaultPlaceDetails implements IPlaceDetails {
                 .append(" mLatitude=" + mLatitude).append(" mLongitude=" + mLongitude)
                 .append(" mOpneNow=" + mOpneNow);
         return builder.toString();
+    }
+
+
+    @Override
+    public void updatePhotoToList(PlacePhotoMetadata photo) {
+        mPhotoList.add(photo);
+    }
+
+    @Override
+    public List<PlacePhotoMetadata> getPhotos() {
+        return mPhotoList;
+    }
+
+    @Override
+    public void updateReviewToList(PlaceReviewMetadata review) {
+        mReviewList.add(review);
+    }
+
+    @Override
+    public List<PlaceReviewMetadata> getReviewList() {
+        return mReviewList;
     }
 }

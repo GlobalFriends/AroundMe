@@ -94,7 +94,7 @@ public class PlacesWebService {
     }
 
     /**
-     * Supportive Builder Class for making Places Query
+     * Supportive Builder Class for making PlaceInfo Query
      */
     public static class Builder {
         //Set default URL an Query types

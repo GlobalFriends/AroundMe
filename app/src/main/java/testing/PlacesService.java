@@ -2,7 +2,7 @@ package testing;
 
 import android.text.TextUtils;
 
-import com.globalfriends.com.aroundme.data.places.Places;
+import com.globalfriends.com.aroundme.data.places.PlaceInfo;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -17,7 +17,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Create request for Places API.
+ * Create request for PlaceInfo API.
  *
  * @author Karn Shah
  * @Date 10/3/2013
@@ -34,7 +34,7 @@ public class PlacesService {
         this.API_KEY = apikey;
     }
 
-    public ArrayList<Places> findPlaces(String location,
+    public ArrayList<PlaceInfo> findPlaces(String location,
                                         String placeSpacification) {
 
         String urlString = makeUrl(location, placeSpacification);
@@ -46,12 +46,12 @@ public class PlacesService {
             JSONObject object = new JSONObject(json);
             JSONArray array = object.getJSONArray("results");
 
-            ArrayList<Places> arrayList = new ArrayList<Places>();
+            ArrayList<PlaceInfo> arrayList = new ArrayList<PlaceInfo>();
             for (int i = 0; i < array.length(); i++) {
                 try {
-                    Places place = Places
+                    PlaceInfo place = PlaceInfo
                             .jsonToPontoReferencia((JSONObject) array.get(i));
-//                    Logger.i("Places Services ", "" + place);
+//                    Logger.i("PlaceInfo Services ", "" + place);
                     arrayList.add(place);
                 } catch (Exception e) {
                 }

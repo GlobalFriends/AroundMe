@@ -37,7 +37,7 @@ public class Utility {
      * @return
      */
     public static String getLocationFromZip(final String zipCode) {
-        //TODO: We might have to use GeoCoding from Places Maps API
+        //TODO: We might have to use GeoCoding from PlaceInfo Maps API
         return null;
     }
 
