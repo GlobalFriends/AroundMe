@@ -120,7 +120,7 @@
                         android:id="@+id/id_shortcut_icon_bar"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="#d3d0d0"
+                        android:background="#e7e5e5"
                         android:divider="#474646"
                         android:orientation="horizontal"
                         android:weightSum="4">
@@ -285,7 +285,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5sp"
-                        android:background="#d3d0d0"
+                        android:background="#e7e5e5"
                         android:orientation="vertical">
 
                         <android.support.v7.widget.LinearLayoutCompat
@@ -433,7 +433,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="5sp"
-                            android:background="#d3d0d0"
+                            android:background="#e7e5e5"
                             android:orientation="horizontal">
 
                             <ImageView
@@ -476,7 +476,7 @@
                         android:id="@+id/id_google_review_layout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="#d3d0d0"
+                        android:background="#e7e5e5"
                         android:orientation="horizontal">
 
                         <ImageView

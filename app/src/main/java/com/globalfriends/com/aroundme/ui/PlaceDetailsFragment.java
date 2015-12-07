@@ -206,7 +206,7 @@ public class PlaceDetailsFragment extends Fragment implements View.OnClickListen
                 getActivity().startActivity(intent);
                 break;
             case R.id.id_favorite:
-                Snackbar.make(v, "Added to Favorite", Snackbar.LENGTH_SHORT).show();
+//                Snackbar.make(v, "Added to Favorite", Snackbar.LENGTH_SHORT).show();
                 if (mPlace != null) {
                     AroundMeContractProvider.Places fav =
                             new AroundMeContractProvider.Places(mPlace.isOpenNow(),Double.parseDouble(mPlace.getRating()),

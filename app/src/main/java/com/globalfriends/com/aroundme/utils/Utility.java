@@ -6,10 +6,9 @@ import android.content.res.Resources;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Environment;
-import android.support.design.widget.Snackbar;
+import android.os.Parcelable;
 import android.support.v7.widget.LinearLayoutCompat;
 import android.text.TextUtils;
-import android.util.TypedValue;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -22,16 +21,17 @@ import com.globalfriends.com.aroundme.data.IPlaceDetails;
 import com.globalfriends.com.aroundme.data.PlacePhotoMetadata;
 import com.globalfriends.com.aroundme.data.PreferenceManager;
 import com.globalfriends.com.aroundme.logging.Logger;
-import com.globalfriends.com.aroundme.protocol.OperationEnum;
 import com.globalfriends.com.aroundme.protocol.places.PlaceRequestTypeEnum;
 import com.globalfriends.com.aroundme.protocol.places.PlaceResponseEnum;
 import com.globalfriends.com.aroundme.protocol.places.PlacesWebService;
-import com.globalfriends.com.aroundme.ui.AppBrowser;
 import com.globalfriends.com.aroundme.ui.PhotoViewer;
+import com.google.android.gms.location.places.Place;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -219,7 +219,7 @@ public class Utility {
         layout.setVisibility(View.VISIBLE);
         LinearLayoutCompat imageGallery = (LinearLayoutCompat) layout.findViewById(R.id.imageGallery);
         for (PlacePhotoMetadata photo : mList) {
-            imageGallery.addView(addDynamicImageView(context, photo, imageLoader));
+            imageGallery.addView(addDynamicImageView(context, photo, imageLoader, mList));
         }
     }
 
@@ -229,10 +229,11 @@ public class Utility {
      * @param context
      * @param image
      * @param imageLoader
+     * @param list        TODO: Should check how to remove this
      * @return
      */
     public static NetworkImageView addDynamicImageView(final Context context, final PlacePhotoMetadata image,
-                                                       final ImageLoader imageLoader) {
+                                                       final ImageLoader imageLoader, final List<PlacePhotoMetadata> list) {
         final NetworkImageView imageView = new NetworkImageView(context);
         LinearLayoutCompat.LayoutParams lp = new LinearLayoutCompat.LayoutParams(
                 (int) Utility.getDpToPixel(context, 100),
@@ -247,6 +248,7 @@ public class Utility {
                 Intent intent = new Intent(context, PhotoViewer.class);
                 intent.putExtra("KEY", context.getResources().getString(R.string.google_places_tag));
                 intent.putExtra("CURRENT_PHOTO", image);
+                intent.putExtra("PHOTO_LIST", (Serializable)list);
                 context.startActivity(intent);
             }
         });
