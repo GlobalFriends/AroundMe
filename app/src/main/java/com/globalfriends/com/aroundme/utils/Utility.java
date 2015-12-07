@@ -5,12 +5,20 @@ import android.content.res.Resources;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Environment;
+import android.support.design.widget.Snackbar;
+import android.support.v7.widget.LinearLayoutCompat;
 import android.text.TextUtils;
 import android.util.TypedValue;
+import android.view.View;
+import android.widget.ImageView;
 
+import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.NetworkImageView;
 import com.globalfriends.com.aroundme.AroundMeApplication;
 import com.globalfriends.com.aroundme.R;
 import com.globalfriends.com.aroundme.data.DistanceFormatEnum;
+import com.globalfriends.com.aroundme.data.IPlaceDetails;
+import com.globalfriends.com.aroundme.data.PlacePhotoMetadata;
 import com.globalfriends.com.aroundme.data.PreferenceManager;
 import com.globalfriends.com.aroundme.logging.Logger;
 import com.globalfriends.com.aroundme.protocol.OperationEnum;
@@ -190,5 +198,57 @@ public class Utility {
     public static float getDpToPixel(Context context, final int dp) {
         Resources r = context.getResources();
         return applyDimension(COMPLEX_UNIT_DIP, dp, r.getDisplayMetrics());
+    }
+
+
+    /**
+     * @param layout
+     * @param imageLoader
+     */
+    public static void updateModulePhotoView(final Context context, final IPlaceDetails placeDetails,
+                                             final LinearLayoutCompat layout, final ImageLoader imageLoader) {
+        List<PlacePhotoMetadata> mList = placeDetails.getPhotos();
+        if (mList == null || mList.size() == 0) {
+            layout.setVisibility(View.GONE);
+            return;
+        }
+
+        layout.setVisibility(View.VISIBLE);
+        LinearLayoutCompat imageGallery = (LinearLayoutCompat) layout.findViewById(R.id.imageGallery);
+        for (PlacePhotoMetadata photo : mList) {
+            imageGallery.addView(addDynamicImageView(context, photo, imageLoader));
+        }
+    }
+
+    /**
+     * Dynamic Image View addition for requested modules. Passed image module should be proper for requested module
+     *
+     * @param context
+     * @param image
+     * @param imageLoader
+     * @return
+     */
+    public static NetworkImageView addDynamicImageView(final Context context, final PlacePhotoMetadata image,
+                                                       final ImageLoader imageLoader) {
+        final NetworkImageView imageView = new NetworkImageView(context);
+        LinearLayoutCompat.LayoutParams lp = new LinearLayoutCompat.LayoutParams(
+                (int) Utility.getDpToPixel(context, 100),
+                (int) Utility.getDpToPixel(context, 100));
+        lp.setMargins(0, 0, 10, 0);
+        imageView.setLayoutParams(lp);
+        imageView.setClickable(true);
+        imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Snackbar.make(imageView, "Handle Image click", Snackbar.LENGTH_SHORT).show();
+            }
+        });
+        imageView.setImageUrl(
+                Utility.getPlacePhotoQuery(image.getReference(),
+                        (int) Utility.getDpToPixel(context, 100),
+                        (int) Utility.getDpToPixel(context, 100)),
+                imageLoader);
+        return imageView;
     }
 }

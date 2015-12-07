@@ -7,7 +7,7 @@
     <dimen name="place_details_text_size">20dp</dimen>
     <dimen name="thumbnail_image_width">64dp</dimen>
     <dimen name="thumbnail_image_height">64dp</dimen>
-    <!-- Place Details screen dimentions -->
-    <dimen name="place_image_max_height">2dp</dimen>
-    <dimen name="photos_top_padding">2dp</dimen>
+    <!-- Place Details screen dimension -->
+    <dimen name="place_image_max_height">2sp</dimen>
+    <dimen name="photos_top_padding">2sp</dimen>
 </resources>

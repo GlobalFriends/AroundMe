@@ -225,7 +225,8 @@ public class PlaceDetailsFragment extends Fragment implements View.OnClickListen
 
     private void updateUi() {
         // Photo loading can take time..SO lets first start loading it
-        updateModulePhotoView(mGooglePhotosLayout, mGoogleImageLoader);
+        Utility.updateModulePhotoView(getActivity(), mGooglePlaceDetails,
+                mGooglePhotosLayout, mGoogleImageLoader);
 
         // Update details such as Address, Name, rating and distance
         mPlaceName.setText(mGooglePlaceDetails.getPlaceName());
@@ -235,54 +236,6 @@ public class PlaceDetailsFragment extends Fragment implements View.OnClickListen
         updateAddressAndDistance();
     }
 
-
-    /**
-     * @param layout
-     * @param imageLoader
-     */
-    private void updateModulePhotoView(final LinearLayoutCompat layout, final ImageLoader imageLoader) {
-        List<PlacePhotoMetadata> mList = mGooglePlaceDetails.getPhotos();
-        if (mList == null || mList.size() == 0) {
-            layout.setVisibility(View.GONE);
-            return;
-        }
-
-        layout.setVisibility(View.VISIBLE);
-        LinearLayoutCompat imageGallery = (LinearLayoutCompat) layout.findViewById(R.id.imageGallery);
-        for (PlacePhotoMetadata photo : mList) {
-            imageGallery.addView(dynamicGoogleImageView(photo, imageLoader));
-        }
-    }
-
-    /**
-     * Dynamic Image View addintion for requested modules. Passed image module should be proper for requested module
-     *
-     * @param image
-     * @param imageLoader
-     * @return
-     */
-    private NetworkImageView dynamicGoogleImageView(final PlacePhotoMetadata image, final ImageLoader imageLoader) {
-        final NetworkImageView imageView = new NetworkImageView(getActivity());
-        LinearLayoutCompat.LayoutParams lp = new LinearLayoutCompat.LayoutParams(
-                (int) Utility.getDpToPixel(getActivity(), 100),
-                (int) Utility.getDpToPixel(getActivity(), 100));
-        lp.setMargins(0, 0, 10, 0);
-        imageView.setLayoutParams(lp);
-        imageView.setClickable(true);
-        imageView.setScaleType(ImageView.ScaleType.FIT_XY);
-        imageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Snackbar.make(imageView, "Handle Image click", Snackbar.LENGTH_SHORT).show();
-            }
-        });
-        imageView.setImageUrl(
-                Utility.getPlacePhotoQuery(image.getReference(),
-                        (int) Utility.getDpToPixel(getActivity(), 100),
-                        (int) Utility.getDpToPixel(getActivity(), 100)),
-                imageLoader);
-        return imageView;
-    }
 
     /**
      * Updated supported components such as Yelp, Four Square etc..
