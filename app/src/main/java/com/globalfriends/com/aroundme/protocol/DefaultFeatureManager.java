@@ -93,11 +93,6 @@ public class DefaultFeatureManager implements IFeatureManager {
     }
 
     @Override
-    public void findPlacePhoto(String photoReference, int maxHeight, int maxWidth) {
-
-    }
-
-    @Override
     public final ImageLoader getImageLoader() {
         return mImageLoader;
     }

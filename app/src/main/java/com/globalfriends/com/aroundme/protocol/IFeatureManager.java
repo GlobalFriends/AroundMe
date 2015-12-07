@@ -26,14 +26,6 @@ public interface IFeatureManager {
     void findPlaceDetails(final String placeId, final String contactNumber);
 
     /**
-     *
-     * @param photoReference
-     * @param maxHeight
-     * @param maxWidth
-     */
-    public void findPlacePhoto(final String photoReference, final int maxHeight, final int maxWidth);
-
-    /**
      * Returns Volley Image Loader
      *
      * @return

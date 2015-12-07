@@ -55,11 +55,6 @@ public class PlaceManager extends DefaultFeatureManager {
     }
 
     @Override
-    public void findPlacePhoto(final String photoReference, final int maxHeight, final int maxWidth) {
-        handleJsonRequest(Utility.getPlacePhotoQuery(photoReference, maxHeight, maxWidth), OperationEnum.OPERATION_PLACE_PHOTO);
-    }
-
-    @Override
     public void findPlaceDetails(String placeId, String contactNumber) {
         if (TextUtils.isEmpty(placeId)) {
             return;

@@ -26,7 +26,7 @@ public class PlaceInfo implements Parcelable {
     private Double latitude;
     private Double longitude;
     private String mPlace_id;
-    private PlacePhotoMetadata mPhoto = new PlacePhotoMetadata();
+    private PlacePhotoMetadata mPhoto;
     private String mRating;
     private boolean mOpenNow;
     private int mPriceLevel;

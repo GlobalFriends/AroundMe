@@ -211,7 +211,7 @@ public class PlacesWebService {
             return this;
         }
 
-        public Builder setPhotoMaxWidth(final int val) {
+        public Builder setPhotoWidth(final int val) {
             String value;
             if (val > 1600) {
                 value = Integer.toString(1600);
@@ -222,7 +222,7 @@ public class PlacesWebService {
             return this;
         }
 
-        public Builder setPhotoMaxHeight(final int val) {
+        public Builder setPhotoHeight(final int val) {
             String value;
             if (val > 1600) {
                 value = Integer.toString(1600);

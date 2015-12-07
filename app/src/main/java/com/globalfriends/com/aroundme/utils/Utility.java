@@ -170,8 +170,8 @@ public class Utility {
         PlacesWebService.Builder builder =
                 new PlacesWebService.Builder().
                         setSearchType(PlaceRequestTypeEnum.SEARCH_TYPE_PHOTO).
-                        setPhotoMaxHeight(maxHeight).
-                        setPhotoMaxWidth(maxWidth).
+                        setPhotoHeight(maxHeight).
+                        setPhotoWidth(maxWidth).
                         setPhotoReference(photoReference).
                         setKey(AroundMeApplication.getContext().
                                 getResources().getString(R.string.google_maps_key));

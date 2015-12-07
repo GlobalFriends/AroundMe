@@ -23,6 +23,7 @@ import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 import com.globalfriends.com.aroundme.AroundMeApplication;
 import com.globalfriends.com.aroundme.R;
+import com.globalfriends.com.aroundme.data.PlacePhotoMetadata;
 import com.globalfriends.com.aroundme.data.places.PlaceInfo;
 import com.globalfriends.com.aroundme.protocol.TransactionManager;
 import com.globalfriends.com.aroundme.utils.Utility;
@@ -96,8 +97,14 @@ public class PlacesListFragment extends ListFragment {
      * Handle selection from this fragment to main acitivty
      */
     public interface OnPlaceListFragmentSelection {
+        /**
+         * @param place
+         */
         void OnPlaceListFragmentSelection(final PlaceInfo place);
 
+        /**
+         * @param tag
+         */
         void handleFragmentSuicidal(final String tag);
     }
 
@@ -119,6 +126,8 @@ public class PlacesListFragment extends ListFragment {
         public void swapItem(List<PlaceInfo> object) {
             mPlaces.addAll(object);
             notifyDataSetChanged();
+
+            // Request all images in network..
         }
 
         @Override
@@ -182,10 +191,10 @@ public class PlacesListFragment extends ListFragment {
         @Override
         public void onPlacesList(List<PlaceInfo> placeList) {
             Log.i(TAG, "onPlacesList ....");
+            mAdapter.swapItem(placeList);
             if (mProgress.isShowing()) {
                 mProgress.dismiss();
             }
-            mAdapter.swapItem(placeList);
         }
 
         @Override
@@ -209,7 +218,6 @@ public class PlacesListFragment extends ListFragment {
                         }
                     })
                     .show();
-
         }
     }
 }
