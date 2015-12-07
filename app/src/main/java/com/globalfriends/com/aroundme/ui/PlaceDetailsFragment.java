@@ -14,21 +14,19 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 import com.globalfriends.com.aroundme.R;
 import com.globalfriends.com.aroundme.data.IPlaceDetails;
-import com.globalfriends.com.aroundme.data.PlacePhotoMetadata;
 import com.globalfriends.com.aroundme.data.PreferenceManager;
 import com.globalfriends.com.aroundme.data.places.PlaceInfo;
-import com.globalfriends.com.aroundme.logging.Logger;
 import com.globalfriends.com.aroundme.protocol.TransactionManager;
+import com.globalfriends.com.aroundme.provider.AroundMeContractProvider;
 import com.globalfriends.com.aroundme.utils.Utility;
 
-;import java.util.List;
+;
 
 /**
  *
@@ -209,6 +207,13 @@ public class PlaceDetailsFragment extends Fragment implements View.OnClickListen
                 break;
             case R.id.id_favorite:
                 Snackbar.make(v, "Added to Favorite", Snackbar.LENGTH_SHORT).show();
+                if (mPlace != null) {
+                    AroundMeContractProvider.Places fav =
+                            new AroundMeContractProvider.Places(mPlace.isOpenNow(),Double.parseDouble(mPlace.getRating()),
+                                    mPlace.getLatitude(), mPlace.getLongitude(),mPlace.getPlaceId(),
+                                    mGooglePlaceDetails.getPhoneNumber(),mPlace.getPhotoReference().toString(),
+                                    mGooglePlaceDetails.getAddress());
+                }
                 break;
         }
     }
@@ -255,7 +260,7 @@ public class PlaceDetailsFragment extends Fragment implements View.OnClickListen
     class ResultResponse extends TransactionManager.Result {
         @Override
         public void onGetPlaceDetails(IPlaceDetails response, String placeTag) {
-            Logger.i(TAG, "Response received");
+//            com.globalfriends.com.aroundme.logging.Logger.i(TAG, "Response received");
             if (mProgress.isShowing()) {
                 mProgress.dismiss();
             }
