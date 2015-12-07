@@ -3,6 +3,8 @@ package com.globalfriends.com.aroundme.data.places;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.globalfriends.com.aroundme.data.PlacePhotoMetadata;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -24,7 +26,7 @@ public class PlaceInfo implements Parcelable {
     private Double latitude;
     private Double longitude;
     private String mPlace_id;
-    private PhotoRef mPhotoRef;
+    private PlacePhotoMetadata mPhoto = new PlacePhotoMetadata();
     private String mRating;
     private boolean mOpenNow;
     private int mPriceLevel;
@@ -59,13 +61,12 @@ public class PlaceInfo implements Parcelable {
             result.setPlace_id(pontoReferencia.getString("place_id"));
 
             if (pontoReferencia.has("photos")) {
+                PlacePhotoMetadata photo = new PlacePhotoMetadata();
                 JSONArray photosArray = pontoReferencia.getJSONArray("photos");
-
-                PlaceInfo.PhotoRef photoRef = new PhotoRef();
-                photoRef.setHeight(((JSONObject) photosArray.get(0)).getInt("height"));
-                photoRef.setWidth(((JSONObject) photosArray.get(0)).getInt("width"));
-                photoRef.setReference(((JSONObject) photosArray.get(0)).getString("photo_reference"));
-                result.setPhotoReference(photoRef);
+                photo.setHeight(((JSONObject) photosArray.get(0)).getInt("height"));
+                photo.setWidth(((JSONObject) photosArray.get(0)).getInt("width"));
+                photo.setReference(((JSONObject) photosArray.get(0)).getString("photo_reference"));
+                result.setPhotoMetadata(photo);
             }
 
             return result;
@@ -73,6 +74,10 @@ public class PlaceInfo implements Parcelable {
             Logger.getLogger(PlaceInfo.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
+    }
+
+    public void setPhotoMetadata(PlacePhotoMetadata photo) {
+        this.mPhoto = photo;
     }
 
     public String getId() {
@@ -131,26 +136,8 @@ public class PlaceInfo implements Parcelable {
         return this.mPlace_id;
     }
 
-    public PhotoRef getPhotoReference() {
-        return mPhotoRef;
-    }
-
-    public void setPhotoReference(PhotoRef reference) {
-        mPhotoRef = reference;
-    }
-
-    public String getPhoto(String key) {
-        if (mPhotoRef == null) {
-            return null;
-        }
-        return "https://maps.googleapis.com/maps/api/place/photo?maxwidth=50&photoreference=" + mPhotoRef.getReference() + "&key=" + key;
-    }
-
-    public String getPhoto(int width, int height, String key) {
-        if (mPhotoRef == null) {
-            return null;
-        }
-        return "https://maps.googleapis.com/maps/api/place/photo?maxwidth=" + width + "&maxheight=" + height + "&photoreference=" + mPhotoRef.getReference() + "&key=" + key;
+    public PlacePhotoMetadata getPhotoReference() {
+        return mPhoto;
     }
 
     @Override
@@ -184,66 +171,6 @@ public class PlaceInfo implements Parcelable {
         this.mPriceLevel = priceLevel;
     }
 
-    public static class PhotoRef implements Parcelable {
-        private int mHeight;
-        private int mWidth;
-        private String mReference;
-
-        public int getHeight() {
-            return mHeight;
-        }
-
-        public void setHeight(int height) {
-            mHeight = height;
-        }
-
-        public int getWidth() {
-            return mWidth;
-        }
-
-        public void setWidth(int width) {
-            mWidth = width;
-        }
-
-        public String getReference() {
-            return mReference;
-        }
-
-        public void setReference(String reference) {
-            mReference = reference;
-        }
-
-        @Override
-        public int describeContents() {
-            return 0;
-        }
-
-        @Override
-        public void writeToParcel(Parcel dest, int flags) {
-            dest.writeInt(this.mHeight);
-            dest.writeInt(this.mWidth);
-            dest.writeString(this.mReference);
-        }
-
-        public PhotoRef() {
-        }
-
-        private PhotoRef(Parcel in) {
-            this.mHeight = in.readInt();
-            this.mWidth = in.readInt();
-            this.mReference = in.readString();
-        }
-
-        public static final Creator<PhotoRef> CREATOR = new Creator<PhotoRef>() {
-            public PhotoRef createFromParcel(Parcel source) {
-                return new PhotoRef(source);
-            }
-
-            public PhotoRef[] newArray(int size) {
-                return new PhotoRef[size];
-            }
-        };
-    }
 
     @Override
     public int describeContents() {
@@ -259,7 +186,7 @@ public class PlaceInfo implements Parcelable {
         dest.writeValue(this.latitude);
         dest.writeValue(this.longitude);
         dest.writeString(this.mPlace_id);
-        dest.writeParcelable(this.mPhotoRef, 0);
+        dest.writeParcelable(this.mPhoto, 0);
         dest.writeString(this.mRating);
         dest.writeByte(mOpenNow ? (byte) 1 : (byte) 0);
         dest.writeInt(this.mPriceLevel);
@@ -276,7 +203,7 @@ public class PlaceInfo implements Parcelable {
         this.latitude = (Double) in.readValue(Double.class.getClassLoader());
         this.longitude = (Double) in.readValue(Double.class.getClassLoader());
         this.mPlace_id = in.readString();
-        this.mPhotoRef = in.readParcelable(PhotoRef.class.getClassLoader());
+        this.mPhoto = in.readParcelable(PlacePhotoMetadata.class.getClassLoader());
         this.mRating = in.readString();
         this.mOpenNow = in.readByte() != 0;
         this.mPriceLevel = in.readInt();

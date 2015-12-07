@@ -1,6 +1,7 @@
 package com.globalfriends.com.aroundme.utils;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.location.Address;
 import android.location.Geocoder;
@@ -25,6 +26,8 @@ import com.globalfriends.com.aroundme.protocol.OperationEnum;
 import com.globalfriends.com.aroundme.protocol.places.PlaceRequestTypeEnum;
 import com.globalfriends.com.aroundme.protocol.places.PlaceResponseEnum;
 import com.globalfriends.com.aroundme.protocol.places.PlacesWebService;
+import com.globalfriends.com.aroundme.ui.AppBrowser;
+import com.globalfriends.com.aroundme.ui.PhotoViewer;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -241,7 +244,10 @@ public class Utility {
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Snackbar.make(imageView, "Handle Image click", Snackbar.LENGTH_SHORT).show();
+                Intent intent = new Intent(context, PhotoViewer.class);
+                intent.putExtra("KEY", context.getResources().getString(R.string.google_places_tag));
+                intent.putExtra("CURRENT_PHOTO", image);
+                context.startActivity(intent);
             }
         });
         imageView.setImageUrl(

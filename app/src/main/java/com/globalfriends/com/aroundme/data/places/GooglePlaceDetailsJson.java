@@ -80,8 +80,8 @@ public class GooglePlaceDetailsJson extends DefaultPlaceDetails {
                     JSONObject obj = (JSONObject) jsonPhotoArray.get(i);
                     PlacePhotoMetadata photo = new PlacePhotoMetadata();
                     photo.setReference(obj.getString("photo_reference"));
-                    photo.setHeight(obj.getString("height"));
-                    photo.setWidth(obj.getString("width"));
+                    photo.setHeight(obj.getInt("height"));
+                    photo.setWidth(obj.getInt("width"));
                     updatePhotoToList(photo);
                 }
             }
