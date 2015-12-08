@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory>
+        <SwitchPreference
+            android:key="miles_or_km_pref"
+            android:summary="Miles"
+            android:title="Miles or Km" />
+
+        <EditTextPreference
+            android:dialogTitle="Set Range"
+            android:key="distance_pref"
+            android:summary=""
+            android:title="Distance" />
+        <ListPreference
+            android:dialogTitle="Select Language"
+            android:key="language_pref"
+            android:summary=""
+            android:title="Language" />
+    </PreferenceCategory>
+</PreferenceScreen>
