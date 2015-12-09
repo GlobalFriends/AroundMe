@@ -1,15 +1,18 @@
 package com.globalfriends.com.aroundme.data;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by Vishal on 12/6/2015.
  */
-public class PlaceReviewMetadata {
+public class PlaceReviewMetadata implements Parcelable {
     private String mRating;
     private String mLanguage;
     private String mAuthorName;
     private String mAuthorUrl;
     private String mProfilePhotoUrl;
-    private String mReviewText;
+    private String mReviewContent;
 
     public String getmProfilePhotoUrl() {
         return mProfilePhotoUrl;
@@ -31,7 +34,7 @@ public class PlaceReviewMetadata {
                 ", mAuthorName='" + mAuthorName + '\'' +
                 ", mAuthorUrl='" + mAuthorUrl + '\'' +
                 ", mProfilePhotoUrl='" + mProfilePhotoUrl + '\'' +
-                ", mReviewText='" + mReviewText + '\'' +
+                ", mReviewContent='" + mReviewContent + '\'' +
                 ", mReviewTime=" + mReviewTime +
                 '}';
     }
@@ -74,12 +77,51 @@ public class PlaceReviewMetadata {
         this.mAuthorUrl = mAuthorUrl;
     }
 
-    public String getmReviewText() {
-        return mReviewText;
+    public String getReviewText() {
+        return mReviewContent;
     }
 
-    public void setmReviewText(String mReviewText) {
-        this.mReviewText = mReviewText;
+    public void setmReviewContent(String mReviewContent) {
+        this.mReviewContent = mReviewContent;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.mRating);
+        dest.writeString(this.mLanguage);
+        dest.writeString(this.mAuthorName);
+        dest.writeString(this.mAuthorUrl);
+        dest.writeString(this.mProfilePhotoUrl);
+        dest.writeString(this.mReviewContent);
+        dest.writeValue(this.mReviewTime);
+    }
+
+    public PlaceReviewMetadata() {
+    }
+
+    protected PlaceReviewMetadata(Parcel in) {
+        this.mRating = in.readString();
+        this.mLanguage = in.readString();
+        this.mAuthorName = in.readString();
+        this.mAuthorUrl = in.readString();
+        this.mProfilePhotoUrl = in.readString();
+        this.mReviewContent = in.readString();
+        this.mReviewTime = (Long) in.readValue(Long.class.getClassLoader());
+    }
+
+    public static final Parcelable.Creator<PlaceReviewMetadata> CREATOR = new Parcelable.Creator<PlaceReviewMetadata>() {
+        public PlaceReviewMetadata createFromParcel(Parcel source) {
+            return new PlaceReviewMetadata(source);
+        }
+
+        public PlaceReviewMetadata[] newArray(int size) {
+            return new PlaceReviewMetadata[size];
+        }
+    };
 }
 

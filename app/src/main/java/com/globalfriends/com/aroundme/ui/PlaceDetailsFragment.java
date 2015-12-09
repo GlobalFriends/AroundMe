@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.AppCompatRatingBar;
+import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.LinearLayoutCompat;
 import android.text.TextUtils;
 import android.util.Log;
@@ -20,13 +21,15 @@ import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 import com.globalfriends.com.aroundme.R;
 import com.globalfriends.com.aroundme.data.IPlaceDetails;
+import com.globalfriends.com.aroundme.data.PlaceReviewMetadata;
 import com.globalfriends.com.aroundme.data.PreferenceManager;
 import com.globalfriends.com.aroundme.data.places.PlaceInfo;
 import com.globalfriends.com.aroundme.protocol.TransactionManager;
 import com.globalfriends.com.aroundme.provider.AroundMeContractProvider;
 import com.globalfriends.com.aroundme.utils.Utility;
 
-;
+;import java.io.Serializable;
+import java.util.List;
 
 /**
  *
@@ -51,6 +54,7 @@ public class PlaceDetailsFragment extends Fragment implements View.OnClickListen
     private LinearLayoutCompat mFavoriteButtonLayout;
     private LinearLayoutCompat mGooglePhotosLayout;
     private LinearLayoutCompat mRatingBarLayout;
+    private LinearLayoutCompat mReviewLayout;
 
 
     @Override
@@ -156,10 +160,11 @@ public class PlaceDetailsFragment extends Fragment implements View.OnClickListen
         mWebsiteButtonLayout.setOnClickListener(this);
         mFavoriteButtonLayout = (LinearLayoutCompat) view.findViewById(R.id.id_favorite);
         mFavoriteButtonLayout.setOnClickListener(this);
+        mReviewLayout = (LinearLayoutCompat) view.findViewById(R.id.review_layout);
 
-        // Non Clickable Layouts
         mGooglePhotosLayout = (LinearLayoutCompat) view.findViewById(R.id.google_photo);
         mRatingBarLayout = (LinearLayoutCompat) view.findViewById(R.id.rating_bar_layout);
+
     }
 
     @Override
@@ -212,6 +217,12 @@ public class PlaceDetailsFragment extends Fragment implements View.OnClickListen
                                     mGooglePlaceDetails.getAddress());
                 }
                 break;
+            case R.id.review_content_layout:
+                Intent reviewIntent = new Intent(getActivity(), ReviewList.class);
+                reviewIntent.putExtra("TAG_NAME", getActivity().getResources().getString(R.string.google_places_tag));
+                reviewIntent.putExtra("REVIEW_LIST", (Serializable) mGooglePlaceDetails.getReviewList());
+                getActivity().startActivity(reviewIntent);
+                break;
         }
     }
 
@@ -222,11 +233,10 @@ public class PlaceDetailsFragment extends Fragment implements View.OnClickListen
                 mGooglePlaceDetails.getLatitude(),
                 mGooglePlaceDetails.getLongitude(),
                 PreferenceManager.getDistanceFormat()));
-
     }
 
     private void updateUi() {
-        // Photo loading can take time..SO lets first start loading it
+        // Photo loading can take time..So lets first start loading it
         Utility.updateModulePhotoView(getActivity(), mGooglePlaceDetails,
                 mGooglePhotosLayout, mGoogleImageLoader);
 
@@ -236,8 +246,51 @@ public class PlaceDetailsFragment extends Fragment implements View.OnClickListen
 
         updateRatingBar();
         updateAddressAndDistance();
+        updateReviewBar(mGooglePlaceDetails, mReviewLayout, mGoogleImageLoader);
     }
 
+    /**
+     * General layout, ric place to create and update Review layout
+     *
+     * @param placeDetails
+     * @param layout
+     * @param imageLoader
+     */
+    private void updateReviewBar(final IPlaceDetails placeDetails, final LinearLayoutCompat layout,
+                                 final ImageLoader imageLoader) {
+        List<PlaceReviewMetadata> reviewList = placeDetails.getReviewList();
+        if (reviewList == null || reviewList.size() == 0) {
+            layout.setVisibility(View.GONE);
+            return;
+        }
+        layout.setVisibility(View.VISIBLE);
+        // Update header
+        AppCompatTextView review_cont = (AppCompatTextView) layout.findViewById(R.id.review_count);
+        review_cont.append(" (" + reviewList.size() + ")");
+
+        LinearLayoutCompat content = (LinearLayoutCompat) layout.findViewById(R.id.review_content_layout);
+        content.setOnClickListener(this);
+
+        AppCompatRatingBar ratingBar = (AppCompatRatingBar) layout.findViewById(R.id.review_rating_bar);
+        AppCompatTextView ratingText = (AppCompatTextView) layout.findViewById(R.id.review_rating_text);
+        AppCompatTextView ratingTime = (AppCompatTextView) layout.findViewById(R.id.review_rating_time);
+        AppCompatTextView authorName = (AppCompatTextView) layout.findViewById(R.id.review_author_name);
+        AppCompatTextView reviewComment = (AppCompatTextView) layout.findViewById(R.id.review_comment);
+        NetworkImageView avatar = (NetworkImageView) layout.findViewById(R.id.review_avatar);
+
+        //Update GUI content with 1st element of List
+        PlaceReviewMetadata data = reviewList.get(0);
+        avatar.setImageUrl(
+                Utility.getPlacePhotoQuery(data.getmAuthorUrl(),
+                        (int) Utility.getDpToPixel(getActivity(), 50),
+                        (int) Utility.getDpToPixel(getActivity(), 50)),
+                imageLoader);
+        ratingBar.setRating(Float.valueOf(data.getRating()));
+        ratingText.setText(data.getRating());
+        ratingTime.setText(Utility.getDate(data.getReviewTime()));
+        authorName.setText(data.getAuthorName());
+        reviewComment.setText(data.getReviewText());
+    }
 
     /**
      * Updated supported components such as Yelp, Four Square etc..

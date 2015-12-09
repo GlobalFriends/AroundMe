@@ -100,7 +100,8 @@ public class GooglePlaceDetailsJson extends DefaultPlaceDetails {
                     review.setmAuthorUrl(obj.getString("author_url"));
                     review.setLanguage(obj.getString("language"));
                     review.setRating(obj.getString("rating"));
-                    review.setReviewTime(obj.getLong("rating"));
+                    review.setReviewTime(obj.getLong("time"));
+                    review.setmReviewContent(obj.getString("text"));
                     try {
                         review.setmProfilePhotoUrl(obj.getString("profile_photo_url"));
                     } catch (JSONException e) {

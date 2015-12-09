@@ -35,32 +35,25 @@
             android:name=".ui.AppBrowser"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
-
         <activity
-            android:name=".ui.DetailReviewList"
+            android:name=".ui.ReviewList"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:theme="@style/AppTheme" />
-
-
         <!-- Yelp test activities -->
         <activity android:name="testing.yelp.SearchBarActivity" />
         <activity android:name="testing.yelp.YelpSearchListActivity" />
-
         <provider
             android:name=".provider.AroundMeContentProvider"
             android:authorities="com.globalfriends.aroundme.provider"
             android:exported="true"
             android:grantUriPermissions="true"
             android:label="AroundMe"></provider>
-
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="@string/google_maps_key" />
-
         <activity
             android:name=".ui.PhotoViewer"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen"></activity>
     </application>
-
 </manifest>

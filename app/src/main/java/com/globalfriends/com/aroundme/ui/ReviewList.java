@@ -1,57 +1,77 @@
 package com.globalfriends.com.aroundme.ui;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatRatingBar;
 import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 import com.globalfriends.com.aroundme.R;
+import com.globalfriends.com.aroundme.data.PlacePhotoMetadata;
 import com.globalfriends.com.aroundme.data.PlaceReviewMetadata;
+import com.globalfriends.com.aroundme.protocol.TransactionManager;
 import com.globalfriends.com.aroundme.utils.Utility;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by Vishal on 12/8/2015.
  */
-public class DetailReviewList extends AppCompatActivity {
+public class ReviewList extends AppCompatActivity {
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
+    private String mModuleTag;
+    private ImageLoader mImageLoader;
     private List<PlaceReviewMetadata> mReviewList = new ArrayList<PlaceReviewMetadata>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTitle(getString(R.string.reviews));
         setContentView(R.layout.review_details);
 
-        mRecyclerView = (RecyclerView) findViewById(R.id.review_list_id);
+        Intent intent = getIntent();
+        if (intent != null) {
+            mReviewList = (List<PlaceReviewMetadata>) intent.getSerializableExtra("REVIEW_LIST");
+            mModuleTag = intent.getStringExtra("TAG_NAME");
+            if (!TextUtils.isEmpty(mModuleTag)) {
+                mImageLoader = TransactionManager.getInstance().getModuleImageLoader(mModuleTag);
+            }
+        }
 
+        if (savedInstanceState != null) {
+            mReviewList = (List<PlaceReviewMetadata>) savedInstanceState.getSerializable("REVIEW_LIST");
+            mModuleTag = savedInstanceState.getString("TAG_NAME");
+
+            if (!TextUtils.isEmpty(mModuleTag)) {
+                mImageLoader = TransactionManager.getInstance().getModuleImageLoader(mModuleTag);
+            }
+        }
+
+        mRecyclerView = (RecyclerView) findViewById(R.id.review_list_id);
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
-
-//        intiContent();
         mAdapter = new ReviewAdapter(this, mReviewList);
         mRecyclerView.setAdapter(mAdapter);
     }
 
-    private void intiContent() {
-        for (int i = 0; i < 5; i++) {
-            PlaceReviewMetadata data = new PlaceReviewMetadata();
-            data.setReviewTime(System.currentTimeMillis());
-            data.setRating("" + i);
-            data.setAuthorName("Vishal Gandhi");
-            data.setmReviewText("adaldijaoidjoaijdoaijdoajidoasijdoaijdoiajsdoai");
-            mReviewList.add(data);
-        }
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putSerializable("REVIEW_LIST", (Serializable) mReviewList);
+        outState.putString("TAG_NAME", mModuleTag);
+        super.onSaveInstanceState(outState);
     }
 
     /**
@@ -68,7 +88,7 @@ public class DetailReviewList extends AppCompatActivity {
 
         @Override
         public ReviewViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.review_item_layout, null);
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.review_item, null);
             ReviewViewHolder viewHolder = new ReviewViewHolder(view);
             return viewHolder;
         }
@@ -92,7 +112,7 @@ public class DetailReviewList extends AppCompatActivity {
                     // Hnalde on click on this image.. Show avatar URL
                 }
             });
-            holder.mReviewContent.setText(content.getmReviewText());
+            holder.mReviewContent.setText(content.getReviewText());
             holder.mReviewTiming.setText(Utility.getDate(content.getReviewTime()));
             holder.mAuthorName.setText(content.getAuthorName());
         }
