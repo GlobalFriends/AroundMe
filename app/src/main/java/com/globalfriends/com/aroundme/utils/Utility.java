@@ -24,6 +24,7 @@ import com.globalfriends.com.aroundme.logging.Logger;
 import com.globalfriends.com.aroundme.protocol.places.PlaceRequestTypeEnum;
 import com.globalfriends.com.aroundme.protocol.places.PlaceResponseEnum;
 import com.globalfriends.com.aroundme.protocol.places.PlacesWebService;
+import com.globalfriends.com.aroundme.ui.DetailReviewList;
 import com.globalfriends.com.aroundme.ui.PhotoViewer;
 import com.google.android.gms.location.places.Place;
 
@@ -31,7 +32,9 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
@@ -245,10 +248,13 @@ public class Utility {
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, PhotoViewer.class);
-                intent.putExtra("KEY", context.getResources().getString(R.string.google_places_tag));
-                intent.putExtra("CURRENT_PHOTO", image);
-                intent.putExtra("PHOTO_LIST", (Serializable)list);
+//                Intent intent = new Intent(context, PhotoViewer.class);
+//                intent.putExtra("KEY", context.getResources().getString(R.string.google_places_tag));
+//                intent.putExtra("CURRENT_PHOTO", image);
+//                intent.putExtra("PHOTO_LIST", (Serializable) list);
+//                context.startActivity(intent);
+
+                Intent intent = new Intent(context, DetailReviewList.class);
                 context.startActivity(intent);
             }
         });
@@ -258,5 +264,15 @@ public class Utility {
                         (int) Utility.getDpToPixel(context, 100)),
                 imageLoader);
         return imageView;
+    }
+
+
+    public static String getDate(long milliSeconds) {
+        // Create a DateFormatter object for displaying date in specified format.
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/mm/yyyy");
+        // Create a calendar object that will convert the date and time value in milliseconds to date.
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(milliSeconds);
+        return formatter.format(calendar.getTime());
     }
 }

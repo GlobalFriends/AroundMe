@@ -35,6 +35,13 @@
             android:name=".ui.AppBrowser"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
+
+        <activity
+            android:name=".ui.DetailReviewList"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:theme="@style/AppTheme" />
+
+
         <!-- Yelp test activities -->
         <activity android:name="testing.yelp.SearchBarActivity" />
         <activity android:name="testing.yelp.YelpSearchListActivity" />

@@ -123,14 +123,11 @@ public class PlaceDetailsFragment extends Fragment implements View.OnClickListen
 
         }
 
-        ratingStars.setVisibility(View.VISIBLE);
-        ratingText.setVisibility(View.VISIBLE);
         if (!TextUtils.isEmpty(mPlace.getRating())) {
             ratingStars.setRating(Float.valueOf(mPlace.getRating()));
             ratingText.setText(mPlace.getRating());
         } else {
-            ratingStars.setVisibility(View.INVISIBLE);
-            ratingText.setVisibility(View.INVISIBLE);
+            ratingText.setText(getResources().getString(R.string.not_rated));
         }
     }
 
@@ -209,9 +206,9 @@ public class PlaceDetailsFragment extends Fragment implements View.OnClickListen
 //                Snackbar.make(v, "Added to Favorite", Snackbar.LENGTH_SHORT).show();
                 if (mPlace != null) {
                     AroundMeContractProvider.Places fav =
-                            new AroundMeContractProvider.Places(mPlace.isOpenNow(),Double.parseDouble(mPlace.getRating()),
-                                    mPlace.getLatitude(), mPlace.getLongitude(),mPlace.getPlaceId(),
-                                    mGooglePlaceDetails.getPhoneNumber(),mPlace.getPhotoReference().toString(),
+                            new AroundMeContractProvider.Places(mPlace.isOpenNow(), Double.parseDouble(mPlace.getRating()),
+                                    mPlace.getLatitude(), mPlace.getLongitude(), mPlace.getPlaceId(),
+                                    mGooglePlaceDetails.getPhoneNumber(), mPlace.getPhotoReference().toString(),
                                     mGooglePlaceDetails.getAddress());
                 }
                 break;
@@ -245,7 +242,7 @@ public class PlaceDetailsFragment extends Fragment implements View.OnClickListen
     /**
      * Updated supported components such as Yelp, Four Square etc..
      */
-    private void updateSupportedComponenet() {
+    private void updateSupportedComponent() {
 
     }
 
@@ -260,14 +257,15 @@ public class PlaceDetailsFragment extends Fragment implements View.OnClickListen
     class ResultResponse extends TransactionManager.Result {
         @Override
         public void onGetPlaceDetails(IPlaceDetails response, String placeTag) {
-//            com.globalfriends.com.aroundme.logging.Logger.i(TAG, "Response received");
-            if (mProgress.isShowing()) {
-                mProgress.dismiss();
-            }
-
             if (getResources().getString(R.string.google_places_tag).equalsIgnoreCase(placeTag)) {
+                // Progress bar should be dismissed only for Google Place Manager response
+                if (mProgress.isShowing()) {
+                    mProgress.dismiss();
+                }
+
                 // This will make sure that it fetches responses from Yelp and other modules
                 mGooglePlaceDetails = response;
+                mGooglePlaceDetails.toString();
                 updateUi();
                 TransactionManager.getInstance().onGetPlaceDetails(null, response.getPhoneNumber());
             }

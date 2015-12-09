@@ -11,6 +11,18 @@ import java.io.Serializable;
 public class PlacePhotoMetadata implements Parcelable {
     private int mHeight;
     private int mWidth;
+
+    @Override
+    public String toString() {
+        return "PlacePhotoMetadata{" +
+                "mHeight=" + mHeight +
+                ", mWidth=" + mWidth +
+                ", mPhotoReference='" + mPhotoReference + '\'' +
+                ", mPhotoUrl='" + mPhotoUrl + '\'' +
+                ", url='" + url + '\'' +
+                '}';
+    }
+
     private String mPhotoReference;
     private String mPhotoUrl;
 

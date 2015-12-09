@@ -23,6 +23,19 @@ public class PlaceReviewMetadata {
         return mReviewTime;
     }
 
+    @Override
+    public String toString() {
+        return "PlaceReviewMetadata{" +
+                "mRating='" + mRating + '\'' +
+                ", mLanguage='" + mLanguage + '\'' +
+                ", mAuthorName='" + mAuthorName + '\'' +
+                ", mAuthorUrl='" + mAuthorUrl + '\'' +
+                ", mProfilePhotoUrl='" + mProfilePhotoUrl + '\'' +
+                ", mReviewText='" + mReviewText + '\'' +
+                ", mReviewTime=" + mReviewTime +
+                '}';
+    }
+
     public void setReviewTime(Long mReviewTime) {
         this.mReviewTime = mReviewTime;
     }

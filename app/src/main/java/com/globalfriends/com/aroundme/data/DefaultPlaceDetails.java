@@ -70,15 +70,23 @@ public class DefaultPlaceDetails implements IPlaceDetails {
 
     @Override
     public String toString() {
-        StringBuilder builder = new StringBuilder();
-        builder.append("mDistance=" + mDistance).append(" mAddress" + mAddress)
-                .append(" mPhoneNumber" + mPhoneNumber).append(" mWebUrl" + mWebUrl)
-                .append(" mName" + mName).append(" mNoOfReviews=" + mNoOfReviews)
-                .append(" mLatitude=" + mLatitude).append(" mLongitude=" + mLongitude)
-                .append(" mOpenNow=" + mOpenNow);
-        return builder.toString();
+        return "DefaultPlaceDetails{" +
+                "mDistance='" + mDistance + '\'' +
+                ", mAddress='" + mAddress + '\'' +
+                ", mPhoneNumber='" + mPhoneNumber + '\'' +
+                ", mWebUrl='" + mWebUrl + '\'' +
+                ", mName='" + mName + '\'' +
+                ", mNoOfReviews='" + mNoOfReviews + '\'' +
+                ", mLatitude=" + mLatitude +
+                ", mLongitude=" + mLongitude +
+                ", mPermanentlyClosed=" + mPermanentlyClosed +
+                ", mOpenNow=" + mOpenNow +
+                ", mWeeklyTimings=" + mWeeklyTimings +
+                ", mResponse=" + mResponse +
+                ", mPhotoList=" + mPhotoList +
+                ", mReviewList=" + mReviewList +
+                '}';
     }
-
 
     @Override
     public void updatePhotoToList(PlacePhotoMetadata photo) {
