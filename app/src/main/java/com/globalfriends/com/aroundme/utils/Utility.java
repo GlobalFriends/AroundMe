@@ -248,13 +248,10 @@ public class Utility {
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Intent intent = new Intent(context, PhotoViewer.class);
-//                intent.putExtra("KEY", context.getResources().getString(R.string.google_places_tag));
-//                intent.putExtra("CURRENT_PHOTO", image);
-//                intent.putExtra("PHOTO_LIST", (Serializable) list);
-//                context.startActivity(intent);
-
-                Intent intent = new Intent(context, DetailReviewList.class);
+                Intent intent = new Intent(context, PhotoViewer.class);
+                intent.putExtra("KEY", context.getResources().getString(R.string.google_places_tag));
+                intent.putExtra("CURRENT_PHOTO", image);
+                intent.putExtra("PHOTO_LIST", (Serializable) list);
                 context.startActivity(intent);
             }
         });
