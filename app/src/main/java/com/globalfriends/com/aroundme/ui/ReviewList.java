@@ -135,12 +135,12 @@ public class ReviewList extends AppCompatActivity {
 
             public ReviewViewHolder(View view) {
                 super(view);
-                mRatingBar = (AppCompatRatingBar) view.findViewById(R.id.rating);
-                mRatingText = (AppCompatTextView) view.findViewById(R.id.rating_text);
-                mAvatar = (NetworkImageView) view.findViewById(R.id.avatar);
-                mReviewContent = (AppCompatTextView) view.findViewById(R.id.review_content);
-                mReviewTiming = (AppCompatTextView) view.findViewById(R.id.rating_time);
-                mAuthorName = (AppCompatTextView) view.findViewById(R.id.author_name);
+                mRatingBar = (AppCompatRatingBar) view.findViewById(R.id.review_rating_bar);
+                mRatingText = (AppCompatTextView) view.findViewById(R.id.review_rating_text);
+                mReviewTiming = (AppCompatTextView) view.findViewById(R.id.review_rating_time);
+                mAuthorName = (AppCompatTextView) view.findViewById(R.id.review_author_name);
+                mAvatar = (NetworkImageView) view.findViewById(R.id.review_avatar);
+                mReviewContent = (AppCompatTextView) view.findViewById(R.id.review_comment);
             }
         }
     }
