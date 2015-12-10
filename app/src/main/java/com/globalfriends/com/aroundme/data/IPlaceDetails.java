@@ -30,4 +30,6 @@ public interface IPlaceDetails {
     List<PlaceReviewMetadata> getReviewList();
 
     boolean isPermanentlyClosed();
+
+    List<String> getWeeklyTimings();
 }

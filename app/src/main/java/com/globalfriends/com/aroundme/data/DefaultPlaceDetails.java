@@ -29,6 +29,11 @@ public class DefaultPlaceDetails implements IPlaceDetails {
         return mPermanentlyClosed;
     }
 
+    @Override
+    public List<String> getWeeklyTimings() {
+        return mWeeklyTimings;
+    }
+
     public DefaultPlaceDetails(JSONObject response) {
         mResponse = response;
     }

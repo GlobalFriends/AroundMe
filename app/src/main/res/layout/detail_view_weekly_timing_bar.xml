@@ -33,6 +33,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
                 android:layout_marginRight="5sp"
+                android:background="?attr/selectableItemBackgroundBorderless"
                 android:clickable="true"
                 android:gravity="right"
                 android:text="@string/more"
@@ -58,7 +59,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5sp"
                 android:gravity="left"
-                android:text="@string/monday"
                 android:textAppearance="@style/TextAppearance.AppCompat.Caption" />
 
             <ImageView
@@ -72,7 +72,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5sp"
                 android:gravity="left"
-                android:text="@string/tuesday"
                 android:textAppearance="@style/TextAppearance.AppCompat.Caption" />
 
             <ImageView
@@ -86,7 +85,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5sp"
                 android:gravity="left"
-                android:text="@string/wednesday"
                 android:textAppearance="@style/TextAppearance.AppCompat.Caption" />
 
             <ImageView
@@ -100,7 +98,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5sp"
                 android:gravity="left"
-                android:text="@string/thursday"
                 android:textAppearance="@style/TextAppearance.AppCompat.Caption" />
 
             <ImageView
@@ -114,7 +111,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5sp"
                 android:gravity="left"
-                android:text="@string/friday"
                 android:textAppearance="@style/TextAppearance.AppCompat.Caption" />
 
             <ImageView
@@ -128,7 +124,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5sp"
                 android:gravity="left"
-                android:text="@string/saturday"
                 android:textAppearance="@style/TextAppearance.AppCompat.Caption" />
 
             <ImageView
@@ -142,7 +137,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5sp"
                 android:gravity="left"
-                android:text="@string/sunday"
                 android:textAppearance="@style/TextAppearance.AppCompat.Caption" />
         </android.support.v7.widget.LinearLayoutCompat>
     </android.support.v7.widget.LinearLayoutCompat>

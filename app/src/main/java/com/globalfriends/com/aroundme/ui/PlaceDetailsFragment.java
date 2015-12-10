@@ -55,6 +55,7 @@ public class PlaceDetailsFragment extends Fragment implements View.OnClickListen
     private LinearLayoutCompat mGooglePhotosLayout;
     private LinearLayoutCompat mRatingBarLayout;
     private LinearLayoutCompat mReviewLayout;
+    private LinearLayoutCompat mTimingLayout;
 
 
     @Override
@@ -161,6 +162,7 @@ public class PlaceDetailsFragment extends Fragment implements View.OnClickListen
         mFavoriteButtonLayout = (LinearLayoutCompat) view.findViewById(R.id.id_favorite);
         mFavoriteButtonLayout.setOnClickListener(this);
         mReviewLayout = (LinearLayoutCompat) view.findViewById(R.id.review_layout);
+        mTimingLayout = (LinearLayoutCompat) view.findViewById(R.id.id_timings);
 
         mGooglePhotosLayout = (LinearLayoutCompat) view.findViewById(R.id.google_photo);
         mRatingBarLayout = (LinearLayoutCompat) view.findViewById(R.id.rating_bar_layout);
@@ -235,6 +237,41 @@ public class PlaceDetailsFragment extends Fragment implements View.OnClickListen
                 PreferenceManager.getDistanceFormat()));
     }
 
+    /**
+     * Update place timing details
+     */
+    private void updatePlaceTiming() {
+        final TextView more = (TextView) mTimingLayout.findViewById(R.id.id_hours_more);
+        more.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LinearLayoutCompat weekly_timings = (LinearLayoutCompat) mTimingLayout.
+                        findViewById(R.id.id_week_timing);
+                if (getActivity().getResources().getString(R.string.more).
+                        equalsIgnoreCase(more.getText().toString())) {
+                    more.setText(getActivity().getResources().getString(R.string.closed));
+                    weekly_timings.setVisibility(View.VISIBLE);
+                    List<String> timMap = mGooglePlaceDetails.getWeeklyTimings();
+                    if (timMap == null) {
+                        return;
+                    }
+
+                    ((TextView) mTimingLayout.findViewById(R.id.id_monday_hours)).setText(timMap.get(0));
+                    ((TextView) mTimingLayout.findViewById(R.id.id_tuesday_hours)).setText(timMap.get(1));
+                    ((TextView) mTimingLayout.findViewById(R.id.id_wednesday_hours)).setText(timMap.get(2));
+                    ((TextView) mTimingLayout.findViewById(R.id.id_thursday_hours)).setText(timMap.get(3));
+                    ((TextView) mTimingLayout.findViewById(R.id.id_friday_hours)).setText(timMap.get(4));
+                    ((TextView) mTimingLayout.findViewById(R.id.id_saturday_hours)).setText(timMap.get(5));
+                    ((TextView) mTimingLayout.findViewById(R.id.id_sunday_hours)).setText(timMap.get(6));
+
+                } else {
+                    more.setText(getActivity().getResources().getString(R.string.more));
+                    weekly_timings.setVisibility(View.GONE);
+                }
+            }
+        });
+    }
+
     private void updateUi() {
         // Photo loading can take time..So lets first start loading it
         Utility.updateModulePhotoView(getActivity(), mGooglePlaceDetails,
@@ -246,6 +283,7 @@ public class PlaceDetailsFragment extends Fragment implements View.OnClickListen
 
         updateRatingBar();
         updateAddressAndDistance();
+        updatePlaceTiming();
         updateReviewBar(mGooglePlaceDetails, mReviewLayout, mGoogleImageLoader);
     }
 
@@ -280,11 +318,7 @@ public class PlaceDetailsFragment extends Fragment implements View.OnClickListen
 
         //Update GUI content with 1st element of List
         PlaceReviewMetadata data = reviewList.get(0);
-        avatar.setImageUrl(
-                Utility.getPlacePhotoQuery(data.getmAuthorUrl(),
-                        (int) Utility.getDpToPixel(getActivity(), 50),
-                        (int) Utility.getDpToPixel(getActivity(), 50)),
-                imageLoader);
+        avatar.setImageUrl(data.getmAuthorUrl(), imageLoader);
         ratingBar.setRating(Float.valueOf(data.getRating()));
         ratingText.setText(data.getRating());
         ratingTime.setText(Utility.getDate(data.getReviewTime()));
