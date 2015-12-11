@@ -3,6 +3,8 @@ package com.globalfriends.com.aroundme.ui;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
@@ -126,9 +128,13 @@ public class PlaceDetailsFragment extends Fragment implements View.OnClickListen
         if (mGooglePlaceDetails.isPermanentlyClosed()) {
             openNow.setText(getActivity().getResources().getString(R.string.permanently_closed));
         } else {
-            openNow.setText(mPlace.isOpenNow() ? getActivity().getResources().getString(R.string.open) :
-                    getActivity().getResources().getString(R.string.closed));
-
+            if (mPlace.isOpenNow()) {
+                openNow.setText(R.string.open);
+                openNow.setTextColor(ColorStateList.valueOf(Color.DKGRAY));
+            } else {
+                openNow.setText(R.string.closed);
+                openNow.setTextColor(ColorStateList.valueOf(Color.RED));
+            }
         }
 
         if (!TextUtils.isEmpty(mPlace.getRating())) {
@@ -255,7 +261,7 @@ public class PlaceDetailsFragment extends Fragment implements View.OnClickListen
                     more.setText(getActivity().getResources().getString(R.string.closed));
                     weekly_timings.setVisibility(View.VISIBLE);
                     List<String> timMap = mGooglePlaceDetails.getWeeklyTimings();
-                    if (timMap == null) {
+                    if (timMap == null || timMap.size() == 0) {
                         return;
                     }
 
