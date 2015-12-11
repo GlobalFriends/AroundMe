@@ -90,10 +90,10 @@ public class PlacesListAdapter extends ArrayAdapter<PlaceInfo> {
 
         if (place.isOpenNow()) {
             viewHolder.mOpenNow.setText(R.string.open);
-            viewHolder.mOpenNow.setTextColor(ColorStateList.valueOf(Color.RED));
+            viewHolder.mOpenNow.setTextColor(ColorStateList.valueOf(Color.DKGRAY));
         } else {
             viewHolder.mOpenNow.setText(R.string.closed);
-            viewHolder.mOpenNow.setTextColor(ColorStateList.valueOf(Color.DKGRAY));
+            viewHolder.mOpenNow.setTextColor(ColorStateList.valueOf(Color.RED));
         }
 
         viewHolder.mPriceLevel.removeAllViews();

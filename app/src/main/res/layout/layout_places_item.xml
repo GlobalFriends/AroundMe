@@ -9,7 +9,7 @@
         android:layout_margin="3dp"
         card_view:cardCornerRadius="2dp"
         card_view:cardElevation="3dp"
-        card_view:contentPadding="10dp">
+        card_view:contentPadding="5dp">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -24,16 +24,16 @@
             <RelativeLayout
                 android:id="@+id/info"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="5sp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10sp"
                 android:layout_toRightOf="@id/photo">
 
                 <TextView
                     android:id="@+id/place_name"
                     style="@style/TextAppearance.AppCompat.Medium"
-                    android:textStyle="bold"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/vicinity"
@@ -41,37 +41,56 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/place_name"
-                    android:layout_marginTop="5sp"/>
+                    android:layout_marginTop="5sp" />
 
                 <android.support.v7.widget.LinearLayoutCompat
                     android:id="@+id/rating_bar"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
                     android:layout_below="@id/vicinity"
-                    android:layout_marginTop="5sp"
-                    android:orientation="horizontal">
+                    android:layout_marginTop="15sp"
+                    android:orientation="vertical">
 
-                    <android.support.v7.widget.AppCompatRatingBar
-                        android:id="@+id/rating_star"
-                        style="?android:attr/ratingBarStyleSmall"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:clickable="false"
-                        android:contextClickable="false"
-                        android:focusable="false"
-                        android:focusableInTouchMode="false"
-                        android:gravity="center_vertical"
-                        android:isIndicator="true"
-                        android:progressTint="#f76707"
-                        android:rating="1" />
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="1sp"
+                        android:src="@color/divider_black" />
 
-                    <TextView
-                        android:id="@+id/rating"
-                        style="@style/TextAppearance.AppCompat.Body1"
-                        android:layout_width="wrap_content"
+                    <android.support.v7.widget.LinearLayoutCompat
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="5sp"
-                        android:layout_toRightOf="@id/rating_star"/>
+                        android:layout_marginTop="3sp"
+                        android:orientation="horizontal">
+
+                        <android.support.v7.widget.AppCompatRatingBar
+                            android:id="@+id/rating_star"
+                            style="?android:attr/ratingBarStyleSmall"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:clickable="false"
+                            android:contextClickable="false"
+                            android:focusable="false"
+                            android:focusableInTouchMode="false"
+                            android:isIndicator="true"
+                            android:progressTint="#f76707" />
+
+                        <TextView
+                            android:id="@+id/rating"
+                            style="@style/TextAppearance.AppCompat.Body1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5sp" />
+
+                        <TextView
+                            android:id="@+id/distance"
+                            style="@style/TextAppearance.AppCompat.Body1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="end"
+                            android:gravity="right" />
+
+                    </android.support.v7.widget.LinearLayoutCompat>
                 </android.support.v7.widget.LinearLayoutCompat>
 
                 <LinearLayout
@@ -97,23 +116,14 @@
                         android:layout_alignParentTop="true" />
 
                     <TextView
-                        android:id="@+id/distance"
-                        style="@style/TextAppearance.AppCompat.Body1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:layout_below="@id/icon"
-                        android:layout_marginTop="5sp"/>
-
-                    <TextView
                         android:id="@+id/open_now"
                         style="@style/TextAppearance.AppCompat.Body1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentBottom="true"
                         android:layout_alignParentEnd="true"
-                        android:layout_below="@id/distance"
-                        android:layout_marginTop="5sp"/>
+                        android:layout_below="@id/icon"
+                        android:layout_marginTop="5sp" />
                 </RelativeLayout>
 
             </RelativeLayout>
