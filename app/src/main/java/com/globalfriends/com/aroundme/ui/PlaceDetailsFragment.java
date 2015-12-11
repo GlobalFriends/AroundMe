@@ -110,6 +110,8 @@ public class PlaceDetailsFragment extends Fragment implements View.OnClickListen
                             mPlace.getPhotoReference().getHeight(),
                             mPlace.getPhotoReference().getWidth()),
                     mGoogleImageLoader);
+        } else {
+            mMainDisplayImage.setImageUrl(mPlace.getIcon(), mGoogleImageLoader);
         }
     }
 

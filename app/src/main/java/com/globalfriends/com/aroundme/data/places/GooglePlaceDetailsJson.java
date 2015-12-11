@@ -74,6 +74,11 @@ public class GooglePlaceDetailsJson extends DefaultPlaceDetails {
         }
 
         try {
+            mIcon = response.getString("icon");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
             JSONArray jsonPhotoArray = (JSONArray) response.getJSONArray("photos");
             if (jsonPhotoArray != null) {
                 for (int i = 0; i < jsonPhotoArray.length(); i++) {

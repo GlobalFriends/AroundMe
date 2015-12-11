@@ -109,6 +109,8 @@ public class PlacesListAdapter extends ArrayAdapter<PlaceInfo> {
                             (int) Utility.getDpToPixel(mContext, 80),
                             (int) Utility.getDpToPixel(mContext, 80)),
                     mImageLoader);
+        } else {
+            viewHolder.mPlacePhoto.setImageUrl(place.getIcon(), mImageLoader);
         }
 
         return convertView;

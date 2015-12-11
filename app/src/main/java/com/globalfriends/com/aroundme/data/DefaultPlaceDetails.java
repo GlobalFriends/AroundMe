@@ -19,6 +19,7 @@ public class DefaultPlaceDetails implements IPlaceDetails {
     protected Double mLongitude;
     protected boolean mPermanentlyClosed;
     protected boolean mOpenNow;
+    protected String mIcon;
     protected List<String> mWeeklyTimings = new ArrayList<String>();
     protected JSONObject mResponse;
     protected List<PlacePhotoMetadata> mPhotoList = new ArrayList<PlacePhotoMetadata>();
@@ -32,6 +33,11 @@ public class DefaultPlaceDetails implements IPlaceDetails {
     @Override
     public List<String> getWeeklyTimings() {
         return mWeeklyTimings;
+    }
+
+    @Override
+    public String getPlaceHolderIcon() {
+        return mIcon;
     }
 
     public DefaultPlaceDetails(JSONObject response) {

@@ -32,4 +32,6 @@ public interface IPlaceDetails {
     boolean isPermanentlyClosed();
 
     List<String> getWeeklyTimings();
+
+    String getPlaceHolderIcon();
 }
