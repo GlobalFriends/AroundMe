@@ -26,6 +26,7 @@ import com.globalfriends.com.aroundme.data.PreferenceManager;
 import com.globalfriends.com.aroundme.data.places.PlaceInfo;
 import com.globalfriends.com.aroundme.protocol.TransactionManager;
 import com.globalfriends.com.aroundme.provider.AroundMeContractProvider;
+import com.globalfriends.com.aroundme.ui.review.ReviewList;
 import com.globalfriends.com.aroundme.utils.Utility;
 
 ;import java.io.Serializable;
