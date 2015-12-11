@@ -110,7 +110,7 @@ public class Utility {
     }
 
     /**
-     * CFInds distance between 2 places based on latitude and longitude
+     * CFInds mDistance between 2 places based on latitude and longitude
      *
      * @param lat1
      * @param lon1

@@ -3,6 +3,8 @@ package com.globalfriends.com.aroundme.ui.placeList;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.support.v7.widget.AppCompatRatingBar;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +17,7 @@ import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 import com.globalfriends.com.aroundme.AroundMeApplication;
 import com.globalfriends.com.aroundme.R;
+import com.globalfriends.com.aroundme.data.PreferenceManager;
 import com.globalfriends.com.aroundme.data.places.PlaceInfo;
 import com.globalfriends.com.aroundme.protocol.TransactionManager;
 import com.globalfriends.com.aroundme.utils.Utility;
@@ -51,13 +54,15 @@ public class PlacesListAdapter extends ArrayAdapter<PlaceInfo> {
             convertView = layoutInflater.inflate(R.layout.layout_places_item, null);
 
             viewHolder = new ViewHolder();
-            viewHolder.icon = (ImageView) convertView.findViewById(R.id.icon);
-            viewHolder.photo = (NetworkImageView) convertView.findViewById(R.id.photo);
-            viewHolder.placeName = (TextView) convertView.findViewById(R.id.place_name);
-            viewHolder.vicinity = (TextView) convertView.findViewById(R.id.vicinity);
-            viewHolder.openNow = (TextView) convertView.findViewById(R.id.open_now);
-            viewHolder.rating = (TextView) convertView.findViewById(R.id.rating);
-            viewHolder.priceLevel = (LinearLayout) convertView.findViewById(R.id.price_level);
+            viewHolder.mIcon = (ImageView) convertView.findViewById(R.id.icon);
+            viewHolder.mPlacePhoto = (NetworkImageView) convertView.findViewById(R.id.photo);
+            viewHolder.mPlaceName = (TextView) convertView.findViewById(R.id.place_name);
+            viewHolder.mAddress = (TextView) convertView.findViewById(R.id.vicinity);
+            viewHolder.mOpenNow = (TextView) convertView.findViewById(R.id.open_now);
+            viewHolder.mDistance = (TextView) convertView.findViewById(R.id.distance);
+            viewHolder.mRatingText = (TextView) convertView.findViewById(R.id.rating);
+            viewHolder.mRatingBar = (AppCompatRatingBar) convertView.findViewById(R.id.rating_star);
+            viewHolder.mPriceLevel = (LinearLayout) convertView.findViewById(R.id.price_level);
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
@@ -65,21 +70,42 @@ public class PlacesListAdapter extends ArrayAdapter<PlaceInfo> {
 
         PlaceInfo place = getItem(position);
 
-        viewHolder.placeName.setText(place.getName());
-        viewHolder.vicinity.setText(place.getVicinity());
-        viewHolder.rating.setText(place.getRating() == null ? mContext.getString(R.string.not_rated) : mContext.getString(R.string.rating, place.getRating()));
-        viewHolder.openNow.setText(place.isOpenNow() ? R.string.open : R.string.closed);
-        viewHolder.openNow.setTextColor(place.isOpenNow() ? ColorStateList.valueOf(Color.GREEN) : ColorStateList.valueOf(Color.LTGRAY));
-        viewHolder.priceLevel.removeAllViews();
+        viewHolder.mPlaceName.setText(place.getName());
+        viewHolder.mAddress.setText(place.getVicinity());
+        String rating = place.getRating();
+
+        if (!TextUtils.isEmpty(rating)) {
+            viewHolder.mRatingBar.setRating(Float.valueOf(place.getRating()));
+            viewHolder.mRatingText.setText(place.getRating());
+        } else {
+            viewHolder.mRatingBar.setRating(0F);
+            viewHolder.mRatingText.setText(mContext.getString(R.string.not_rated));
+        }
+
+        viewHolder.mDistance.setText(Utility.distanceFromLatitudeLongitude(Double.valueOf(PreferenceManager.getLatitude()),
+                Double.valueOf(PreferenceManager.getLongitude()),
+                place.getLatitude(),
+                place.getLongitude(),
+                PreferenceManager.getDistanceFormat()));
+
+        if (place.isOpenNow()) {
+            viewHolder.mOpenNow.setText(R.string.open);
+            viewHolder.mOpenNow.setTextColor(ColorStateList.valueOf(Color.RED));
+        } else {
+            viewHolder.mOpenNow.setText(R.string.closed);
+            viewHolder.mOpenNow.setTextColor(ColorStateList.valueOf(Color.DKGRAY));
+        }
+
+        viewHolder.mPriceLevel.removeAllViews();
         for (int i = 0; i < place.getPriceLevel(); i++) {
             ImageView imageView = new ImageView(mContext);
             imageView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
             imageView.setImageResource(R.drawable.dollar);
-            viewHolder.priceLevel.addView(imageView);
+            viewHolder.mPriceLevel.addView(imageView);
         }
 
         if (place.getPhotoReference() != null) {
-            viewHolder.photo.setImageUrl(Utility.getPlacePhotoQuery(place.getPhotoReference().getReference(),
+            viewHolder.mPlacePhoto.setImageUrl(Utility.getPlacePhotoQuery(place.getPhotoReference().getReference(),
                             (int) Utility.getDpToPixel(mContext, 80),
                             (int) Utility.getDpToPixel(mContext, 80)),
                     mImageLoader);
@@ -89,12 +115,14 @@ public class PlacesListAdapter extends ArrayAdapter<PlaceInfo> {
     }
 
     private static class ViewHolder {
-        public ImageView icon;
-        public NetworkImageView photo;
-        public TextView placeName;
-        public TextView vicinity;
-        public TextView openNow;
-        public TextView rating;
-        public LinearLayout priceLevel;
+        public ImageView mIcon;
+        public NetworkImageView mPlacePhoto;
+        public TextView mPlaceName;
+        public TextView mAddress;
+        public TextView mOpenNow;
+        public AppCompatRatingBar mRatingBar;
+        public TextView mRatingText;
+        public TextView mDistance;
+        public LinearLayout mPriceLevel;
     }
 }
