@@ -14,7 +14,7 @@ import com.globalfriends.com.aroundme.R;
 import com.globalfriends.com.aroundme.data.PreferenceManager;
 import com.globalfriends.com.aroundme.data.places.PlaceInfo;
 import com.globalfriends.com.aroundme.logging.Logger;
-import com.globalfriends.com.aroundme.ui.PlacesListFragment;
+import com.globalfriends.com.aroundme.ui.placeList.PlacesListFragment;
 import com.google.android.gms.maps.GoogleMap;
 
 import java.util.ArrayList;
@@ -109,8 +109,8 @@ public class MainActivity extends AppCompatActivity {
 
 
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragment_holder, PlacesListFragment.instantiate(MainActivity.this, "com.globalfriends.com.aroundme.ui.PlacesListFragment", bundle)).commit();
-//        ft.replace(R.id.fragment_holder, PlacesListFragment.instantiate(MainActivity.this, "com.globalfriends.com.aroundme.ui.PlacesListFragment", bundle));
+                .replace(R.id.fragment_holder, PlacesListFragment.instantiate(MainActivity.this, "com.globalfriends.com.aroundme.ui.placeList.PlacesListFragment", bundle)).commit();
+//        ft.replace(R.id.fragment_holder, PlacesListFragment.instantiate(MainActivity.this, "com.globalfriends.com.aroundme.ui.placeList.PlacesListFragment", bundle));
 //        Fragment fragment = new PlacesListFragment();
 //        fragment.setArguments(bundle);
 //        ft.replace(R.id.fragment_holder, fragment);
