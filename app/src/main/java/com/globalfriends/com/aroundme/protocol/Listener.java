@@ -1,6 +1,7 @@
 package com.globalfriends.com.aroundme.protocol;
 
 import com.globalfriends.com.aroundme.data.IPlaceDetails;
+import com.globalfriends.com.aroundme.data.places.AutoCompletePrediction;
 import com.globalfriends.com.aroundme.data.places.PlaceInfo;
 
 import org.json.JSONObject;
@@ -25,6 +26,8 @@ public interface Listener {
      * @param placeList
      */
     void onPlacesList(List<PlaceInfo> placeList);
+
+    void onAutoComplete(List<AutoCompletePrediction> predictions);
 
     /**
      *

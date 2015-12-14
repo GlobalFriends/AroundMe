@@ -6,6 +6,7 @@ import com.globalfriends.com.aroundme.AroundMeApplication;
 import com.globalfriends.com.aroundme.R;
 import com.globalfriends.com.aroundme.data.IPlaceDetails;
 import com.globalfriends.com.aroundme.data.PreferenceManager;
+import com.globalfriends.com.aroundme.data.places.AutoCompletePrediction;
 import com.globalfriends.com.aroundme.data.places.GooglePlaceDetailsJson;
 import com.globalfriends.com.aroundme.data.places.PlaceInfo;
 import com.globalfriends.com.aroundme.logging.Logger;
@@ -70,6 +71,22 @@ public class PlaceManager extends DefaultFeatureManager {
         handleJsonRequest(builder.build().getUrl(), OperationEnum.OPERATION_PLACE_DETAIL);
     }
 
+    @Override
+    public void autoComplete(String input) {
+        if (TextUtils.isEmpty(input)) {
+            return;
+        }
+
+        PlacesWebService.Builder builder =
+                new PlacesWebService.Builder().
+                        setSearchType(PlaceRequestTypeEnum.SEARCH_TYPE_AUTOCOMPLETE).
+                        setResponseType(PlaceResponseEnum.RESP_JSON).
+                        setInput(input).
+                        setKey(AroundMeApplication.getContext().getResources().getString(R.string.google_maps_key));
+
+        handleJsonRequest(builder.build().getUrl(), OperationEnum.OPERATION_AUTOCOMPLETE);
+    }
+
     /**
      * Schedule response based on provided operation request
      *
@@ -109,6 +126,9 @@ public class PlaceManager extends DefaultFeatureManager {
                 break;
             case OPERATION_PLACE_PHOTO:
                 mListener.onGetPhoto(response, mModuleTag);
+                break;
+            case OPERATION_AUTOCOMPLETE:
+                mListener.onAutoComplete(AutoCompletePrediction.parse(response));
                 break;
             default:
                 Logger.e(LOGGING_TAG, ">>>> Invalid operation. Should never come here <<<<");

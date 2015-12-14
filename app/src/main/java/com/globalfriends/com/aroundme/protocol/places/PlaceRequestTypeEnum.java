@@ -8,7 +8,8 @@ public enum PlaceRequestTypeEnum {
     SEARCH_TYPE_TEXT("textsearch"),
     SEARCH_TYPE_RADAR("radarsearch"),
     SEARCH_TYPE_PHOTO("photo"),
-    SEARCH_TYPE_DETAILS("details");
+    SEARCH_TYPE_DETAILS("details"),
+    SEARCH_TYPE_AUTOCOMPLETE("autocomplete");
 
     private String mSearchType;
 

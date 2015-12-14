@@ -93,6 +93,11 @@ public class DefaultFeatureManager implements IFeatureManager {
     }
 
     @Override
+    public void autoComplete(String input) {
+        //
+    }
+
+    @Override
     public final ImageLoader getImageLoader() {
         return mImageLoader;
     }

@@ -6,5 +6,6 @@ package com.globalfriends.com.aroundme.protocol;
 public enum OperationEnum {
     OPERATION_PLACE_LIST,
     OPERATION_PLACE_DETAIL,
-    OPERATION_PLACE_PHOTO
+    OPERATION_PLACE_PHOTO,
+    OPERATION_AUTOCOMPLETE
 }

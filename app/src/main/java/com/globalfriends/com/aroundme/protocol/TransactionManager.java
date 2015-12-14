@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.android.volley.toolbox.ImageLoader;
 import com.globalfriends.com.aroundme.data.IPlaceDetails;
+import com.globalfriends.com.aroundme.data.places.AutoCompletePrediction;
 import com.globalfriends.com.aroundme.data.places.PlaceInfo;
 import com.globalfriends.com.aroundme.protocol.places.PlaceManager;
 import com.globalfriends.com.aroundme.protocol.places.PlaceRequestTypeEnum;
@@ -116,6 +117,12 @@ public class TransactionManager implements Listener {
         }
     }
 
+    public void autoComplete(final String input) {
+        for (IFeatureManager feature : mManagerList) {
+            feature.autoComplete(input);
+        }
+    }
+
     @Override
     public void onGetPhoto(final JSONObject response, final String placeTag) {
         synchronized (mListeners) {
@@ -148,6 +155,15 @@ public class TransactionManager implements Listener {
         synchronized (mListeners) {
             for (Result listener : mListeners) {
                 listener.onError(errorMsg, tag);
+            }
+        }
+    }
+
+    @Override
+    public void onAutoComplete(List<AutoCompletePrediction> predictions) {
+        synchronized (mListeners) {
+            for (Result listener : mListeners) {
+                listener.onAutoComplete(predictions);
             }
         }
     }
@@ -212,6 +228,9 @@ public class TransactionManager implements Listener {
          * @param placeList
          */
         public void onPlacesList(List<PlaceInfo> placeList) {
+        }
+
+        public void onAutoComplete(List<AutoCompletePrediction> predictions) {
         }
 
         /**

@@ -71,4 +71,6 @@
     <string name="review_good">Good</string>
     <string name="review_excellent">Excellent</string>
 
+
+    <string name="search_hint">Search place</string>
 </resources>
