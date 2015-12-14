@@ -6,6 +6,7 @@ import android.content.res.Resources;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Environment;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutCompat;
 import android.text.TextUtils;
 import android.text.format.DateFormat;
@@ -210,7 +211,7 @@ public class Utility {
      * @param imageLoader
      */
     public static void updateModulePhotoView(final Context context, final IPlaceDetails placeDetails,
-                                             final LinearLayoutCompat layout, final ImageLoader imageLoader) {
+                                             final CardView layout, final ImageLoader imageLoader) {
         List<PlacePhotoMetadata> mList = placeDetails.getPhotos();
         if (mList == null || mList.size() == 0) {
             layout.setVisibility(View.GONE);

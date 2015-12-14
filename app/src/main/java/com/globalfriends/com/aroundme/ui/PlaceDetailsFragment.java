@@ -11,6 +11,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.AppCompatRatingBar;
 import android.support.v7.widget.AppCompatTextView;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutCompat;
 import android.text.TextUtils;
 import android.util.Log;
@@ -55,9 +56,9 @@ public class PlaceDetailsFragment extends Fragment implements View.OnClickListen
     private NetworkImageView mMainDisplayImage;
     private LinearLayoutCompat mMapButtonLayout;
     private LinearLayoutCompat mFavoriteButtonLayout;
-    private LinearLayoutCompat mGooglePhotosLayout;
+    private CardView mGooglePhotosLayout;
     private LinearLayoutCompat mRatingBarLayout;
-    private LinearLayoutCompat mReviewLayout;
+    private CardView mReviewLayout;
     private LinearLayoutCompat mTimingLayout;
 
 
@@ -171,10 +172,10 @@ public class PlaceDetailsFragment extends Fragment implements View.OnClickListen
         mWebsite = (TextView) view.findViewById(R.id.id_website);
         mFavoriteButtonLayout = (LinearLayoutCompat) view.findViewById(R.id.id_favorite);
         mFavoriteButtonLayout.setOnClickListener(this);
-        mReviewLayout = (LinearLayoutCompat) view.findViewById(R.id.review_layout);
+        mReviewLayout = (CardView) view.findViewById(R.id.review_layout);
         mTimingLayout = (LinearLayoutCompat) view.findViewById(R.id.id_timings);
 
-        mGooglePhotosLayout = (LinearLayoutCompat) view.findViewById(R.id.google_photo);
+        mGooglePhotosLayout = (CardView) view.findViewById(R.id.google_photo);
     }
 
     @Override
@@ -310,7 +311,7 @@ public class PlaceDetailsFragment extends Fragment implements View.OnClickListen
      * @param layout
      * @param imageLoader
      */
-    private void updateReviewBar(final IPlaceDetails placeDetails, final LinearLayoutCompat layout,
+    private void updateReviewBar(final IPlaceDetails placeDetails, final CardView layout,
                                  final ImageLoader imageLoader) {
         List<PlaceReviewMetadata> reviewList = placeDetails.getReviewList();
         if (reviewList == null || reviewList.size() == 0) {
