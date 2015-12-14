@@ -54,7 +54,7 @@ class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewViewHolder>
         holder.mRatingBar.setRating(Float.valueOf(content.getRating()));
         holder.mRatingText.setText(content.getRating());
 
-        holder.mAvatar.setImageUrl(content.getmProfilePhotoUrl(), mImageLoader);
+        holder.mAvatar.setImageUrl(content.getProfilePhotoUrl(), mImageLoader);
         holder.mAvatar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -64,6 +64,9 @@ class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewViewHolder>
         holder.mReviewContent.setText(content.getReviewText());
         holder.mReviewTiming.setText(Utility.getDate(content.getReviewTime()));
         holder.mAuthorName.setText(content.getAuthorName());
+
+        holder.mAspectType.setText(content.getAspect());
+        holder.mAspectRating.setText(content.getAspectDescription().toString());
     }
 
     @Override
@@ -81,6 +84,8 @@ class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewViewHolder>
         protected AppCompatTextView mReviewContent;
         protected AppCompatTextView mReviewTiming;
         protected AppCompatTextView mAuthorName;
+        protected AppCompatTextView mAspectType;
+        protected AppCompatTextView mAspectRating;
 
         public ReviewViewHolder(View view) {
             super(view);
@@ -90,6 +95,9 @@ class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewViewHolder>
             mAuthorName = (AppCompatTextView) view.findViewById(R.id.review_author_name);
             mAvatar = (NetworkImageView) view.findViewById(R.id.review_avatar);
             mReviewContent = (AppCompatTextView) view.findViewById(R.id.review_comment);
+
+            mAspectType = (AppCompatTextView) view.findViewById(R.id.aspect_type_id);
+            mAspectRating = (AppCompatTextView) view.findViewById(R.id.aspect_rating_id);
         }
     }
 }

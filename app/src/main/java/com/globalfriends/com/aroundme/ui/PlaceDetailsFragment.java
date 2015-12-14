@@ -331,16 +331,22 @@ public class PlaceDetailsFragment extends Fragment implements View.OnClickListen
         AppCompatTextView ratingTime = (AppCompatTextView) layout.findViewById(R.id.review_rating_time);
         AppCompatTextView authorName = (AppCompatTextView) layout.findViewById(R.id.review_author_name);
         AppCompatTextView reviewComment = (AppCompatTextView) layout.findViewById(R.id.review_comment);
+
+        AppCompatTextView aspectType = (AppCompatTextView) layout.findViewById(R.id.aspect_type_id);
+        AppCompatTextView aspectRating = (AppCompatTextView) layout.findViewById(R.id.aspect_rating_id);
+
         NetworkImageView avatar = (NetworkImageView) layout.findViewById(R.id.review_avatar);
 
         //Update GUI content with 1st element of List
         PlaceReviewMetadata data = reviewList.get(0);
-        avatar.setImageUrl(data.getmAuthorUrl(), imageLoader);
+        avatar.setImageUrl(data.getAuthorUrl(), imageLoader);
         ratingBar.setRating(Float.valueOf(data.getRating()));
         ratingText.setText(data.getRating());
         ratingTime.setText(Utility.getDate(data.getReviewTime()));
         authorName.setText(data.getAuthorName());
         reviewComment.setText(data.getReviewText());
+        aspectType.setText(data.getAspect());
+        aspectRating.setText(data.getAspectDescription().getReviewString());
     }
 
     /**

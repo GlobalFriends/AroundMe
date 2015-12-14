@@ -3,6 +3,8 @@ package com.globalfriends.com.aroundme.data;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.globalfriends.com.aroundme.data.places.ReviewAspect;
+
 /**
  * Created by Vishal on 12/6/2015.
  */
@@ -13,12 +15,45 @@ public class PlaceReviewMetadata implements Parcelable {
     private String mAuthorUrl;
     private String mProfilePhotoUrl;
     private String mReviewContent;
+    private String mAspect;
+    private ReviewAspect mAspectDesc;
 
-    public String getmProfilePhotoUrl() {
+    public String getAspect() {
+        return mAspect;
+    }
+
+    public void setAspect(String mReviewAspect) {
+        this.mAspect = mReviewAspect;
+    }
+
+    public ReviewAspect getAspectDescription() {
+        return mAspectDesc;
+    }
+
+    public void setAspectDescription(int rating) {
+        switch (rating) {
+            case 0:
+                mAspectDesc = ReviewAspect.Poor;
+                break;
+            case 1:
+                mAspectDesc = ReviewAspect.Average;
+                break;
+            case 2:
+                mAspectDesc = ReviewAspect.Good;
+                break;
+            case 3:
+                mAspectDesc = ReviewAspect.Excellent;
+                break;
+            default:
+                mAspectDesc = ReviewAspect.Poor;
+        }
+    }
+
+    public String getProfilePhotoUrl() {
         return mProfilePhotoUrl;
     }
 
-    public void setmProfilePhotoUrl(String mProfilePhotoUrl) {
+    public void setProfilePhotoUrl(String mProfilePhotoUrl) {
         this.mProfilePhotoUrl = mProfilePhotoUrl;
     }
 
@@ -69,11 +104,11 @@ public class PlaceReviewMetadata implements Parcelable {
         this.mAuthorName = mAthorName;
     }
 
-    public String getmAuthorUrl() {
+    public String getAuthorUrl() {
         return mAuthorUrl;
     }
 
-    public void setmAuthorUrl(String mAuthorUrl) {
+    public void setAuthorUrl(String mAuthorUrl) {
         this.mAuthorUrl = mAuthorUrl;
     }
 
@@ -81,9 +116,13 @@ public class PlaceReviewMetadata implements Parcelable {
         return mReviewContent;
     }
 
-    public void setmReviewContent(String mReviewContent) {
+    public void setReviewContent(String mReviewContent) {
         this.mReviewContent = mReviewContent;
     }
+
+    public PlaceReviewMetadata() {
+    }
+
 
     @Override
     public int describeContents() {
@@ -98,10 +137,9 @@ public class PlaceReviewMetadata implements Parcelable {
         dest.writeString(this.mAuthorUrl);
         dest.writeString(this.mProfilePhotoUrl);
         dest.writeString(this.mReviewContent);
+        dest.writeString(this.mAspect);
+        dest.writeInt(this.mAspectDesc == null ? -1 : this.mAspectDesc.ordinal());
         dest.writeValue(this.mReviewTime);
-    }
-
-    public PlaceReviewMetadata() {
     }
 
     protected PlaceReviewMetadata(Parcel in) {
@@ -111,10 +149,13 @@ public class PlaceReviewMetadata implements Parcelable {
         this.mAuthorUrl = in.readString();
         this.mProfilePhotoUrl = in.readString();
         this.mReviewContent = in.readString();
+        this.mAspect = in.readString();
+        int tmpMAspectDesc = in.readInt();
+        this.mAspectDesc = tmpMAspectDesc == -1 ? null : ReviewAspect.values()[tmpMAspectDesc];
         this.mReviewTime = (Long) in.readValue(Long.class.getClassLoader());
     }
 
-    public static final Parcelable.Creator<PlaceReviewMetadata> CREATOR = new Parcelable.Creator<PlaceReviewMetadata>() {
+    public static final Creator<PlaceReviewMetadata> CREATOR = new Creator<PlaceReviewMetadata>() {
         public PlaceReviewMetadata createFromParcel(Parcel source) {
             return new PlaceReviewMetadata(source);
         }

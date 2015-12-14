@@ -66,4 +66,9 @@
     <string name="permanently_closed">Permanently Closed</string>
     <string name="miles_notation">mi</string>
     <string name="kilometer_notation">km</string>
+    <string name="review_poor">Poor</string>
+    <string name="review_average">Average</string>
+    <string name="review_good">Good</string>
+    <string name="review_excellent">Excellent</string>
+
 </resources>
