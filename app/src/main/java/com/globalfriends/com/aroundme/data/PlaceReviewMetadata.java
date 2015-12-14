@@ -53,7 +53,7 @@ public class PlaceReviewMetadata implements Parcelable {
         if (mProfilePhotoUrl == null) {
             return mProfilePhotoUrl;
         }
-        return mProfilePhotoUrl.replace("\\", "");
+        return "https:" + mProfilePhotoUrl;
     }
 
     public void setProfilePhotoUrl(String mProfilePhotoUrl) {
