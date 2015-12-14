@@ -172,6 +172,9 @@ public class TransactionManager implements Listener {
      * @param result
      */
     public void addResultCallback(final Result result) {
+        if (result.isRegistered()) {
+            return;
+        }
         synchronized (mListeners) {
             result.setRegistered(true);
             mListeners.add(result);
@@ -182,6 +185,9 @@ public class TransactionManager implements Listener {
      * @param result
      */
     public void removeResultCallback(final Result result) {
+        if (!result.isRegistered()) {
+            return;
+        }
         synchronized (mListeners) {
             result.setRegistered(false);
             mListeners.remove(result);

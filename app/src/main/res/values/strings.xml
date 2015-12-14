@@ -71,6 +71,7 @@
     <string name="review_good">Good</string>
     <string name="review_excellent">Excellent</string>
 
-
-    <string name="search_hint">Search place</string>
+    <string name="custom_location">Custom location</string>
+    <string name="clear">Clear</string>
+    <string name="search_hint">Search custom location</string>
 </resources>

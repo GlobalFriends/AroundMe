@@ -22,12 +22,17 @@ import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.globalfriends.com.aroundme.R;
+import com.globalfriends.com.aroundme.data.IPlaceDetails;
 import com.globalfriends.com.aroundme.data.PreferenceManager;
 import com.globalfriends.com.aroundme.data.places.PlaceInfo;
 import com.globalfriends.com.aroundme.logging.Logger;
+import com.globalfriends.com.aroundme.protocol.TransactionManager;
 import com.globalfriends.com.aroundme.ui.placeList.FavoriteFragment;
 import com.globalfriends.com.aroundme.ui.placeList.PlacesListFragment;
 import com.globalfriends.com.aroundme.ui.placeList.RecentFragment;
@@ -53,13 +58,39 @@ public class Launcher extends AppCompatActivity implements
     private Location loc;
     private LocationManager locationManager;
     private GoogleApiClient mGoogleApiClient;
+
+    private boolean mIsCustomLocation;
+    private MenuItem mSearchMenu;
+    private View mCustomLocationHolderView;
+    private TextView mCustomLocationTextView;
+    private Button mCustomLocationClearButton;
+    private String mSavedCurrentLocationLatitude;
+    private String mSavedCurrentLocationLongitude;
+    private TransactionManager.Result mSetCustomLocationCallback = new TransactionManager.Result() {
+        @Override
+        public void onError(String errorMsg, String tag) {
+            enableCustomLocation(false, null);
+        }
+
+        @Override
+        public void onGetPlaceDetails(IPlaceDetails response, String placeTag) {
+            enableCustomLocation(true, response);
+        }
+    };
+
     private LocationListener listener = new LocationListener() {
         @Override
         public void onLocationChanged(Location location) {
             Logger.e(TAG, "onLocationChanged: " + location);
             loc = location;
-            PreferenceManager.putLocation(Double.toString(loc.getLatitude()),
-                    Double.toString(loc.getLongitude()));
+
+            if (mIsCustomLocation) {
+                mSavedCurrentLocationLatitude = Double.toString(loc.getLatitude());
+                mSavedCurrentLocationLongitude = Double.toString(loc.getLongitude());
+            } else {
+                PreferenceManager.putLocation(Double.toString(loc.getLatitude()),
+                        Double.toString(loc.getLongitude()));
+            }
         }
 
         @Override
@@ -135,8 +166,13 @@ public class Launcher extends AppCompatActivity implements
             locationManager.requestLocationUpdates(provider, 1000, 50.0f, listener);
         } else {
             loc = location;
-            PreferenceManager.putLocation(Double.toString(loc.getLatitude()),
-                    Double.toString(loc.getLongitude()));
+            if (mIsCustomLocation) {
+                mSavedCurrentLocationLatitude = Double.toString(loc.getLatitude());
+                mSavedCurrentLocationLongitude = Double.toString(loc.getLongitude());
+            } else {
+                PreferenceManager.putLocation(Double.toString(loc.getLatitude()),
+                        Double.toString(loc.getLongitude()));
+            }
         }
     }
 
@@ -188,6 +224,17 @@ public class Launcher extends AppCompatActivity implements
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        mCustomLocationHolderView = findViewById(R.id.custom_location);
+        mCustomLocationTextView = (TextView) findViewById(R.id.text_current_location);
+        mCustomLocationClearButton = (Button) findViewById(R.id.button_clear_custom_location);
+        mCustomLocationClearButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TransactionManager.getInstance().removeResultCallback(mSetCustomLocationCallback);
+                enableCustomLocation(false, null);
+            }
+        });
+
         // Handle Location
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         validateLocation();
@@ -224,7 +271,8 @@ public class Launcher extends AppCompatActivity implements
         getMenuInflater().inflate(R.menu.launcher_menu, menu);
 
         SearchManager searchManager = (SearchManager) getSystemService(SEARCH_SERVICE);
-        SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
+        mSearchMenu = menu.findItem(R.id.action_search);
+        SearchView searchView = (SearchView) mSearchMenu.getActionView();
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
         searchView.setIconified(false);
 
@@ -279,6 +327,37 @@ public class Launcher extends AppCompatActivity implements
 
 //        Fragment fragment = new PlaceDetailsFragment();
 //        updateFragment(fragment, false, true);
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+            String placeId = intent.getDataString();
+
+            TransactionManager.getInstance().addResultCallback(mSetCustomLocationCallback);
+            TransactionManager.getInstance().findPlaceDetails(placeId, "");
+        }
+    }
+
+    private void enableCustomLocation(boolean value, IPlaceDetails response) {
+        if (value) {
+            mSearchMenu.collapseActionView();
+            mCustomLocationHolderView.setVisibility(View.VISIBLE);
+            mCustomLocationTextView.setText(response.getAddress());
+            if (!mIsCustomLocation) {
+                mSavedCurrentLocationLatitude = PreferenceManager.getLatitude();
+                mSavedCurrentLocationLongitude = PreferenceManager.getLongitude();
+            }
+            mIsCustomLocation = true;
+            PreferenceManager.putLocation(response.getLatitude().toString(), response.getLongitude().toString());
+        } else {
+            mIsCustomLocation = false;
+            mCustomLocationTextView.setText("");
+            mCustomLocationHolderView.setVisibility(View.GONE);
+            PreferenceManager.putLocation(mSavedCurrentLocationLatitude, mSavedCurrentLocationLongitude);
+            mSavedCurrentLocationLatitude = "";
+            mSavedCurrentLocationLongitude = "";
+        }
     }
 
     @Override
