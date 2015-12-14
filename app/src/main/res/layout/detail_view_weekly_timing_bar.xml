@@ -48,10 +48,7 @@
             android:orientation="vertical"
             android:visibility="gone">
 
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="2sp"
-                android:src="@color/divider_white" />
+            <include layout="@layout/divider_layout_white"></include>
 
             <TextView
                 android:id="@+id/id_monday_hours"
@@ -61,10 +58,7 @@
                 android:gravity="left"
                 android:textAppearance="@style/TextAppearance.AppCompat.Caption" />
 
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="2sp"
-                android:src="@color/divider_white" />
+            <include layout="@layout/divider_layout_white"></include>
 
             <TextView
                 android:id="@+id/id_tuesday_hours"
@@ -74,10 +68,7 @@
                 android:gravity="left"
                 android:textAppearance="@style/TextAppearance.AppCompat.Caption" />
 
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="2sp"
-                android:src="@color/divider_white" />
+            <include layout="@layout/divider_layout_white"></include>
 
             <TextView
                 android:id="@+id/id_wednesday_hours"
@@ -87,10 +78,7 @@
                 android:gravity="left"
                 android:textAppearance="@style/TextAppearance.AppCompat.Caption" />
 
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="2sp"
-                android:src="@color/divider_white" />
+            <include layout="@layout/divider_layout_white"></include>
 
             <TextView
                 android:id="@+id/id_thursday_hours"
@@ -100,10 +88,7 @@
                 android:gravity="left"
                 android:textAppearance="@style/TextAppearance.AppCompat.Caption" />
 
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="2sp"
-                android:src="@color/divider_white" />
+            <include layout="@layout/divider_layout_white"></include>
 
             <TextView
                 android:id="@+id/id_friday_hours"
@@ -113,10 +98,7 @@
                 android:gravity="left"
                 android:textAppearance="@style/TextAppearance.AppCompat.Caption" />
 
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="2sp"
-                android:src="@color/divider_white" />
+            <include layout="@layout/divider_layout_white"></include>
 
             <TextView
                 android:id="@+id/id_saturday_hours"
@@ -126,10 +108,7 @@
                 android:gravity="left"
                 android:textAppearance="@style/TextAppearance.AppCompat.Caption" />
 
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="2sp"
-                android:src="@color/divider_white" />
+            <include layout="@layout/divider_layout_white"></include>
 
             <TextView
                 android:id="@+id/id_sunday_hours"

@@ -11,7 +11,7 @@
         android:background="#e7e5e5"
         android:divider="#474646"
         android:orientation="horizontal"
-        android:weightSum="4">
+        android:weightSum="2">
 
         <android.support.v7.widget.LinearLayoutCompat
             android:id="@+id/id_maps"
@@ -35,56 +35,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="2sp"
                 android:text="@string/maps_title"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
-        </android.support.v7.widget.LinearLayoutCompat>
-
-        <android.support.v7.widget.LinearLayoutCompat
-            android:id="@+id/id_call"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:clickable="true"
-            android:divider="#0f0f0f"
-            android:gravity="center_horizontal"
-            android:orientation="vertical">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="2sp"
-                android:src="@drawable/call" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="2sp"
-                android:text="@string/call_title"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
-        </android.support.v7.widget.LinearLayoutCompat>
-
-        <android.support.v7.widget.LinearLayoutCompat
-            android:id="@+id/id_website"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:clickable="true"
-            android:divider="#0f0f0f"
-            android:gravity="center_horizontal"
-            android:orientation="vertical">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="2sp"
-                android:src="@drawable/website" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="2sp"
-                android:text="@string/website_title"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
         </android.support.v7.widget.LinearLayoutCompat>
 

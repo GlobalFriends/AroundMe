@@ -45,6 +45,8 @@ public class PlaceDetailsFragment extends Fragment implements View.OnClickListen
     private IPlaceDetails mGooglePlaceDetails;
     private PlaceInfo mPlace = new PlaceInfo();
     private ImageLoader mGoogleImageLoader;
+    private TextView mCall;
+    private TextView mWebsite;
 
     // UI Elements
     private TextView mPlaceName;
@@ -52,8 +54,6 @@ public class PlaceDetailsFragment extends Fragment implements View.OnClickListen
     private TextView mDistance;
     private NetworkImageView mMainDisplayImage;
     private LinearLayoutCompat mMapButtonLayout;
-    private LinearLayoutCompat mCallButtonLayout;
-    private LinearLayoutCompat mWebsiteButtonLayout;
     private LinearLayoutCompat mFavoriteButtonLayout;
     private LinearLayoutCompat mGooglePhotosLayout;
     private LinearLayoutCompat mRatingBarLayout;
@@ -104,7 +104,6 @@ public class PlaceDetailsFragment extends Fragment implements View.OnClickListen
             return;
         }
 
-        TransactionManager.getInstance().findPlaceDetails(mPlace.getPlaceId(), null);
         // Update Image
         if (mPlace.getPhotoReference() != null) {
             mMainDisplayImage.setImageUrl(
@@ -115,6 +114,7 @@ public class PlaceDetailsFragment extends Fragment implements View.OnClickListen
         } else {
             mMainDisplayImage.setImageUrl(mPlace.getIcon(), mGoogleImageLoader);
         }
+        TransactionManager.getInstance().findPlaceDetails(mPlace.getPlaceId(), null);
     }
 
     /**
@@ -156,26 +156,25 @@ public class PlaceDetailsFragment extends Fragment implements View.OnClickListen
      * @param view
      */
     private void initView(View view) {
+        // Basic and Simple layouts
         mMainDisplayImage = (NetworkImageView) view.findViewById(R.id.id_place_image);
         mPlaceName = (TextView) view.findViewById(R.id.id_place_name);
-        mAddress = (TextView) view.findViewById(R.id.id_address_text);
-        mDistance = (TextView) view.findViewById(R.id.id_distance_text);
+        mAddress = (TextView) view.findViewById(R.id.id_address);
+        mDistance = (TextView) view.findViewById(R.id.distance_id);
+        mRatingBarLayout = (LinearLayoutCompat) view.findViewById(R.id.rating_bar_layout);
+
 
         // Clickable Layouts
         mMapButtonLayout = (LinearLayoutCompat) view.findViewById(R.id.id_maps);
         mMapButtonLayout.setOnClickListener(this);
-        mCallButtonLayout = (LinearLayoutCompat) view.findViewById(R.id.id_call);
-        mCallButtonLayout.setOnClickListener(this);
-        mWebsiteButtonLayout = (LinearLayoutCompat) view.findViewById(R.id.id_website);
-        mWebsiteButtonLayout.setOnClickListener(this);
+        mCall = (TextView) view.findViewById(R.id.id_call);
+        mWebsite = (TextView) view.findViewById(R.id.id_website);
         mFavoriteButtonLayout = (LinearLayoutCompat) view.findViewById(R.id.id_favorite);
         mFavoriteButtonLayout.setOnClickListener(this);
         mReviewLayout = (LinearLayoutCompat) view.findViewById(R.id.review_layout);
         mTimingLayout = (LinearLayoutCompat) view.findViewById(R.id.id_timings);
 
         mGooglePhotosLayout = (LinearLayoutCompat) view.findViewById(R.id.google_photo);
-        mRatingBarLayout = (LinearLayoutCompat) view.findViewById(R.id.rating_bar_layout);
-
     }
 
     @Override
@@ -208,18 +207,17 @@ public class PlaceDetailsFragment extends Fragment implements View.OnClickListen
             case R.id.id_maps:
                 // Launch Maps Activity
                 break;
-            case R.id.id_call:
-                getActivity().startActivity(new Intent(Intent.ACTION_CALL, Uri.parse("tel:" +
-                        mGooglePlaceDetails.getPhoneNumber())));
-                break;
-            case R.id.id_website:
-                // Launch MAP activity
-                Intent intent = new Intent(getActivity(), AppBrowser.class);
-                intent.putExtra("URL", mGooglePlaceDetails.getWebUrl());
-                getActivity().startActivity(intent);
-                break;
+//            case R.id.id_call:
+//                getActivity().startActivity(new Intent(Intent.ACTION_CALL, Uri.parse("tel:" +
+//                        mGooglePlaceDetails.getPhoneNumber())));
+//                break;
+//            case R.id.id_website:
+//                // Launch MAP activity
+//                Intent intent = new Intent(getActivity(), AppBrowser.class);
+//                intent.putExtra("URL", mGooglePlaceDetails.getWebUrl());
+//                getActivity().startActivity(intent);
+//                break;
             case R.id.id_favorite:
-//                Snackbar.make(v, "Added to Favorite", Snackbar.LENGTH_SHORT).show();
                 if (mPlace != null) {
                     AroundMeContractProvider.Places fav =
                             new AroundMeContractProvider.Places(mPlace.isOpenNow(), Double.parseDouble(mPlace.getRating()),
@@ -237,8 +235,13 @@ public class PlaceDetailsFragment extends Fragment implements View.OnClickListen
         }
     }
 
-    private void updateAddressAndDistance() {
+    /**
+     *
+     */
+    private void updatePlaceDetails() {
         mAddress.setText(mGooglePlaceDetails.getAddress());
+        mCall.setText(mGooglePlaceDetails.getPhoneNumber());
+        mWebsite.setText(mGooglePlaceDetails.getWebUrl());
         mDistance.setText(Utility.distanceFromLatitudeLongitude(Double.valueOf(PreferenceManager.getLatitude()),
                 Double.valueOf(PreferenceManager.getLongitude()),
                 mGooglePlaceDetails.getLatitude(),
@@ -281,6 +284,10 @@ public class PlaceDetailsFragment extends Fragment implements View.OnClickListen
         });
     }
 
+    /**
+     * Update UI elements based on Google response. Update should be planned in such a way that network
+     * requested are queued early for quick fetch
+     */
     private void updateUi() {
         // Photo loading can take time..So lets first start loading it
         Utility.updateModulePhotoView(getActivity(), mGooglePlaceDetails,
@@ -291,7 +298,7 @@ public class PlaceDetailsFragment extends Fragment implements View.OnClickListen
         getActivity().setTitle(mGooglePlaceDetails.getPlaceName());
 
         updateRatingBar();
-        updateAddressAndDistance();
+        updatePlaceDetails();
         updatePlaceTiming();
         updateReviewBar(mGooglePlaceDetails, mReviewLayout, mGoogleImageLoader);
     }
@@ -363,7 +370,7 @@ public class PlaceDetailsFragment extends Fragment implements View.OnClickListen
                 mGooglePlaceDetails = response;
                 mGooglePlaceDetails.toString();
                 updateUi();
-                TransactionManager.getInstance().onGetPlaceDetails(null, response.getPhoneNumber());
+//                TransactionManager.getInstance().findPlaceDetails(null, response.getPhoneNumber());
             }
         }
 

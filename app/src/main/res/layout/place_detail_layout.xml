@@ -54,16 +54,30 @@
                 card_view:contentPadding="10dp">
 
                 <android.support.v7.widget.LinearLayoutCompat
-                    android:id="@+id/id_name_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    <TextView
-                        android:id="@+id/id_place_name"
-                        android:layout_width="wrap_content"
+                    <android.support.v7.widget.LinearLayoutCompat
+                        android:id="@+id/id_name_title"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Title" />
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/id_place_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Title" />
+
+                        <TextView
+                            android:id="@+id/distance_id"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="right"
+                            android:text="distance"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Small" />
+                    </android.support.v7.widget.LinearLayoutCompat>
 
                     <android.support.v7.widget.LinearLayoutCompat
                         android:id="@+id/rating_bar_layout"
@@ -102,6 +116,7 @@
                 </android.support.v7.widget.LinearLayoutCompat>
             </android.support.v7.widget.CardView>
 
+            <!-- Place details such as call, address,w website start -->
             <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -114,39 +129,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
-                    <!-- Icon short cut bat with of top of activity -->
 
                     <include layout="@layout/detail_view_short_cut_icon_bar"></include>
 
-                    <android.support.v7.widget.LinearLayoutCompat
-                        android:id="@+id/id_address_layout"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="5sp"
-                        android:layout_marginTop="5sp"
-                        android:orientation="horizontal">
-
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:src="@drawable/place_address" />
-
-                        <TextView
-                            android:id="@+id/id_address_text"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginStart="5sp"
-                            android:gravity="left"
-                            android:textAppearance="@style/TextAppearance.AppCompat.Small" />
-                    </android.support.v7.widget.LinearLayoutCompat>
-
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="1sp"
-                        android:layout_marginTop="5sp"
-                        android:src="@color/divider_black" />
+                    <include layout="@layout/divider_layout_white"></include>
 
                     <android.support.v7.widget.LinearLayoutCompat
                         android:id="@+id/id_distance_layout"
@@ -154,6 +140,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="5sp"
                         android:layout_marginTop="5sp"
+                        android:background="?attr/selectableItemBackground"
                         android:orientation="horizontal">
 
                         <ImageView
@@ -163,7 +150,7 @@
                             android:src="@drawable/place_address" />
 
                         <TextView
-                            android:id="@+id/id_distance_text"
+                            android:id="@+id/id_address"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
@@ -172,79 +159,127 @@
                             android:textAppearance="@style/TextAppearance.AppCompat.Small" />
                     </android.support.v7.widget.LinearLayoutCompat>
 
-                    <include layout="@layout/detail_view_weekly_timing_bar"></include>
+                    <include layout="@layout/divider_layout_black"></include>
 
-                    <!-- Horizontal image view start -->
                     <android.support.v7.widget.LinearLayoutCompat
-                        android:id="@+id/google_photo"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical">
-
-                        <android.support.v7.widget.LinearLayoutCompat
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="5sp"
-                            android:background="#e7e5e5"
-                            android:orientation="horizontal">
-
-                            <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="5sp"
-                                android:src="@drawable/photos" />
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_vertical"
-                                android:layout_marginLeft="5sp"
-                                android:gravity="left"
-                                android:text="@string/photos"
-                                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
-                        </android.support.v7.widget.LinearLayoutCompat>
-
-                        <include layout="@layout/detail_view_dynamic_horizontal_image_bar"></include>
-                    </android.support.v7.widget.LinearLayoutCompat>
-                    <!-- Horizontal image view end-->
-
-                    <!-- Review Layout start -->
-                    <android.support.v7.widget.LinearLayoutCompat
-                        android:id="@+id/review_layout"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5sp"
                         android:layout_marginTop="5sp"
-                        android:orientation="vertical">
+                        android:background="?attr/selectableItemBackground"
+                        android:orientation="horizontal">
 
-                        <android.support.v7.widget.LinearLayoutCompat
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:src="@drawable/call" />
+
+                        <TextView
+                            android:id="@+id/id_call"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="#e7e5e5"
-                            android:orientation="horizontal">
-
-                            <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="5sp"
-                                android:src="@drawable/review" />
-
-                            <android.support.v7.widget.AppCompatTextView
-                                android:id="@+id/review_count"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                android:layout_marginLeft="5sp"
-                                android:gravity="center_vertical"
-                                android:text="@string/reviews"
-                                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
-                        </android.support.v7.widget.LinearLayoutCompat>
-
-                        <include layout="@layout/review_single_row"></include>
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginStart="5sp"
+                            android:autoLink="phone"
+                            android:gravity="left"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Small" />
                     </android.support.v7.widget.LinearLayoutCompat>
-                    <!-- Review Layout end -->
 
+                    <include layout="@layout/divider_layout_black"></include>
+
+                    <android.support.v7.widget.LinearLayoutCompat
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5sp"
+                        android:layout_marginTop="5sp"
+                        android:background="?attr/selectableItemBackground"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:src="@drawable/website" />
+
+                        <TextView
+                            android:id="@+id/id_website"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginStart="5sp"
+                            android:autoLink="web"
+                            android:gravity="left"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Small" />
+                    </android.support.v7.widget.LinearLayoutCompat>
+
+                    <include layout="@layout/detail_view_weekly_timing_bar"></include>
                 </android.support.v7.widget.LinearLayoutCompat>
             </android.support.v7.widget.CardView>
+            <!-- Place details such as call, address,w website end -->
+
+            <!-- Horizontal image view card layout -->
+            <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="3dp"
+                card_view:cardCornerRadius="2dp"
+                card_view:cardElevation="3dp"
+                card_view:contentPadding="10dp">
+
+                <android.support.v7.widget.LinearLayoutCompat
+                    android:id="@+id/google_photo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <include layout="@layout/detail_view_dynamic_horizontal_image_bar"></include>
+                </android.support.v7.widget.LinearLayoutCompat>
+            </android.support.v7.widget.CardView>
+
+            <!-- Google Review Card Layout start -->
+            <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="3dp"
+                card_view:cardCornerRadius="2dp"
+                card_view:cardElevation="3dp"
+                card_view:contentPadding="10dp">
+
+                <android.support.v7.widget.LinearLayoutCompat
+                    android:id="@+id/review_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <android.support.v7.widget.LinearLayoutCompat
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="#e7e5e5"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="5sp"
+                            android:src="@drawable/review" />
+
+                        <android.support.v7.widget.AppCompatTextView
+                            android:id="@+id/review_count"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="5sp"
+                            android:gravity="center_vertical"
+                            android:text="@string/reviews"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+                    </android.support.v7.widget.LinearLayoutCompat>
+
+                    <include layout="@layout/review_single_row"></include>
+                </android.support.v7.widget.LinearLayoutCompat>
+            </android.support.v7.widget.CardView>
+            <!-- Review Layout end -->
+
         </android.support.v7.widget.LinearLayoutCompat>
     </android.support.v4.widget.NestedScrollView>
 </android.support.design.widget.CoordinatorLayout>
