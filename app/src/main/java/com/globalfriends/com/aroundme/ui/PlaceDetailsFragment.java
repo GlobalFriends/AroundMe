@@ -208,16 +208,6 @@ public class PlaceDetailsFragment extends Fragment implements View.OnClickListen
             case R.id.id_maps:
                 // Launch Maps Activity
                 break;
-//            case R.id.id_call:
-//                getActivity().startActivity(new Intent(Intent.ACTION_CALL, Uri.parse("tel:" +
-//                        mGooglePlaceDetails.getPhoneNumber())));
-//                break;
-//            case R.id.id_website:
-//                // Launch MAP activity
-//                Intent intent = new Intent(getActivity(), AppBrowser.class);
-//                intent.putExtra("URL", mGooglePlaceDetails.getWebUrl());
-//                getActivity().startActivity(intent);
-//                break;
             case R.id.id_favorite:
                 if (mPlace != null) {
                     AroundMeContractProvider.Places fav =
@@ -227,7 +217,7 @@ public class PlaceDetailsFragment extends Fragment implements View.OnClickListen
                                     mGooglePlaceDetails.getAddress());
                 }
                 break;
-            case R.id.review_content_layout:
+            case R.id.review_linear_layout:
                 Intent reviewIntent = new Intent(getActivity(), ReviewList.class);
                 reviewIntent.putExtra("TAG_NAME", getActivity().getResources().getString(R.string.google_places_tag));
                 reviewIntent.putExtra("REVIEW_LIST", (Serializable) mGooglePlaceDetails.getReviewList());
@@ -323,7 +313,7 @@ public class PlaceDetailsFragment extends Fragment implements View.OnClickListen
         AppCompatTextView review_cont = (AppCompatTextView) layout.findViewById(R.id.review_count);
         review_cont.append(" (" + reviewList.size() + ")");
 
-        LinearLayoutCompat content = (LinearLayoutCompat) layout.findViewById(R.id.review_content_layout);
+        LinearLayoutCompat content = (LinearLayoutCompat) layout.findViewById(R.id.review_linear_layout);
         content.setOnClickListener(this);
 
         AppCompatRatingBar ratingBar = (AppCompatRatingBar) layout.findViewById(R.id.review_rating_bar);
@@ -338,8 +328,16 @@ public class PlaceDetailsFragment extends Fragment implements View.OnClickListen
         NetworkImageView avatar = (NetworkImageView) layout.findViewById(R.id.review_avatar);
 
         //Update GUI content with 1st element of List
-        PlaceReviewMetadata data = reviewList.get(0);
-        avatar.setImageUrl(data.getAuthorUrl(), imageLoader);
+        final PlaceReviewMetadata data = reviewList.get(0);
+        avatar.setImageUrl(data.getProfilePhotoUrl(), imageLoader);
+        avatar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(data.getAuthorUrl()));
+                getActivity().startActivity(browserIntent);
+            }
+        });
+
         ratingBar.setRating(Float.valueOf(data.getRating()));
         ratingText.setText(data.getRating());
         ratingTime.setText(Utility.getDate(data.getReviewTime()));
