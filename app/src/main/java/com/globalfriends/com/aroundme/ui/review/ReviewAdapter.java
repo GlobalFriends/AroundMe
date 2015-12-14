@@ -54,14 +54,15 @@ class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewViewHolder>
         if (content == null) {
             return; // Should never be the case
         }
-        holder.mRatingBar.setRating(Float.valueOf(content.getRating()));
-        holder.mRatingText.setText(content.getRating());
-
+        // Lets do a image first so that it gets some time to load
         if (content.getProfilePhotoUrl() != null) {
             holder.mAvatar.setImageUrl(content.getProfilePhotoUrl(), mImageLoader);
         } else {
             holder.mAvatar.setDefaultImageResId(R.drawable.profile);
         }
+
+        holder.mRatingBar.setRating(Float.valueOf(content.getRating()));
+        holder.mRatingText.setText(content.getRating());
 
         holder.mAvatar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,7 +73,7 @@ class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewViewHolder>
         });
 
         holder.mReviewContent.setText(content.getReviewText());
-        holder.mReviewTiming.setText(Utility.getDate(content.getReviewTime()));
+        holder.mReviewTiming.setText(Utility.Epoch2DateString(content.getReviewTime()));
         holder.mAuthorName.setText(content.getAuthorName());
 
         holder.mAspectType.setText(content.getAspect());

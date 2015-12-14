@@ -32,8 +32,10 @@ import com.globalfriends.com.aroundme.provider.AroundMeContractProvider;
 import com.globalfriends.com.aroundme.ui.review.ReviewList;
 import com.globalfriends.com.aroundme.utils.Utility;
 
-;import java.io.Serializable;
+import java.io.Serializable;
 import java.util.List;
+
+;
 
 /**
  *
@@ -329,7 +331,11 @@ public class PlaceDetailsFragment extends Fragment implements View.OnClickListen
 
         //Update GUI content with 1st element of List
         final PlaceReviewMetadata data = reviewList.get(0);
-        avatar.setImageUrl(data.getProfilePhotoUrl(), imageLoader);
+        if (data.getProfilePhotoUrl() != null) {
+            avatar.setImageUrl(data.getProfilePhotoUrl(), imageLoader);
+        } else {
+            avatar.setDefaultImageResId(R.drawable.profile);
+        }
         avatar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -340,7 +346,7 @@ public class PlaceDetailsFragment extends Fragment implements View.OnClickListen
 
         ratingBar.setRating(Float.valueOf(data.getRating()));
         ratingText.setText(data.getRating());
-        ratingTime.setText(Utility.getDate(data.getReviewTime()));
+        ratingTime.setText(Utility.Epoch2DateString(data.getReviewTime()));
         authorName.setText(data.getAuthorName());
         reviewComment.setText(data.getReviewText());
         aspectType.setText(data.getAspect());

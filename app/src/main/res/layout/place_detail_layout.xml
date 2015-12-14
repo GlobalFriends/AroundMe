@@ -82,7 +82,7 @@
                     <android.support.v7.widget.LinearLayoutCompat
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="4sp"
+                        android:layout_marginTop="7sp"
                         android:orientation="horizontal">
 
                         <TextView
@@ -268,9 +268,9 @@
 
                     <android.support.v7.widget.LinearLayoutCompat
                         android:id="@+id/review_linear_layout"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:background="?attr/selectableItemBackground"
                         android:clickable="true">
                         <include layout="@layout/review_single_row"></include>
                     </android.support.v7.widget.LinearLayoutCompat>

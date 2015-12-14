@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.location.Address;
 import android.location.Geocoder;
+import android.net.ParseException;
 import android.os.Environment;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutCompat;
@@ -36,6 +37,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.TimeZone;
 
 import static android.util.TypedValue.*;
 
@@ -262,11 +264,9 @@ public class Utility {
         return imageView;
     }
 
-    /**
-     * @param milliSeconds
-     * @return
-     */
-    public static String getDate(long milliSeconds) {
-        return DateFormat.format("dd/mm/yyyy", milliSeconds).toString();
+    public static String Epoch2DateString(long epochSeconds) {
+        Date updatedate = new Date(epochSeconds * 1000);
+        SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
+        return format.format(updatedate);
     }
 }

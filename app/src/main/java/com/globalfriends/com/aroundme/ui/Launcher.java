@@ -31,6 +31,7 @@ import com.globalfriends.com.aroundme.logging.Logger;
 import com.globalfriends.com.aroundme.ui.placeList.FavoriteFragment;
 import com.globalfriends.com.aroundme.ui.placeList.PlacesListFragment;
 import com.globalfriends.com.aroundme.ui.placeList.RecentFragment;
+import com.globalfriends.com.aroundme.utils.Utility;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 
