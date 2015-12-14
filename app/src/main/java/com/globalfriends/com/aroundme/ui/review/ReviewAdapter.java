@@ -4,7 +4,10 @@ package com.globalfriends.com.aroundme.ui.review;
  * Created by Vishal on 12/10/2015.
  */
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.widget.AppCompatRatingBar;
 import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.RecyclerView;
@@ -25,10 +28,10 @@ import java.util.List;
  */
 class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewViewHolder> {
     private List<PlaceReviewMetadata> mContent;
-    private Context mContext;
+    private final Context mContext;
     private ImageLoader mImageLoader;
 
-    public ReviewAdapter(Context context, ImageLoader imageLoader, List<PlaceReviewMetadata> items) {
+    public ReviewAdapter(Activity context, ImageLoader imageLoader, List<PlaceReviewMetadata> items) {
         this.mContent = items;
         mImageLoader = imageLoader;
         mContext = context;
@@ -47,20 +50,27 @@ class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewViewHolder>
             return;
         }
 
-        PlaceReviewMetadata content = mContent.get(position);
+        final PlaceReviewMetadata content = mContent.get(position);
         if (content == null) {
             return; // Should never be the case
         }
         holder.mRatingBar.setRating(Float.valueOf(content.getRating()));
         holder.mRatingText.setText(content.getRating());
 
-        holder.mAvatar.setImageUrl(content.getProfilePhotoUrl(), mImageLoader);
+        if (content.getProfilePhotoUrl() != null) {
+            holder.mAvatar.setImageUrl(content.getProfilePhotoUrl(), mImageLoader);
+        } else {
+            holder.mAvatar.setDefaultImageResId(R.drawable.profile);
+        }
+
         holder.mAvatar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Hnalde on click on this image.. Show avatar URL
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(content.getAuthorUrl()));
+                mContext.startActivity(browserIntent);
             }
         });
+
         holder.mReviewContent.setText(content.getReviewText());
         holder.mReviewTiming.setText(Utility.getDate(content.getReviewTime()));
         holder.mAuthorName.setText(content.getAuthorName());

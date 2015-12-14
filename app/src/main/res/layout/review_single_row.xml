@@ -8,8 +8,6 @@
         android:id="@+id/review_content_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        android:clickable="true"
         android:orientation="vertical">
 
         <android.support.v7.widget.LinearLayoutCompat
@@ -50,9 +48,8 @@
         <android.support.v7.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="5sp"
             android:layout_marginLeft="5sp"
-            android:layout_marginTop="5sp"
+            android:layout_marginTop="2sp"
             android:orientation="horizontal">
 
             <android.support.v7.widget.AppCompatTextView
@@ -67,6 +64,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:text=" : "
+                android:textStyle="bold"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
             <android.support.v7.widget.AppCompatTextView
@@ -91,6 +89,7 @@
                 android:id="@+id/review_avatar"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
+                android:background="?attr/selectableItemBackground"
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true" />
 
