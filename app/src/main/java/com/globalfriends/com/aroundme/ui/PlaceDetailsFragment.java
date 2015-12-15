@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -22,6 +23,7 @@ import android.widget.TextView;
 
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
+import com.globalfriends.com.aroundme.AroundMeApplication;
 import com.globalfriends.com.aroundme.R;
 import com.globalfriends.com.aroundme.data.IPlaceDetails;
 import com.globalfriends.com.aroundme.data.PlaceReviewMetadata;
@@ -334,11 +336,16 @@ public class PlaceDetailsFragment extends Fragment implements View.OnClickListen
         if (data.getProfilePhotoUrl() != null) {
             avatar.setImageUrl(data.getProfilePhotoUrl(), imageLoader);
         } else {
-            avatar.setDefaultImageResId(R.drawable.profile);
+            avatar.setImageBitmap(Utility.getCircularBitmap(BitmapFactory.decodeResource(
+                    AroundMeApplication.getContext().getResources(), R.drawable.profile)));
         }
+
         avatar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (data.getAuthorUrl() == null) {
+                    return;
+                }
                 Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(data.getAuthorUrl()));
                 getActivity().startActivity(browserIntent);
             }

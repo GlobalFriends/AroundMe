@@ -7,6 +7,7 @@ package com.globalfriends.com.aroundme.ui.review;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.support.v7.widget.AppCompatRatingBar;
 import android.support.v7.widget.AppCompatTextView;
@@ -59,7 +60,8 @@ class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewViewHolder>
         if (content.getProfilePhotoUrl() != null) {
             holder.mAvatar.setImageUrl(content.getProfilePhotoUrl(), mImageLoader);
         } else {
-            holder.mAvatar.setDefaultImageResId(R.drawable.profile);
+            holder.mAvatar.setImageBitmap(Utility.getCircularBitmap(BitmapFactory.decodeResource(
+                    mContext.getResources(), R.drawable.profile)));
         }
 
         holder.mRatingBar.setRating(Float.valueOf(content.getRating()));
@@ -68,6 +70,9 @@ class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewViewHolder>
         holder.mAvatar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (content.getAuthorUrl() == null) {
+                    return;
+                }
                 Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(content.getAuthorUrl()));
                 mContext.startActivity(browserIntent);
             }
