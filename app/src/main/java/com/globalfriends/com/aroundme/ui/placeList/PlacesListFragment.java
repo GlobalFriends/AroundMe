@@ -109,7 +109,8 @@ public class PlacesListFragment extends ListFragment {
 
         @Override
         public void onError(final String errorMsg, final String tag) {
-            if (!TextUtils.isEmpty(tag) && !tag.equalsIgnoreCase(getActivity().getResources().getString(R.string.google_places_tag))) {
+            if (!TextUtils.isEmpty(tag) && !getActivity().getResources().getString(
+                    R.string.google_places_tag).equalsIgnoreCase(tag)) {
                 Log.e(TAG, "This is not a google response..ust ignore it");
                 return;
             }

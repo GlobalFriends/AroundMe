@@ -324,9 +324,6 @@ public class Launcher extends AppCompatActivity implements
         Fragment fragment = new PlacesListFragment();
         fragment.setArguments(bundle);
         updateFragment(fragment, false, true);
-
-//        Fragment fragment = new PlaceDetailsFragment();
-//        updateFragment(fragment, false, true);
     }
 
     @Override

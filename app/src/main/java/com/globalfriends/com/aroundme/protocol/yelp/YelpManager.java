@@ -8,6 +8,7 @@ import com.globalfriends.com.aroundme.data.IPlaceDetails;
 import com.globalfriends.com.aroundme.data.yelp.YelpDetailsJson;
 import com.globalfriends.com.aroundme.protocol.DefaultFeatureManager;
 import com.globalfriends.com.aroundme.protocol.Listener;
+import com.globalfriends.com.aroundme.protocol.OperationEnum;
 import com.globalfriends.com.aroundme.utils.Utility;
 
 import org.json.JSONException;
@@ -20,6 +21,11 @@ public class YelpManager extends DefaultFeatureManager {
 
     public YelpManager(final Listener listener) {
         super(listener, AroundMeApplication.getContext().getResources().getString(R.string.yelp_consumer_key));
+    }
+
+    @Override
+    protected void dispatchJsonResponse(OperationEnum operation, JSONObject response) {
+        super.dispatchJsonResponse(operation, response);
     }
 
     @Override

@@ -99,9 +99,15 @@ public class PlaceManager extends DefaultFeatureManager {
             case OPERATION_PLACE_DETAIL:
                 Utility.generateNoteOnSD("placeDetails_googles", response.toString());
                 try {
-                    JSONObject result = response.getJSONObject("result");
-                    IPlaceDetails placeDetails = new GooglePlaceDetailsJson(result);
-                    mListener.onGetPlaceDetails(placeDetails, mContext.getString(R.string.google_places_tag));
+                    if (response.has(STATUS)) {
+                        if (STATUS_OK.equalsIgnoreCase(response.getString(STATUS))) {
+                            JSONObject result = response.getJSONObject("result");
+                            IPlaceDetails placeDetails = new GooglePlaceDetailsJson(result);
+                            mListener.onGetPlaceDetails(placeDetails, mContext.getString(R.string.google_places_tag));
+                        } else {
+                            mListener.onError(response.getString(STATUS), mContext.getString(R.string.google_places_tag));
+                        }
+                    }
                 } catch (JSONException e) {
                     mListener.onError("Jason Parse Exception", mModuleTag);
                 }
@@ -109,17 +115,23 @@ public class PlaceManager extends DefaultFeatureManager {
             case OPERATION_PLACE_LIST:
                 Utility.generateNoteOnSD("placeList_google", response.toString());
                 try {
-                    JSONArray array = response.getJSONArray("results");
-                    List<PlaceInfo> placeList = new ArrayList<PlaceInfo>();
-                    for (int i = 0; i < array.length(); i++) {
-                        try {
-                            placeList.add(PlaceInfo
-                                    .jsonToPontoReferencia((JSONObject) array.get(i)));
-                        } catch (Exception e) {
-                            e.printStackTrace();
+                    if (response.has(STATUS)) {
+                        if (STATUS_OK.equalsIgnoreCase(response.getString(STATUS))) {
+                            JSONArray array = response.getJSONArray("results");
+                            List<PlaceInfo> placeList = new ArrayList<PlaceInfo>();
+                            for (int i = 0; i < array.length(); i++) {
+                                try {
+                                    placeList.add(PlaceInfo
+                                            .jsonToPontoReferencia((JSONObject) array.get(i)));
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                            mListener.onPlacesList(placeList);
+                        } else {
+                            mListener.onError(response.getString(STATUS), mContext.getString(R.string.google_places_tag));
                         }
                     }
-                    mListener.onPlacesList(placeList);
                 } catch (JSONException e) {
                     mListener.onError("Jason Parse Exception", mModuleTag);
                 }

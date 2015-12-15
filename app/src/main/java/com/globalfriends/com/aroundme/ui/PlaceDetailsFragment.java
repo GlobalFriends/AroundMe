@@ -2,6 +2,7 @@ package com.globalfriends.com.aroundme.ui;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.BitmapFactory;
@@ -10,6 +11,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatRatingBar;
 import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.CardView;
@@ -367,8 +369,16 @@ public class PlaceDetailsFragment extends Fragment implements View.OnClickListen
 
     }
 
+    /**
+     * Interface for fragment and activity communication
+     */
     public interface OnPlaceDetailsFragmentInteractionListener {
         void onFragmentInteraction(Uri uri);
+
+        /**
+         * @param tag
+         */
+        void handleFragmentSuicidal(final String tag);
     }
 
 
@@ -394,7 +404,25 @@ public class PlaceDetailsFragment extends Fragment implements View.OnClickListen
 
         @Override
         public void onError(final String errorMsg, final String tag) {
-            super.onError(errorMsg, tag);
+            if (!TextUtils.isEmpty(tag)) {
+                Log.e(TAG, "This is not a google response..ust ignore it");
+                return;
+            }
+
+            if (mProgress.isShowing()) {
+                mProgress.dismiss();
+            }
+
+            new AlertDialog.Builder(getActivity())
+                    .setTitle(getResources().getString(R.string.error_dialog_title))
+                    .setMessage(errorMsg)
+                    .setPositiveButton(R.string.action_ok, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            mListener.handleFragmentSuicidal(TAG);
+                        }
+                    })
+                    .show();
         }
     }
 }

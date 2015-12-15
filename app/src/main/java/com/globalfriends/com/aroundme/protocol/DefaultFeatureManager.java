@@ -22,6 +22,8 @@ import org.json.JSONObject;
  */
 public class DefaultFeatureManager implements IFeatureManager {
     protected static String LOGGING_TAG;
+    protected final String STATUS_OK = "OK";
+    protected final String STATUS = "status";
     protected Listener mListener;
     protected Context mContext;
     private RequestQueue mQueue;
