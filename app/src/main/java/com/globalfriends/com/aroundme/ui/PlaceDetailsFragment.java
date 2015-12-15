@@ -327,7 +327,7 @@ public class PlaceDetailsFragment extends Fragment implements View.OnClickListen
         AppCompatTextView aspectType = (AppCompatTextView) layout.findViewById(R.id.aspect_type_id);
         AppCompatTextView aspectRating = (AppCompatTextView) layout.findViewById(R.id.aspect_rating_id);
 
-        NetworkImageView avatar = (NetworkImageView) layout.findViewById(R.id.review_avatar);
+        CircularNetworkImageView avatar = (CircularNetworkImageView) layout.findViewById(R.id.review_avatar);
 
         //Update GUI content with 1st element of List
         final PlaceReviewMetadata data = reviewList.get(0);

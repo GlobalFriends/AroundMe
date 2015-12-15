@@ -33,11 +33,14 @@ public class GooglePlaceDetailsJson extends DefaultPlaceDetails {
             e.printStackTrace();
         }
 
-        try {
-            mPermanentlyClosed = response.getBoolean("permanently_closed");
-        } catch (JSONException e) {
-            e.printStackTrace();
+        if (response.has("permanently_closed")) {
+            try {
+                mPermanentlyClosed = response.getBoolean("permanently_closed");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
+
 
         try {
             mPhoneNumber = response.getString("international_phone_number");
@@ -104,9 +107,18 @@ public class GooglePlaceDetailsJson extends DefaultPlaceDetails {
                     for (int i = 0; i < jsonReviewArray.length(); i++) {
                         JSONObject obj = (JSONObject) jsonReviewArray.get(i);
                         PlaceReviewMetadata review = new PlaceReviewMetadata();
-                        review.setAuthorName(obj.getString("author_name"));
-                        review.setAuthorUrl(obj.getString("author_url"));
-                        review.setLanguage(obj.getString("language"));
+                        if (obj.has("author_name")) {
+                            review.setAuthorName(obj.getString("author_name"));
+                        }
+
+                        if (obj.has("author_url")) {
+                            review.setAuthorUrl(obj.getString("author_url"));
+                        }
+
+                        if (obj.has("language")) {
+                            review.setLanguage(obj.getString("language"));
+                        }
+
                         review.setRating(obj.getString("rating"));
                         review.setReviewTime(obj.getLong("time"));
                         review.setReviewContent(obj.getString("text"));

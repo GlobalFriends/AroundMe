@@ -19,6 +19,7 @@ import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 import com.globalfriends.com.aroundme.R;
 import com.globalfriends.com.aroundme.data.PlaceReviewMetadata;
+import com.globalfriends.com.aroundme.ui.CircularNetworkImageView;
 import com.globalfriends.com.aroundme.utils.Utility;
 
 import java.util.List;
@@ -91,7 +92,7 @@ class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewViewHolder>
     class ReviewViewHolder extends RecyclerView.ViewHolder {
         protected AppCompatRatingBar mRatingBar;
         protected AppCompatTextView mRatingText;
-        protected NetworkImageView mAvatar;
+        protected CircularNetworkImageView mAvatar;
         protected AppCompatTextView mReviewContent;
         protected AppCompatTextView mReviewTiming;
         protected AppCompatTextView mAuthorName;
@@ -104,7 +105,7 @@ class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewViewHolder>
             mRatingText = (AppCompatTextView) view.findViewById(R.id.review_rating_text);
             mReviewTiming = (AppCompatTextView) view.findViewById(R.id.review_rating_time);
             mAuthorName = (AppCompatTextView) view.findViewById(R.id.review_author_name);
-            mAvatar = (NetworkImageView) view.findViewById(R.id.review_avatar);
+            mAvatar = (CircularNetworkImageView) view.findViewById(R.id.review_avatar);
             mReviewContent = (AppCompatTextView) view.findViewById(R.id.review_comment);
 
             mAspectType = (AppCompatTextView) view.findViewById(R.id.aspect_type_id);

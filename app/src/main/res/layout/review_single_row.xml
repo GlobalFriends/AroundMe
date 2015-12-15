@@ -85,7 +85,7 @@
             android:layout_marginTop="5sp"
             android:orientation="horizontal">
 
-            <com.android.volley.toolbox.NetworkImageView
+            <com.globalfriends.com.aroundme.ui.CircularNetworkImageView
                 android:id="@+id/review_avatar"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
