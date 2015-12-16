@@ -19,11 +19,17 @@ public interface IFeatureManager {
     /**
      * Return place details based on provided unique identifications
      *
-     * @param placeId       Unique identification for Google PlaceInfo
-     * @param contactNumber unique identification for Yelp
+     * @param placeId Unique identification for Google PlaceInfo
      * @return
      */
-    void findPlaceDetails(final String placeId, final String contactNumber);
+    void findGooglePlaceDetails(final String placeId);
+
+    /**
+     * Returns place details based on unique phone number
+     *
+     * @param phoneNumber
+     */
+    void findPlaceDetails(final String phoneNumber);
 
     /**
      * Do an autocomplete query based on input text

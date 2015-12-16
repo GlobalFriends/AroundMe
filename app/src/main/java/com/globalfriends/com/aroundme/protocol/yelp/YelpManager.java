@@ -26,7 +26,7 @@ public class YelpManager extends DefaultFeatureManager {
     }
 
     @Override
-    public void findPlaceDetails(String placeId, String contactNumber) {
+    public void findPlaceDetails(final String contactNumber) {
         if (TextUtils.isEmpty(contactNumber)) {
             return; // Not meant for this
         }

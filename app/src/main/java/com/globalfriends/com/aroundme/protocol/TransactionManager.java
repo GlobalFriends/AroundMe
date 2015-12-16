@@ -46,7 +46,7 @@ public class TransactionManager implements Listener {
      * @param placeId
      * @param phoneNumber
      */
-    public void findPlaceDetails(final String placeId, final String phoneNumber) {
+    public void findGooglePlaceDetails(final String placeId, final String phoneNumber) {
         if (TextUtils.isEmpty(placeId) && TextUtils.isEmpty(phoneNumber)) {
             Log.e(TAG, "PlaceId and Phone number both are null or empty");
             for (Result listener : mListeners) {
@@ -56,12 +56,24 @@ public class TransactionManager implements Listener {
         }
 
         for (IFeatureManager feature : mManagerList) {
-            feature.findPlaceDetails(placeId, phoneNumber);
+            feature.findGooglePlaceDetails(placeId);
+        }
+    }
+
+    public void findPlaceDetails(final String phoneNumber) {
+        if (TextUtils.isEmpty(phoneNumber)) {
+            // Proper telephone is not provided, ignore.
+            Log.e(TAG, ">>> findGooglePlaceDetails: No phone number <<<");
+            return;
+        }
+
+        for (IFeatureManager feature : mManagerList) {
+            feature.findPlaceDetails(phoneNumber);
         }
     }
 
     /**
-     * Returns specfici image loader based on Module key
+     * Returns specific image loader based on Module key
      *
      * @param moduleKey
      * @return

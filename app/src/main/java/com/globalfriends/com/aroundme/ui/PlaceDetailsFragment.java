@@ -121,7 +121,7 @@ public class PlaceDetailsFragment extends Fragment implements View.OnClickListen
         } else {
             mMainDisplayImage.setImageUrl(mPlace.getIcon(), mGoogleImageLoader);
         }
-        TransactionManager.getInstance().findPlaceDetails(mPlace.getPlaceId(), null);
+        TransactionManager.getInstance().findGooglePlaceDetails(mPlace.getPlaceId(), null);
     }
 
     /**
@@ -250,17 +250,23 @@ public class PlaceDetailsFragment extends Fragment implements View.OnClickListen
      * Update place timing details
      */
     private void updatePlaceTiming() {
+        final List<String> timMap = mGooglePlaceDetails.getWeeklyTimings();
+        final LinearLayoutCompat weekly_timings = (LinearLayoutCompat) mTimingLayout.
+                findViewById(R.id.id_week_timing);
+        if (timMap == null || timMap.size() == 0) {
+            mTimingLayout.setVisibility(View.GONE);
+            return;
+        }
+
+        mTimingLayout.setVisibility(View.VISIBLE);
         final TextView more = (TextView) mTimingLayout.findViewById(R.id.id_hours_more);
         more.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                LinearLayoutCompat weekly_timings = (LinearLayoutCompat) mTimingLayout.
-                        findViewById(R.id.id_week_timing);
                 if (getActivity().getResources().getString(R.string.more).
                         equalsIgnoreCase(more.getText().toString())) {
                     more.setText(getActivity().getResources().getString(R.string.closed));
                     weekly_timings.setVisibility(View.VISIBLE);
-                    List<String> timMap = mGooglePlaceDetails.getWeeklyTimings();
                     if (timMap == null || timMap.size() == 0) {
                         return;
                     }
@@ -398,14 +404,15 @@ public class PlaceDetailsFragment extends Fragment implements View.OnClickListen
                 mGooglePlaceDetails = response;
                 mGooglePlaceDetails.toString();
                 updateUi();
-                TransactionManager.getInstance().findPlaceDetails(null, response.getPhoneNumber());
+                TransactionManager.getInstance().findPlaceDetails(response.getPhoneNumber());
             }
         }
 
         @Override
         public void onError(final String errorMsg, final String tag) {
-            if (!TextUtils.isEmpty(tag)) {
-                Log.e(TAG, "This is not a google response..ust ignore it");
+            if (!TextUtils.isEmpty(tag) ||
+                    !getActivity().getString(R.string.google_places_tag).equalsIgnoreCase(tag)) {
+                Log.e(TAG, "This is not a google response. Just ignore it");
                 return;
             }
 

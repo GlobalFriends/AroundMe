@@ -36,7 +36,6 @@ import com.globalfriends.com.aroundme.protocol.TransactionManager;
 import com.globalfriends.com.aroundme.ui.placeList.FavoriteFragment;
 import com.globalfriends.com.aroundme.ui.placeList.PlacesListFragment;
 import com.globalfriends.com.aroundme.ui.placeList.RecentFragment;
-import com.globalfriends.com.aroundme.utils.Utility;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 
@@ -332,7 +331,7 @@ public class Launcher extends AppCompatActivity implements
             String placeId = intent.getDataString();
 
             TransactionManager.getInstance().addResultCallback(mSetCustomLocationCallback);
-            TransactionManager.getInstance().findPlaceDetails(placeId, "");
+            TransactionManager.getInstance().findGooglePlaceDetails(placeId, null);
         }
     }
 

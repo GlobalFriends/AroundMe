@@ -56,7 +56,7 @@ public class PlaceManager extends DefaultFeatureManager {
     }
 
     @Override
-    public void findPlaceDetails(String placeId, String contactNumber) {
+    public void findGooglePlaceDetails(String placeId) {
         if (TextUtils.isEmpty(placeId)) {
             return;
         }

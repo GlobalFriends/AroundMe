@@ -1,9 +1,7 @@
 package com.globalfriends.com.aroundme.protocol;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.util.Log;
-import android.util.LruCache;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -16,7 +14,6 @@ import com.globalfriends.com.aroundme.AroundMeApplication;
 import com.globalfriends.com.aroundme.protocol.places.PlaceRequestTypeEnum;
 
 import org.json.JSONObject;
-import org.scribe.model.Verb;
 
 /**
  * Created by vishal on 11/19/2015.
@@ -91,7 +88,12 @@ public class DefaultFeatureManager implements IFeatureManager {
     }
 
     @Override
-    public void findPlaceDetails(String placeId, String contactNumber) {
+    public void findGooglePlaceDetails(String placeId) {
+    }
+
+    @Override
+    public void findPlaceDetails(String phoneNumber) {
+        //
     }
 
     @Override
