@@ -52,7 +52,7 @@ public class PlaceManager extends DefaultFeatureManager {
                 break;
             default:
         }
-        handleJsonRequest(builder.build().getUrl(), OperationEnum.OPERATION_PLACE_LIST);
+        sendVolleyJsonRequest(builder.build().getUrl(), OperationEnum.OPERATION_PLACE_LIST);
     }
 
     @Override
@@ -68,7 +68,7 @@ public class PlaceManager extends DefaultFeatureManager {
                         setPlaceId(placeId).
                         setKey(AroundMeApplication.getContext().
                                 getResources().getString(R.string.google_maps_key));
-        handleJsonRequest(builder.build().getUrl(), OperationEnum.OPERATION_PLACE_DETAIL);
+        sendVolleyJsonRequest(builder.build().getUrl(), OperationEnum.OPERATION_PLACE_DETAIL);
     }
 
     @Override
@@ -84,7 +84,7 @@ public class PlaceManager extends DefaultFeatureManager {
                         setInput(input).
                         setKey(AroundMeApplication.getContext().getResources().getString(R.string.google_maps_key));
 
-        handleJsonRequest(builder.build().getUrl(), OperationEnum.OPERATION_AUTOCOMPLETE);
+        sendVolleyJsonRequest(builder.build().getUrl(), OperationEnum.OPERATION_AUTOCOMPLETE);
     }
 
     /**

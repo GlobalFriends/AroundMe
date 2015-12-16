@@ -74,4 +74,6 @@
     <string name="custom_location">Custom location</string>
     <string name="clear">Clear</string>
     <string name="search_hint">Search custom location</string>
+    <string name="invalid_response">Invalid server response</string>
+    <string name="failed_response">Request failed. Please try again</string>
 </resources>

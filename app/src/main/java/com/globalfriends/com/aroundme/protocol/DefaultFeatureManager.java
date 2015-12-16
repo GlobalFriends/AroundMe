@@ -16,6 +16,7 @@ import com.globalfriends.com.aroundme.AroundMeApplication;
 import com.globalfriends.com.aroundme.protocol.places.PlaceRequestTypeEnum;
 
 import org.json.JSONObject;
+import org.scribe.model.Verb;
 
 /**
  * Created by vishal on 11/19/2015.
@@ -55,7 +56,7 @@ public class DefaultFeatureManager implements IFeatureManager {
         mQueue.add(request);
     }
 
-    public final void handleJsonRequest(final String url, final OperationEnum operation) {
+    public final void sendVolleyJsonRequest(final String url, final OperationEnum operation) {
         Log.i(LOGGING_TAG, "Url=" + url);
         mRequest = new JsonObjectRequest
                 (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
@@ -74,7 +75,6 @@ public class DefaultFeatureManager implements IFeatureManager {
                 });
         scheduleRequest(mRequest);
     }
-
 
     /**
      * Schedule response based on provided operation request

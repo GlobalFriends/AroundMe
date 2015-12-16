@@ -398,7 +398,7 @@ public class PlaceDetailsFragment extends Fragment implements View.OnClickListen
                 mGooglePlaceDetails = response;
                 mGooglePlaceDetails.toString();
                 updateUi();
-//                TransactionManager.getInstance().findPlaceDetails(null, response.getPhoneNumber());
+                TransactionManager.getInstance().findPlaceDetails(null, response.getPhoneNumber());
             }
         }
 
