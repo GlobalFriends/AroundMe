@@ -34,4 +34,11 @@ public interface IPlaceDetails {
     List<String> getWeeklyTimings();
 
     String getPlaceHolderIcon();
+
+    String getRatingUrl();
+
+    String getPlaceRating();
+
+    int getReviewCount();
+
 }

@@ -115,6 +115,11 @@ public class PlacesListFragment extends ListFragment {
                 return;
             }
 
+            if (!isVisible()) {
+                Log.e(TAG, "Fragment is currenlty not visible");
+                return;
+            }
+
             if (mProgress.isShowing()) {
                 mProgress.dismiss();
             }

@@ -6,10 +6,9 @@ import android.text.TextUtils;
 import com.globalfriends.com.aroundme.AroundMeApplication;
 import com.globalfriends.com.aroundme.R;
 import com.globalfriends.com.aroundme.data.IPlaceDetails;
-import com.globalfriends.com.aroundme.data.yelp.YelpDetailsJson;
+import com.globalfriends.com.aroundme.data.yelp.YelpPlaceDetailsJson;
 import com.globalfriends.com.aroundme.protocol.DefaultFeatureManager;
 import com.globalfriends.com.aroundme.protocol.Listener;
-import com.globalfriends.com.aroundme.protocol.OperationEnum;
 import com.globalfriends.com.aroundme.utils.Utility;
 
 import org.json.JSONException;
@@ -63,7 +62,7 @@ public class YelpManager extends DefaultFeatureManager {
             Utility.generateNoteOnSD("placeDetails_yelp", response.toString());
 
             try {
-                IPlaceDetails placeDetails = new YelpDetailsJson(new JSONObject(response));
+                IPlaceDetails placeDetails = new YelpPlaceDetailsJson(new JSONObject(response));
                 mListener.onGetPlaceDetails(placeDetails, mContext.getString(R.string.yelp_tag));
             } catch (JSONException e) {
                 e.printStackTrace();

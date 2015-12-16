@@ -16,7 +16,16 @@ public class PlaceReviewMetadata implements Parcelable {
     private String mProfilePhotoUrl;
     private String mReviewContent;
     private String mAspect;
+    private String mRatingImageUrl;
     private ReviewAspect mAspectDesc;
+
+    public String getRatingImageUrl() {
+        return mRatingImageUrl;
+    }
+
+    public void setRatingImageUrl(String mRatingImageUrl) {
+        this.mRatingImageUrl = mRatingImageUrl;
+    }
 
     public String getAspect() {
         return mAspect;

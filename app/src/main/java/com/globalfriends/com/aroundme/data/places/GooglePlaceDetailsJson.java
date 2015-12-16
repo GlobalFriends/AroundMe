@@ -1,5 +1,7 @@
 package com.globalfriends.com.aroundme.data.places;
 
+import android.telephony.PhoneNumberUtils;
+
 import com.globalfriends.com.aroundme.data.DefaultPlaceDetails;
 import com.globalfriends.com.aroundme.data.PlacePhotoMetadata;
 import com.globalfriends.com.aroundme.data.PlaceReviewMetadata;
@@ -43,33 +45,50 @@ public class GooglePlaceDetailsJson extends DefaultPlaceDetails {
 
 
         try {
-            mPhoneNumber = response.getString("international_phone_number");
+            if (response.has("international_phone_number")) {
+                mPhoneNumber = response.getString("international_phone_number");
+            } else if (response.has("formatted_phone_number")) {
+                mPhoneNumber = response.getString("formatted_phone_number");
+                mPhoneNumber = PhoneNumberUtils.stripSeparators(mPhoneNumber);
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
         try {
-            mName = response.getString("name");
+            if (response.has("name")) {
+                mName = response.getString("name");
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
 
         try {
-            mWebUrl = response.getString("url");
+            if (response.has("url")) {
+                mWebUrl = response.getString("url");
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
         JSONObject openingHours = null;
         try {
-            openingHours = (JSONObject) response.get("opening_hours");
-            mOpenNow = openingHours.getBoolean("open_now");
-            JSONArray weeklyText = openingHours.getJSONArray("weekday_text");
-            if (weeklyText != null) {
-                for (int i = 0; i < weeklyText.length(); i++) {
-                    String timing = weeklyText.get(i).toString();
-                    mWeeklyTimings.add(timing.replace("\"", ""));
+            if (response.has("opening_hours")) {
+                openingHours = (JSONObject) response.get("opening_hours");
+            }
+
+            if (response.has("open_now")) {
+                mOpenNow = openingHours.getBoolean("open_now");
+            }
+
+            if (response.has("weekday_text")) {
+                JSONArray weeklyText = openingHours.getJSONArray("weekday_text");
+                if (weeklyText != null) {
+                    for (int i = 0; i < weeklyText.length(); i++) {
+                        String timing = weeklyText.get(i).toString();
+                        mWeeklyTimings.add(timing.replace("\"", ""));
+                    }
                 }
             }
         } catch (JSONException e) {
@@ -89,9 +108,17 @@ public class GooglePlaceDetailsJson extends DefaultPlaceDetails {
                     for (int i = 0; i < jsonPhotoArray.length(); i++) {
                         JSONObject obj = (JSONObject) jsonPhotoArray.get(i);
                         PlacePhotoMetadata photo = new PlacePhotoMetadata();
-                        photo.setReference(obj.getString("photo_reference"));
-                        photo.setHeight(obj.getInt("height"));
-                        photo.setWidth(obj.getInt("width"));
+                        if (obj.has("photo_reference")) {
+                            photo.setReference(obj.getString("photo_reference"));
+                        }
+
+                        if (obj.has("height")) {
+                            photo.setHeight(obj.getInt("height"));
+                        }
+
+                        if (obj.has("width")) {
+                            photo.setWidth(obj.getInt("width"));
+                        }
                         updatePhotoToList(photo);
                     }
                 }
@@ -104,6 +131,7 @@ public class GooglePlaceDetailsJson extends DefaultPlaceDetails {
             if (response.has("reviews")) {
                 JSONArray jsonReviewArray = (JSONArray) response.getJSONArray("reviews");
                 if (jsonReviewArray != null) {
+                    mReviewCount = jsonReviewArray.length();
                     for (int i = 0; i < jsonReviewArray.length(); i++) {
                         JSONObject obj = (JSONObject) jsonReviewArray.get(i);
                         PlaceReviewMetadata review = new PlaceReviewMetadata();
@@ -119,12 +147,20 @@ public class GooglePlaceDetailsJson extends DefaultPlaceDetails {
                             review.setLanguage(obj.getString("language"));
                         }
 
-                        review.setRating(obj.getString("rating"));
-                        review.setReviewTime(obj.getLong("time"));
-                        review.setReviewContent(obj.getString("text"));
-                        try {
+                        if (obj.has("rating")) {
+                            review.setRating(obj.getString("rating"));
+                        }
+
+                        if (obj.has("time")) {
+                            review.setReviewTime(obj.getLong("time"));
+                        }
+
+                        if (obj.has("text")) {
+                            review.setReviewContent(obj.getString("text"));
+                        }
+
+                        if (obj.has("profile_photo_url")) {
                             review.setProfilePhotoUrl(obj.getString("profile_photo_url"));
-                        } catch (JSONException e) {
                         }
 
                         if (obj.has("aspects")) {
@@ -137,7 +173,6 @@ public class GooglePlaceDetailsJson extends DefaultPlaceDetails {
                                 }
                             }
                         }
-
                         updateReviewToList(review);
                     }
                 }

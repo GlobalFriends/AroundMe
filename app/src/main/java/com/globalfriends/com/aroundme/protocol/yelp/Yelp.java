@@ -75,7 +75,6 @@ public class Yelp {
         this.service.signRequest(this.accessToken, request);
         Response response = request.send();
         String body = response.getBody();
-        Utility.generateNoteOnSD((new Date(System.currentTimeMillis())).toString() + "_yelp.txt", body);
         return body;
     }
 
