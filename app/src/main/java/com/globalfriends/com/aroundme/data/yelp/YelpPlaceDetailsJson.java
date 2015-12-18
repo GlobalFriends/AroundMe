@@ -49,7 +49,7 @@ public class YelpPlaceDetailsJson extends DefaultPlaceDetails {
             }
 
             if (busineess.has("rating_img_url")) {
-                mRatingUrl = busineess.getString("rating_img_url");
+                mRatingUrl = busineess.getString("rating_img_url_large");
             }
             // Reviewer Details:
             PlaceReviewMetadata review = new PlaceReviewMetadata();

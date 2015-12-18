@@ -48,10 +48,19 @@
                     android:clickable="true"
                     android:gravity="right"
                     android:text="@string/more"
-                    android:textStyle="bold"
                     android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                    android:textColor="@color/aspect_color" />
+                    android:textColor="@color/aspect_color"
+                    android:textStyle="bold" />
             </android.support.v7.widget.LinearLayoutCompat>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5sp"
+                android:layout_marginRight="5sp">
+
+                <include layout="@layout/divider_layout_black"></include>
+            </LinearLayout>
 
             <android.support.v7.widget.LinearLayoutCompat
                 android:id="@+id/module_review_layout"
@@ -90,11 +99,9 @@
 
             <!-- List Content -->
             <android.support.v7.widget.LinearLayoutCompat
-                android:id="@+id/module_row_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5sp"
-                android:clickable="true"
                 android:orientation="horizontal">
 
                 <com.globalfriends.com.aroundme.ui.CircularNetworkImageView

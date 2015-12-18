@@ -328,10 +328,26 @@ public class PlaceDetailsFragment extends Fragment implements View.OnClickListen
             layout.setVisibility(View.GONE);
             return;
         }
+
         layout.setVisibility(View.VISIBLE);
         // Update header
-        AppCompatTextView review_cont = (AppCompatTextView) layout.findViewById(R.id.review_count);
-        review_cont.append(" (" + reviewList.size() + ")");
+
+        ImageView googleIcon = (ImageView) layout.findViewById(R.id.google_icon);
+        googleIcon.setImageResource(TransactionManager.getInstance().getModuleIcon(getString(R.string.google_places_tag)));
+
+        AppCompatTextView moduleId = (AppCompatTextView) layout.findViewById(R.id.module_id);
+        moduleId.setText(getString(R.string.google_places_tag));
+
+        AppCompatTextView more = (AppCompatTextView) layout.findViewById(R.id.module_more);
+        more.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent reviewIntent = new Intent(getActivity(), ReviewList.class);
+                reviewIntent.putExtra("TAG_NAME", getActivity().getResources().getString(R.string.google_places_tag));
+                reviewIntent.putExtra("REVIEW_LIST", (Serializable) placeDetails.getReviewList());
+                getActivity().startActivity(reviewIntent);
+            }
+        });
 
         LinearLayoutCompat content = (LinearLayoutCompat) layout.findViewById(R.id.review_linear_layout);
         content.setOnClickListener(this);
@@ -396,16 +412,13 @@ public class PlaceDetailsFragment extends Fragment implements View.OnClickListen
     }
 
     private void addDynamicView(final IPlaceDetails placeDetails, final String moduleName) {
-//        LinearLayoutCompat moduleLayout = (LinearLayoutCompat) getActivity().findViewById(R.id.module_layout);
-//        if (moduleLayout == null) {
-//            LinearLayoutCompat container = (LinearLayoutCompat) mParenLayout.findViewById(R.id.
-//                    dynamic_layout_container);
-//            View moduleInfo = getActivity().getLayoutInflater().inflate(R.layout.module_layout, container, false);
-//            container.addView(moduleInfo);
-//        }
-
         if (TextUtils.isEmpty(moduleName)) {
             Log.e(TAG, "module name is empty");
+            return;
+        }
+
+        if (placeDetails.getReviewCount() <= 0) {
+            Log.e(TAG, "There are not reviews to display");
             return;
         }
 
@@ -470,8 +483,6 @@ public class PlaceDetailsFragment extends Fragment implements View.OnClickListen
         //3rd Row with Review Profile and Review content
         CircularNetworkImageView reviewerImage = (CircularNetworkImageView) moduleLayout.findViewById(R.id.reviewer_image);
         TextView reviewContent = (AppCompatTextView) moduleLayout.findViewById(R.id.review_content);
-        LinearLayoutCompat rowLayout = (LinearLayoutCompat) moduleLayout.findViewById(R.id.module_row_layout);
-
         if (reviewList.size() > 0) {
             final PlaceReviewMetadata metaData = reviewList.get(0);
             if (TextUtils.isEmpty(metaData.getProfilePhotoUrl())) {
@@ -493,7 +504,7 @@ public class PlaceDetailsFragment extends Fragment implements View.OnClickListen
             reviewContent.setText(metaData.getReviewText());
 
             // Over all row on click handle
-            rowLayout.setOnClickListener(new View.OnClickListener() {
+            reviewContent.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (reviewList.size() > 1) {
