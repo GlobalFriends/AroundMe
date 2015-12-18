@@ -147,4 +147,9 @@ public class PlaceManager extends DefaultFeatureManager {
                 mListener.onError("Invalid command type. Internal error", mModuleTag);
         }
     }
+
+    @Override
+    public int getFeatureIcon() {
+        return R.drawable.google;
+    }
 }

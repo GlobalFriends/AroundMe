@@ -23,13 +23,13 @@ import java.util.List;
 public class TransactionManager implements Listener {
     private static final String TAG = "TransactionManager";
     private static TransactionManager sInstance = null;
-    private HashSet<IFeatureManager> mManagerList = new HashSet<>();
+    private HashSet<IFeatureManager> mFeatureManagerList = new HashSet<>();
     private HashSet<Result> mListeners = new HashSet<>();
 
     private TransactionManager() {
         //Init all transaction managers which needs to be functional
-        mManagerList.add(new YelpManager(this));
-        mManagerList.add(new PlaceManager(this));
+        mFeatureManagerList.add(new YelpManager(this));
+        mFeatureManagerList.add(new PlaceManager(this));
     }
 
     /**
@@ -55,7 +55,7 @@ public class TransactionManager implements Listener {
             return;
         }
 
-        for (IFeatureManager feature : mManagerList) {
+        for (IFeatureManager feature : mFeatureManagerList) {
             feature.findGooglePlaceDetails(placeId);
         }
     }
@@ -63,11 +63,11 @@ public class TransactionManager implements Listener {
     public void findPlaceDetails(final String phoneNumber) {
         if (TextUtils.isEmpty(phoneNumber)) {
             // Proper telephone is not provided, ignore.
-            Log.e(TAG, ">>> findGooglePlaceDetails: No phone number <<<");
+            Log.e(TAG, ">>> findPlaceDetails: No phone number <<<");
             return;
         }
 
-        for (IFeatureManager feature : mManagerList) {
+        for (IFeatureManager feature : mFeatureManagerList) {
             feature.findPlaceDetails(phoneNumber);
         }
     }
@@ -83,7 +83,7 @@ public class TransactionManager implements Listener {
             return null;
         }
 
-        for (IFeatureManager feature : mManagerList) {
+        for (IFeatureManager feature : mFeatureManagerList) {
             if (moduleKey.equalsIgnoreCase(feature.getTag())) {
                 return feature.getImageLoader();
             }
@@ -96,17 +96,30 @@ public class TransactionManager implements Listener {
      */
     public HashMap<String, ImageLoader> getModuleImageLoaders() {
         HashMap<String, ImageLoader> mList = new HashMap();
-        for (IFeatureManager feature : mManagerList) {
+        for (IFeatureManager feature : mFeatureManagerList) {
             mList.put(feature.getTag(), feature.getImageLoader());
         }
         return mList;
+    }
+
+    public int getModuleIcon(final String moduleName) {
+        if (TextUtils.isEmpty(moduleName)) {
+            return 0;
+        }
+
+        for (IFeatureManager feature : mFeatureManagerList) {
+            if (feature.getTag().equalsIgnoreCase(moduleName)) {
+                return feature.getFeatureIcon();
+            }
+        }
+        return 0;
     }
 
     /**
      * @param placeType
      */
     public void findByNearBy(final String placeType) {
-        for (IFeatureManager feature : mManagerList) {
+        for (IFeatureManager feature : mFeatureManagerList) {
             feature.findPlaces(PlaceRequestTypeEnum.SEARCH_TYPE_NEARBY, placeType, null);
         }
     }
@@ -115,7 +128,7 @@ public class TransactionManager implements Listener {
      * @param query
      */
     public void findBySearch(final String query) {
-        for (IFeatureManager feature : mManagerList) {
+        for (IFeatureManager feature : mFeatureManagerList) {
             feature.findPlaces(PlaceRequestTypeEnum.SEARCH_TYPE_TEXT, null, query);
         }
     }
@@ -124,13 +137,13 @@ public class TransactionManager implements Listener {
      * Find places by radar. This is specifically used for finding 200 places with less details
      */
     public void findByRadar() {
-        for (IFeatureManager feature : mManagerList) {
+        for (IFeatureManager feature : mFeatureManagerList) {
             feature.findPlaces(PlaceRequestTypeEnum.SEARCH_TYPE_RADAR, null, null);
         }
     }
 
     public void autoComplete(final String input) {
-        for (IFeatureManager feature : mManagerList) {
+        for (IFeatureManager feature : mFeatureManagerList) {
             feature.autoComplete(input);
         }
     }

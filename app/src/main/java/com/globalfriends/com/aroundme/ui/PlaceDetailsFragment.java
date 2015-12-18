@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
@@ -21,6 +22,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.android.volley.toolbox.ImageLoader;
@@ -35,6 +38,8 @@ import com.globalfriends.com.aroundme.protocol.TransactionManager;
 import com.globalfriends.com.aroundme.provider.AroundMeContractProvider;
 import com.globalfriends.com.aroundme.ui.review.ReviewList;
 import com.globalfriends.com.aroundme.utils.Utility;
+
+import org.w3c.dom.Text;
 
 import java.io.Serializable;
 import java.util.List;
@@ -66,6 +71,7 @@ public class PlaceDetailsFragment extends Fragment implements View.OnClickListen
     private LinearLayoutCompat mRatingBarLayout;
     private CardView mReviewLayout;
     private LinearLayoutCompat mTimingLayout;
+    private LinearLayoutCompat mParenLayout;
 
 
     @Override
@@ -163,6 +169,7 @@ public class PlaceDetailsFragment extends Fragment implements View.OnClickListen
      * @param view
      */
     private void initView(View view) {
+        mParenLayout = (LinearLayoutCompat) view.findViewById(R.id.parent_layout);
         // Basic and Simple layouts
         mMainDisplayImage = (NetworkImageView) view.findViewById(R.id.id_place_image);
         mPlaceName = (TextView) view.findViewById(R.id.id_place_name);
@@ -260,6 +267,7 @@ public class PlaceDetailsFragment extends Fragment implements View.OnClickListen
 
         mTimingLayout.setVisibility(View.VISIBLE);
         final TextView more = (TextView) mTimingLayout.findViewById(R.id.id_hours_more);
+        more.setPaintFlags(more.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         more.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -288,7 +296,7 @@ public class PlaceDetailsFragment extends Fragment implements View.OnClickListen
     }
 
     /**
-     * Update UI elements based on Google response. Update should be planned in such a way that network
+     * Update UI elements based on Google response. Upadate should be planned in such a way that network
      * requested are queued early for quick fetch
      */
     private void updateUi() {
@@ -387,6 +395,125 @@ public class PlaceDetailsFragment extends Fragment implements View.OnClickListen
         void handleFragmentSuicidal(final String tag);
     }
 
+    private void addDynamicView(final IPlaceDetails placeDetails, final String moduleName) {
+//        LinearLayoutCompat moduleLayout = (LinearLayoutCompat) getActivity().findViewById(R.id.module_layout);
+//        if (moduleLayout == null) {
+//            LinearLayoutCompat container = (LinearLayoutCompat) mParenLayout.findViewById(R.id.
+//                    dynamic_layout_container);
+//            View moduleInfo = getActivity().getLayoutInflater().inflate(R.layout.module_layout, container, false);
+//            container.addView(moduleInfo);
+//        }
+
+        if (TextUtils.isEmpty(moduleName)) {
+            Log.e(TAG, "module name is empty");
+            return;
+        }
+
+        // Keep review list ready. If will be used for multiple references
+        final List<PlaceReviewMetadata> reviewList = placeDetails.getReviewList();
+
+        ImageLoader imageLoader = TransactionManager.getInstance().getModuleImageLoader(moduleName);
+        LayoutInflater layoutInflater =
+                (LayoutInflater) getActivity().getBaseContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        final LinearLayout moduleLayout = (LinearLayout) layoutInflater.inflate(R.layout.module_layout, null);
+        if (moduleLayout == null) {
+            return;
+        }
+
+        // First Row
+        ImageView moduleImage = (ImageView) moduleLayout.findViewById(R.id.module_image);
+        moduleImage.setImageResource(TransactionManager.getInstance().getModuleIcon(moduleName));
+        TextView name = (AppCompatTextView) moduleLayout.findViewById(R.id.module_id);
+        name.setText(moduleName);
+        TextView more = (AppCompatTextView) moduleLayout.findViewById(R.id.module_more);
+        more.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (reviewList.size() > 1) {
+                    // Launch review list
+                } else {
+                    if (TextUtils.isEmpty(placeDetails.getWebUrl())) {
+                        return;
+                    }
+                    // Otherwise launch provided URL.
+                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(placeDetails.getWebUrl()));
+                    getActivity().startActivity(browserIntent);
+                }
+            }
+        });
+
+
+        // 2nd Row with Review Icons and review counts
+        NetworkImageView ratingImageView = (NetworkImageView) moduleLayout.findViewById(R.id.review_rating_id);
+        AppCompatRatingBar ratingBar = (AppCompatRatingBar) moduleLayout.findViewById(R.id.review_rating_bar);
+        AppCompatTextView ratingCount = (AppCompatTextView) moduleLayout.findViewById(R.id.rating_count_text);
+        if (placeDetails.getRatingUrl() != null) {
+            ratingBar.setVisibility(View.GONE);
+            if (TextUtils.isEmpty(placeDetails.getRatingUrl())) {
+                ratingImageView.setVisibility(View.GONE);
+            } else {
+                ratingImageView.setVisibility(View.VISIBLE);
+                ratingImageView.setImageUrl(placeDetails.getRatingUrl(), imageLoader);
+            }
+        } else {
+            ratingImageView.setVisibility(View.GONE);
+
+            if (TextUtils.isEmpty(placeDetails.getPlaceRating())) {
+                ratingBar.setVisibility(View.GONE);
+            } else {
+                ratingBar.setVisibility(View.VISIBLE);
+                ratingBar.setRating(Float.valueOf(placeDetails.getPlaceRating()));
+            }
+        }
+        ratingCount.setText(String.format(getString(R.string.review_count), placeDetails.getReviewCount()));
+
+        //3rd Row with Review Profile and Review content
+        CircularNetworkImageView reviewerImage = (CircularNetworkImageView) moduleLayout.findViewById(R.id.reviewer_image);
+        TextView reviewContent = (AppCompatTextView) moduleLayout.findViewById(R.id.review_content);
+        LinearLayoutCompat rowLayout = (LinearLayoutCompat) moduleLayout.findViewById(R.id.module_row_layout);
+
+        if (reviewList.size() > 0) {
+            final PlaceReviewMetadata metaData = reviewList.get(0);
+            if (TextUtils.isEmpty(metaData.getProfilePhotoUrl())) {
+                reviewerImage.setImageResource(R.drawable.profile);
+            } else {
+                reviewerImage.setImageUrl(metaData.getProfilePhotoUrl(), imageLoader);
+            }
+            reviewerImage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (metaData.getAuthorUrl() == null) {
+                        return;
+                    }
+                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(metaData.getAuthorUrl()));
+                    getActivity().startActivity(browserIntent);
+                }
+            });
+
+            reviewContent.setText(metaData.getReviewText());
+
+            // Over all row on click handle
+            rowLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (reviewList.size() > 1) {
+                        // Launch review list
+                    } else {
+                        if (TextUtils.isEmpty(placeDetails.getWebUrl())) {
+                            return;
+                        }
+                        // Otherwise launch provided URL.
+                        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(placeDetails.getWebUrl()));
+                        getActivity().startActivity(browserIntent);
+                    }
+                }
+            });
+        }
+
+        LinearLayoutCompat container = (LinearLayoutCompat) mParenLayout.findViewById(R.id.
+                dynamic_layout_container);
+        container.addView(moduleLayout);
+    }
 
     /**
      * Response handler for getting detailed informaiton about place
@@ -405,7 +532,10 @@ public class PlaceDetailsFragment extends Fragment implements View.OnClickListen
                 mGooglePlaceDetails.toString();
                 updateUi();
                 TransactionManager.getInstance().findPlaceDetails(response.getPhoneNumber());
+                return;
             }
+
+            addDynamicView(response, placeTag);
         }
 
         @Override

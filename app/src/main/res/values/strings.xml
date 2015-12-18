@@ -76,4 +76,5 @@
     <string name="search_hint">Search custom location</string>
     <string name="invalid_response">Invalid server response</string>
     <string name="failed_response">Request failed. Please try again</string>
+    <string name="review_count">%d Reviews</string>
 </resources>

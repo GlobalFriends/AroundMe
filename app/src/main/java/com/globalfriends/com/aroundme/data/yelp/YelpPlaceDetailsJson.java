@@ -48,6 +48,9 @@ public class YelpPlaceDetailsJson extends DefaultPlaceDetails {
                 mReviewCount = busineess.getInt("review_count");
             }
 
+            if (busineess.has("rating_img_url")) {
+                mRatingUrl = busineess.getString("rating_img_url");
+            }
             // Reviewer Details:
             PlaceReviewMetadata review = new PlaceReviewMetadata();
             if (busineess.has("snippet_text")) {
@@ -56,10 +59,6 @@ public class YelpPlaceDetailsJson extends DefaultPlaceDetails {
 
             if (busineess.has("snippet_image_url")) {
                 review.setProfilePhotoUrl(busineess.getString("snippet_image_url"));
-            }
-
-            if (busineess.has("rating_img_url_small")) {
-                review.setRatingImageUrl(busineess.getString("rating_img_url_small"));
             }
             updateReviewToList(review);
 

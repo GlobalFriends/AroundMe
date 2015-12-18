@@ -97,10 +97,12 @@ public class PlacesListFragment extends ListFragment {
         void handleFragmentSuicidal(final String tag);
     }
 
+    /**
+     *
+     */
     class ResultCallback extends TransactionManager.Result {
         @Override
         public void onPlacesList(List<PlaceInfo> placeList) {
-            Log.i(TAG, "onPlacesList ....");
             mAdapter.swapItem(placeList);
             if (mProgress.isShowing()) {
                 mProgress.dismiss();
@@ -109,7 +111,7 @@ public class PlacesListFragment extends ListFragment {
 
         @Override
         public void onError(final String errorMsg, final String tag) {
-            if (!TextUtils.isEmpty(tag) && !getActivity().getResources().getString(
+            if (!TextUtils.isEmpty(tag) && !getActivity().getString(
                     R.string.google_places_tag).equalsIgnoreCase(tag)) {
                 Log.e(TAG, "This is not a google response..ust ignore it");
                 return;

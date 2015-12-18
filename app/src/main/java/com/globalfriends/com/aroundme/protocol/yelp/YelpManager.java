@@ -13,6 +13,7 @@ import com.globalfriends.com.aroundme.utils.Utility;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 /**
  * Created by vishal on 11/19/2015.
@@ -69,5 +70,10 @@ public class YelpManager extends DefaultFeatureManager {
                 mListener.onError(mContext.getString(R.string.failed_response), mContext.getString(R.string.yelp_tag));
             }
         }
+    }
+
+    @Override
+    public int getFeatureIcon() {
+        return R.drawable.yelp;
     }
 }

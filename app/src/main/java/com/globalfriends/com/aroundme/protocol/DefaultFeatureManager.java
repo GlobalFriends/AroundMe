@@ -110,4 +110,9 @@ public class DefaultFeatureManager implements IFeatureManager {
     public String getTag() {
         return mModuleTag;
     }
+
+    @Override
+    public int getFeatureIcon() {
+        return 0;
+    }
 }

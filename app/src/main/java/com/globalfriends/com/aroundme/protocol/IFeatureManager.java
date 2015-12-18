@@ -51,4 +51,10 @@ public interface IFeatureManager {
      * @return
      */
     public String getTag();
+
+    /**
+     *
+     * @return
+     */
+    public int getFeatureIcon();
 }
