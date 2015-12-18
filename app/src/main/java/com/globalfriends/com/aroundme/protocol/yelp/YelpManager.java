@@ -20,7 +20,6 @@ import org.w3c.dom.Text;
  */
 public class YelpManager extends DefaultFeatureManager {
     private static final int PLACE_DETAIL_REQUEST = 1;
-    private static final int PLACE_LIST_REQUEST = 2;
 
     public YelpManager(final Listener listener) {
         super(listener, AroundMeApplication.getContext().getResources().getString(R.string.yelp_tag));

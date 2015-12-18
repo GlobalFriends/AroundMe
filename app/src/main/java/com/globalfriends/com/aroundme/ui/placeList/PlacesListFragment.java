@@ -34,12 +34,16 @@ public class PlacesListFragment extends ListFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // Register callback to make sure everything will be received
+        TransactionManager.getInstance().addResultCallback(mCallBack);
+
+        // Create progress and initiate transaction
         mProgress = new ProgressDialog(getActivity());
         mProgress.setCancelable(false);
         mProgress.setMessage(getResources().getString(R.string.please_wait_progress));
         mProgress.isIndeterminate();
         mProgress.show();
-        TransactionManager.getInstance().addResultCallback(mCallBack);
+        TransactionManager.getInstance().findByNearBy(getArguments().getString("PLACE_EXTRA"));
     }
 
     @Override
@@ -52,7 +56,6 @@ public class PlacesListFragment extends ListFragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        TransactionManager.getInstance().findByNearBy(getArguments().getString("PLACE_EXTRA"));
     }
 
     @Override

@@ -331,6 +331,12 @@ public class PlaceDetailsFragment extends Fragment implements View.OnClickListen
         void handleFragmentSuicidal(final String tag);
     }
 
+    /**
+     * Add's dynmic layout for provided module
+     *
+     * @param placeDetails
+     * @param moduleName
+     */
     private void addDynamicView(final IPlaceDetails placeDetails, final String moduleName) {
         if (TextUtils.isEmpty(moduleName)) {
             Log.e(TAG, "module name is empty");
@@ -401,7 +407,9 @@ public class PlaceDetailsFragment extends Fragment implements View.OnClickListen
              */
             if (moduleName.equalsIgnoreCase(getString(R.string.google_places_tag))) {
                 ratingBar.setVisibility(View.VISIBLE);
-                ratingBar.setRating(Float.valueOf(mPlace.getRating()));
+                if (!TextUtils.isEmpty(mPlace.getRating())) {
+                    ratingBar.setRating(Float.valueOf(mPlace.getRating()));
+                }
             } else {
                 if (TextUtils.isEmpty(placeDetails.getPlaceRating())) {
                     ratingBar.setVisibility(View.GONE);
@@ -410,7 +418,6 @@ public class PlaceDetailsFragment extends Fragment implements View.OnClickListen
                     ratingBar.setRating(Float.valueOf(placeDetails.getPlaceRating()));
                 }
             }
-
         }
         ratingCount.setText(String.format(getString(R.string.review_count), placeDetails.getReviewCount()));
 

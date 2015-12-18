@@ -37,6 +37,8 @@
                 android:clickable="true"
                 android:gravity="right"
                 android:text="@string/more"
+                android:textColor="@color/aspect_color"
+                android:textStyle="bold"
                 android:textAppearance="@style/TextAppearance.AppCompat.Caption" />
         </android.support.v7.widget.LinearLayoutCompat>
 
