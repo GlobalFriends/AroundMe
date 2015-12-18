@@ -62,6 +62,10 @@ public class PlaceReviewMetadata implements Parcelable {
         if (mProfilePhotoUrl == null) {
             return mProfilePhotoUrl;
         }
+
+        if (mProfilePhotoUrl.startsWith("http")) {
+            return mProfilePhotoUrl;
+        }
         return "https:" + mProfilePhotoUrl;
     }
 
