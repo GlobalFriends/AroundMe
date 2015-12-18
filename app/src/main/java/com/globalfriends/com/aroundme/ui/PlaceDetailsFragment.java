@@ -69,7 +69,6 @@ public class PlaceDetailsFragment extends Fragment implements View.OnClickListen
     private LinearLayoutCompat mFavoriteButtonLayout;
     private CardView mGooglePhotosLayout;
     private LinearLayoutCompat mRatingBarLayout;
-    private CardView mReviewLayout;
     private LinearLayoutCompat mTimingLayout;
     private LinearLayoutCompat mParenLayout;
 
@@ -185,7 +184,6 @@ public class PlaceDetailsFragment extends Fragment implements View.OnClickListen
         mWebsite = (TextView) view.findViewById(R.id.id_website);
         mFavoriteButtonLayout = (LinearLayoutCompat) view.findViewById(R.id.id_favorite);
         mFavoriteButtonLayout.setOnClickListener(this);
-        mReviewLayout = (CardView) view.findViewById(R.id.review_layout);
         mTimingLayout = (LinearLayoutCompat) view.findViewById(R.id.id_timings);
 
         mGooglePhotosLayout = (CardView) view.findViewById(R.id.google_photo);
@@ -230,12 +228,12 @@ public class PlaceDetailsFragment extends Fragment implements View.OnClickListen
                                     mGooglePlaceDetails.getAddress());
                 }
                 break;
-            case R.id.review_linear_layout:
-                Intent reviewIntent = new Intent(getActivity(), ReviewList.class);
-                reviewIntent.putExtra("TAG_NAME", getActivity().getResources().getString(R.string.google_places_tag));
-                reviewIntent.putExtra("REVIEW_LIST", (Serializable) mGooglePlaceDetails.getReviewList());
-                getActivity().startActivity(reviewIntent);
-                break;
+//            case R.id.review_linear_layout:
+//                Intent reviewIntent = new Intent(getActivity(), ReviewList.class);
+//                reviewIntent.putExtra("TAG_NAME", getActivity().getResources().getString(R.string.google_places_tag));
+//                reviewIntent.putExtra("REVIEW_LIST", (Serializable) mGooglePlaceDetails.getReviewList());
+//                getActivity().startActivity(reviewIntent);
+//                break;
         }
     }
 
@@ -311,86 +309,8 @@ public class PlaceDetailsFragment extends Fragment implements View.OnClickListen
         updateRatingBar();
         updatePlaceDetails();
         updatePlaceTiming();
-        updateReviewBar(mGooglePlaceDetails, mReviewLayout, mGoogleImageLoader);
     }
 
-    /**
-     * General layout, ric place to create and update Review layout
-     *
-     * @param placeDetails
-     * @param layout
-     * @param imageLoader
-     */
-    private void updateReviewBar(final IPlaceDetails placeDetails, final CardView layout,
-                                 final ImageLoader imageLoader) {
-        List<PlaceReviewMetadata> reviewList = placeDetails.getReviewList();
-        if (reviewList == null || reviewList.size() == 0) {
-            layout.setVisibility(View.GONE);
-            return;
-        }
-
-        layout.setVisibility(View.VISIBLE);
-        // Update header
-
-        ImageView googleIcon = (ImageView) layout.findViewById(R.id.google_icon);
-        googleIcon.setImageResource(TransactionManager.getInstance().getModuleIcon(getString(R.string.google_places_tag)));
-
-        AppCompatTextView moduleId = (AppCompatTextView) layout.findViewById(R.id.module_id);
-        moduleId.setText(getString(R.string.google_places_tag));
-
-        AppCompatTextView more = (AppCompatTextView) layout.findViewById(R.id.module_more);
-        more.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent reviewIntent = new Intent(getActivity(), ReviewList.class);
-                reviewIntent.putExtra("TAG_NAME", getActivity().getResources().getString(R.string.google_places_tag));
-                reviewIntent.putExtra("REVIEW_LIST", (Serializable) placeDetails.getReviewList());
-                getActivity().startActivity(reviewIntent);
-            }
-        });
-
-        LinearLayoutCompat content = (LinearLayoutCompat) layout.findViewById(R.id.review_linear_layout);
-        content.setOnClickListener(this);
-
-        AppCompatRatingBar ratingBar = (AppCompatRatingBar) layout.findViewById(R.id.review_rating_bar);
-        AppCompatTextView ratingText = (AppCompatTextView) layout.findViewById(R.id.review_rating_text);
-        AppCompatTextView ratingTime = (AppCompatTextView) layout.findViewById(R.id.review_rating_time);
-        AppCompatTextView authorName = (AppCompatTextView) layout.findViewById(R.id.review_author_name);
-        AppCompatTextView reviewComment = (AppCompatTextView) layout.findViewById(R.id.review_comment);
-
-        AppCompatTextView aspectType = (AppCompatTextView) layout.findViewById(R.id.aspect_type_id);
-        AppCompatTextView aspectRating = (AppCompatTextView) layout.findViewById(R.id.aspect_rating_id);
-
-        CircularNetworkImageView avatar = (CircularNetworkImageView) layout.findViewById(R.id.review_avatar);
-
-        //Update GUI content with 1st element of List
-        final PlaceReviewMetadata data = reviewList.get(0);
-        if (data.getProfilePhotoUrl() != null) {
-            avatar.setImageUrl(data.getProfilePhotoUrl(), imageLoader);
-        } else {
-            avatar.setImageBitmap(Utility.getCircularBitmap(BitmapFactory.decodeResource(
-                    AroundMeApplication.getContext().getResources(), R.drawable.profile)));
-        }
-
-        avatar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (data.getAuthorUrl() == null) {
-                    return;
-                }
-                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(data.getAuthorUrl()));
-                getActivity().startActivity(browserIntent);
-            }
-        });
-
-        ratingBar.setRating(Float.valueOf(data.getRating()));
-        ratingText.setText(data.getRating());
-        ratingTime.setText(Utility.Epoch2DateString(data.getReviewTime()));
-        authorName.setText(data.getAuthorName());
-        reviewComment.setText(data.getReviewText());
-        aspectType.setText(data.getAspect());
-        aspectRating.setText(data.getAspectDescription().getReviewString());
-    }
 
     /**
      * Updated supported components such as Yelp, Four Square etc..
@@ -439,11 +359,16 @@ public class PlaceDetailsFragment extends Fragment implements View.OnClickListen
         TextView name = (AppCompatTextView) moduleLayout.findViewById(R.id.module_id);
         name.setText(moduleName);
         TextView more = (AppCompatTextView) moduleLayout.findViewById(R.id.module_more);
+
+        more.setPaintFlags(more.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         more.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (reviewList.size() > 1) {
-                    // Launch review list
+                    Intent reviewIntent = new Intent(getActivity(), ReviewList.class);
+                    reviewIntent.putExtra("TAG_NAME", moduleName);
+                    reviewIntent.putExtra("REVIEW_LIST", (Serializable) reviewList);
+                    getActivity().startActivity(reviewIntent);
                 } else {
                     if (TextUtils.isEmpty(placeDetails.getWebUrl())) {
                         return;
@@ -470,26 +395,50 @@ public class PlaceDetailsFragment extends Fragment implements View.OnClickListen
             }
         } else {
             ratingImageView.setVisibility(View.GONE);
-
-            if (TextUtils.isEmpty(placeDetails.getPlaceRating())) {
-                ratingBar.setVisibility(View.GONE);
-            } else {
+            /**
+             * Google rating is returned in place list, but details are empty.
+             * So, we have to handle below exception
+             */
+            if (moduleName.equalsIgnoreCase(getString(R.string.google_places_tag))) {
                 ratingBar.setVisibility(View.VISIBLE);
-                ratingBar.setRating(Float.valueOf(placeDetails.getPlaceRating()));
+                ratingBar.setRating(Float.valueOf(mPlace.getRating()));
+            } else {
+                if (TextUtils.isEmpty(placeDetails.getPlaceRating())) {
+                    ratingBar.setVisibility(View.GONE);
+                } else {
+                    ratingBar.setVisibility(View.VISIBLE);
+                    ratingBar.setRating(Float.valueOf(placeDetails.getPlaceRating()));
+                }
             }
+
         }
         ratingCount.setText(String.format(getString(R.string.review_count), placeDetails.getReviewCount()));
 
         //3rd Row with Review Profile and Review content
         CircularNetworkImageView reviewerImage = (CircularNetworkImageView) moduleLayout.findViewById(R.id.reviewer_image);
+        TextView authorName = (AppCompatTextView) moduleLayout.findViewById(R.id.review_author_name);
         TextView reviewContent = (AppCompatTextView) moduleLayout.findViewById(R.id.review_content);
+
         if (reviewList.size() > 0) {
+            // Set Review icon
             final PlaceReviewMetadata metaData = reviewList.get(0);
-            if (TextUtils.isEmpty(metaData.getProfilePhotoUrl())) {
-                reviewerImage.setImageResource(R.drawable.profile);
-            } else {
+            if (metaData.getProfilePhotoUrl() != null) {
                 reviewerImage.setImageUrl(metaData.getProfilePhotoUrl(), imageLoader);
+            } else {
+                reviewerImage.setImageBitmap(Utility.getCircularBitmap(BitmapFactory.decodeResource(
+                        AroundMeApplication.getContext().getResources(), R.drawable.profile)));
             }
+
+
+            // Set Reviewer name
+            if (TextUtils.isEmpty(metaData.getAuthorName())) {
+                authorName.setVisibility(View.GONE);
+            } else {
+                authorName.setVisibility(View.VISIBLE);
+                authorName.setText(metaData.getAuthorName());
+            }
+
+            // Set Review content
             reviewerImage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -508,7 +457,10 @@ public class PlaceDetailsFragment extends Fragment implements View.OnClickListen
                 @Override
                 public void onClick(View v) {
                     if (reviewList.size() > 1) {
-                        // Launch review list
+                        Intent reviewIntent = new Intent(getActivity(), ReviewList.class);
+                        reviewIntent.putExtra("TAG_NAME", moduleName);
+                        reviewIntent.putExtra("REVIEW_LIST", (Serializable) reviewList);
+                        getActivity().startActivity(reviewIntent);
                     } else {
                         if (TextUtils.isEmpty(placeDetails.getWebUrl())) {
                             return;
@@ -542,6 +494,7 @@ public class PlaceDetailsFragment extends Fragment implements View.OnClickListen
                 mGooglePlaceDetails = response;
                 mGooglePlaceDetails.toString();
                 updateUi();
+                addDynamicView(response, placeTag);
                 TransactionManager.getInstance().findPlaceDetails(response.getPhoneNumber());
                 return;
             }

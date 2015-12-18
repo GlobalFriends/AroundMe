@@ -2,20 +2,10 @@ package com.globalfriends.com.aroundme.ui;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.Bitmap.Config;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Paint;
-import android.graphics.PorterDuff.Mode;
-import android.graphics.PorterDuffXfermode;
-import android.graphics.Rect;
-import android.graphics.RectF;
 import android.graphics.drawable.BitmapDrawable;
 import android.util.AttributeSet;
 
 import com.android.volley.toolbox.NetworkImageView;
-import com.globalfriends.com.aroundme.AroundMeApplication;
-import com.globalfriends.com.aroundme.R;
 import com.globalfriends.com.aroundme.utils.Utility;
 
 public class CircularNetworkImageView extends NetworkImageView {
