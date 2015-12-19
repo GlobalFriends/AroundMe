@@ -55,6 +55,19 @@ public class PlaceManager extends DefaultFeatureManager {
         sendVolleyJsonRequest(builder.build().getUrl(), OperationEnum.OPERATION_PLACE_LIST);
     }
 
+
+    @Override
+    public void findPlaces(PlaceRequestTypeEnum searchType, String pageToken) {
+        PlacesWebService.Builder builder =
+                new PlacesWebService.Builder().
+                        setSearchType(searchType).
+                        setResponseType(PlaceResponseEnum.RESP_JSON).
+                        setPageToken(pageToken).
+                        setKey(AroundMeApplication.getContext().
+                                getResources().getString(R.string.google_maps_key));
+        sendVolleyJsonRequest(builder.build().getUrl(), OperationEnum.OPERATION_PLACE_LIST);
+    }
+
     @Override
     public void findGooglePlaceDetails(String placeId) {
         if (TextUtils.isEmpty(placeId)) {
@@ -127,7 +140,11 @@ public class PlaceManager extends DefaultFeatureManager {
                                     e.printStackTrace();
                                 }
                             }
-                            mListener.onPlacesList(placeList);
+                            String pageToken = null;
+                            if (response.has("next_page_token")) {
+                                pageToken = response.getString("next_page_token");
+                            }
+                            mListener.onPlacesList(pageToken, placeList);
                         } else {
                             mListener.onError(response.getString(STATUS), mContext.getString(R.string.google_places_tag));
                         }

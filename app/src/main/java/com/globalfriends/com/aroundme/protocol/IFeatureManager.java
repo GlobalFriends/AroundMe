@@ -17,6 +17,12 @@ public interface IFeatureManager {
     void findPlaces(final PlaceRequestTypeEnum searchType, String placeType, String query);
 
     /**
+     * @param searchType
+     * @param pageToken
+     */
+    void findPlaces(final PlaceRequestTypeEnum searchType, final String pageToken);
+
+    /**
      * Return place details based on provided unique identifications
      *
      * @param placeId Unique identification for Google PlaceInfo
@@ -53,7 +59,6 @@ public interface IFeatureManager {
     public String getTag();
 
     /**
-     *
      * @return
      */
     public int getFeatureIcon();

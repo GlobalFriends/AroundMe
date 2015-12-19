@@ -88,6 +88,11 @@ public class DefaultFeatureManager implements IFeatureManager {
     }
 
     @Override
+    public void findPlaces(PlaceRequestTypeEnum searchType, String pageToken) {
+
+    }
+
+    @Override
     public void findGooglePlaceDetails(String placeId) {
     }
 

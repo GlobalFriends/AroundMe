@@ -125,6 +125,15 @@ public class TransactionManager implements Listener {
     }
 
     /**
+     * @param pageToken
+     */
+    public void findByNearByByPageToken(final String pageToken) {
+        for (IFeatureManager feature : mFeatureManagerList) {
+            feature.findPlaces(PlaceRequestTypeEnum.SEARCH_TYPE_NEARBY, pageToken);
+        }
+    }
+
+    /**
      * @param query
      */
     public void findBySearch(final String query) {
@@ -167,13 +176,14 @@ public class TransactionManager implements Listener {
     }
 
     @Override
-    public void onPlacesList(List<PlaceInfo> placeList) {
+    public void onPlacesList(final String pageToken, List<PlaceInfo> placeList) {
         synchronized (mListeners) {
             for (Result listener : mListeners) {
-                listener.onPlacesList(placeList);
+                listener.onPlacesList(pageToken, placeList);
             }
         }
     }
+
 
     @Override
     public void onError(final String errorMsg, String tag) {
@@ -258,7 +268,7 @@ public class TransactionManager implements Listener {
         /**
          * @param placeList
          */
-        public void onPlacesList(List<PlaceInfo> placeList) {
+        public void onPlacesList(final String pageToken, List<PlaceInfo> placeList) {
         }
 
         public void onAutoComplete(List<AutoCompletePrediction> predictions) {

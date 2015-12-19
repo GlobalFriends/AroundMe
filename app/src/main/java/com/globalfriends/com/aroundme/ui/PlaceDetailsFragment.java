@@ -113,7 +113,7 @@ public class PlaceDetailsFragment extends Fragment implements View.OnClickListen
         // Fail Safe
         if (mPlace == null) {
             Log.e(TAG, "For some reason place details are still null. Go back to List Screen");
-            Snackbar.make(view, "No place Details", Snackbar.LENGTH_SHORT).show();
+            Snackbar.make(view, R.string.no_more_results, Snackbar.LENGTH_SHORT).show();
             return;
         }
 

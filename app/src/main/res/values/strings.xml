@@ -80,4 +80,5 @@
     <string name="current_location">Current location</string>
     <string name="developer_id">globalfriends747@gmail.com</string>
     <string name="email_subject">Around Me application feedback</string>
+    <string name="no_more_results">No more results to display...</string>
 </resources>
