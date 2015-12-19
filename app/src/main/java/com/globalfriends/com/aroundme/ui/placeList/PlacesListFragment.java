@@ -101,6 +101,7 @@ public class PlacesListFragment extends ListFragment implements SwipeRefreshLayo
             return;
         }
 
+        mSwipeRefresh.setRefreshing(false);
         Toast.makeText(getActivity(), R.string.no_more_results, Toast.LENGTH_SHORT).show();
     }
 
