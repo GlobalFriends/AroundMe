@@ -40,8 +40,6 @@ import com.globalfriends.com.aroundme.ui.review.ReviewList;
 import com.globalfriends.com.aroundme.utils.Utility;
 import com.google.android.gms.maps.GoogleMap;
 
-import org.w3c.dom.Text;
-
 import java.io.Serializable;
 import java.util.List;
 
@@ -58,8 +56,6 @@ public class PlaceDetailsFragment extends Fragment implements View.OnClickListen
     private IPlaceDetails mGooglePlaceDetails;
     private PlaceInfo mPlace = new PlaceInfo();
     private ImageLoader mGoogleImageLoader;
-    private TextView mCall;
-    private TextView mWebsite;
 
     // UI Elements
     private TextView mPlaceName;
@@ -138,6 +134,7 @@ public class PlaceDetailsFragment extends Fragment implements View.OnClickListen
         TextView ratingText = (TextView) mRatingBarLayout.findViewById(R.id.id_rating_text);
         TextView openNow = (TextView) mRatingBarLayout.findViewById(R.id.id_open_now_text);
 
+        // Update open or close status
         if (mGooglePlaceDetails.isPermanentlyClosed()) {
             openNow.setText(getActivity().getResources().getString(R.string.permanently_closed));
         } else {
@@ -150,12 +147,20 @@ public class PlaceDetailsFragment extends Fragment implements View.OnClickListen
             }
         }
 
+        // Update rating
         if (!TextUtils.isEmpty(mPlace.getRating())) {
             ratingStars.setRating(Float.valueOf(mPlace.getRating()));
             ratingText.setText(mPlace.getRating());
         } else {
             ratingText.setText(getResources().getString(R.string.not_rated));
         }
+
+        // Update distance
+        mDistance.setText(Utility.distanceFromLatitudeLongitude(Double.valueOf(PreferenceManager.getLatitude()),
+                Double.valueOf(PreferenceManager.getLongitude()),
+                mGooglePlaceDetails.getLatitude(),
+                mGooglePlaceDetails.getLongitude(),
+                PreferenceManager.getDistanceFormat()));
     }
 
     @Override
@@ -181,8 +186,6 @@ public class PlaceDetailsFragment extends Fragment implements View.OnClickListen
         // Clickable Layouts
         mMapButtonLayout = (LinearLayoutCompat) view.findViewById(R.id.id_maps);
         mMapButtonLayout.setOnClickListener(this);
-        mCall = (TextView) view.findViewById(R.id.id_call);
-        mWebsite = (TextView) view.findViewById(R.id.id_website);
         mFavoriteButtonLayout = (LinearLayoutCompat) view.findViewById(R.id.id_favorite);
         mFavoriteButtonLayout.setOnClickListener(this);
         mTimingLayout = (LinearLayoutCompat) view.findViewById(R.id.id_timings);
@@ -240,17 +243,27 @@ public class PlaceDetailsFragment extends Fragment implements View.OnClickListen
     }
 
     /**
-     *
+     * Update place detail such as website, phone, distance ets.
      */
     private void updatePlaceDetails() {
         mAddress.setText(mGooglePlaceDetails.getAddress());
-        mCall.setText(mGooglePlaceDetails.getPhoneNumber());
-        mWebsite.setText(mGooglePlaceDetails.getWebUrl());
-        mDistance.setText(Utility.distanceFromLatitudeLongitude(Double.valueOf(PreferenceManager.getLatitude()),
-                Double.valueOf(PreferenceManager.getLongitude()),
-                mGooglePlaceDetails.getLatitude(),
-                mGooglePlaceDetails.getLongitude(),
-                PreferenceManager.getDistanceFormat()));
+        LinearLayoutCompat callLayout = (LinearLayoutCompat) getActivity().findViewById(R.id.call_layout);
+        if (TextUtils.isEmpty(mGooglePlaceDetails.getPhoneNumber())) {
+            callLayout.setVisibility(View.GONE);
+        } else {
+            callLayout.setVisibility(View.VISIBLE);
+            TextView call = (TextView) getActivity().findViewById(R.id.id_call);
+            call.setText(mGooglePlaceDetails.getPhoneNumber());
+        }
+
+        LinearLayoutCompat websiteLayout = (LinearLayoutCompat) getActivity().findViewById(R.id.website_layout);
+        if (TextUtils.isEmpty(mGooglePlaceDetails.getWebUrl())) {
+            websiteLayout.setVisibility(View.GONE);
+        } else {
+            websiteLayout.setVisibility(View.VISIBLE);
+            TextView mWebsite = (TextView) getActivity().findViewById(R.id.id_website);
+            mWebsite.setText(mGooglePlaceDetails.getWebUrl());
+        }
     }
 
     /**

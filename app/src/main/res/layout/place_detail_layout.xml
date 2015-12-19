@@ -153,6 +153,7 @@
                     <include layout="@layout/divider_layout_white"></include>
 
                     <android.support.v7.widget.LinearLayoutCompat
+                        android:id="@+id/call_layout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="5sp"
@@ -181,6 +182,7 @@
                     <include layout="@layout/divider_layout_black"></include>
 
                     <android.support.v7.widget.LinearLayoutCompat
+                        android:id="@+id/website_layout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="5sp"
