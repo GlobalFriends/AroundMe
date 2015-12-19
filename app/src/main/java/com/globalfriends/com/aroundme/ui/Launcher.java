@@ -287,7 +287,14 @@ public class Launcher extends AppCompatActivity implements
     public boolean onNavigationItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.drawer_my_location:
-                updateFragment(new MyLocationFragment(), false, true);
+                String provider = locationManager.getBestProvider(new Criteria(), false);
+                Location location = locationManager.getLastKnownLocation(provider);
+                Bundle bundle = new Bundle();
+                bundle.putDouble("LATITUDE", location.getLatitude());
+                bundle.putDouble("LONGITUDE", location.getLongitude());
+                Fragment locationFragment = new MapsFragment();
+                locationFragment.setArguments(bundle);
+                updateFragment(locationFragment, false, true);
                 break;
             case R.id.drawer_recent:
                 updateFragment(new RecentFragment(), false, true);
@@ -388,5 +395,12 @@ public class Launcher extends AppCompatActivity implements
     @Override
     public void onFragmentInteraction(Uri uri) {
 
+    }
+
+    @Override
+    public void onMapsViewClicked(Bundle bundle) {
+        Fragment fragment = new MapsFragment();
+        fragment.setArguments(bundle);
+        updateFragment(fragment, false, true);
     }
 }

@@ -38,6 +38,7 @@ import com.globalfriends.com.aroundme.protocol.TransactionManager;
 import com.globalfriends.com.aroundme.provider.AroundMeContractProvider;
 import com.globalfriends.com.aroundme.ui.review.ReviewList;
 import com.globalfriends.com.aroundme.utils.Utility;
+import com.google.android.gms.maps.GoogleMap;
 
 import org.w3c.dom.Text;
 
@@ -217,7 +218,12 @@ public class PlaceDetailsFragment extends Fragment implements View.OnClickListen
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.id_maps:
-                // Launch Maps Activity
+                Bundle bundle = new Bundle();
+                bundle.putDouble("LATITUDE", mPlace.getLatitude());
+                bundle.putDouble("LONGITUDE", mPlace.getLongitude());
+                bundle.putString("NAME", mPlace.getName());
+                bundle.putInt("MAP_TYPE", GoogleMap.MAP_TYPE_SATELLITE);
+                mListener.onMapsViewClicked(bundle);
                 break;
             case R.id.id_favorite:
                 if (mPlace != null) {
@@ -228,12 +234,8 @@ public class PlaceDetailsFragment extends Fragment implements View.OnClickListen
                                     mGooglePlaceDetails.getAddress());
                 }
                 break;
-//            case R.id.review_linear_layout:
-//                Intent reviewIntent = new Intent(getActivity(), ReviewList.class);
-//                reviewIntent.putExtra("TAG_NAME", getActivity().getResources().getString(R.string.google_places_tag));
-//                reviewIntent.putExtra("REVIEW_LIST", (Serializable) mGooglePlaceDetails.getReviewList());
-//                getActivity().startActivity(reviewIntent);
-//                break;
+            default:
+                break;
         }
     }
 
@@ -324,6 +326,13 @@ public class PlaceDetailsFragment extends Fragment implements View.OnClickListen
      */
     public interface OnPlaceDetailsFragmentInteractionListener {
         void onFragmentInteraction(Uri uri);
+
+        /**
+         * Move to maps view
+         *
+         * @param bundle
+         */
+        void onMapsViewClicked(Bundle bundle);
 
         /**
          * @param tag
