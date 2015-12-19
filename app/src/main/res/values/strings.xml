@@ -17,9 +17,9 @@
     <!-- User Profile Strings -->
     <string name="menu_favorite">Favorite</string>
     <string name="menu_recent">Recent</string>
-    <string name="menu_feedback">Feedback</string>
+    <string name="menu_rate_us">Rate Us</string>
     <string name="menu_share">Share</string>
-    <string name="menu_email">Email_us</string>
+    <string name="menu_feedback">Feedback</string>
     <string name="menu_maps">Maps</string>
     <string name="menu_my_location">My Location</string>
     <string name="menu_settings">Settings</string>
@@ -78,4 +78,6 @@
     <string name="failed_response">Request failed. Please try again</string>
     <string name="review_count">%d Reviews</string>
     <string name="current_location">Current location</string>
+    <string name="developer_id">globalfriends747@gmail.com</string>
+    <string name="email_subject">Around Me application feedback</string>
 </resources>

@@ -303,14 +303,13 @@ public class Launcher extends AppCompatActivity implements
                 PreferenceManager.dump();
                 updateFragment(new FavoriteFragment(), false, true);
                 break;
-            case R.id.drawer_maps:
-                startActivity(new Intent(this, MainActivity.class));
-                break;
             case R.id.drawer_feedback:
-                Toast.makeText(this, "feedback", Toast.LENGTH_SHORT).show();
+                Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
+                        "mailto", getString(R.string.developer_id), null));
+                emailIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.email_subject));
+                startActivity(Intent.createChooser(emailIntent, null));
                 break;
-            case R.id.drawer_send:
-                Toast.makeText(this, "send", Toast.LENGTH_SHORT).show();
+            case R.id.drawer_rate_us:
                 break;
             case R.id.drawer_share:
                 Toast.makeText(this, "share", Toast.LENGTH_SHORT).show();
