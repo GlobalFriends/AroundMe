@@ -31,17 +31,19 @@ public class MapsFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // inflat and return the layout
+        // inflate and return the layout
         View v = inflater.inflate(R.layout.fragment_location_info, container,
                 false);
         mMapView = (MapView) v.findViewById(R.id.mapView);
         mMapView.onCreate(savedInstanceState);
         Bundle bundle = getArguments();
-        mLatitude = bundle.getDouble("LATITUDE");
-        mLongitude = bundle.getDouble("LONGITUDE");
-        mName = bundle.getString("NAME");
-        if (bundle.getInt("MAP_TYPE") != 0) {
-            mMapType = bundle.getInt("MAP_TYPE");
+        if (bundle != null) {
+            mLatitude = bundle.getDouble("LATITUDE");
+            mLongitude = bundle.getDouble("LONGITUDE");
+            mName = bundle.getString("NAME");
+            if (bundle.getInt("MAP_TYPE") != 0) {
+                mMapType = bundle.getInt("MAP_TYPE");
+            }
         }
 
         mMapView.onResume();// needed to get the map to display immediately
@@ -65,7 +67,7 @@ public class MapsFragment extends BaseFragment {
         // adding marker
         googleMap.addMarker(marker);
         CameraPosition cameraPosition = new CameraPosition.Builder()
-                .target(new LatLng(mLatitude, mLongitude)).zoom(20).build();
+                .target(new LatLng(mLatitude, mLongitude)).zoom(15).build();
         googleMap.animateCamera(CameraUpdateFactory
                 .newCameraPosition(cameraPosition));
 

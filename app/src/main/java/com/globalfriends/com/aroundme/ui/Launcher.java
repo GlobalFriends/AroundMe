@@ -226,7 +226,6 @@ public class Launcher extends AppCompatActivity implements
 
         mNavigationView = (NavigationView) findViewById(R.id.nav_view);
         mNavigationView.setNavigationItemSelectedListener(this);
-
         mCustomLocationHolderView = findViewById(R.id.custom_location);
         mCustomLocationTextView = (TextView) findViewById(R.id.text_current_location);
         mCustomLocationClearButton = (Button) findViewById(R.id.button_clear_custom_location);
@@ -410,9 +409,7 @@ public class Launcher extends AppCompatActivity implements
 
     @Override
     public void onNavigationEnabled(final boolean visibility) {
-        if (mNavigationView != null) {
-            mNavigationView.setEnabled(visibility);
-        }
+        mNavigationView.setVisibility(visibility ? View.VISIBLE : View.GONE);
     }
 
     @Override

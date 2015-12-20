@@ -10,8 +10,9 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatRatingBar;
 import android.support.v7.widget.AppCompatTextView;
@@ -39,6 +40,7 @@ import com.globalfriends.com.aroundme.provider.AroundMeContractProvider;
 import com.globalfriends.com.aroundme.ui.review.ReviewList;
 import com.globalfriends.com.aroundme.utils.Utility;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
 
 import java.io.Serializable;
 import java.util.List;
@@ -64,6 +66,7 @@ public class PlaceDetailsFragment extends BaseFragment implements View.OnClickLi
     private NetworkImageView mMainDisplayImage;
     private LinearLayoutCompat mMapButtonLayout;
     private LinearLayoutCompat mFavoriteButtonLayout;
+    private MapView mMapView;
     private CardView mGooglePhotosLayout;
     private LinearLayoutCompat mRatingBarLayout;
     private LinearLayoutCompat mTimingLayout;
@@ -115,13 +118,17 @@ public class PlaceDetailsFragment extends BaseFragment implements View.OnClickLi
 
         // Update Image
         if (mPlace.getPhotoReference() != null) {
+            mMapView.setVisibility(View.GONE);
+            mMainDisplayImage.setVisibility(View.VISIBLE);
             mMainDisplayImage.setImageUrl(
                     Utility.getPlacePhotoQuery(mPlace.getPhotoReference().getReference(),
                             mPlace.getPhotoReference().getHeight(),
                             mPlace.getPhotoReference().getWidth()),
                     mGoogleImageLoader);
         } else {
-            mMainDisplayImage.setImageUrl(mPlace.getIcon(), mGoogleImageLoader);
+            mMapView.setVisibility(View.VISIBLE);
+            mMainDisplayImage.setVisibility(View.GONE);
+            updateMapView();
         }
         TransactionManager.getInstance().findGooglePlaceDetails(mPlace.getPlaceId(), null);
     }
@@ -177,6 +184,7 @@ public class PlaceDetailsFragment extends BaseFragment implements View.OnClickLi
         mParenLayout = (LinearLayoutCompat) view.findViewById(R.id.parent_layout);
         // Basic and Simple layouts
         mMainDisplayImage = (NetworkImageView) view.findViewById(R.id.id_place_image);
+        mMapView = (MapView) view.findViewById(R.id.mapView);
         mPlaceName = (TextView) view.findViewById(R.id.id_place_name);
         mAddress = (TextView) view.findViewById(R.id.id_address);
         mDistance = (TextView) view.findViewById(R.id.distance_id);
@@ -202,6 +210,21 @@ public class PlaceDetailsFragment extends BaseFragment implements View.OnClickLi
             throw new RuntimeException(context.toString()
                     + " must implement OnPlaceDetailsFragmentInteractionListener");
         }
+    }
+
+    /**
+     * Update Map view for specified lattitude and longitude
+     */
+    private void updateMapView() {
+        Bundle bundle = new Bundle();
+        bundle.putDouble("LATITUDE", mPlace.getLatitude());
+        bundle.putDouble("LONGITUDE", mPlace.getLongitude());
+        bundle.putString("NAME", mPlace.getName());
+        bundle.putInt("MAP_TYPE", GoogleMap.MAP_TYPE_NORMAL);
+        Fragment mapsFragment = new MapsFragment();
+        mapsFragment.setArguments(bundle);
+        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+        transaction.add(R.id.mapView, mapsFragment).commit();
     }
 
     @Override
