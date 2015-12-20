@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.globalfriends.com.aroundme.R;
 import com.globalfriends.com.aroundme.data.places.PlaceInfo;
 import com.globalfriends.com.aroundme.protocol.TransactionManager;
+import com.globalfriends.com.aroundme.ui.ToolbarUpdateListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +30,7 @@ public class PlacesListFragment extends ListFragment implements SwipeRefreshLayo
     private static final String TAG = "PlacesListFragment";
     private List<PlaceInfo> mPlaces = new ArrayList<>();
     private OnPlaceListFragmentSelection mListener;
+    private ToolbarUpdateListener mToolbarUpdater;
     private PlacesListAdapter mAdapter;
     private ProgressDialog mProgress;
     private SwipeRefreshLayout mSwipeRefresh;
@@ -70,8 +72,10 @@ public class PlacesListFragment extends ListFragment implements SwipeRefreshLayo
     @Override
     public void onResume() {
         super.onResume();
-        getActivity().setTitle(R.string.search_results);
         getListView().setDivider(null);
+        getActivity().setTitle(R.string.search_results);
+        mToolbarUpdater.onNavigationEnabled(true);
+        mToolbarUpdater.onSearchBarEnabled(false);
     }
 
     @Override
@@ -88,6 +92,7 @@ public class PlacesListFragment extends ListFragment implements SwipeRefreshLayo
         super.onAttach(activity);
         try {
             mListener = (OnPlaceListFragmentSelection) activity;
+            mToolbarUpdater = (ToolbarUpdateListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
                     + " must implement OnSelectionFragmentSelection");

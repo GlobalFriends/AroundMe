@@ -10,8 +10,8 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatRatingBar;
 import android.support.v7.widget.AppCompatTextView;
@@ -48,7 +48,7 @@ import java.util.List;
 /**
  *
  */
-public class PlaceDetailsFragment extends Fragment implements View.OnClickListener {
+public class PlaceDetailsFragment extends BaseFragment implements View.OnClickListener {
     private static final String TAG = "PlaceDetailsFragment";
     private ProgressDialog mProgress;
     private OnPlaceDetailsFragmentInteractionListener mListener;
@@ -207,6 +207,8 @@ public class PlaceDetailsFragment extends Fragment implements View.OnClickListen
     @Override
     public void onResume() {
         super.onResume();
+        mToolbarUpdater.onNavigationEnabled(false);
+        mToolbarUpdater.onSearchBarEnabled(false);
         getActivity().setTitle(mPlaceName.getText());
     }
 

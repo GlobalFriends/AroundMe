@@ -20,7 +20,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 /**
  * A fragment that launches other parts of the demo application.
  */
-public class MapsFragment extends Fragment {
+public class MapsFragment extends BaseFragment {
     private double mLatitude;
     private double mLongitude;
     private String mName;
@@ -78,6 +78,9 @@ public class MapsFragment extends Fragment {
     public void onResume() {
         super.onResume();
         mMapView.onResume();
+        getActivity().setTitle(mName);
+        mToolbarUpdater.onSearchBarEnabled(false);
+        mToolbarUpdater.onNavigationEnabled(false);
     }
 
     @Override

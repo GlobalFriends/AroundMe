@@ -50,13 +50,17 @@ public class Launcher extends AppCompatActivity implements
         PlacesListFragment.OnPlaceListFragmentSelection,
         PlaceDetailsFragment.OnPlaceDetailsFragmentInteractionListener,
         GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener {
+        GoogleApiClient.OnConnectionFailedListener,
+        ToolbarUpdateListener {
     private static final int LOCATION_REQUEST_CODE = 1;
     private static Context mContext;
     private final String TAG = getClass().getSimpleName();
     private Location loc;
     private LocationManager locationManager;
     private GoogleApiClient mGoogleApiClient;
+
+    private NavigationView mNavigationView;
+
 
     private boolean mIsCustomLocation;
     private MenuItem mSearchMenu;
@@ -220,8 +224,8 @@ public class Launcher extends AppCompatActivity implements
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+        mNavigationView = (NavigationView) findViewById(R.id.nav_view);
+        mNavigationView.setNavigationItemSelectedListener(this);
 
         mCustomLocationHolderView = findViewById(R.id.custom_location);
         mCustomLocationTextView = (TextView) findViewById(R.id.text_current_location);
@@ -292,6 +296,7 @@ public class Launcher extends AppCompatActivity implements
                 Bundle bundle = new Bundle();
                 bundle.putDouble("LATITUDE", location.getLatitude());
                 bundle.putDouble("LONGITUDE", location.getLongitude());
+                bundle.putString("NAME", getString(R.string.current_location));
                 Fragment locationFragment = new MapsFragment();
                 locationFragment.setArguments(bundle);
                 updateFragment(locationFragment, false, true);
@@ -401,5 +406,19 @@ public class Launcher extends AppCompatActivity implements
         Fragment fragment = new MapsFragment();
         fragment.setArguments(bundle);
         updateFragment(fragment, false, true);
+    }
+
+    @Override
+    public void onNavigationEnabled(final boolean visibility) {
+        if (mNavigationView != null) {
+            mNavigationView.setEnabled(visibility);
+        }
+    }
+
+    @Override
+    public void onSearchBarEnabled(boolean visibility) {
+        if (mSearchMenu != null) {
+            mSearchMenu.setVisible(visibility);
+        }
     }
 }

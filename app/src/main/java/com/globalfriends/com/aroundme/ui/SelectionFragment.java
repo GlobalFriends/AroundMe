@@ -29,7 +29,7 @@ import java.util.ArrayList;
  * Activities containing this fragment MUST implement the {@link OnSelectionFragmentSelection}
  * interface.
  */
-public class SelectionFragment extends Fragment implements AbsListView.OnItemClickListener {
+public class SelectionFragment extends BaseFragment implements AbsListView.OnItemClickListener {
     private static final String TAG = "SelectionFragment";
     PlaceDetailsAdapter mAdapter = null;
     private OnSelectionFragmentSelection mListener;
@@ -45,6 +45,8 @@ public class SelectionFragment extends Fragment implements AbsListView.OnItemCli
     @Override
     public void onResume() {
         super.onResume();
+        mToolbarUpdater.onNavigationEnabled(true);
+        mToolbarUpdater.onSearchBarEnabled(true);
         getActivity().setTitle(R.string.app_name);
     }
 
