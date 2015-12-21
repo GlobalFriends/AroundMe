@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import com.globalfriends.com.aroundme.AroundMeApplication;
 import com.globalfriends.com.aroundme.R;
 import com.globalfriends.com.aroundme.data.IPlaceDetails;
+import com.globalfriends.com.aroundme.data.places.GooglePlaceDetailsJson;
 import com.globalfriends.com.aroundme.data.yelp.YelpPlaceDetailsJson;
 import com.globalfriends.com.aroundme.protocol.DefaultFeatureManager;
 import com.globalfriends.com.aroundme.protocol.Listener;
@@ -62,8 +63,15 @@ public class YelpManager extends DefaultFeatureManager {
             Utility.generateNoteOnSD("placeDetails_yelp", response.toString());
 
             try {
-                IPlaceDetails placeDetails = new YelpPlaceDetailsJson(new JSONObject(response));
-                mListener.onGetPlaceDetails(placeDetails, mContext.getString(R.string.yelp_tag));
+                JSONObject resp = new JSONObject(response);
+                if (resp.has("error")) {
+                    // Error handling as mentioned in https://www.yelp.com/developers/documentation/v2/errors
+                    JSONObject val = resp.getJSONObject("error");
+                    mListener.onError(val.getString("text"), mContext.getString(R.string.yelp_tag));
+                } else {
+                    IPlaceDetails placeDetails = new YelpPlaceDetailsJson(resp);
+                    mListener.onGetPlaceDetails(placeDetails, mContext.getString(R.string.yelp_tag));
+                }
             } catch (JSONException e) {
                 e.printStackTrace();
                 mListener.onError(mContext.getString(R.string.failed_response), mContext.getString(R.string.yelp_tag));
