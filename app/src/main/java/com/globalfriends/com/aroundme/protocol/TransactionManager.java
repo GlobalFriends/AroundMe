@@ -7,6 +7,7 @@ import com.android.volley.toolbox.ImageLoader;
 import com.globalfriends.com.aroundme.data.IPlaceDetails;
 import com.globalfriends.com.aroundme.data.places.AutoCompletePrediction;
 import com.globalfriends.com.aroundme.data.places.PlaceInfo;
+import com.globalfriends.com.aroundme.protocol.fourSquare.FourSquareManager;
 import com.globalfriends.com.aroundme.protocol.places.PlaceManager;
 import com.globalfriends.com.aroundme.protocol.places.PlaceRequestTypeEnum;
 import com.globalfriends.com.aroundme.protocol.yelp.YelpManager;
@@ -30,6 +31,7 @@ public class TransactionManager implements Listener {
         //Init all transaction managers which needs to be functional
         mFeatureManagerList.add(new YelpManager(this));
         mFeatureManagerList.add(new PlaceManager(this));
+        mFeatureManagerList.add(new FourSquareManager(this));
     }
 
     /**

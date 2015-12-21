@@ -110,7 +110,7 @@ public class PlaceManager extends DefaultFeatureManager {
     protected void dispatchJsonResponse(final OperationEnum operation, final JSONObject response) {
         switch (operation) {
             case OPERATION_PLACE_DETAIL:
-                Utility.generateNoteOnSD("placeDetails_googles", response.toString());
+                Utility.generateNoteOnSD("placeDetails_google", response.toString());
                 try {
                     if (response.has(STATUS)) {
                         if (STATUS_OK.equalsIgnoreCase(response.getString(STATUS))) {

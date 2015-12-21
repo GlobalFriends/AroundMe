@@ -17,4 +17,6 @@ https://console.developers.google.com/flows/enableapi?apiid=maps_android_backend
     <string name="yelp_consumer_secret" templateMergeStrategy="preserve" translatable="false">KrpVULWU6dc8nXDFFqoYQHPMW1c</string>
     <string name="yelp_token" templateMergeStrategy="preserve" translatable="false">9JDzUeNTp-yyq4K9N0blGOYpHDaU4L5F</string>
     <string name="yelp_token_secret" templateMergeStrategy="preserve" translatable="false">Oq8uKtwY2lW-GLF9-C5GjREwLjQ</string>
+    <string name="foursquare_client_id" templateMergeStrategy="preserve" translatable="false">RJF2L25BNQWM2X4ZY0MGCZ334PQYKNF5C3RM3UDIOXDW0PSR</string>
+    <string name="foursquare_client_secret" templateMergeStrategy="preserve" translatable="false">K5WOJBEQHLALIL2CSKVAH2CBMUA5ZCEAQVQPJ00VG2LS3GYT</string>
 </resources>
