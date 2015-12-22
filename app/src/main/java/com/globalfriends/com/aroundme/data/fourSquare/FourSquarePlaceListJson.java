@@ -11,7 +11,7 @@ public class FourSquarePlaceListJson {
 
     }
 
-    public String getVenueId() {
+    public String getVenueId(final String phoneNumber) {
         return null;
     }
 }

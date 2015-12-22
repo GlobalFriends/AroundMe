@@ -34,8 +34,10 @@ public interface IFeatureManager {
      * Returns place details based on unique phone number
      *
      * @param phoneNumber
+     * @param latitude
+     * @param longitude
      */
-    void findPlaceDetails(final String phoneNumber);
+    void findPlaceDetails(final String phoneNumber, Double latitude, Double longitude);
 
     /**
      * Do an autocomplete query based on input text

@@ -549,7 +549,8 @@ public class PlaceDetailsFragment extends BaseFragment implements View.OnClickLi
                 mGooglePlaceDetails.toString();
                 updateUi();
                 addDynamicView(response, placeTag);
-                TransactionManager.getInstance().findPlaceDetails(response.getPhoneNumber());
+                TransactionManager.getInstance().findPlaceDetails(response.getPhoneNumber(),
+                        response.getLatitude(), response.getLongitude());
                 return;
             }
 

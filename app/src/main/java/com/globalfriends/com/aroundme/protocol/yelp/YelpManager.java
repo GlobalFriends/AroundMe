@@ -6,7 +6,6 @@ import android.text.TextUtils;
 import com.globalfriends.com.aroundme.AroundMeApplication;
 import com.globalfriends.com.aroundme.R;
 import com.globalfriends.com.aroundme.data.IPlaceDetails;
-import com.globalfriends.com.aroundme.data.places.GooglePlaceDetailsJson;
 import com.globalfriends.com.aroundme.data.yelp.YelpPlaceDetailsJson;
 import com.globalfriends.com.aroundme.protocol.DefaultFeatureManager;
 import com.globalfriends.com.aroundme.protocol.Listener;
@@ -14,7 +13,6 @@ import com.globalfriends.com.aroundme.utils.Utility;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 /**
  * Created by vishal on 11/19/2015.
@@ -27,7 +25,7 @@ public class YelpManager extends DefaultFeatureManager {
     }
 
     @Override
-    public void findPlaceDetails(final String contactNumber) {
+    public void findPlaceDetails(final String contactNumber, Double latitude, Double longitude) {
         if (TextUtils.isEmpty(contactNumber)) {
             return; // Not meant for this
         }
