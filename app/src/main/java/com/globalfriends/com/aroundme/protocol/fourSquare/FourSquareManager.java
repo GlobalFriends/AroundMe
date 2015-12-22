@@ -5,7 +5,9 @@ import android.text.TextUtils;
 
 import com.globalfriends.com.aroundme.AroundMeApplication;
 import com.globalfriends.com.aroundme.R;
+import com.globalfriends.com.aroundme.data.IPlaceDetails;
 import com.globalfriends.com.aroundme.data.PreferenceManager;
+import com.globalfriends.com.aroundme.data.fourSquare.FourSquarePlaceDetailsJson;
 import com.globalfriends.com.aroundme.data.fourSquare.FourSquarePlaceInfo;
 import com.globalfriends.com.aroundme.data.fourSquare.FourSquarePlaceListJson;
 import com.globalfriends.com.aroundme.protocol.DefaultFeatureManager;
@@ -57,15 +59,9 @@ public class FourSquareManager extends DefaultFeatureManager {
             return;
         }
 
-        Utility.generateNoteOnSD("FourSquare_list" , response.toString());
+        Utility.generateNoteOnSD("FourSquare_list", response.toString());
         switch (operation) {
             case OPERATION_PLACE_LIST:
-                if (response == null) {
-                    mListener.onError(AroundMeApplication.getContext().getString(R.string.invalid_response),
-                            mModuleTag);
-                    return;
-                }
-
                 try {
                     JSONObject meta = (JSONObject) response.getJSONObject("meta");
                     if (meta.has("code")) {
@@ -118,8 +114,27 @@ public class FourSquareManager extends DefaultFeatureManager {
                                 setVersion(new SimpleDateFormat("yyyyMMdd").format(new Date()));
                 sendVolleyJsonRequest(builder.build().getUrl(), OperationEnum.OPERATION_PLACE_DETAIL);
                 break;
+
             case OPERATION_PLACE_DETAIL:
-                Utility.generateNoteOnSD("FourSquare_place_detail" , response.toString());
+                Utility.generateNoteOnSD("FourSquare_place_detail", response.toString());
+                try {
+                    JSONObject meta = (JSONObject) response.getJSONObject("meta");
+                    if (meta.has("code")) {
+                        int status = meta.getInt("code");
+                        if (status != 200) { // Not OK
+                            mListener.onError(meta.getString("errorDetail"), mModuleTag);
+                            return;
+                        }
+
+                        mListener.onGetPlaceDetails(new FourSquarePlaceDetailsJson(response.
+                                getJSONObject("response").getJSONObject("venue")), mModuleTag);
+                    } else {
+                        mListener.onError(AroundMeApplication.getContext().getString(R.string.invalid_response),
+                                mModuleTag);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
                 break;
             default:
                 // Some issue
@@ -129,5 +144,10 @@ public class FourSquareManager extends DefaultFeatureManager {
     private String getPlaceIdFromListResponse(final JSONObject response, final String phoneNumber) {
         FourSquarePlaceListJson placeList = new FourSquarePlaceListJson(response);
         return placeList.getVenueId(phoneNumber);
+    }
+
+    @Override
+    public int getFeatureIcon() {
+        return R.drawable.foursquare;
     }
 }

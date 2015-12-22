@@ -463,6 +463,9 @@ public class PlaceDetailsFragment extends BaseFragment implements View.OnClickLi
                 } else {
                     ratingBar.setVisibility(View.VISIBLE);
                     ratingBar.setRating(Float.valueOf(placeDetails.getPlaceRating()));
+                    if (placeDetails.getRatingColor() != 0) {
+                        ratingBar.getProgressDrawable().setTint(placeDetails.getRatingColor());
+                    }
                 }
             }
         }

@@ -12,12 +12,12 @@ import android.net.Uri;
 import android.support.v7.widget.AppCompatRatingBar;
 import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.android.volley.toolbox.ImageLoader;
-import com.android.volley.toolbox.NetworkImageView;
 import com.globalfriends.com.aroundme.R;
 import com.globalfriends.com.aroundme.data.PlaceReviewMetadata;
 import com.globalfriends.com.aroundme.ui.CircularNetworkImageView;
@@ -64,8 +64,13 @@ class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewViewHolder>
                     mContext.getResources(), R.drawable.profile)));
         }
 
-        holder.mRatingBar.setRating(Float.valueOf(content.getRating()));
-        holder.mRatingText.setText(content.getRating());
+        if (!TextUtils.isEmpty(content.getRating())) {
+            holder.mRatingText.setVisibility(View.VISIBLE);
+            holder.mRatingBar.setRating(Float.valueOf(content.getRating()));
+            holder.mRatingText.setText(content.getRating());
+        } else {
+            holder.mRatingText.setVisibility(View.GONE);
+        }
 
         holder.mAvatar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,12 +83,34 @@ class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewViewHolder>
             }
         });
 
-        holder.mReviewContent.setText(content.getReviewText());
-        holder.mReviewTiming.setText(Utility.Epoch2DateString(content.getReviewTime()));
-        holder.mAuthorName.setText(content.getAuthorName());
+        if (!TextUtils.isEmpty(content.getReviewText())) {
+            holder.mReviewContent.setText(content.getReviewText());
+        }
 
-        holder.mAspectType.setText(content.getAspect());
-        holder.mAspectRating.setText(content.getAspectDescription().toString());
+        String displayTime = Utility.Epoch2DateString(content.getReviewTime());
+        if (!TextUtils.isEmpty(displayTime)) {
+            holder.mReviewTiming.setText(displayTime);
+        }
+
+        if (!TextUtils.isEmpty(content.getAuthorName())) {
+            holder.mAuthorName.setText(content.getAuthorName());
+        }
+
+        if (!TextUtils.isEmpty(content.getAspect())) {
+            holder.mAspectType.setVisibility(View.VISIBLE);
+            holder.mSeparator.setVisibility(View.VISIBLE);
+            holder.mAspectType.setText(content.getAspect());
+        } else {
+            holder.mAspectType.setVisibility(View.GONE);
+            holder.mSeparator.setVisibility(View.GONE);
+        }
+
+        if (content.getAspectDescription() != null) {
+            holder.mAspectRating.setVisibility(View.VISIBLE);
+            holder.mAspectRating.setText(content.getAspectDescription().toString());
+        } else {
+            holder.mAspectRating.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -103,6 +130,7 @@ class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewViewHolder>
         protected AppCompatTextView mAuthorName;
         protected AppCompatTextView mAspectType;
         protected AppCompatTextView mAspectRating;
+        protected AppCompatTextView mSeparator;
 
         public ReviewViewHolder(View view) {
             super(view);
@@ -112,7 +140,7 @@ class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewViewHolder>
             mAuthorName = (AppCompatTextView) view.findViewById(R.id.review_author_name);
             mAvatar = (CircularNetworkImageView) view.findViewById(R.id.review_avatar);
             mReviewContent = (AppCompatTextView) view.findViewById(R.id.review_comment);
-
+            mSeparator = (AppCompatTextView) view.findViewById(R.id.seperator);
             mAspectType = (AppCompatTextView) view.findViewById(R.id.aspect_type_id);
             mAspectRating = (AppCompatTextView) view.findViewById(R.id.aspect_rating_id);
         }
