@@ -5,9 +5,8 @@ import android.text.TextUtils;
 
 import com.globalfriends.com.aroundme.AroundMeApplication;
 import com.globalfriends.com.aroundme.R;
-import com.globalfriends.com.aroundme.data.IPlaceDetails;
 import com.globalfriends.com.aroundme.data.PreferenceManager;
-import com.globalfriends.com.aroundme.data.fourSquare.FourSquarePlaceDetailsJson;
+import com.globalfriends.com.aroundme.data.fourSquare.FourSquarePlaceInfoJson;
 import com.globalfriends.com.aroundme.data.fourSquare.FourSquarePlaceInfo;
 import com.globalfriends.com.aroundme.data.fourSquare.FourSquarePlaceListJson;
 import com.globalfriends.com.aroundme.protocol.DefaultFeatureManager;
@@ -126,7 +125,7 @@ public class FourSquareManager extends DefaultFeatureManager {
                             return;
                         }
 
-                        mListener.onGetPlaceDetails(new FourSquarePlaceDetailsJson(response.
+                        mListener.onGetPlaceDetails(new FourSquarePlaceInfoJson(response.
                                 getJSONObject("response").getJSONObject("venue")), mModuleTag);
                     } else {
                         mListener.onError(AroundMeApplication.getContext().getString(R.string.invalid_response),
