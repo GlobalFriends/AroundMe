@@ -104,14 +104,14 @@ public class PlacesListAdapter extends ArrayAdapter<PlaceInfo> {
             viewHolder.mPriceLevel.addView(imageView);
         }
 
-//        if (place.getPhotoReference() != null) {
-//            viewHolder.mPlacePhoto.setImageUrl(Utility.getPlacePhotoQuery(place.getPhotoReference().getReference(),
-//                            (int) Utility.getDpToPixel(mContext, 80),
-//                            (int) Utility.getDpToPixel(mContext, 80)),
-//                    mImageLoader);
-//        } else {
-//            viewHolder.mPlacePhoto.setImageUrl(place.getIcon(), mImageLoader);
-//        }
+        if (place.getPhotoReference() != null) {
+            viewHolder.mPlacePhoto.setImageUrl(Utility.getPlacePhotoQuery(place.getPhotoReference().getReference(),
+                            (int) Utility.getDpToPixel(mContext, 80),
+                            (int) Utility.getDpToPixel(mContext, 80)),
+                    mImageLoader);
+        } else {
+            viewHolder.mPlacePhoto.setImageUrl(place.getIcon(), mImageLoader);
+        }
 
         return convertView;
     }
