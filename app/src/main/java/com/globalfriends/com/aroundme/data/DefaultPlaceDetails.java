@@ -19,6 +19,11 @@ public class DefaultPlaceDetails implements IPlaceDetails {
     protected Double mLongitude;
     protected boolean mPermanentlyClosed;
     protected boolean mOpenNow;
+    protected String mIcon;
+    protected String mRatingUrl;
+    protected String mPlaceRating;
+    protected int mRatingColor;
+    protected int mReviewCount;
     protected List<String> mWeeklyTimings = new ArrayList<String>();
     protected JSONObject mResponse;
     protected List<PlacePhotoMetadata> mPhotoList = new ArrayList<PlacePhotoMetadata>();
@@ -27,6 +32,31 @@ public class DefaultPlaceDetails implements IPlaceDetails {
     @Override
     public boolean isPermanentlyClosed() {
         return mPermanentlyClosed;
+    }
+
+    @Override
+    public List<String> getWeeklyTimings() {
+        return mWeeklyTimings;
+    }
+
+    @Override
+    public int getReviewCount() {
+        return mReviewCount;
+    }
+
+    @Override
+    public String getPlaceHolderIcon() {
+        return mIcon;
+    }
+
+    @Override
+    public String getRatingUrl() {
+        return mRatingUrl;
+    }
+
+    @Override
+    public String getPlaceRating() {
+        return mPlaceRating;
     }
 
     public DefaultPlaceDetails(JSONObject response) {
@@ -70,15 +100,23 @@ public class DefaultPlaceDetails implements IPlaceDetails {
 
     @Override
     public String toString() {
-        StringBuilder builder = new StringBuilder();
-        builder.append("mDistance=" + mDistance).append(" mAddress" + mAddress)
-                .append(" mPhoneNumber" + mPhoneNumber).append(" mWebUrl" + mWebUrl)
-                .append(" mName" + mName).append(" mNoOfReviews=" + mNoOfReviews)
-                .append(" mLatitude=" + mLatitude).append(" mLongitude=" + mLongitude)
-                .append(" mOpenNow=" + mOpenNow);
-        return builder.toString();
+        return "DefaultPlaceDetails{" +
+                "mDistance='" + mDistance + '\'' +
+                ", mAddress='" + mAddress + '\'' +
+                ", mPhoneNumber='" + mPhoneNumber + '\'' +
+                ", mWebUrl='" + mWebUrl + '\'' +
+                ", mName='" + mName + '\'' +
+                ", mNoOfReviews='" + mNoOfReviews + '\'' +
+                ", mLatitude=" + mLatitude +
+                ", mLongitude=" + mLongitude +
+                ", mPermanentlyClosed=" + mPermanentlyClosed +
+                ", mOpenNow=" + mOpenNow +
+                ", mWeeklyTimings=" + mWeeklyTimings +
+                ", mResponse=" + mResponse +
+                ", mPhotoList=" + mPhotoList +
+                ", mReviewList=" + mReviewList +
+                '}';
     }
-
 
     @Override
     public void updatePhotoToList(PlacePhotoMetadata photo) {
@@ -98,5 +136,10 @@ public class DefaultPlaceDetails implements IPlaceDetails {
     @Override
     public List<PlaceReviewMetadata> getReviewList() {
         return mReviewList;
+    }
+
+    @Override
+    public int getRatingColor() {
+        return mRatingColor;
     }
 }

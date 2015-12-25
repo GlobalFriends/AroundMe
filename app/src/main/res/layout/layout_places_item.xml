@@ -9,7 +9,7 @@
         android:layout_margin="3dp"
         card_view:cardCornerRadius="2dp"
         card_view:cardElevation="3dp"
-        card_view:contentPadding="10dp">
+        card_view:contentPadding="5dp">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -24,29 +24,74 @@
             <RelativeLayout
                 android:id="@+id/info"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="5dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10sp"
                 android:layout_toRightOf="@id/photo">
 
                 <TextView
                     android:id="@+id/place_name"
-                    style="@style/PlacesResult.Name"
+                    style="@style/TextAppearance.AppCompat.Medium"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/vicinity"
-                    style="@style/PlacesResult.Vicinity"
+                    style="@style/TextAppearance.AppCompat.Small"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/place_name" />
+                    android:layout_below="@id/place_name"
+                    android:layout_marginTop="5sp" />
 
-                <TextView
-                    android:id="@+id/rating"
-                    android:layout_width="wrap_content"
+                <android.support.v7.widget.LinearLayoutCompat
+                    android:id="@+id/rating_bar"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
                     android:layout_below="@id/vicinity"
-                    android:text="@string/rating" />
+                    android:layout_marginTop="15sp"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="1sp"
+                        android:src="@color/divider_black" />
+
+                    <android.support.v7.widget.LinearLayoutCompat
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="3sp"
+                        android:orientation="horizontal">
+
+                        <android.support.v7.widget.AppCompatRatingBar
+                            android:id="@+id/rating_star"
+                            style="?android:attr/ratingBarStyleSmall"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:clickable="false"
+                            android:contextClickable="false"
+                            android:focusable="false"
+                            android:focusableInTouchMode="false"
+                            android:isIndicator="true"
+                            android:progressTint="#f76707" />
+
+                        <TextView
+                            android:id="@+id/rating"
+                            style="@style/TextAppearance.AppCompat.Body1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5sp" />
+
+                        <TextView
+                            android:id="@+id/distance"
+                            style="@style/TextAppearance.AppCompat.Body1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="end"
+                            android:gravity="right" />
+
+                    </android.support.v7.widget.LinearLayoutCompat>
+                </android.support.v7.widget.LinearLayoutCompat>
 
                 <LinearLayout
                     android:id="@+id/price_level"
@@ -54,7 +99,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/vicinity"
                     android:layout_marginStart="5dp"
-                    android:layout_toEndOf="@id/rating"
+                    android:layout_toEndOf="@id/rating_bar"
                     android:gravity="center_vertical"
                     android:orientation="horizontal" />
 
@@ -67,16 +112,18 @@
                         android:id="@+id/icon"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentTop="true"
-                        android:layout_alignParentEnd="true"/>
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentTop="true" />
 
                     <TextView
                         android:id="@+id/open_now"
+                        style="@style/TextAppearance.AppCompat.Body1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentBottom="true"
                         android:layout_alignParentEnd="true"
-                        android:layout_below="@id/icon" />
+                        android:layout_below="@id/icon"
+                        android:layout_marginTop="5sp" />
                 </RelativeLayout>
 
             </RelativeLayout>

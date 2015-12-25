@@ -1,9 +1,7 @@
 package com.globalfriends.com.aroundme.protocol;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.util.Log;
-import android.util.LruCache;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -22,6 +20,8 @@ import org.json.JSONObject;
  */
 public class DefaultFeatureManager implements IFeatureManager {
     protected static String LOGGING_TAG;
+    protected final String STATUS_OK = "OK";
+    protected final String STATUS = "status";
     protected Listener mListener;
     protected Context mContext;
     private RequestQueue mQueue;
@@ -53,7 +53,7 @@ public class DefaultFeatureManager implements IFeatureManager {
         mQueue.add(request);
     }
 
-    public final void handleJsonRequest(final String url, final OperationEnum operation) {
+    public final void sendVolleyJsonRequest(final String url, final OperationEnum operation) {
         Log.i(LOGGING_TAG, "Url=" + url);
         mRequest = new JsonObjectRequest
                 (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
@@ -73,7 +73,6 @@ public class DefaultFeatureManager implements IFeatureManager {
         scheduleRequest(mRequest);
     }
 
-
     /**
      * Schedule response based on provided operation request
      *
@@ -89,7 +88,22 @@ public class DefaultFeatureManager implements IFeatureManager {
     }
 
     @Override
-    public void findPlaceDetails(String placeId, String contactNumber) {
+    public void findPlaces(PlaceRequestTypeEnum searchType, String pageToken) {
+
+    }
+
+    @Override
+    public void findGooglePlaceDetails(String placeId) {
+    }
+
+    @Override
+    public void findPlaceDetails(String phoneNumber, Double latitude, Double longitude) {
+        //
+    }
+
+    @Override
+    public void autoComplete(String input) {
+        //
     }
 
     @Override
@@ -100,5 +114,10 @@ public class DefaultFeatureManager implements IFeatureManager {
     @Override
     public String getTag() {
         return mModuleTag;
+    }
+
+    @Override
+    public int getFeatureIcon() {
+        return 0;
     }
 }

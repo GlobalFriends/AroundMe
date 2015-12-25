@@ -6,4 +6,5 @@
     <!-- Place details screen values -->
     <color name="divider_white">#FFFFFF</color>
     <color name="divider_black">#949292</color>
+    <color name="aspect_color">#5d0505</color>
 </resources>

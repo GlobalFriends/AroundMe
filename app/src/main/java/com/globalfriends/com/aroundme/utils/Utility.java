@@ -3,12 +3,21 @@ package com.globalfriends.com.aroundme.utils;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
+import android.graphics.RectF;
 import android.location.Address;
 import android.location.Geocoder;
+import android.net.ParseException;
 import android.os.Environment;
-import android.os.Parcelable;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutCompat;
 import android.text.TextUtils;
+import android.text.format.DateFormat;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -25,15 +34,17 @@ import com.globalfriends.com.aroundme.protocol.places.PlaceRequestTypeEnum;
 import com.globalfriends.com.aroundme.protocol.places.PlaceResponseEnum;
 import com.globalfriends.com.aroundme.protocol.places.PlacesWebService;
 import com.globalfriends.com.aroundme.ui.PhotoViewer;
-import com.google.android.gms.location.places.Place;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.ArrayList;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.TimeZone;
 
 import static android.util.TypedValue.*;
 
@@ -109,7 +120,7 @@ public class Utility {
     }
 
     /**
-     * CFInds distance between 2 places based on latitude and longitude
+     * CFInds mDistance between 2 places based on latitude and longitude
      *
      * @param lat1
      * @param lon1
@@ -209,7 +220,7 @@ public class Utility {
      * @param imageLoader
      */
     public static void updateModulePhotoView(final Context context, final IPlaceDetails placeDetails,
-                                             final LinearLayoutCompat layout, final ImageLoader imageLoader) {
+                                             final CardView layout, final ImageLoader imageLoader) {
         List<PlacePhotoMetadata> mList = placeDetails.getPhotos();
         if (mList == null || mList.size() == 0) {
             layout.setVisibility(View.GONE);
@@ -248,7 +259,7 @@ public class Utility {
                 Intent intent = new Intent(context, PhotoViewer.class);
                 intent.putExtra("KEY", context.getResources().getString(R.string.google_places_tag));
                 intent.putExtra("CURRENT_PHOTO", image);
-                intent.putExtra("PHOTO_LIST", (Serializable)list);
+                intent.putExtra("PHOTO_LIST", (Serializable) list);
                 context.startActivity(intent);
             }
         });
@@ -258,5 +269,42 @@ public class Utility {
                         (int) Utility.getDpToPixel(context, 100)),
                 imageLoader);
         return imageView;
+    }
+
+    public static String Epoch2DateString(long epochSeconds) {
+        Date updatedate = new Date(epochSeconds * 1000);
+        SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
+        return format.format(updatedate);
+    }
+
+    /**
+     * Creates a circular bitmap and uses whichever dimension is smaller to determine the width
+     * <br/>Also constrains the circle to the leftmost part of the image
+     *
+     * @param bitmap
+     * @return bitmap
+     */
+    public static Bitmap getCircularBitmap(Bitmap bitmap) {
+        Bitmap output = Bitmap.createBitmap(bitmap.getWidth(),
+                bitmap.getHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(output);
+        int width = bitmap.getWidth();
+        if (bitmap.getWidth() > bitmap.getHeight())
+            width = bitmap.getHeight();
+        final int color = 0xff424242;
+        final Paint paint = new Paint();
+        final Rect rect = new Rect(0, 0, width, width);
+        final RectF rectF = new RectF(rect);
+        final float roundPx = width / 2;
+
+        paint.setAntiAlias(true);
+        canvas.drawARGB(0, 0, 0, 0);
+        paint.setColor(color);
+        canvas.drawRoundRect(rectF, roundPx, roundPx, paint);
+
+        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
+        canvas.drawBitmap(bitmap, rect, rect, paint);
+
+        return output;
     }
 }

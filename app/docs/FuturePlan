@@ -6,6 +6,14 @@ be queried only when user performs manual refresh
 Place Type Screen:
 1) We are using multiple types currently, that can increase user waiting time. Need some improvment there
 
+
+Detail Screen:
+1) Refactoring of overall UI
+2) TIming should be clubbed with Open
+3) Address and miles should be clubbed together
+4) Reviews should have "More button" clickable
+5) See if 2 lines only can be shown
+
 General
 1) Additional Support for FourSquare and others
 2) Need some filtering of types in selection

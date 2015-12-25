@@ -6,6 +6,7 @@ import com.globalfriends.com.aroundme.AroundMeApplication;
 import com.globalfriends.com.aroundme.R;
 import com.globalfriends.com.aroundme.data.IPlaceDetails;
 import com.globalfriends.com.aroundme.data.PreferenceManager;
+import com.globalfriends.com.aroundme.data.places.AutoCompletePrediction;
 import com.globalfriends.com.aroundme.data.places.GooglePlaceDetailsJson;
 import com.globalfriends.com.aroundme.data.places.PlaceInfo;
 import com.globalfriends.com.aroundme.logging.Logger;
@@ -51,11 +52,24 @@ public class PlaceManager extends DefaultFeatureManager {
                 break;
             default:
         }
-        handleJsonRequest(builder.build().getUrl(), OperationEnum.OPERATION_PLACE_LIST);
+        sendVolleyJsonRequest(builder.build().getUrl(), OperationEnum.OPERATION_PLACE_LIST);
+    }
+
+
+    @Override
+    public void findPlaces(PlaceRequestTypeEnum searchType, String pageToken) {
+        PlacesWebService.Builder builder =
+                new PlacesWebService.Builder().
+                        setSearchType(searchType).
+                        setResponseType(PlaceResponseEnum.RESP_JSON).
+                        setPageToken(pageToken).
+                        setKey(AroundMeApplication.getContext().
+                                getResources().getString(R.string.google_maps_key));
+        sendVolleyJsonRequest(builder.build().getUrl(), OperationEnum.OPERATION_PLACE_LIST);
     }
 
     @Override
-    public void findPlaceDetails(String placeId, String contactNumber) {
+    public void findGooglePlaceDetails(String placeId) {
         if (TextUtils.isEmpty(placeId)) {
             return;
         }
@@ -67,7 +81,23 @@ public class PlaceManager extends DefaultFeatureManager {
                         setPlaceId(placeId).
                         setKey(AroundMeApplication.getContext().
                                 getResources().getString(R.string.google_maps_key));
-        handleJsonRequest(builder.build().getUrl(), OperationEnum.OPERATION_PLACE_DETAIL);
+        sendVolleyJsonRequest(builder.build().getUrl(), OperationEnum.OPERATION_PLACE_DETAIL);
+    }
+
+    @Override
+    public void autoComplete(String input) {
+        if (TextUtils.isEmpty(input)) {
+            return;
+        }
+
+        PlacesWebService.Builder builder =
+                new PlacesWebService.Builder().
+                        setSearchType(PlaceRequestTypeEnum.SEARCH_TYPE_AUTOCOMPLETE).
+                        setResponseType(PlaceResponseEnum.RESP_JSON).
+                        setInput(input).
+                        setKey(AroundMeApplication.getContext().getResources().getString(R.string.google_maps_key));
+
+        sendVolleyJsonRequest(builder.build().getUrl(), OperationEnum.OPERATION_AUTOCOMPLETE);
     }
 
     /**
@@ -80,11 +110,17 @@ public class PlaceManager extends DefaultFeatureManager {
     protected void dispatchJsonResponse(final OperationEnum operation, final JSONObject response) {
         switch (operation) {
             case OPERATION_PLACE_DETAIL:
-                Utility.generateNoteOnSD("placeDetails_googles", response.toString());
+                Utility.generateNoteOnSD("placeDetails_google", response.toString());
                 try {
-                    JSONObject result = response.getJSONObject("result");
-                    IPlaceDetails placeDetails = new GooglePlaceDetailsJson(result);
-                    mListener.onGetPlaceDetails(placeDetails, mContext.getString(R.string.google_places_tag));
+                    if (response.has(STATUS)) {
+                        if (STATUS_OK.equalsIgnoreCase(response.getString(STATUS))) {
+                            JSONObject result = response.getJSONObject("result");
+                            IPlaceDetails placeDetails = new GooglePlaceDetailsJson(result);
+                            mListener.onGetPlaceDetails(placeDetails, mContext.getString(R.string.google_places_tag));
+                        } else {
+                            mListener.onError(response.getString(STATUS), mContext.getString(R.string.google_places_tag));
+                        }
+                    }
                 } catch (JSONException e) {
                     mListener.onError("Jason Parse Exception", mModuleTag);
                 }
@@ -92,17 +128,27 @@ public class PlaceManager extends DefaultFeatureManager {
             case OPERATION_PLACE_LIST:
                 Utility.generateNoteOnSD("placeList_google", response.toString());
                 try {
-                    JSONArray array = response.getJSONArray("results");
-                    List<PlaceInfo> placeList = new ArrayList<PlaceInfo>();
-                    for (int i = 0; i < array.length(); i++) {
-                        try {
-                            placeList.add(PlaceInfo
-                                    .jsonToPontoReferencia((JSONObject) array.get(i)));
-                        } catch (Exception e) {
-                            e.printStackTrace();
+                    if (response.has(STATUS)) {
+                        if (STATUS_OK.equalsIgnoreCase(response.getString(STATUS))) {
+                            JSONArray array = response.getJSONArray("results");
+                            List<PlaceInfo> placeList = new ArrayList<PlaceInfo>();
+                            for (int i = 0; i < array.length(); i++) {
+                                try {
+                                    placeList.add(PlaceInfo
+                                            .jsonToPontoReferencia((JSONObject) array.get(i)));
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                            String pageToken = null;
+                            if (response.has("next_page_token")) {
+                                pageToken = response.getString("next_page_token");
+                            }
+                            mListener.onPlacesList(pageToken, placeList);
+                        } else {
+                            mListener.onError(response.getString(STATUS), mContext.getString(R.string.google_places_tag));
                         }
                     }
-                    mListener.onPlacesList(placeList);
                 } catch (JSONException e) {
                     mListener.onError("Jason Parse Exception", mModuleTag);
                 }
@@ -110,9 +156,17 @@ public class PlaceManager extends DefaultFeatureManager {
             case OPERATION_PLACE_PHOTO:
                 mListener.onGetPhoto(response, mModuleTag);
                 break;
+            case OPERATION_AUTOCOMPLETE:
+                mListener.onAutoComplete(AutoCompletePrediction.parse(response));
+                break;
             default:
                 Logger.e(LOGGING_TAG, ">>>> Invalid operation. Should never come here <<<<");
                 mListener.onError("Invalid command type. Internal error", mModuleTag);
         }
+    }
+
+    @Override
+    public int getFeatureIcon() {
+        return R.drawable.google;
     }
 }

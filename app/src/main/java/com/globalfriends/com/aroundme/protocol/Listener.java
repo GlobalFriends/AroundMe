@@ -1,6 +1,7 @@
 package com.globalfriends.com.aroundme.protocol;
 
 import com.globalfriends.com.aroundme.data.IPlaceDetails;
+import com.globalfriends.com.aroundme.data.places.AutoCompletePrediction;
 import com.globalfriends.com.aroundme.data.places.PlaceInfo;
 
 import org.json.JSONObject;
@@ -22,9 +23,12 @@ public interface Listener {
     void onGetPlaceDetails(IPlaceDetails response, final String placeTag);
 
     /**
+     * @param pageToken
      * @param placeList
      */
-    void onPlacesList(List<PlaceInfo> placeList);
+    void onPlacesList(final String pageToken, List<PlaceInfo> placeList);
+
+    void onAutoComplete(List<AutoCompletePrediction> predictions);
 
     /**
      *

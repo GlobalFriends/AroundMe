@@ -3,7 +3,7 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/drawer_my_location"
-            android:icon="@drawable/ic_menu_recent"
+            android:icon="@drawable/ic_menu_maps"
             android:title="@string/menu_my_location" />
         <item
             android:id="@+id/drawer_recent"
@@ -13,10 +13,6 @@
             android:id="@+id/drawer_favorite"
             android:icon="@drawable/ic_menu_favorite"
             android:title="@string/menu_favorite" />
-        <item
-            android:id="@+id/drawer_maps"
-            android:icon="@drawable/ic_menu_maps"
-            android:title="@string/menu_maps" />
     </group>
 
     <item android:title="Communicate">
@@ -26,13 +22,13 @@
                 android:icon="@drawable/ic_share"
                 android:title="@string/menu_share" />
             <item
-                android:id="@+id/drawer_send"
-                android:icon="@drawable/ic_email"
-                android:title="@string/menu_email" />
-            <item
                 android:id="@+id/drawer_feedback"
-                android:icon="@drawable/ic_feedback"
+                android:icon="@drawable/ic_email"
                 android:title="@string/menu_feedback" />
+            <item
+                android:id="@+id/drawer_rate_us"
+                android:icon="@drawable/rate_us"
+                android:title="@string/menu_rate_us" />
         </menu>
     </item>
 

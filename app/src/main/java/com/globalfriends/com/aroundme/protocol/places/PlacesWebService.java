@@ -83,6 +83,14 @@ public class PlacesWebService {
             mUrl.append(OPERATION_SEPARATOR).append(b.mPhotoMaxWidth);
         }
 
+        if (!TextUtils.isEmpty(b.mInput)) {
+            mUrl.append(OPERATION_SEPARATOR).append(b.mInput);
+        }
+
+        if (!TextUtils.isEmpty(b.mPageToken)) {
+            mUrl.append(OPERATION_SEPARATOR).append(b.mPageToken);
+        }
+
         //Last one has to be API Key...
         if (!TextUtils.isEmpty(b.mKey)) {
             mUrl.append(OPERATION_SEPARATOR).append(b.mKey);
@@ -120,6 +128,8 @@ public class PlacesWebService {
         private String mPhotoReference;
         private String mPhotoMaxWidth;
         private String mPhotoMaxHeight;
+        private String mInput; // Used for autocomplete
+        private String mPageToken;
 
         public Builder setSearchType(final PlaceRequestTypeEnum mOperation) {
             this.mSearchType = mOperation.getSearchType();
@@ -153,6 +163,11 @@ public class PlacesWebService {
 
         public Builder setKeyword(final String val) {
             this.mKeyword = "keyword" + ASSIGNMENT + val;
+            return this;
+        }
+
+        public Builder setPageToken(final String pageToken) {
+            this.mPageToken = "pagetoken" + ASSIGNMENT + pageToken;
             return this;
         }
 
@@ -230,6 +245,11 @@ public class PlacesWebService {
                 value = Integer.toString(val);
             }
             this.mPhotoMaxHeight = "maxheight" + ASSIGNMENT + value;
+            return this;
+        }
+
+        public Builder setInput(final String input) {
+            this.mInput = "input" + ASSIGNMENT + input;
             return this;
         }
 

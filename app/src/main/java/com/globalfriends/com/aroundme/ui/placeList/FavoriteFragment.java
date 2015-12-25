@@ -1,4 +1,4 @@
-package com.globalfriends.com.aroundme.ui;
+package com.globalfriends.com.aroundme.ui.placeList;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -12,7 +12,8 @@ import android.widget.AdapterView;
 /**
  * Created by vishal on 11/14/2015.
  */
-public class RecentFragment extends Fragment implements AbsListView.OnItemClickListener {
+public class FavoriteFragment extends Fragment implements AbsListView.OnItemClickListener {
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

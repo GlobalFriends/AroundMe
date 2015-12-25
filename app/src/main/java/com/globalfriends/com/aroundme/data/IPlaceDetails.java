@@ -30,4 +30,17 @@ public interface IPlaceDetails {
     List<PlaceReviewMetadata> getReviewList();
 
     boolean isPermanentlyClosed();
+
+    List<String> getWeeklyTimings();
+
+    String getPlaceHolderIcon();
+
+    String getRatingUrl();
+
+    String getPlaceRating();
+
+    int getReviewCount();
+
+    int getRatingColor();
+
 }

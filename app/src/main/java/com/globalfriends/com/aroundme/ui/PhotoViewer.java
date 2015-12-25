@@ -144,5 +144,6 @@ public class PhotoViewer extends AppCompatActivity {
         outState.putParcelable("CURRENT_PHOTO", mCurrentPhoto);
         outState.putString("KEY", mImageLoaderKey);
         outState.putInt("POSITION", mCurrentPosition);
+        super.onSaveInstanceState(outState);
     }
 }

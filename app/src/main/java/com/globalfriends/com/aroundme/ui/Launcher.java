@@ -1,6 +1,7 @@
 package com.globalfriends.com.aroundme.ui;
 
 import android.app.AlertDialog;
+import android.app.SearchManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -18,14 +19,23 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.support.v7.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.globalfriends.com.aroundme.R;
+import com.globalfriends.com.aroundme.data.IPlaceDetails;
 import com.globalfriends.com.aroundme.data.PreferenceManager;
 import com.globalfriends.com.aroundme.data.places.PlaceInfo;
 import com.globalfriends.com.aroundme.logging.Logger;
+import com.globalfriends.com.aroundme.protocol.TransactionManager;
+import com.globalfriends.com.aroundme.ui.placeList.FavoriteFragment;
+import com.globalfriends.com.aroundme.ui.placeList.PlacesListFragment;
+import com.globalfriends.com.aroundme.ui.placeList.RecentFragment;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 
@@ -40,20 +50,50 @@ public class Launcher extends AppCompatActivity implements
         PlacesListFragment.OnPlaceListFragmentSelection,
         PlaceDetailsFragment.OnPlaceDetailsFragmentInteractionListener,
         GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener {
+        GoogleApiClient.OnConnectionFailedListener,
+        ToolbarUpdateListener {
     private static final int LOCATION_REQUEST_CODE = 1;
     private static Context mContext;
     private final String TAG = getClass().getSimpleName();
     private Location loc;
     private LocationManager locationManager;
     private GoogleApiClient mGoogleApiClient;
+
+    private NavigationView mNavigationView;
+
+
+    private boolean mIsCustomLocation;
+    private MenuItem mSearchMenu;
+    private View mCustomLocationHolderView;
+    private TextView mCustomLocationTextView;
+    private Button mCustomLocationClearButton;
+    private String mSavedCurrentLocationLatitude;
+    private String mSavedCurrentLocationLongitude;
+    private TransactionManager.Result mSetCustomLocationCallback = new TransactionManager.Result() {
+        @Override
+        public void onError(String errorMsg, String tag) {
+            enableCustomLocation(false, null);
+        }
+
+        @Override
+        public void onGetPlaceDetails(IPlaceDetails response, String placeTag) {
+            enableCustomLocation(true, response);
+        }
+    };
+
     private LocationListener listener = new LocationListener() {
         @Override
         public void onLocationChanged(Location location) {
             Logger.e(TAG, "onLocationChanged: " + location);
             loc = location;
-            PreferenceManager.putLocation(Double.toString(loc.getLatitude()),
-                    Double.toString(loc.getLongitude()));
+
+            if (mIsCustomLocation) {
+                mSavedCurrentLocationLatitude = Double.toString(loc.getLatitude());
+                mSavedCurrentLocationLongitude = Double.toString(loc.getLongitude());
+            } else {
+                PreferenceManager.putLocation(Double.toString(loc.getLatitude()),
+                        Double.toString(loc.getLongitude()));
+            }
         }
 
         @Override
@@ -129,8 +169,13 @@ public class Launcher extends AppCompatActivity implements
             locationManager.requestLocationUpdates(provider, 1000, 50.0f, listener);
         } else {
             loc = location;
-            PreferenceManager.putLocation(Double.toString(loc.getLatitude()),
-                    Double.toString(loc.getLongitude()));
+            if (mIsCustomLocation) {
+                mSavedCurrentLocationLatitude = Double.toString(loc.getLatitude());
+                mSavedCurrentLocationLongitude = Double.toString(loc.getLongitude());
+            } else {
+                PreferenceManager.putLocation(Double.toString(loc.getLatitude()),
+                        Double.toString(loc.getLongitude()));
+            }
         }
     }
 
@@ -179,8 +224,18 @@ public class Launcher extends AppCompatActivity implements
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+        mNavigationView = (NavigationView) findViewById(R.id.nav_view);
+        mNavigationView.setNavigationItemSelectedListener(this);
+        mCustomLocationHolderView = findViewById(R.id.custom_location);
+        mCustomLocationTextView = (TextView) findViewById(R.id.text_current_location);
+        mCustomLocationClearButton = (Button) findViewById(R.id.button_clear_custom_location);
+        mCustomLocationClearButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TransactionManager.getInstance().removeResultCallback(mSetCustomLocationCallback);
+                enableCustomLocation(false, null);
+            }
+        });
 
         // Handle Location
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
@@ -216,6 +271,13 @@ public class Launcher extends AppCompatActivity implements
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.launcher_menu, menu);
+
+        SearchManager searchManager = (SearchManager) getSystemService(SEARCH_SERVICE);
+        mSearchMenu = menu.findItem(R.id.action_search);
+        SearchView searchView = (SearchView) mSearchMenu.getActionView();
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        searchView.setIconified(false);
+
         return true;
     }
 
@@ -228,7 +290,15 @@ public class Launcher extends AppCompatActivity implements
     public boolean onNavigationItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.drawer_my_location:
-                updateFragment(new MyLocationFragment(), false, true);
+                String provider = locationManager.getBestProvider(new Criteria(), false);
+                Location location = locationManager.getLastKnownLocation(provider);
+                Bundle bundle = new Bundle();
+                bundle.putDouble("LATITUDE", location.getLatitude());
+                bundle.putDouble("LONGITUDE", location.getLongitude());
+                bundle.putString("NAME", getString(R.string.current_location));
+                Fragment locationFragment = new MapsFragment();
+                locationFragment.setArguments(bundle);
+                updateFragment(locationFragment, false, true);
                 break;
             case R.id.drawer_recent:
                 updateFragment(new RecentFragment(), false, true);
@@ -237,14 +307,13 @@ public class Launcher extends AppCompatActivity implements
                 PreferenceManager.dump();
                 updateFragment(new FavoriteFragment(), false, true);
                 break;
-            case R.id.drawer_maps:
-                startActivity(new Intent(this, MainActivity.class));
-                break;
             case R.id.drawer_feedback:
-                Toast.makeText(this, "feedback", Toast.LENGTH_SHORT).show();
+                Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
+                        "mailto", getString(R.string.developer_id), null));
+                emailIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.email_subject));
+                startActivity(Intent.createChooser(emailIntent, null));
                 break;
-            case R.id.drawer_send:
-                Toast.makeText(this, "send", Toast.LENGTH_SHORT).show();
+            case R.id.drawer_rate_us:
                 break;
             case R.id.drawer_share:
                 Toast.makeText(this, "share", Toast.LENGTH_SHORT).show();
@@ -264,9 +333,37 @@ public class Launcher extends AppCompatActivity implements
         Fragment fragment = new PlacesListFragment();
         fragment.setArguments(bundle);
         updateFragment(fragment, false, true);
+    }
 
-//        Fragment fragment = new PlaceDetailsFragment();
-//        updateFragment(fragment, false, true);
+    @Override
+    protected void onNewIntent(Intent intent) {
+        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+            String placeId = intent.getDataString();
+
+            TransactionManager.getInstance().addResultCallback(mSetCustomLocationCallback);
+            TransactionManager.getInstance().findGooglePlaceDetails(placeId, null);
+        }
+    }
+
+    private void enableCustomLocation(boolean value, IPlaceDetails response) {
+        if (value) {
+            mSearchMenu.collapseActionView();
+            mCustomLocationHolderView.setVisibility(View.VISIBLE);
+            mCustomLocationTextView.setText(response.getAddress());
+            if (!mIsCustomLocation) {
+                mSavedCurrentLocationLatitude = PreferenceManager.getLatitude();
+                mSavedCurrentLocationLongitude = PreferenceManager.getLongitude();
+            }
+            mIsCustomLocation = true;
+            PreferenceManager.putLocation(response.getLatitude().toString(), response.getLongitude().toString());
+        } else {
+            mIsCustomLocation = false;
+            mCustomLocationTextView.setText("");
+            mCustomLocationHolderView.setVisibility(View.GONE);
+            PreferenceManager.putLocation(mSavedCurrentLocationLatitude, mSavedCurrentLocationLongitude);
+            mSavedCurrentLocationLatitude = "";
+            mSavedCurrentLocationLongitude = "";
+        }
     }
 
     @Override
@@ -301,5 +398,24 @@ public class Launcher extends AppCompatActivity implements
     @Override
     public void onFragmentInteraction(Uri uri) {
 
+    }
+
+    @Override
+    public void onMapsViewClicked(Bundle bundle) {
+        Fragment fragment = new MapsFragment();
+        fragment.setArguments(bundle);
+        updateFragment(fragment, false, true);
+    }
+
+    @Override
+    public void onNavigationEnabled(final boolean visibility) {
+        mNavigationView.setVisibility(visibility ? View.VISIBLE : View.GONE);
+    }
+
+    @Override
+    public void onSearchBarEnabled(boolean visibility) {
+        if (mSearchMenu != null) {
+            mSearchMenu.setVisible(visibility);
+        }
     }
 }

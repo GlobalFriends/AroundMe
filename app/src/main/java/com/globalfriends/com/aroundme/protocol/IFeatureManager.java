@@ -17,13 +17,34 @@ public interface IFeatureManager {
     void findPlaces(final PlaceRequestTypeEnum searchType, String placeType, String query);
 
     /**
+     * @param searchType
+     * @param pageToken
+     */
+    void findPlaces(final PlaceRequestTypeEnum searchType, final String pageToken);
+
+    /**
      * Return place details based on provided unique identifications
      *
-     * @param placeId       Unique identification for Google PlaceInfo
-     * @param contactNumber unique identification for Yelp
+     * @param placeId Unique identification for Google PlaceInfo
      * @return
      */
-    void findPlaceDetails(final String placeId, final String contactNumber);
+    void findGooglePlaceDetails(final String placeId);
+
+    /**
+     * Returns place details based on unique phone number
+     *
+     * @param phoneNumber
+     * @param latitude
+     * @param longitude
+     */
+    void findPlaceDetails(final String phoneNumber, Double latitude, Double longitude);
+
+    /**
+     * Do an autocomplete query based on input text
+     *
+     * @param input The autocomplete text
+     */
+    void autoComplete(final String input);
 
     /**
      * Returns Volley Image Loader
@@ -38,4 +59,9 @@ public interface IFeatureManager {
      * @return
      */
     public String getTag();
+
+    /**
+     * @return
+     */
+    public int getFeatureIcon();
 }

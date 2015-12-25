@@ -17,9 +17,9 @@
     <!-- User Profile Strings -->
     <string name="menu_favorite">Favorite</string>
     <string name="menu_recent">Recent</string>
-    <string name="menu_feedback">Feedback</string>
+    <string name="menu_rate_us">Rate Us</string>
     <string name="menu_share">Share</string>
-    <string name="menu_email">Email_us</string>
+    <string name="menu_feedback">Feedback</string>
     <string name="menu_maps">Maps</string>
     <string name="menu_my_location">My Location</string>
     <string name="menu_settings">Settings</string>
@@ -32,8 +32,8 @@
     <string name="gps_network_not_enabled">GPS is not enabled. Enable GPS to use application effectively.</string>
     <string name="cancel">Cancel</string>
     <string name="yelp_tag">Yelp</string>
-    <string name="google_places_tag">Google</string>
     <string name="four_square_tag">FourSquare</string>
+    <string name="google_places_tag">Google</string>
     <string name="zagat_square_tag">Zagat</string>
     <string name="search_results">Search Results</string>
     <!-- Example General settings -->
@@ -66,4 +66,19 @@
     <string name="permanently_closed">Permanently Closed</string>
     <string name="miles_notation">mi</string>
     <string name="kilometer_notation">km</string>
+    <string name="review_poor">Poor</string>
+    <string name="review_average">Average</string>
+    <string name="review_good">Good</string>
+    <string name="review_excellent">Excellent</string>
+
+    <string name="custom_location">Custom location</string>
+    <string name="clear">Clear</string>
+    <string name="search_hint">Search custom location</string>
+    <string name="invalid_response">Invalid server response</string>
+    <string name="failed_response">Request failed. Please try again</string>
+    <string name="review_count">%d Reviews</string>
+    <string name="current_location">Current location</string>
+    <string name="developer_id">globalfriends747@gmail.com</string>
+    <string name="email_subject">Around Me application feedback</string>
+    <string name="no_more_results">No more results to display...</string>
 </resources>
