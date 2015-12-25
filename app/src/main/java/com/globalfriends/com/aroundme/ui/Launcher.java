@@ -283,6 +283,15 @@ public class Launcher extends AppCompatActivity implements
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_settings:
+                updateFragment(new SettingsFragment(),false,true);
+                break;
+            case R.id.action_search:
+                break;
+            default:
+                break;
+        }
         return super.onOptionsItemSelected(item);
     }
 
