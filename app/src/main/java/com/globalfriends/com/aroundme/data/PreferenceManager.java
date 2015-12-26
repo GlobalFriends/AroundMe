@@ -16,6 +16,7 @@ public class PreferenceManager {
     public static final String PREF_RADIUS = "radius"; //int
     public static final String PREF_DISTANCE_FORMAT = "format"; //int
     public static final String PREF_DISTANCE_VALUE = "distance_value"; //int
+    public static final String PREF_PREFERED_LANGUAGE = "language_value"; //String
     public static final String PREF_LATITUDE = "latitude"; //String
     public static final String PREF_LONGITUDE = "longitude"; //String
     private static final String FILE_NAME = "pref_file";
@@ -26,14 +27,36 @@ public class PreferenceManager {
         return mPreference;
     }
 
+    public static void setRadius(int value) {
+        SharedPreferences.Editor editor = mPreference.edit();
+        editor.putInt(PREF_RADIUS, value);
+        editor.commit();
+    }
+
     public static double getRadius() {
         // check distance format and verify if its a miles or kilometers..
         return Utility.distanceInMeters(getDistanceFormat(), mPreference.getInt(PREF_DISTANCE_VALUE, 5));
     }
 
+    public static void setDistanceFormat(int value) {
+        SharedPreferences.Editor editor = mPreference.edit();
+        editor.putInt(PREF_DISTANCE_FORMAT, value);
+        editor.commit();
+    }
+
     public static DistanceFormatEnum getDistanceFormat() {
         return DistanceFormatEnum.getFormat(mPreference.getInt
                 (PREF_DISTANCE_FORMAT, DistanceFormatEnum.MILES.getValue()));
+    }
+
+    public static void setPreferedLanguage(String value) {
+        SharedPreferences.Editor editor = mPreference.edit();
+        editor.putString(PREF_PREFERED_LANGUAGE, value);
+        editor.commit();
+    }
+
+    public static String getPreferedLanguage() {
+        return mPreference.getString(PREF_PREFERED_LANGUAGE,"English");
     }
 
     public static String getLocation() {
@@ -54,6 +77,7 @@ public class PreferenceManager {
         editor.putString(PREF_LONGITUDE, longitude);
         editor.commit();
     }
+
 
     public static void dump() {
         Map<String, ?> all = mPreference.getAll();
