@@ -1,8 +1,6 @@
 package com.globalfriends.com.aroundme.ui;
 
 import android.os.Bundle;
-import android.preference.Preference;
-import android.support.v7.preference.CheckBoxPreference;
 import android.support.v7.preference.EditTextPreference;
 import android.support.v7.preference.ListPreference;
 import android.support.v7.preference.PreferenceFragmentCompat;
@@ -30,7 +28,7 @@ public class SettingsFragment extends PreferenceFragmentCompat{
         if (listPref.getValue() != null) {
             listPref.setSummary(listPref.getValue());
         }else {
-            listPref.setSummary(PreferenceManager.getPreferedLanguage());
+            listPref.setSummary(PreferenceManager.getPreferredLanguage());
         }
         Set<String> languageList = PlacesSupportedLanguages.getListOfLanguages();
         CharSequence[] langArray = languageList.toArray(new CharSequence[languageList.size()]);
@@ -40,7 +38,7 @@ public class SettingsFragment extends PreferenceFragmentCompat{
             @Override
             public boolean onPreferenceChange(android.support.v7.preference.Preference preference, Object o) {
                 preference.setSummary((String) o);
-                PreferenceManager.setPreferedLanguage((String)o);
+                PreferenceManager.setPreferredLanguage((String) o);
                 return true;
             }
         });
@@ -77,6 +75,12 @@ public class SettingsFragment extends PreferenceFragmentCompat{
             milesPref.setSummary("KM");
         else
             milesPref.setSummary("MILES");
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getActivity().setTitle(R.string.menu_settings);
     }
 
     @Override

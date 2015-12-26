@@ -49,14 +49,14 @@ public class PreferenceManager {
                 (PREF_DISTANCE_FORMAT, DistanceFormatEnum.MILES.getValue()));
     }
 
-    public static void setPreferedLanguage(String value) {
+    public static void setPreferredLanguage(String value) {
         SharedPreferences.Editor editor = mPreference.edit();
         editor.putString(PREF_PREFERED_LANGUAGE, value);
         editor.commit();
     }
 
-    public static String getPreferedLanguage() {
-        return mPreference.getString(PREF_PREFERED_LANGUAGE,"English");
+    public static String getPreferredLanguage() {
+        return mPreference.getString(PREF_PREFERED_LANGUAGE,"en");
     }
 
     public static String getLocation() {

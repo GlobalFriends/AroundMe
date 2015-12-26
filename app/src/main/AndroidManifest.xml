@@ -61,7 +61,7 @@
             android:name=".ui.PhotoViewer"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen"></activity>
-        
+
         <provider
             android:authorities="com.globalfriends.com.aroundme.autocomplete"
             android:name="com.globalfriends.com.aroundme.data.places.AutoCompletePredictionProvider"
