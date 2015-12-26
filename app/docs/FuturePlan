@@ -1,10 +1,22 @@
 Place Type Screen:
-1) We are using multiple types currently, that can increase user waiting time. Need some improvment there
-
+Minor update about seleciton of type. Currently its too many and we should remove few for simplicity reasons.
+Add favorite/Mostly visited screen for place type selection.
 
 Detail Screen:
-1) Refactoring of overall UI
-5) See if 2 lines only can be shown
+Places icon should be added such as Yelp, Four square and google. Module name should not be used for legal reasons.
+Layout update for bigger place names
 
-General
-2) Need some filtering of types in selection
+List Screen
+Layout update for bigger place names
+
+Review Screen
+Ahould have a back button on this screen
+
+Photo Screen
+Photo screen should have loading animation.
+Photo scale type should be checked. FitXY is not looking good in full screen mode.
+Ahould have a back button on this screen
+
+
+Legal:
+Double check legal implication and rules of showing results from Yelp and Four Square, just for making it double clear.
