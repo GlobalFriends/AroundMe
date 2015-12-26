@@ -13,6 +13,8 @@ import android.view.ViewGroup;
 
 
 import com.globalfriends.com.aroundme.R;
+import com.globalfriends.com.aroundme.data.DistanceFormatEnum;
+import com.globalfriends.com.aroundme.data.PreferenceManager;
 import com.globalfriends.com.aroundme.protocol.places.PlacesSupportedLanguages;
 
 import java.util.Set;
@@ -25,8 +27,11 @@ public class SettingsFragment extends PreferenceFragmentCompat{
     public void onCreatePreferences(Bundle bundle, String s) {
         addPreferencesFromResource(R.xml.aroundme_prefrence);
         ListPreference listPref = (ListPreference) findPreference("language_pref");
-        if (listPref.getValue() != null)
+        if (listPref.getValue() != null) {
             listPref.setSummary(listPref.getValue());
+        }else {
+            listPref.setSummary(PreferenceManager.getPreferedLanguage());
+        }
         Set<String> languageList = PlacesSupportedLanguages.getListOfLanguages();
         CharSequence[] langArray = languageList.toArray(new CharSequence[languageList.size()]);
         listPref.setEntries(langArray);
@@ -35,6 +40,7 @@ public class SettingsFragment extends PreferenceFragmentCompat{
             @Override
             public boolean onPreferenceChange(android.support.v7.preference.Preference preference, Object o) {
                 preference.setSummary((String) o);
+                PreferenceManager.setPreferedLanguage((String)o);
                 return true;
             }
         });
@@ -43,19 +49,25 @@ public class SettingsFragment extends PreferenceFragmentCompat{
             @Override
             public boolean onPreferenceChange(android.support.v7.preference.Preference preference, Object o) {
                 preference.setSummary((String) o);
+                PreferenceManager.setRadius(Integer.parseInt((String)o));
                 return true;
             }
         });
-        if (editPref.getText() != null)
+        if (editPref.getText() != null) {
             editPref.setSummary(editPref.getText());
+        }else{
+            editPref.setSummary(""+PreferenceManager.getRadius());
+        }
         SwitchPreferenceCompat milesPref = (SwitchPreferenceCompat) findPreference("miles_or_km_pref");
         milesPref.setOnPreferenceChangeListener(new android.support.v7.preference.Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(android.support.v7.preference.Preference preference, Object o) {
                 boolean val = (boolean) o;
                 if (val) {
+                    PreferenceManager.setDistanceFormat(DistanceFormatEnum.KILOMETER.getValue());
                     preference.setSummary("KM");
                 } else {
+                    PreferenceManager.setDistanceFormat(DistanceFormatEnum.MILES.getValue());
                     preference.setSummary("MILES");
                 }
                 return true;
