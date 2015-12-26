@@ -255,11 +255,20 @@ public class PlaceDetailsFragment extends BaseFragment implements View.OnClickLi
                 break;
             case R.id.id_favorite:
                 if (mPlace != null) {
+                    double rating = 0;
+                    String photoReference ="";
+                    if (mPlace.getRating() != null) {
+                        rating = Double.parseDouble(mPlace.getRating());
+                    }
+                    if (mPlace.getPhotoReference() != null) {
+                        photoReference = mPlace.getPhotoReference().toString();
+                    }
                     AroundMeContractProvider.Places fav =
-                            new AroundMeContractProvider.Places(mPlace.isOpenNow(), Double.parseDouble(mPlace.getRating()),
+                            new AroundMeContractProvider.Places(mPlace.isOpenNow(), rating,
                                     mPlace.getLatitude(), mPlace.getLongitude(), mPlace.getPlaceId(),
-                                    mGooglePlaceDetails.getPhoneNumber(), mPlace.getPhotoReference().toString(),
+                                    mGooglePlaceDetails.getPhoneNumber(), photoReference,
                                     mGooglePlaceDetails.getAddress());
+                    fav.save(getContext());
                 }
                 break;
             default:
