@@ -54,7 +54,6 @@ public class PlacesListAdapter extends ArrayAdapter<PlaceInfo> {
             convertView = layoutInflater.inflate(R.layout.layout_places_item, null);
 
             viewHolder = new ViewHolder();
-            viewHolder.mIcon = (ImageView) convertView.findViewById(R.id.icon);
             viewHolder.mPlacePhoto = (NetworkImageView) convertView.findViewById(R.id.photo);
             viewHolder.mPlaceName = (TextView) convertView.findViewById(R.id.place_name);
             viewHolder.mAddress = (TextView) convertView.findViewById(R.id.vicinity);
@@ -62,7 +61,6 @@ public class PlacesListAdapter extends ArrayAdapter<PlaceInfo> {
             viewHolder.mDistance = (TextView) convertView.findViewById(R.id.distance);
             viewHolder.mRatingText = (TextView) convertView.findViewById(R.id.rating);
             viewHolder.mRatingBar = (AppCompatRatingBar) convertView.findViewById(R.id.rating_star);
-            viewHolder.mPriceLevel = (LinearLayout) convertView.findViewById(R.id.price_level);
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
@@ -96,12 +94,10 @@ public class PlacesListAdapter extends ArrayAdapter<PlaceInfo> {
             viewHolder.mOpenNow.setTextColor(ColorStateList.valueOf(Color.RED));
         }
 
-        viewHolder.mPriceLevel.removeAllViews();
         for (int i = 0; i < place.getPriceLevel(); i++) {
             ImageView imageView = new ImageView(mContext);
             imageView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
             imageView.setImageResource(R.drawable.dollar);
-            viewHolder.mPriceLevel.addView(imageView);
         }
 
         if (place.getPhotoReference() != null) {
@@ -117,7 +113,6 @@ public class PlacesListAdapter extends ArrayAdapter<PlaceInfo> {
     }
 
     private static class ViewHolder {
-        public ImageView mIcon;
         public NetworkImageView mPlacePhoto;
         public TextView mPlaceName;
         public TextView mAddress;
@@ -125,6 +120,5 @@ public class PlacesListAdapter extends ArrayAdapter<PlaceInfo> {
         public AppCompatRatingBar mRatingBar;
         public TextView mRatingText;
         public TextView mDistance;
-        public LinearLayout mPriceLevel;
     }
 }

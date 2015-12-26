@@ -33,6 +33,9 @@
                     style="@style/TextAppearance.AppCompat.Medium"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginRight="5sp"
+                    android:layout_toLeftOf="@+id/open_now"
                     android:textStyle="bold" />
 
                 <TextView
@@ -47,7 +50,6 @@
                     android:id="@+id/rating_bar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
                     android:layout_below="@id/vicinity"
                     android:layout_marginTop="15sp"
                     android:orientation="vertical">
@@ -93,38 +95,14 @@
                     </android.support.v7.widget.LinearLayoutCompat>
                 </android.support.v7.widget.LinearLayoutCompat>
 
-                <LinearLayout
-                    android:id="@+id/price_level"
+                <TextView
+                    android:id="@+id/open_now"
+                    style="@style/TextAppearance.AppCompat.Body1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/vicinity"
-                    android:layout_marginStart="5dp"
-                    android:layout_toEndOf="@id/rating_bar"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal" />
-
-                <RelativeLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_alignParentEnd="true">
-
-                    <ImageView
-                        android:id="@+id/icon"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:layout_alignParentTop="true" />
-
-                    <TextView
-                        android:id="@+id/open_now"
-                        style="@style/TextAppearance.AppCompat.Body1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentBottom="true"
-                        android:layout_alignParentEnd="true"
-                        android:layout_below="@id/icon"
-                        android:layout_marginTop="5sp" />
-                </RelativeLayout>
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginTop="5sp"
+                    android:text="close" />
 
             </RelativeLayout>
         </RelativeLayout>
