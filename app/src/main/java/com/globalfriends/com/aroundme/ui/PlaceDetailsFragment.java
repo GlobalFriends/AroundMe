@@ -270,7 +270,10 @@ public class PlaceDetailsFragment extends BaseFragment implements View.OnClickLi
                                         mGooglePlaceDetails.getPhoneNumber(), photoReference,
                                         mGooglePlaceDetails.getAddress(), mPlace.getName());
                         fav.save(getContext());
-                        mFavoriteButtonLayout.setSelected(true);
+                        LinearLayoutCompat ll = (LinearLayoutCompat) v;
+                        //Uncomment after getting proper image
+//                        ImageView img = (ImageView)ll.findViewById(R.id.id_favorite_image);
+//                        img.setBackgroundResource(R.drawable.fav);
                     }
                 }
                 break;
