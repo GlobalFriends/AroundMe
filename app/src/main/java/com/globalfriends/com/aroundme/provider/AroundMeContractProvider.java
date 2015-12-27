@@ -229,5 +229,23 @@ public abstract class AroundMeContractProvider {
             }
             return uri;
         }
+
+        public static boolean exist(Context context, String placeId) {
+            String[] columns = {PlacesColumns.PLACES_ID};
+            String selection = PlacesColumns.PLACES_ID + " =?";
+            String[] selectionArgs = {placeId};
+            String limit = "1";
+            ContentResolver resolver = context.getContentResolver();
+            if (resolver == null) {
+                return false;
+            }
+            Uri uri = null;
+            Cursor c = resolver.query(CONTENT_URI, null, selection, selectionArgs, null);
+            boolean exists = (c.getCount() > 0);
+            if (c != null && !c.isClosed()) {
+                c.close();
+            }
+            return exists;
+        }
     }
 }

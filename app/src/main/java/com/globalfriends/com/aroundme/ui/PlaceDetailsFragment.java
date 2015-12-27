@@ -256,19 +256,22 @@ public class PlaceDetailsFragment extends BaseFragment implements View.OnClickLi
             case R.id.id_favorite:
                 if (mPlace != null) {
                     double rating = 0;
-                    String photoReference ="";
+                    String photoReference = "";
                     if (mPlace.getRating() != null) {
                         rating = Double.parseDouble(mPlace.getRating());
                     }
                     if (mPlace.getPhotoReference() != null) {
                         photoReference = mPlace.getPhotoReference().toString();
                     }
-                    AroundMeContractProvider.Places fav =
-                            new AroundMeContractProvider.Places(mPlace.isOpenNow(), rating,
-                                    mPlace.getLatitude(), mPlace.getLongitude(), mPlace.getPlaceId(),
-                                    mGooglePlaceDetails.getPhoneNumber(), photoReference,
-                                    mGooglePlaceDetails.getAddress(),mPlace.getName());
-                    fav.save(getContext());
+                    if (!AroundMeContractProvider.Places.exist(getActivity(), mPlace.getPlaceId())) {
+                        AroundMeContractProvider.Places fav =
+                                new AroundMeContractProvider.Places(mPlace.isOpenNow(), rating,
+                                        mPlace.getLatitude(), mPlace.getLongitude(), mPlace.getPlaceId(),
+                                        mGooglePlaceDetails.getPhoneNumber(), photoReference,
+                                        mGooglePlaceDetails.getAddress(), mPlace.getName());
+                        fav.save(getContext());
+                        mFavoriteButtonLayout.setSelected(true);
+                    }
                 }
                 break;
             default:
