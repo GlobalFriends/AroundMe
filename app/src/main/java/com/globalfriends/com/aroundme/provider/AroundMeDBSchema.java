@@ -17,6 +17,7 @@ interface AroundMeDBSchema {
             + AroundMeContractProvider.PlacesColumns.PLACES_ID + " TEXT NOT NULL ,"
             + AroundMeContractProvider.PlacesColumns.PHONE_NUMBER + " TEXT ,"
             + AroundMeContractProvider.PlacesColumns.PHOTO_REFERENCE + " TEXT ,"
+            + AroundMeContractProvider.PlacesColumns.PLACE_NAME + " TEXT ,"
             + AroundMeContractProvider.PlacesColumns.FORMATTED_ADDRESS + " TEXT "
             + " )";
 

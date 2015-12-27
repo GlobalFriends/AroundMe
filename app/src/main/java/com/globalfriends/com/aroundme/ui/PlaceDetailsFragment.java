@@ -267,7 +267,7 @@ public class PlaceDetailsFragment extends BaseFragment implements View.OnClickLi
                             new AroundMeContractProvider.Places(mPlace.isOpenNow(), rating,
                                     mPlace.getLatitude(), mPlace.getLongitude(), mPlace.getPlaceId(),
                                     mGooglePlaceDetails.getPhoneNumber(), photoReference,
-                                    mGooglePlaceDetails.getAddress());
+                                    mGooglePlaceDetails.getAddress(),mPlace.getName());
                     fav.save(getContext());
                 }
                 break;

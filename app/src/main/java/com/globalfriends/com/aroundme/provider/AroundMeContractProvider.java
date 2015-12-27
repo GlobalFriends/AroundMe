@@ -96,6 +96,7 @@ public abstract class AroundMeContractProvider {
         String PHONE_NUMBER = "phone_number";
         String PHOTO_REFERENCE = "photo_reference";
         String FORMATTED_ADDRESS = "formatted_address";
+        String PLACE_NAME = "place_name";
     }
 
     public static final class Places extends AroundMeContractProvider implements PlacesColumns {
@@ -112,6 +113,7 @@ public abstract class AroundMeContractProvider {
         public static final int CONTENT_PHONE_NUMBER_COL = 6;
         public static final int CONTENT_PHOTO_REFERENCE_COL = 7;
         public static final int CONTENT_FORMATTED_ADDRESS_COL = 8;
+        public static final int CONTENT_PLACE_NAME_COL = 9;
 
 
         private boolean mIsOpenNow;
@@ -122,8 +124,11 @@ public abstract class AroundMeContractProvider {
         private String mPhoneNumber;
         private String mPhotoRefrence;
         private String mAddress;
+        private String mName;
 
-        public Places(boolean isOpenNow, double rating, double latitude, double longitude, String placeId, String phoneNumber, String photoRefernce, String address) {
+        public Places(boolean isOpenNow, double rating, double latitude,
+                      double longitude, String placeId, String phoneNumber,
+                      String photoRefernce, String address, String name) {
             mBaseUri = CONTENT_URI;
             mIsOpenNow = isOpenNow;
             mRating = rating;
@@ -133,6 +138,7 @@ public abstract class AroundMeContractProvider {
             mPhoneNumber = phoneNumber;
             mPhotoRefrence = photoRefernce;
             mAddress = address;
+            mName = name;
         }
 
         @Override
@@ -146,7 +152,7 @@ public abstract class AroundMeContractProvider {
             mPhoneNumber = cursor.getString(CONTENT_PHONE_NUMBER_COL);
             mPhotoRefrence = cursor.getString(CONTENT_PHOTO_REFERENCE_COL);
             mAddress = cursor.getString(CONTENT_FORMATTED_ADDRESS_COL);
-
+            mName = cursor.getString(CONTENT_PLACE_NAME_COL);
         }
 
         @Override
@@ -161,6 +167,7 @@ public abstract class AroundMeContractProvider {
             values.put(PlacesColumns.PHONE_NUMBER, mPhoneNumber);
             values.put(PlacesColumns.PHOTO_REFERENCE, mPhotoRefrence);
             values.put(PlacesColumns.FORMATTED_ADDRESS, mAddress);
+            values.put(PlacesColumns.PLACE_NAME, mName);
             return values;
         }
 
@@ -174,11 +181,11 @@ public abstract class AroundMeContractProvider {
             }
             ContentValues[] values = new ContentValues[placesSet.size()];
             int count = 0;
-            for (Places place: placesSet) {
+            for (Places place : placesSet) {
                 values[count] = place.toContentValues();
                 count++;
             }
-            return resolver.bulkInsert(CONTENT_URI,values);
+            return resolver.bulkInsert(CONTENT_URI, values);
         }
 
         public static int deleteAllRecords(Context context) {

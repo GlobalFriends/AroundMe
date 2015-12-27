@@ -91,6 +91,7 @@ public class AroundMeContentProvider extends ContentProvider {
                 throw new IllegalArgumentException(
                         "Unsupported URI for insertion: " + uri);
         }
+        getContext().getContentResolver().notifyChange(uri, null);
         return getUriForId(_id, uri);
     }
 
