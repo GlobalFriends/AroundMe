@@ -7,9 +7,7 @@ import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.graphics.ColorFilter;
 import android.graphics.Paint;
-import android.graphics.PorterDuff;
 import android.graphics.drawable.LayerDrawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -49,10 +47,9 @@ import com.google.android.gms.maps.MapView;
 import java.io.Serializable;
 import java.util.List;
 
-;
 
 /**
- *
+ * Shows place details view with all data from supported modules such as four square, yelp, google etc.
  */
 public class PlaceDetailsFragment extends BaseFragment implements View.OnClickListener {
     private static final String TAG = "PlaceDetailsFragment";
@@ -285,8 +282,10 @@ public class PlaceDetailsFragment extends BaseFragment implements View.OnClickLi
                 }
                 break;
             case R.id.fab:
-                String uri = "geo:0,0?q=" + mPlace.getLatitude() + "," + mPlace.getLongitude();
-                getActivity().startActivity(new Intent(android.content.Intent.ACTION_VIEW, Uri.parse(uri)));
+                Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
+                        Uri.parse("geo:0,0?q=" + mPlace.getLatitude() + "," + mPlace.getLongitude()));
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                getActivity().startActivity(intent);
                 break;
             default:
                 break;
@@ -321,15 +320,17 @@ public class PlaceDetailsFragment extends BaseFragment implements View.OnClickLi
      * Update place timing details
      */
     private void updatePlaceTiming() {
-        final List<String> timMap = mGooglePlaceDetails.getWeeklyTimings();
+        final List<String> timeMap = mGooglePlaceDetails.getWeeklyTimings();
         final LinearLayoutCompat weekly_timings = (LinearLayoutCompat) mTimingLayout.
                 findViewById(R.id.id_week_timing);
-        if (timMap == null || timMap.size() == 0) {
+        if (timeMap == null || timeMap.size() == 0) {
             mTimingLayout.setVisibility(View.GONE);
             return;
         }
 
         mTimingLayout.setVisibility(View.VISIBLE);
+        TextView todayTime = (TextView) mTimingLayout.findViewById(R.id.id_today_hours);
+        todayTime.append(Utility.getTodayTiming(timeMap));
         final TextView more = (TextView) mTimingLayout.findViewById(R.id.id_hours_more);
         more.setPaintFlags(more.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         more.setOnClickListener(new View.OnClickListener() {
@@ -337,19 +338,20 @@ public class PlaceDetailsFragment extends BaseFragment implements View.OnClickLi
             public void onClick(View v) {
                 if (getActivity().getResources().getString(R.string.more).
                         equalsIgnoreCase(more.getText().toString())) {
-                    more.setText(getActivity().getResources().getString(R.string.closed));
-                    weekly_timings.setVisibility(View.VISIBLE);
-                    if (timMap == null || timMap.size() == 0) {
+                    if (timeMap == null || timeMap.size() == 0) {
                         return;
                     }
 
-                    ((TextView) mTimingLayout.findViewById(R.id.id_monday_hours)).setText(timMap.get(0));
-                    ((TextView) mTimingLayout.findViewById(R.id.id_tuesday_hours)).setText(timMap.get(1));
-                    ((TextView) mTimingLayout.findViewById(R.id.id_wednesday_hours)).setText(timMap.get(2));
-                    ((TextView) mTimingLayout.findViewById(R.id.id_thursday_hours)).setText(timMap.get(3));
-                    ((TextView) mTimingLayout.findViewById(R.id.id_friday_hours)).setText(timMap.get(4));
-                    ((TextView) mTimingLayout.findViewById(R.id.id_saturday_hours)).setText(timMap.get(5));
-                    ((TextView) mTimingLayout.findViewById(R.id.id_sunday_hours)).setText(timMap.get(6));
+                    more.setText(getActivity().getResources().getString(R.string.closed));
+                    weekly_timings.setVisibility(View.VISIBLE);
+
+                    ((TextView) mTimingLayout.findViewById(R.id.id_monday_hours)).setText(timeMap.get(0));
+                    ((TextView) mTimingLayout.findViewById(R.id.id_tuesday_hours)).setText(timeMap.get(1));
+                    ((TextView) mTimingLayout.findViewById(R.id.id_wednesday_hours)).setText(timeMap.get(2));
+                    ((TextView) mTimingLayout.findViewById(R.id.id_thursday_hours)).setText(timeMap.get(3));
+                    ((TextView) mTimingLayout.findViewById(R.id.id_friday_hours)).setText(timeMap.get(4));
+                    ((TextView) mTimingLayout.findViewById(R.id.id_saturday_hours)).setText(timeMap.get(5));
+                    ((TextView) mTimingLayout.findViewById(R.id.id_sunday_hours)).setText(timeMap.get(6));
 
                 } else {
                     more.setText(getActivity().getResources().getString(R.string.more));

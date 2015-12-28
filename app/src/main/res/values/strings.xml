@@ -45,7 +45,7 @@
     <string name="call_title">Call</string>
     <string name="favorite_title">Favorite</string>
     <string name="more">More</string>
-    <string name="today_timing">Today\'s timing:</string>
+    <string name="today_timing">Today\'s timing: </string>
     <string name="monday">Monday: </string>
     <string name="tuesday">Tuesday: </string>
     <string name="wednesday">Wednesday: </string>
