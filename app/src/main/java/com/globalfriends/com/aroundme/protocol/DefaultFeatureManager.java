@@ -120,4 +120,8 @@ public class DefaultFeatureManager implements IFeatureManager {
     public int getFeatureIcon() {
         return 0;
     }
+
+    public int getFeatureFullLogo() {
+        return 0;
+    }
 }

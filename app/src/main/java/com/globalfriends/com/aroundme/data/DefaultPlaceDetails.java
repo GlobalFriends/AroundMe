@@ -22,7 +22,7 @@ public class DefaultPlaceDetails implements IPlaceDetails {
     protected String mIcon;
     protected String mRatingUrl;
     protected String mPlaceRating;
-    protected int mRatingColor;
+    protected String mRatingColor;
     protected int mReviewCount;
     protected List<String> mWeeklyTimings = new ArrayList<String>();
     protected JSONObject mResponse;
@@ -139,7 +139,7 @@ public class DefaultPlaceDetails implements IPlaceDetails {
     }
 
     @Override
-    public int getRatingColor() {
+    public String getRatingColor() {
         return mRatingColor;
     }
 }

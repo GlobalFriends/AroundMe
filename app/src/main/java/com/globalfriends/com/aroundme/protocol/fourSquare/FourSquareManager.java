@@ -149,4 +149,9 @@ public class FourSquareManager extends DefaultFeatureManager {
     public int getFeatureIcon() {
         return R.drawable.foursquare;
     }
+
+    @Override
+    public int getFeatureFullLogo() {
+        return R.drawable.foursquare_logo;
+    }
 }

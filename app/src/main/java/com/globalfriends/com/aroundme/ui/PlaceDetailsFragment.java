@@ -7,7 +7,10 @@ import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.ColorFilter;
 import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.LayerDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
@@ -423,9 +426,23 @@ public class PlaceDetailsFragment extends BaseFragment implements View.OnClickLi
 
         // First Row
         ImageView moduleImage = (ImageView) moduleLayout.findViewById(R.id.module_image);
-        moduleImage.setImageResource(TransactionManager.getInstance().getModuleIcon(moduleName));
         TextView name = (AppCompatTextView) moduleLayout.findViewById(R.id.module_id);
-        name.setText(moduleName);
+        ImageView moduleLogo = (ImageView) moduleLayout.findViewById(R.id.module_logo);
+
+        if (TransactionManager.getInstance().getModuleCompleteLogo(moduleName) == 0) {
+            moduleLogo.setVisibility(View.GONE);
+            moduleImage.setVisibility(View.VISIBLE);
+            name.setVisibility(View.VISIBLE);
+            moduleImage.setImageResource(TransactionManager.getInstance().getModuleIcon(moduleName));
+            name.setText(moduleName);
+        } else {
+            moduleLogo.setVisibility(View.VISIBLE);
+            moduleImage.setVisibility(View.GONE);
+            name.setVisibility(View.GONE);
+            moduleLogo.setImageResource(TransactionManager.getInstance().getModuleCompleteLogo(moduleName));
+        }
+
+
         TextView more = (AppCompatTextView) moduleLayout.findViewById(R.id.module_more);
 
         more.setPaintFlags(more.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
@@ -478,8 +495,10 @@ public class PlaceDetailsFragment extends BaseFragment implements View.OnClickLi
                 } else {
                     ratingBar.setVisibility(View.VISIBLE);
                     ratingBar.setRating(Float.valueOf(placeDetails.getPlaceRating()));
-                    if (placeDetails.getRatingColor() != 0) {
-                        ratingBar.getProgressDrawable().setTint(placeDetails.getRatingColor());
+                    if (!TextUtils.isEmpty(placeDetails.getRatingColor())) {
+                        LayerDrawable stars = (LayerDrawable) ratingBar.getProgressDrawable();
+//                        stars.setColorFilter(Color.parseColor("0x" + placeDetails.getRatingColor()),
+//                                PorterDuff.Mode.LIGHTEN);
                     }
                 }
             }
