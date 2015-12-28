@@ -141,7 +141,7 @@ public class Utility {
                 return (String.format("%.2f ", dist) + AroundMeApplication.getContext().
                         getResources().getString(R.string.miles_notation));
             case KILOMETER:
-                dist = (dist * 1.609344);
+                dist = ((dist * 60 * 1.1515) * 1.609344);
                 return (String.format("%.2f ", dist) + AroundMeApplication.getContext().
                         getResources().getString(R.string.kilometer_notation));
             default:
