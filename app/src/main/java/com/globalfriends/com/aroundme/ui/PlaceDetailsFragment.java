@@ -13,6 +13,7 @@ import android.graphics.PorterDuff;
 import android.graphics.drawable.LayerDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -74,6 +75,7 @@ public class PlaceDetailsFragment extends BaseFragment implements View.OnClickLi
     private LinearLayoutCompat mRatingBarLayout;
     private LinearLayoutCompat mTimingLayout;
     private LinearLayoutCompat mParenLayout;
+    private FloatingActionButton mFab;
 
 
     @Override
@@ -200,6 +202,8 @@ public class PlaceDetailsFragment extends BaseFragment implements View.OnClickLi
         mFavoriteButtonLayout = (LinearLayoutCompat) view.findViewById(R.id.id_favorite);
         mFavoriteButtonLayout.setOnClickListener(this);
         mTimingLayout = (LinearLayoutCompat) view.findViewById(R.id.id_timings);
+        mFab = (FloatingActionButton) view.findViewById(R.id.fab);
+        mFab.setOnClickListener(this);
 
         mGooglePhotosLayout = (CardView) view.findViewById(R.id.google_photo);
     }
@@ -279,6 +283,10 @@ public class PlaceDetailsFragment extends BaseFragment implements View.OnClickLi
 //                        img.setBackgroundResource(R.drawable.fav);
                     }
                 }
+                break;
+            case R.id.fab:
+                String uri = "geo:0,0?q=" + mPlace.getLatitude() + "," + mPlace.getLongitude();
+                getActivity().startActivity(new Intent(android.content.Intent.ACTION_VIEW, Uri.parse(uri)));
                 break;
             default:
                 break;
