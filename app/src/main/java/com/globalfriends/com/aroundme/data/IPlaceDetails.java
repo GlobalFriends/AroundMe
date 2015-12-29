@@ -41,6 +41,6 @@ public interface IPlaceDetails {
 
     int getReviewCount();
 
-    int getRatingColor();
+    String getRatingColor();
 
 }

@@ -117,6 +117,19 @@ public class TransactionManager implements Listener {
         return 0;
     }
 
+    public int getModuleCompleteLogo(final String moduleName) {
+        if (TextUtils.isEmpty(moduleName)) {
+            return 0;
+        }
+
+        for (IFeatureManager feature : mFeatureManagerList) {
+            if (feature.getTag().equalsIgnoreCase(moduleName)) {
+                return feature.getFeatureFullLogo();
+            }
+        }
+        return 0;
+    }
+
     /**
      * @param placeType
      */

@@ -36,7 +36,7 @@ public class FavoriteFragment extends ListFragment implements AbsListView.OnItem
         super.onActivityCreated(savedInstanceState);
         Intent myData = getActivity().getIntent();
         Bundle info = myData.getExtras();
-        mAdapter = new SimpleCursorAdapter(getActivity(), R.layout.layout_fav_places_item, null, new String[]{
+        mAdapter = new SimpleCursorAdapter(getActivity(), R.layout.layout_places_item, null, new String[]{
                 AroundMeContractProvider.PlacesColumns.PLACE_NAME,AroundMeContractProvider.PlacesColumns.FORMATTED_ADDRESS,AroundMeContractProvider.PlacesColumns.PHONE_NUMBER}
                 , new int[]{R.id.place_name,R.id.vicinity, R.id.phone_number}, 0);
         setListAdapter(mAdapter);

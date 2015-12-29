@@ -81,4 +81,9 @@ public class YelpManager extends DefaultFeatureManager {
     public int getFeatureIcon() {
         return R.drawable.yelp;
     }
+
+    @Override
+    public int getFeatureFullLogo() {
+        return R.drawable.yelp_icon;
+    }
 }

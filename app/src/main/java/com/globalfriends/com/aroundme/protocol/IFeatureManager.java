@@ -64,4 +64,9 @@ public interface IFeatureManager {
      * @return
      */
     public int getFeatureIcon();
+
+    /**
+     * @return
+     */
+    public int getFeatureFullLogo();
 }

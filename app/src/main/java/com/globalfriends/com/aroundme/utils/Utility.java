@@ -12,12 +12,10 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.location.Address;
 import android.location.Geocoder;
-import android.net.ParseException;
 import android.os.Environment;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutCompat;
 import android.text.TextUtils;
-import android.text.format.DateFormat;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -44,7 +42,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.TimeZone;
 
 import static android.util.TypedValue.*;
 
@@ -141,7 +138,7 @@ public class Utility {
                 return (String.format("%.2f ", dist) + AroundMeApplication.getContext().
                         getResources().getString(R.string.miles_notation));
             case KILOMETER:
-                dist = (dist * 1.609344);
+                dist = ((dist * 60 * 1.1515) * 1.609344);
                 return (String.format("%.2f ", dist) + AroundMeApplication.getContext().
                         getResources().getString(R.string.kilometer_notation));
             default:
@@ -231,6 +228,46 @@ public class Utility {
         LinearLayoutCompat imageGallery = (LinearLayoutCompat) layout.findViewById(R.id.imageGallery);
         for (PlacePhotoMetadata photo : mList) {
             imageGallery.addView(addDynamicImageView(context, photo, imageLoader, mList));
+        }
+    }
+
+    /**
+     * Returns today's string from timing map
+     *
+     * @param timeMap
+     * @return
+     */
+    public static String getTodayTiming(final List<String> timeMap) {
+        if (timeMap == null || timeMap.size() == 0) {
+            return null;
+        }
+
+        int day = Calendar.getInstance().get(Calendar.DAY_OF_WEEK);
+        String timing;
+        switch (day) {
+            case 1: //Sunday
+                timing = timeMap.get(6);
+                return timing.substring(timing.indexOf(":") + 1);
+            case 2:
+                timing = timeMap.get(0);
+                return timing.substring(timing.indexOf(":") + 1);
+            case 3:
+                timing = timeMap.get(1);
+                return timing.substring(timing.indexOf(":") + 1);
+            case 4:
+                timing = timeMap.get(2);
+                return timing.substring(timing.indexOf(":") + 1);
+            case 5:
+                timing = timeMap.get(3);
+                return timing.substring(timing.indexOf(":") + 1);
+            case 6:
+                timing = timeMap.get(4);
+                return timing.substring(timing.indexOf(":") + 1);
+            case 7:
+                timing = timeMap.get(5);
+                return timing.substring(timing.indexOf(":") + 1);
+            default:
+                return null;
         }
     }
 
