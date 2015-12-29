@@ -277,8 +277,8 @@ public class PlaceDetailsFragment extends BaseFragment implements View.OnClickLi
                         fav.save(getContext());
                         LinearLayoutCompat ll = (LinearLayoutCompat) v;
                         //Uncomment after getting proper image
-//                        ImageView img = (ImageView)ll.findViewById(R.id.id_favorite_image);
-//                        img.setBackgroundResource(R.drawable.fav);
+                        ImageView img = (ImageView)ll.findViewById(R.id.id_favorite_image);
+                        img.setBackgroundResource(R.drawable.favouritenew);
                     }
                 }
                 break;
