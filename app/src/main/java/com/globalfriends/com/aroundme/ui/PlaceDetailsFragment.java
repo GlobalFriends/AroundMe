@@ -263,6 +263,7 @@ public class PlaceDetailsFragment extends BaseFragment implements View.OnClickLi
                     if (mPlace.getPhotoReference() != null) {
                         photoReference = mPlace.getPhotoReference().toString();
                     }
+                    //Should this be moved to Async task ? on activity exit ?
                     if (!AroundMeContractProvider.Places.exist(getActivity(), mPlace.getPlaceId())) {
                         AroundMeContractProvider.Places fav =
                                 new AroundMeContractProvider.Places(mPlace.isOpenNow(), rating,
