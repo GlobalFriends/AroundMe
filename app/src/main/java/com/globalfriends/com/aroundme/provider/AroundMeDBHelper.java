@@ -25,7 +25,9 @@ public class AroundMeDBHelper extends SQLiteOpenHelper {
     }
 
     private void createDB(SQLiteDatabase db) {
+
         db.execSQL(AroundMeDBSchema.CREATE_PLACES_TABLE);
+        db.execSQL(AroundMeDBSchema.CREATE_RECENT_PLACES_TABLE);
     }
 
     @Override

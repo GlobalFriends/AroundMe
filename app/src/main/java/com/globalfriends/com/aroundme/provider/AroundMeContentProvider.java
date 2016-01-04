@@ -21,13 +21,18 @@ import java.util.ArrayList;
 public class AroundMeContentProvider extends ContentProvider {
     // helper constants for use with the UriMatcher
     private static final int PLACES_BASE = 0;
-    private static final int PLACES_LIST = PLACES_BASE;
-    private static final int PLACES_ID = PLACES_BASE + 1;
+    private static final int PLACES_LIST = PLACES_BASE + 0x1000;
+    private static final int PLACES_ID = PLACES_LIST + + 0x1000;
+
+    private static final int RECENT_PLACES_BASE = PLACES_ID ;
+    private static final int RECENT_PLACES_LIST = RECENT_PLACES_BASE + 0x1000;
+    private static final int RECENT_PLACES_ID = RECENT_PLACES_LIST + 0x1000;
 
     private static final int BASE_SHIFT = 12;
     private static final UriMatcher URI_MATCHER;
     private static final String sTABLE_NAME[] = {
-            AroundMeContractProvider.Places.TABLENAME
+            AroundMeContractProvider.Places.TABLENAME,
+            AroundMeContractProvider.RecentPlaces.TABLENAME
     };
 
     private AroundMeDBHelper mDBHelper;
@@ -39,6 +44,10 @@ public class AroundMeContentProvider extends ContentProvider {
                 AroundMeContractProvider.Places.PATH + "/#", PLACES_ID);
         URI_MATCHER.addURI(AroundMeContractProvider.AUTHORITY,
                 AroundMeContractProvider.Places.PATH, PLACES_LIST);
+        URI_MATCHER.addURI(AroundMeContractProvider.AUTHORITY,
+                AroundMeContractProvider.RecentPlaces.PATH + "/#", RECENT_PLACES_ID);
+        URI_MATCHER.addURI(AroundMeContractProvider.AUTHORITY,
+                AroundMeContractProvider.RecentPlaces.PATH, RECENT_PLACES_LIST);
     }
 
     @Override
@@ -55,9 +64,11 @@ public class AroundMeContentProvider extends ContentProvider {
         queryBuilder.setTables(tableName);
         switch (match) {
             case PLACES_LIST:
+            case RECENT_PLACES_LIST:
                 queryBuilder.setProjectionMap(null);
                 break;
             case PLACES_ID:
+            case RECENT_PLACES_ID:
                 queryBuilder.appendWhere("_id" + "=" + uri.getLastPathSegment());
                 break;
             default:
@@ -83,9 +94,11 @@ public class AroundMeContentProvider extends ContentProvider {
         SQLiteDatabase db = getWritableDB();
         switch (match) {
             case PLACES_LIST:
+            case RECENT_PLACES_LIST:
                 _id = db.insert(tableName, null, values);
                 break;
             case PLACES_ID:
+            case RECENT_PLACES_ID:
                 break;
             default:
                 throw new IllegalArgumentException(
@@ -105,9 +118,11 @@ public class AroundMeContentProvider extends ContentProvider {
         int count = 0;
         switch (match) {
             case PLACES_LIST:
+            case RECENT_PLACES_LIST:
                 count = db.delete(tableName, selection, selectionArgs);
                 break;
             case PLACES_ID:
+            case RECENT_PLACES_ID:
                 String id = uri.getPathSegments().get(1);
                 count = db.delete(tableName, whereWithId(id, selection),
                         selectionArgs);
@@ -129,9 +144,11 @@ public class AroundMeContentProvider extends ContentProvider {
         int count = 0;
         switch (match) {
             case PLACES_LIST:
+            case RECENT_PLACES_LIST:
                 count = db.update(tableName, values, selection, selectionArgs);
                 break;
             case PLACES_ID:
+            case RECENT_PLACES_ID:
                 String id = uri.getPathSegments().get(1);
                 count = db.update(tableName, values, whereWithId(id, selection),
                         selectionArgs);
@@ -167,6 +184,7 @@ public class AroundMeContentProvider extends ContentProvider {
         int count = 0;
         switch (match) {
             case PLACES_LIST:
+            case RECENT_PLACES_LIST:
                 try {
                     db.beginTransaction();
                     //ArrayList<ContentProviderOperation> ops = new ArrayList<>();
@@ -186,6 +204,7 @@ public class AroundMeContentProvider extends ContentProvider {
                 }
                 break;
             case PLACES_ID:
+            case RECENT_PLACES_ID:
                 break;
             default:
                 throw new IllegalArgumentException(

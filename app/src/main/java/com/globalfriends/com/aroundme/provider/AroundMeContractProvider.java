@@ -248,4 +248,167 @@ public abstract class AroundMeContractProvider {
             return exists;
         }
     }
+
+    public interface RecentPlacesColumns {
+        String _ID = "_id";
+        String OPEN_NOW = "open_now";
+        String RATING = "rating";
+        String GEOMETRY_LOCATION_LATITUDE = "latitude";
+        String GEOMETRY_LOCATTION_LONGITUDE = "longitude";
+        String PLACES_ID = "places_id";
+        String PHONE_NUMBER = "phone_number";
+        String PHOTO_REFERENCE = "photo_reference";
+        String FORMATTED_ADDRESS = "formatted_address";
+        String PLACE_NAME = "place_name";
+    }
+
+    public static final class RecentPlaces extends AroundMeContractProvider implements RecentPlacesColumns {
+        public static final String TABLENAME = "recentplaces";
+        public static final String PATH = "recentplaces";
+        public static final Uri CONTENT_URI = Uri.withAppendedPath(AroundMeContractProvider.CONTENT_URI, PATH);
+
+        public static final int CONTENT_ID_COL = 0;
+        public static final int CONTENT_OPEN_NOW_COL = 1;
+        public static final int CONTENT_RATING_COL = 2;
+        public static final int CONTENT_GEMOTERY_LOCATION_LATITUDE = 3;
+        public static final int CONTENT_GEMOTERY_LOCATION_LONGITUDE = 4;
+        public static final int CONTENT_PLACES_ID_COL = 5;
+        public static final int CONTENT_PHONE_NUMBER_COL = 6;
+        public static final int CONTENT_PHOTO_REFERENCE_COL = 7;
+        public static final int CONTENT_FORMATTED_ADDRESS_COL = 8;
+        public static final int CONTENT_PLACE_NAME_COL = 9;
+
+
+        private boolean mIsOpenNow;
+        private double mRating;
+        private double mLatitude;
+        private double mLongitude;
+        private String mPlaceId;
+        private String mPhoneNumber;
+        private String mPhotoRefrence;
+        private String mAddress;
+        private String mName;
+
+        public RecentPlaces(boolean isOpenNow, double rating, double latitude,
+                      double longitude, String placeId, String phoneNumber,
+                      String photoRefernce, String address, String name) {
+            mBaseUri = CONTENT_URI;
+            mIsOpenNow = isOpenNow;
+            mRating = rating;
+            mLatitude = latitude;
+            mLongitude = longitude;
+            mPlaceId = placeId;
+            mPhoneNumber = phoneNumber;
+            mPhotoRefrence = photoRefernce;
+            mAddress = address;
+            mName = name;
+        }
+
+        @Override
+        public void restore(Cursor cursor) {
+            mBaseUri = RecentPlaces.CONTENT_URI;
+            mIsOpenNow = cursor.getInt(CONTENT_OPEN_NOW_COL) == 1;
+            mRating = cursor.getDouble(CONTENT_RATING_COL);
+            mLatitude = cursor.getDouble(CONTENT_GEMOTERY_LOCATION_LATITUDE);
+            mLongitude = cursor.getDouble(CONTENT_GEMOTERY_LOCATION_LONGITUDE);
+            mPlaceId = cursor.getString(CONTENT_PLACES_ID_COL);
+            mPhoneNumber = cursor.getString(CONTENT_PHONE_NUMBER_COL);
+            mPhotoRefrence = cursor.getString(CONTENT_PHOTO_REFERENCE_COL);
+            mAddress = cursor.getString(CONTENT_FORMATTED_ADDRESS_COL);
+            mName = cursor.getString(CONTENT_PLACE_NAME_COL);
+        }
+
+        @Override
+        public ContentValues toContentValues() {
+            ContentValues values = new ContentValues();
+            values.put(RecentPlacesColumns.OPEN_NOW, mIsOpenNow);
+            values.put(RecentPlacesColumns.RATING, mRating);
+            values.put(RecentPlacesColumns.GEOMETRY_LOCATION_LATITUDE, mLatitude);
+            values.put(RecentPlacesColumns.GEOMETRY_LOCATTION_LONGITUDE, mLongitude);
+            values.put(RecentPlacesColumns.PLACES_ID, mPlaceId);
+            values.put(RecentPlacesColumns.PHONE_NUMBER, mPhoneNumber);
+            values.put(RecentPlacesColumns.PHONE_NUMBER, mPhoneNumber);
+            values.put(RecentPlacesColumns.PHOTO_REFERENCE, mPhotoRefrence);
+            values.put(RecentPlacesColumns.FORMATTED_ADDRESS, mAddress);
+            values.put(RecentPlacesColumns.PLACE_NAME, mName);
+            return values;
+        }
+
+        public static int insertMultiple(Context context, HashSet<RecentPlaces> placesSet) {
+            if (context == null) {
+                return -1;
+            }
+            ContentResolver resolver = context.getContentResolver();
+            if (resolver == null) {
+                return -1;
+            }
+            ContentValues[] values = new ContentValues[placesSet.size()];
+            int count = 0;
+            for (RecentPlaces place : placesSet) {
+                values[count] = place.toContentValues();
+                count++;
+            }
+            return resolver.bulkInsert(CONTENT_URI, values);
+        }
+
+        public static int deleteAllRecords(Context context) {
+            if (context == null) {
+                return -1;
+            }
+            ContentResolver resolver = context.getContentResolver();
+            if (resolver == null) {
+                return -1;
+            }
+            return resolver.delete(CONTENT_URI, null, null);
+        }
+
+        public static int deleteAllRecordsWhere(Context context, String where, String[] selectionArgs) {
+            if (context == null) {
+                return -1;
+            }
+            ContentResolver resolver = context.getContentResolver();
+            if (resolver == null) {
+                return -1;
+            }
+            return resolver.delete(CONTENT_URI, where, selectionArgs);
+        }
+
+        private static Uri updateExisting(Context context, ContentValues values) {
+            if (context == null) {
+                return null;
+            }
+            ContentResolver resolver = context.getContentResolver();
+            if (resolver == null) {
+                return null;
+            }
+            Uri uri = null;
+            Cursor c = resolver.query(CONTENT_URI, null, null, null, null);
+            int id = c.getInt(CONTENT_ID_COL);
+            uri = ContentUris.withAppendedId(CONTENT_URI, id);
+            resolver.update(uri, values, null, null);
+            resolver.notifyChange(uri, null);
+            if (c != null && !c.isClosed()) {
+                c.close();
+            }
+            return uri;
+        }
+
+        public static boolean exist(Context context, String placeId) {
+            String[] columns = {RecentPlacesColumns.PLACES_ID};
+            String selection = RecentPlaces.PLACES_ID + " =?";
+            String[] selectionArgs = {placeId};
+            String limit = "1";
+            ContentResolver resolver = context.getContentResolver();
+            if (resolver == null) {
+                return false;
+            }
+            Uri uri = null;
+            Cursor c = resolver.query(CONTENT_URI, null, selection, selectionArgs, null);
+            boolean exists = (c.getCount() > 0);
+            if (c != null && !c.isClosed()) {
+                c.close();
+            }
+            return exists;
+        }
+    }
 }

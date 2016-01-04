@@ -287,6 +287,24 @@ public class PlaceDetailsFragment extends BaseFragment implements View.OnClickLi
                         Uri.parse("geo:0,0?q=" + mPlace.getLatitude() + "," + mPlace.getLongitude()));
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 getActivity().startActivity(intent);
+                if (mPlace != null) {
+                    double rating = 0;
+                    String photoReference = "";
+                    if (mPlace.getRating() != null) {
+                        rating = Double.parseDouble(mPlace.getRating());
+                    }
+                    if (mPlace.getPhotoReference() != null) {
+                        photoReference = mPlace.getPhotoReference().toString();
+                    }
+                    if (!AroundMeContractProvider.RecentPlaces.exist(getActivity(), mPlace.getPlaceId())) {
+                        AroundMeContractProvider.RecentPlaces recentPlaces =
+                                new AroundMeContractProvider.RecentPlaces(mPlace.isOpenNow(), rating,
+                                        mPlace.getLatitude(), mPlace.getLongitude(), mPlace.getPlaceId(),
+                                        mGooglePlaceDetails.getPhoneNumber(), photoReference,
+                                        mGooglePlaceDetails.getAddress(), mPlace.getName());
+                        recentPlaces.save(getContext());
+                    }
+                }
                 break;
             default:
                 break;
