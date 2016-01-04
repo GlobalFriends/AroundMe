@@ -73,11 +73,12 @@
 
     <string name="custom_location">Custom location</string>
     <string name="clear">Clear</string>
-    <string name="search_hint">Search custom location</string>
+    <string name="search_hint">Search...</string>
     <string name="invalid_response">Invalid server response</string>
     <string name="failed_response">Request failed. Please try again</string>
     <string name="review_count">%d Reviews</string>
     <string name="current_location">Current location</string>
+    <string name="search_location">Search location</string>
     <string name="developer_id">globalfriends747@gmail.com</string>
     <string name="email_subject">Around Me application feedback</string>
     <string name="no_more_results">No more results to display...</string>

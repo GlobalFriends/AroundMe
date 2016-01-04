@@ -8,9 +8,16 @@
         app:showAsAction="ifRoom|collapseActionView"
         android:title="@string/menu_search"
         app:actionViewClass="android.support.v7.widget.SearchView" />
+
+    <item
+        android:id="@+id/action_search_location"
+        android:orderInCategory="2"
+        app:showAsAction="never"
+        android:title="@string/search_location" />
+
     <item
         android:id="@+id/action_settings"
-        android:orderInCategory="2"
+        android:orderInCategory="3"
         app:showAsAction="never"
         android:title="@string/menu_settings" />
 </menu>

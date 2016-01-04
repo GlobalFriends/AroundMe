@@ -30,6 +30,7 @@ import android.widget.Toast;
 import com.globalfriends.com.aroundme.R;
 import com.globalfriends.com.aroundme.data.IPlaceDetails;
 import com.globalfriends.com.aroundme.data.PreferenceManager;
+import com.globalfriends.com.aroundme.data.places.AutoCompletePredictionProvider;
 import com.globalfriends.com.aroundme.data.places.PlaceInfo;
 import com.globalfriends.com.aroundme.logging.Logger;
 import com.globalfriends.com.aroundme.protocol.TransactionManager;
@@ -69,6 +70,13 @@ public class Launcher extends AppCompatActivity implements
     private Button mCustomLocationClearButton;
     private String mSavedCurrentLocationLatitude;
     private String mSavedCurrentLocationLongitude;
+
+    private static final int SEARCH_TYPE_PLACE = 1;
+    private static final int SEARCH_TYPE_LOCATION = 2;
+    private static final int SEARCH_TYPE_DEFAULT = SEARCH_TYPE_PLACE;
+
+    private int mSearchType = SEARCH_TYPE_DEFAULT;
+
     private TransactionManager.Result mSetCustomLocationCallback = new TransactionManager.Result() {
         @Override
         public void onError(String errorMsg, String tag) {
@@ -288,6 +296,13 @@ public class Launcher extends AppCompatActivity implements
                 updateFragment(new SettingsFragment(),false,true);
                 break;
             case R.id.action_search:
+                AutoCompletePredictionProvider.mEnabled = false;
+                mSearchType = SEARCH_TYPE_PLACE;
+                break;
+            case R.id.action_search_location:
+                AutoCompletePredictionProvider.mEnabled = true;
+                mSearchMenu.expandActionView();
+                mSearchType = SEARCH_TYPE_LOCATION;
                 break;
             default:
                 break;
@@ -335,6 +350,15 @@ public class Launcher extends AppCompatActivity implements
         return true;
     }
 
+    private void loadPlaceListForQueryText(String queryText) {
+        queryText = queryText.replace(" ", "+");
+        Bundle bundle = new Bundle();
+        bundle.putString("TEXT_EXTRA", queryText);
+        Fragment fragment = new PlacesListFragment();
+        fragment.setArguments(bundle);
+        updateFragment(fragment, false, false);
+    }
+
     @Override
     public void OnSelectionFragmentSelection(String stringExtra) {
         Bundle bundle = new Bundle();
@@ -347,10 +371,19 @@ public class Launcher extends AppCompatActivity implements
     @Override
     protected void onNewIntent(Intent intent) {
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
-            String placeId = intent.getDataString();
+            if (mSearchType == SEARCH_TYPE_LOCATION) {
+                String placeId = intent.getDataString();
 
-            TransactionManager.getInstance().addResultCallback(mSetCustomLocationCallback);
-            TransactionManager.getInstance().findGooglePlaceDetails(placeId, null);
+                if (placeId == null) {
+                    return;
+                }
+
+                TransactionManager.getInstance().addResultCallback(mSetCustomLocationCallback);
+                TransactionManager.getInstance().findGooglePlaceDetails(placeId, null);
+            } else if (mSearchType == SEARCH_TYPE_PLACE) {
+                mSearchMenu.collapseActionView();
+                loadPlaceListForQueryText(intent.getStringExtra(SearchManager.QUERY));
+            }
         }
     }
 

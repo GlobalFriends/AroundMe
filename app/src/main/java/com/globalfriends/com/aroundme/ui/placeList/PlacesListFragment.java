@@ -36,6 +36,7 @@ public class PlacesListFragment extends ListFragment implements SwipeRefreshLayo
     private SwipeRefreshLayout mSwipeRefresh;
     private ResultCallback mCallBack = new ResultCallback();
     private String mNearByTag;
+    private String mPlaceQueryText;
     private String mNextPageToken;
 
     @Override
@@ -52,7 +53,13 @@ public class PlacesListFragment extends ListFragment implements SwipeRefreshLayo
         mProgress.show();
 
         mNearByTag = getArguments().getString("PLACE_EXTRA");
-        TransactionManager.getInstance().findByNearBy(mNearByTag);
+
+        if (mNearByTag != null && !mNearByTag.equals("")) {
+            TransactionManager.getInstance().findByNearBy(mNearByTag);
+        } else {
+            mPlaceQueryText = getArguments().getString("TEXT_EXTRA");
+            TransactionManager.getInstance().findBySearch(mPlaceQueryText);
+        }
     }
 
     @Override
@@ -75,7 +82,6 @@ public class PlacesListFragment extends ListFragment implements SwipeRefreshLayo
         getListView().setDivider(null);
         getActivity().setTitle(R.string.search_results);
         mToolbarUpdater.onNavigationEnabled(true);
-        mToolbarUpdater.onSearchBarEnabled(false);
     }
 
     @Override

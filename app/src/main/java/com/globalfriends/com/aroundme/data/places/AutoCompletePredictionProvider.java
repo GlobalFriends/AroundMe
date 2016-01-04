@@ -23,6 +23,7 @@ public class AutoCompletePredictionProvider extends ContentProvider {
 
     private List<AutoCompletePrediction> mPredictions;
     private ResultCallback mResultCallback = new ResultCallback();
+    public static boolean mEnabled = false;
 
     @Override
     public boolean onCreate() {
@@ -32,6 +33,10 @@ public class AutoCompletePredictionProvider extends ContentProvider {
     @Nullable
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
+        if (!mEnabled) {
+            return null;
+        }
+
         String input = uri.getLastPathSegment();
 
         if (TextUtils.isEmpty(input) || input.equals(SearchManager.SUGGEST_URI_PATH_QUERY)) {

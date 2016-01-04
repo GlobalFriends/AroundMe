@@ -21,6 +21,26 @@ public class PlacesWebService {
         }
         mUrl.append(URL_DELIMITER);
 
+        if (b.mSearchType.equals(PlaceRequestTypeEnum.SEARCH_TYPE_TEXT.getSearchType())) {
+            if (!TextUtils.isEmpty(b.mLocation)) {
+                mUrl.append(OPERATION_SEPARATOR).append(b.mLocation);
+            }
+
+            if (!TextUtils.isEmpty(b.mRadius)) {
+                mUrl.append(OPERATION_SEPARATOR).append(b.mRadius);
+            } else {
+                mUrl.append(OPERATION_SEPARATOR).append("radius" + ASSIGNMENT + "5000");
+            }
+
+            if (!TextUtils.isEmpty(b.mQuery)) {
+                mUrl.append(OPERATION_SEPARATOR).append(b.mQuery);
+            }
+
+            if (!TextUtils.isEmpty(b.mKey)) {
+                mUrl.append(OPERATION_SEPARATOR).append(b.mKey);
+            }
+            return;
+        }
 
         if (!TextUtils.isEmpty(b.mLocation)) {
             mUrl.append(OPERATION_SEPARATOR).append(b.mLocation);

@@ -40,7 +40,15 @@ public class PlaceInfo implements Parcelable {
             result.setLongitude((Double) location.get("lng"));
             result.setIcon(pontoReferencia.getString("icon"));
             result.setName(pontoReferencia.getString("name"));
-            result.setVicinity(pontoReferencia.getString("vicinity"));
+
+            if (pontoReferencia.has("vicinity")) {
+                result.setVicinity(pontoReferencia.getString("vicinity"));
+            }
+
+            if (pontoReferencia.has("formatted_address")) {
+                result.setVicinity(pontoReferencia.getString("formatted_address"));
+            }
+
             if (pontoReferencia.has("rating")) {
                 result.setRating(pontoReferencia.getString("rating"));
             }
