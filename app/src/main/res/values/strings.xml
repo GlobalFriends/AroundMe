@@ -44,6 +44,7 @@
     <string name="website_title">Website</string>
     <string name="call_title">Call</string>
     <string name="favorite_title">Favorite</string>
+    <string name="recent_title">Recent</string>
     <string name="more">More</string>
     <string name="today_timing">Today\'s timing: </string>
     <string name="monday">Monday: </string>
