@@ -3,7 +3,7 @@
     <placetype>
         <name>Airport</name>
         <intent>com.globalfriends.com.aroundme.Airport</intent>
-        <extra>Airport</extra>
+        <extra>airport</extra>
         <icon>airport</icon>
         <description></description>
     </placetype>
@@ -45,9 +45,7 @@
     <placetype>
         <name>Entertainment</name>
         <intent>com.globalfriends.com.aroundme.entertainment</intent>
-        <extra>
-            amusement_park,bowling_alley,campground,movie_rental,movie_theater,moving_company,museum,stadium
-        </extra>
+        <extra>amusement_park,bowling_alley,campground,movie_rental,movie_theater,moving_company,museum,stadium</extra>
         <icon>amusement_park</icon>
         <description></description>
     </placetype>
@@ -152,9 +150,7 @@
     <placetype>
         <name>Shopping</name>
         <intent>com.globalfriends.com.aroundme.shopping</intent>
-        <extra>
-            clothing_store,convenience_store,department_store,electronics_store,grocery_or_supermarket,furniture_store,jewelry_store,shoe_store,shopping_mall,home_goods_store,hardware_store,bicycle_store,book_store
-        </extra>
+        <extra>clothing_store,convenience_store,department_store,electronics_store,grocery_or_supermarket,furniture_store,jewelry_store,shoe_store,shopping_mall,home_goods_store,hardware_store,bicycle_store,book_store</extra>
         <icon>shopping</icon>
         <description></description>
     </placetype>
@@ -175,9 +171,7 @@
     <placetype>
         <name>General</name>
         <intent>com.globalfriends.com.aroundme.general</intent>
-        <extra>
-            car_dealer,car_wash,establishment,fire_station,florist,funeral_home,insurance_agency,laundry,lawyer,library,locksmith,lodging,pet_store,real_estate_agency,rv_park,storage,store,synagogue,travel_agency,veterinary_care
-        </extra>
+        <extra>car_dealer,car_wash,establishment,fire_station,florist,funeral_home,insurance_agency,laundry,lawyer,library,locksmith,lodging,pet_store,real_estate_agency,rv_park,storage,store,synagogue,travel_agency,veterinary_care</extra>
         <icon>general</icon>
         <description></description>
     </placetype>

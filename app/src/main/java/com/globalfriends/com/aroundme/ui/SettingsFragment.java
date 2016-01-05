@@ -1,5 +1,7 @@
 package com.globalfriends.com.aroundme.ui;
 
+import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.preference.EditTextPreference;
 import android.support.v7.preference.ListPreference;
@@ -19,14 +21,16 @@ import java.util.Set;
 /**
  * Created by swapna on 12/7/2015.
  */
-public class SettingsFragment extends PreferenceFragmentCompat{
+public class SettingsFragment extends PreferenceFragmentCompat {
+    private ToolbarUpdateListener mToolbarUpdater;
+
     @Override
     public void onCreatePreferences(Bundle bundle, String s) {
         addPreferencesFromResource(R.xml.aroundme_prefrence);
         ListPreference listPref = (ListPreference) findPreference("language_pref");
         if (listPref.getValue() != null) {
             listPref.setSummary(listPref.getValue());
-        }else {
+        } else {
             listPref.setSummary(PreferenceManager.getPreferredLanguage());
         }
         Set<String> languageList = PlacesSupportedLanguages.getListOfLanguages();
@@ -46,14 +50,14 @@ public class SettingsFragment extends PreferenceFragmentCompat{
             @Override
             public boolean onPreferenceChange(android.support.v7.preference.Preference preference, Object o) {
                 preference.setSummary((String) o);
-                PreferenceManager.setRadius(Integer.parseInt((String)o));
+                PreferenceManager.setRadius(Integer.parseInt((String) o));
                 return true;
             }
         });
         if (editPref.getText() != null) {
             editPref.setSummary(editPref.getText());
-        }else{
-            editPref.setSummary(""+PreferenceManager.getRadius());
+        } else {
+            editPref.setSummary("" + PreferenceManager.getRadius());
         }
         SwitchPreferenceCompat milesPref = (SwitchPreferenceCompat) findPreference("miles_or_km_pref");
         milesPref.setOnPreferenceChangeListener(new android.support.v7.preference.Preference.OnPreferenceChangeListener() {
@@ -77,8 +81,21 @@ public class SettingsFragment extends PreferenceFragmentCompat{
     }
 
     @Override
+    public void onAttach(Context activity) {
+        super.onAttach(activity);
+        try {
+            mToolbarUpdater = (ToolbarUpdateListener) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString()
+                    + " must implement OnSelectionFragmentSelection");
+        }
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
+        mToolbarUpdater.onNavigationEnabled(false);
+        mToolbarUpdater.onSearchBarEnabled(false);
         getActivity().setTitle(R.string.menu_settings);
     }
 
