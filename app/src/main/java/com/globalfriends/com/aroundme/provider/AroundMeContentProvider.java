@@ -21,12 +21,12 @@ import java.util.ArrayList;
 public class AroundMeContentProvider extends ContentProvider {
     // helper constants for use with the UriMatcher
     private static final int PLACES_BASE = 0;
-    private static final int PLACES_LIST = PLACES_BASE + 0x1000;
-    private static final int PLACES_ID = PLACES_LIST + + 0x1000;
+    private static final int PLACES_LIST = PLACES_BASE;
+    private static final int PLACES_ID = PLACES_LIST + 1;
 
-    private static final int RECENT_PLACES_BASE = PLACES_ID ;
-    private static final int RECENT_PLACES_LIST = RECENT_PLACES_BASE + 0x1000;
-    private static final int RECENT_PLACES_ID = RECENT_PLACES_LIST + 0x1000;
+    private static final int RECENT_PLACES_BASE = PLACES_BASE + 0x1000;
+    private static final int RECENT_PLACES_LIST = RECENT_PLACES_BASE;
+    private static final int RECENT_PLACES_ID = RECENT_PLACES_LIST + 1;
 
     private static final int BASE_SHIFT = 12;
     private static final UriMatcher URI_MATCHER;
@@ -204,7 +204,6 @@ public class AroundMeContentProvider extends ContentProvider {
                 }
                 break;
             case PLACES_ID:
-            case RECENT_PLACES_ID:
                 break;
             default:
                 throw new IllegalArgumentException(
