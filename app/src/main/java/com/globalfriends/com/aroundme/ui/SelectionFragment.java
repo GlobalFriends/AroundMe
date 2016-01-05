@@ -91,7 +91,9 @@ public class SelectionFragment extends BaseFragment implements AbsListView.OnIte
         if (null != mListener) {
             PlaceTypeDetail details = (PlaceTypeDetail) parent.getItemAtPosition(position);
             Log.i(TAG, ">>>> " + details.toString());
-            mListener.OnSelectionFragmentSelection(details.getExtra());
+            Bundle bundle = new Bundle();
+            bundle.putString("PLACE_EXTRA", details.getExtra());
+            mListener.OnSelectionFragmentSelection(bundle);
         }
     }
 
@@ -106,7 +108,7 @@ public class SelectionFragment extends BaseFragment implements AbsListView.OnIte
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnSelectionFragmentSelection {
-        void OnSelectionFragmentSelection(String id);
+        void OnSelectionFragmentSelection(Bundle bundle);
     }
 
     /**

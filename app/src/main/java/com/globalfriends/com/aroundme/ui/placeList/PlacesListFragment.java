@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -53,7 +54,7 @@ public class PlacesListFragment extends ListFragment implements SwipeRefreshLayo
 
         mNearByTag = getArguments().getString("PLACE_EXTRA");
 
-        if (mNearByTag != null && !mNearByTag.equals("")) {
+        if (!TextUtils.isEmpty(mNearByTag)) {
             TransactionManager.getInstance().findByNearBy(mNearByTag);
         } else {
             mPlaceQueryText = getArguments().getString("TEXT_EXTRA");
@@ -79,8 +80,9 @@ public class PlacesListFragment extends ListFragment implements SwipeRefreshLayo
     public void onResume() {
         super.onResume();
         getListView().setDivider(null);
+        mToolbarUpdater.onNavigationEnabled(false);
+        mToolbarUpdater.onSearchBarEnabled(false);
         getActivity().setTitle(R.string.search_results);
-        mToolbarUpdater.onNavigationEnabled(true);
     }
 
     @Override
