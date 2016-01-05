@@ -1,5 +1,6 @@
 package com.globalfriends.com.aroundme.ui.placeList;
 
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -17,17 +18,30 @@ import android.widget.SimpleCursorAdapter;
 
 import com.globalfriends.com.aroundme.R;
 import com.globalfriends.com.aroundme.provider.AroundMeContractProvider;
+import com.globalfriends.com.aroundme.ui.ToolbarUpdateListener;
 
 /**
  * Created by vishal on 11/14/2015.
  */
 public class FavoriteFragment extends ListFragment implements AbsListView.OnItemClickListener, LoaderManager.LoaderCallbacks<Cursor> {
     private SimpleCursorAdapter mAdapter;
+    private ToolbarUpdateListener mToolbarUpdater;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return super.onCreateView(inflater, container, savedInstanceState);
+    }
+
+    @Override
+    public void onAttach(Context activity) {
+        super.onAttach(activity);
+        try {
+            mToolbarUpdater = (ToolbarUpdateListener) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString()
+                    + " must implement OnSelectionFragmentSelection");
+        }
     }
 
     @Override
@@ -45,6 +59,14 @@ public class FavoriteFragment extends ListFragment implements AbsListView.OnItem
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mToolbarUpdater.onNavigationEnabled(false);
+        mToolbarUpdater.onSearchBarEnabled(false);
+        getActivity().setTitle(R.string.favorite_title);
     }
 
     @Override

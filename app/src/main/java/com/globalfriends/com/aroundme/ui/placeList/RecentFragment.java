@@ -1,5 +1,6 @@
 package com.globalfriends.com.aroundme.ui.placeList;
 
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -16,12 +17,14 @@ import android.widget.SimpleCursorAdapter;
 
 import com.globalfriends.com.aroundme.R;
 import com.globalfriends.com.aroundme.provider.AroundMeContractProvider;
+import com.globalfriends.com.aroundme.ui.ToolbarUpdateListener;
 
 /**
  * Created by vishal on 11/14/2015.
  */
 public class RecentFragment extends ListFragment implements AbsListView.OnItemClickListener, LoaderManager.LoaderCallbacks<Cursor> {
     private SimpleCursorAdapter mAdapter;
+    private ToolbarUpdateListener mToolbarUpdater;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -34,14 +37,34 @@ public class RecentFragment extends ListFragment implements AbsListView.OnItemCl
         Intent myData = getActivity().getIntent();
         Bundle info = myData.getExtras();
         mAdapter = new SimpleCursorAdapter(getActivity(), R.layout.layout_fav_places_item, null, new String[]{
-                AroundMeContractProvider.RecentPlacesColumns.PLACE_NAME,AroundMeContractProvider.RecentPlacesColumns.FORMATTED_ADDRESS,AroundMeContractProvider.PlacesColumns.PHONE_NUMBER}
-                , new int[]{R.id.place_name,R.id.vicinity, R.id.phone_number}, 0);
+                AroundMeContractProvider.RecentPlacesColumns.PLACE_NAME, AroundMeContractProvider.RecentPlacesColumns.FORMATTED_ADDRESS, AroundMeContractProvider.PlacesColumns.PHONE_NUMBER}
+                , new int[]{R.id.place_name, R.id.vicinity, R.id.phone_number}, 0);
         setListAdapter(mAdapter);
         getLoaderManager().initLoader(0, info, this);
     }
+
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
+    }
+
+    @Override
+    public void onAttach(Context activity) {
+        super.onAttach(activity);
+        try {
+            mToolbarUpdater = (ToolbarUpdateListener) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString()
+                    + " must implement OnSelectionFragmentSelection");
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mToolbarUpdater.onNavigationEnabled(false);
+        mToolbarUpdater.onSearchBarEnabled(false);
+        getActivity().setTitle(R.string.recent_title);
     }
 
     @Override
