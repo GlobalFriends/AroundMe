@@ -43,11 +43,8 @@
             android:theme="@style/AppTheme" />
         <activity
             android:name=".ui.review.ReviewList"
-            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
-        <!-- Yelp test activities -->
-        <activity android:name="testing.yelp.SearchBarActivity" />
-        <activity android:name="testing.yelp.YelpSearchListActivity" />
         <provider
             android:name=".provider.AroundMeContentProvider"
             android:authorities="com.globalfriends.aroundme.provider"

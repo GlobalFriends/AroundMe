@@ -7,7 +7,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 
 /**

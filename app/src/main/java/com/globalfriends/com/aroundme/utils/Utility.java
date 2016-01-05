@@ -43,7 +43,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import static android.util.TypedValue.*;
+import static android.util.TypedValue.COMPLEX_UNIT_DIP;
+import static android.util.TypedValue.applyDimension;
 
 /**
  * Created by vishal on 11/22/2015.

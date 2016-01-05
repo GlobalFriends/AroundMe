@@ -7,7 +7,6 @@ package com.globalfriends.com.aroundme.protocol.yelp;
 import android.content.Context;
 
 import com.globalfriends.com.aroundme.R;
-import com.globalfriends.com.aroundme.utils.Utility;
 
 import org.scribe.builder.ServiceBuilder;
 import org.scribe.model.OAuthRequest;
@@ -15,8 +14,6 @@ import org.scribe.model.Response;
 import org.scribe.model.Token;
 import org.scribe.model.Verb;
 import org.scribe.oauth.OAuthService;
-
-import java.util.Date;
 
 /**
  * Example for accessing the Yelp API.

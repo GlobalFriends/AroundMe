@@ -2,8 +2,6 @@ package com.globalfriends.com.aroundme.data.places;
 
 import com.globalfriends.com.aroundme.R;
 
-import java.util.HashMap;
-
 /**
  * Created by Vishal on 12/13/2015.
  */

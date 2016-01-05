@@ -3,8 +3,6 @@ package com.globalfriends.com.aroundme.data;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import java.io.Serializable;
-
 /**
  * Created by Vishal on 12/6/2015.
  */

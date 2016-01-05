@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-
 import com.globalfriends.com.aroundme.R;
 import com.globalfriends.com.aroundme.data.DistanceFormatEnum;
 import com.globalfriends.com.aroundme.data.PreferenceManager;

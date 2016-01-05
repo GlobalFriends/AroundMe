@@ -1,7 +1,5 @@
 package com.globalfriends.com.aroundme.protocol.fourSquare;
 
-import android.text.TextUtils;
-
 /**
  * Created by Vishal on 12/20/2015.
  * Either supports a venue search query or place search query
