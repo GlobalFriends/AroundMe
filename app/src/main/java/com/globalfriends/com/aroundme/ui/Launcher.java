@@ -20,6 +20,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -78,12 +79,24 @@ public class Launcher extends AppCompatActivity implements
      */
     private TransactionManager.Result mSetCustomLocationCallback = new TransactionManager.Result() {
         @Override
-        public void onError(String errorMsg, String tag) {
+        public void onError(String errorMsg, String placeTag) {
+            // Process only google responses
+            if (TextUtils.isEmpty(placeTag) ||
+                    !getString(R.string.google_places_tag).equalsIgnoreCase(placeTag)) {
+                return;
+            }
+
             enableCustomLocation(false, null);
         }
 
         @Override
         public void onGetPlaceDetails(IPlaceDetails response, String placeTag) {
+            // Process only google responses
+            if (TextUtils.isEmpty(placeTag) ||
+                    !getString(R.string.google_places_tag).equalsIgnoreCase(placeTag)) {
+                return;
+            }
+
             enableCustomLocation(true, response);
         }
     };
