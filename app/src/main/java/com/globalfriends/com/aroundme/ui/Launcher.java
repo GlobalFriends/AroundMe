@@ -63,6 +63,8 @@ public class Launcher extends AppCompatActivity implements
 
     private boolean mIsCustomLocation;
     private MenuItem mSearchMenu;
+    private MenuItem mSetLocationMenu;
+    private SearchView mSearchView;
     private View mCustomLocationHolderView;
     private TextView mCustomLocationTextView;
     private Button mCustomLocationClearButton;
@@ -280,10 +282,10 @@ public class Launcher extends AppCompatActivity implements
 
         SearchManager searchManager = (SearchManager) getSystemService(SEARCH_SERVICE);
         mSearchMenu = menu.findItem(R.id.action_search);
-        SearchView searchView = (SearchView) mSearchMenu.getActionView();
-        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-        searchView.setIconified(false);
-
+        mSetLocationMenu = menu.findItem(R.id.action_set_location);
+        mSearchView = (SearchView) mSearchMenu.getActionView();
+        mSearchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        mSearchView.setIconified(false);
         return true;
     }
 
@@ -291,15 +293,17 @@ public class Launcher extends AppCompatActivity implements
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_settings:
-                updateFragment(new SettingsFragment(),false,true);
+                updateFragment(new SettingsFragment(), false, true);
                 break;
             case R.id.action_search:
                 AutoCompletePredictionProvider.mEnabled = false;
+                mSearchView.setQueryHint(getString(R.string.set_search_hint));
                 mSearchType = SEARCH_TYPE_PLACE;
                 break;
-            case R.id.action_search_location:
+            case R.id.action_set_location:
                 AutoCompletePredictionProvider.mEnabled = true;
                 mSearchMenu.expandActionView();
+                mSearchView.setQueryHint(getString(R.string.set_location_hint));
                 mSearchType = SEARCH_TYPE_LOCATION;
                 break;
             default:
@@ -456,6 +460,14 @@ public class Launcher extends AppCompatActivity implements
     public void onSearchBarEnabled(boolean visibility) {
         if (mSearchMenu != null) {
             mSearchMenu.setVisible(visibility);
+        }
+
+        if (mSetLocationMenu != null) {
+            mSetLocationMenu.setVisible(visibility);
+        }
+
+        if (mSearchView != null && !visibility) {
+            mSearchView.setVisibility(visibility ? View.VISIBLE : View.INVISIBLE);
         }
     }
 }

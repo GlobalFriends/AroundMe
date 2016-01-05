@@ -10,10 +10,10 @@
         app:actionViewClass="android.support.v7.widget.SearchView" />
 
     <item
-        android:id="@+id/action_search_location"
+        android:id="@+id/action_set_location"
         android:orderInCategory="2"
         app:showAsAction="never"
-        android:title="@string/search_location" />
+        android:title="@string/set_location" />
 
     <item
         android:id="@+id/action_settings"
