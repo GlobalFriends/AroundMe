@@ -232,6 +232,7 @@ public class TransactionManager implements Listener {
      * @param result
      */
     public void removeResultCallback(final Result result) {
+
         synchronized (mListeners) {
             result.setRegistered(false);
             mListeners.remove(result);

@@ -1,6 +1,8 @@
 package com.globalfriends.com.aroundme.protocol;
 
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.util.Log;
 
 import com.android.volley.Request;
@@ -11,6 +13,7 @@ import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.globalfriends.com.aroundme.AroundMeApplication;
+import com.globalfriends.com.aroundme.R;
 import com.globalfriends.com.aroundme.protocol.places.PlaceRequestTypeEnum;
 
 import org.json.JSONObject;
@@ -28,6 +31,18 @@ public class DefaultFeatureManager implements IFeatureManager {
     private Request mRequest;
     private ImageLoader mImageLoader;
     protected String mModuleTag;
+
+    /**
+     * Check if network is present or not
+     *
+     * @return
+     */
+    protected boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return (activeNetworkInfo != null && activeNetworkInfo.isConnected());
+    }
 
     /**
      * @param listener
@@ -55,6 +70,11 @@ public class DefaultFeatureManager implements IFeatureManager {
 
     public final void sendVolleyJsonRequest(final String url, final OperationEnum operation) {
         Log.i(LOGGING_TAG, "Url=" + url);
+        if (!isNetworkAvailable()) {
+            mListener.onError(mContext.getString(R.string.network_error), mModuleTag);
+            return;
+        }
+
         mRequest = new JsonObjectRequest
                 (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
                     @Override

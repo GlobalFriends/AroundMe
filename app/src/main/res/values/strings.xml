@@ -83,5 +83,6 @@
     <string name="set_search_hint">Enter search criteria</string>
     <string name="developer_id">globalfriends747@gmail.com</string>
     <string name="email_subject">Around Me application feedback</string>
+    <string name="network_error">Please check your network connection</string>
     <string name="no_more_results">No more results to display...</string>
 </resources>

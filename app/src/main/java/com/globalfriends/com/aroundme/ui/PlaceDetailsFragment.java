@@ -625,7 +625,7 @@ public class PlaceDetailsFragment extends BaseFragment implements View.OnClickLi
 
         @Override
         public void onError(final String errorMsg, final String tag) {
-            if (!TextUtils.isEmpty(tag) ||
+            if (TextUtils.isEmpty(tag) ||
                     !getActivity().getString(R.string.google_places_tag).equalsIgnoreCase(tag)) {
                 Log.e(TAG, "This is not a google response. Just ignore it");
                 return;

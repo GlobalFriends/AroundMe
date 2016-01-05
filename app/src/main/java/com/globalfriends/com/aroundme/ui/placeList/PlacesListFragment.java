@@ -35,8 +35,6 @@ public class PlacesListFragment extends ListFragment implements SwipeRefreshLayo
     private ProgressDialog mProgress;
     private SwipeRefreshLayout mSwipeRefresh;
     private ResultCallback mCallBack = new ResultCallback();
-    private String mNearByTag;
-    private String mPlaceQueryText;
     private String mNextPageToken;
 
     @Override
@@ -51,14 +49,12 @@ public class PlacesListFragment extends ListFragment implements SwipeRefreshLayo
         mProgress.setMessage(getResources().getString(R.string.please_wait_progress));
         mProgress.isIndeterminate();
         mProgress.show();
+        String nearBy = getArguments().getString("PLACE_EXTRA");
 
-        mNearByTag = getArguments().getString("PLACE_EXTRA");
-
-        if (!TextUtils.isEmpty(mNearByTag)) {
-            TransactionManager.getInstance().findByNearBy(mNearByTag);
+        if (!TextUtils.isEmpty(nearBy)) {
+            TransactionManager.getInstance().findByNearBy(nearBy);
         } else {
-            mPlaceQueryText = getArguments().getString("TEXT_EXTRA");
-            TransactionManager.getInstance().findBySearch(mPlaceQueryText);
+            TransactionManager.getInstance().findBySearch(getArguments().getString("TEXT_EXTRA"));
         }
     }
 
@@ -142,20 +138,26 @@ public class PlacesListFragment extends ListFragment implements SwipeRefreshLayo
             if (mProgress.isShowing()) {
                 mProgress.dismiss();
             }
-            mSwipeRefresh.setRefreshing(false);
+            if (mSwipeRefresh != null) {
+                mSwipeRefresh.setRefreshing(false);
+            }
             mNextPageToken = nextPageToken;
         }
 
         @Override
         public void onError(final String errorMsg, final String tag) {
-            mSwipeRefresh.setRefreshing(false);
-            if (!isVisible()) {
-                Log.e(TAG, "Fragment is currenlty not visible");
-                return;
+            if (mSwipeRefresh != null) {
+                mSwipeRefresh.setRefreshing(false);
             }
 
             if (mProgress.isShowing()) {
                 mProgress.dismiss();
+            }
+
+
+            if (!isAdded()) {
+                Log.e(TAG, "Fragment is currenlty not isAdded");
+                return;
             }
 
             new AlertDialog.Builder(getActivity())

@@ -30,6 +30,11 @@ public class YelpManager extends DefaultFeatureManager {
             return; // Not meant for this
         }
 
+        if (!isNetworkAvailable()) {
+            mListener.onError(mContext.getString(R.string.network_error), mModuleTag);
+            return;
+        }
+
         new YelpNetworkTask(contactNumber, PLACE_DETAIL_REQUEST).execute();
     }
 
