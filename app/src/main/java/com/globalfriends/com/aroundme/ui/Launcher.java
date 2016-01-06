@@ -293,7 +293,7 @@ public class Launcher extends AppCompatActivity implements
 
         SearchManager searchManager = (SearchManager) getSystemService(SEARCH_SERVICE);
         mSearchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-        mSearchView.setIconified(false);
+        mSearchView.setIconified(true);
         return true;
     }
 
