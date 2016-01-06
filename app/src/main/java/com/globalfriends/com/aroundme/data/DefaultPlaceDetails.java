@@ -11,6 +11,7 @@ import java.util.List;
 public class DefaultPlaceDetails implements IPlaceDetails {
     protected String mDistance;
     protected String mAddress;
+    protected String mInternationalNumber;
     protected String mPhoneNumber;
     protected String mWebUrl;
     protected String mName;
@@ -69,6 +70,11 @@ public class DefaultPlaceDetails implements IPlaceDetails {
     }
 
     @Override
+    public String getInternationalPhoneNumber() {
+        return mInternationalNumber;
+    }
+
+    @Override
     public String getPhoneNumber() {
         return mPhoneNumber;
     }
@@ -103,7 +109,7 @@ public class DefaultPlaceDetails implements IPlaceDetails {
         return "DefaultPlaceDetails{" +
                 "mDistance='" + mDistance + '\'' +
                 ", mAddress='" + mAddress + '\'' +
-                ", mPhoneNumber='" + mPhoneNumber + '\'' +
+                ", mInternationalNumber='" + mInternationalNumber + '\'' +
                 ", mWebUrl='" + mWebUrl + '\'' +
                 ", mName='" + mName + '\'' +
                 ", mNoOfReviews='" + mNoOfReviews + '\'' +

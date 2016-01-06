@@ -35,7 +35,7 @@ public class FourSquarePlaceInfoJson extends DefaultPlaceDetails {
             }
         }
 
-        // We will start firectly from reviews only..
+        // We will start directly from reviews only..
         if (response.has("tips")) {
             try {
                 JSONObject tips = response.getJSONObject("tips");

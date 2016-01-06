@@ -9,6 +9,8 @@ public interface IPlaceDetails {
 
     String getAddress();
 
+    String getInternationalPhoneNumber();
+
     String getPhoneNumber();
 
     String getWebUrl();

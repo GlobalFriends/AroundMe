@@ -25,8 +25,9 @@ public class YelpManager extends DefaultFeatureManager {
     }
 
     @Override
-    public void findPlaceDetails(final String contactNumber, Double latitude, Double longitude) {
-        if (TextUtils.isEmpty(contactNumber)) {
+    public void findPlaceDetails(final String internationalNumber, final String contactNumber,
+                                 Double latitude, Double longitude) {
+        if (TextUtils.isEmpty(contactNumber) && TextUtils.isEmpty(internationalNumber)) {
             return; // Not meant for this
         }
 
@@ -35,7 +36,12 @@ public class YelpManager extends DefaultFeatureManager {
             return;
         }
 
-        new YelpNetworkTask(contactNumber, PLACE_DETAIL_REQUEST).execute();
+        if (!TextUtils.isEmpty(contactNumber)) {
+            new YelpNetworkTask(contactNumber, PLACE_DETAIL_REQUEST).execute();
+            return;
+        }
+
+        new YelpNetworkTask(internationalNumber, PLACE_DETAIL_REQUEST).execute();
     }
 
     /**

@@ -272,7 +272,7 @@ public class PlaceDetailsFragment extends BaseFragment implements View.OnClickLi
                         AroundMeContractProvider.Places fav =
                                 new AroundMeContractProvider.Places(mPlace.isOpenNow(), rating,
                                         mPlace.getLatitude(), mPlace.getLongitude(), mPlace.getPlaceId(),
-                                        mGooglePlaceDetails.getPhoneNumber(), photoReference,
+                                        mGooglePlaceDetails.getInternationalPhoneNumber(), photoReference,
                                         mGooglePlaceDetails.getAddress(), mPlace.getName());
                         fav.save(getContext());
                         LinearLayoutCompat ll = (LinearLayoutCompat) v;
@@ -300,7 +300,7 @@ public class PlaceDetailsFragment extends BaseFragment implements View.OnClickLi
                         AroundMeContractProvider.RecentPlaces recentPlaces =
                                 new AroundMeContractProvider.RecentPlaces(mPlace.isOpenNow(), rating,
                                         mPlace.getLatitude(), mPlace.getLongitude(), mPlace.getPlaceId(),
-                                        mGooglePlaceDetails.getPhoneNumber(), photoReference,
+                                        mGooglePlaceDetails.getInternationalPhoneNumber(), photoReference,
                                         mGooglePlaceDetails.getAddress(), mPlace.getName());
                         recentPlaces.save(getContext());
                     }
@@ -317,12 +317,12 @@ public class PlaceDetailsFragment extends BaseFragment implements View.OnClickLi
     private void updatePlaceDetails() {
         mAddress.setText(mGooglePlaceDetails.getAddress());
         LinearLayoutCompat callLayout = (LinearLayoutCompat) getActivity().findViewById(R.id.call_layout);
-        if (TextUtils.isEmpty(mGooglePlaceDetails.getPhoneNumber())) {
+        if (TextUtils.isEmpty(mGooglePlaceDetails.getInternationalPhoneNumber())) {
             callLayout.setVisibility(View.GONE);
         } else {
             callLayout.setVisibility(View.VISIBLE);
             TextView call = (TextView) getActivity().findViewById(R.id.id_call);
-            call.setText(mGooglePlaceDetails.getPhoneNumber());
+            call.setText(mGooglePlaceDetails.getInternationalPhoneNumber());
         }
 
         LinearLayoutCompat websiteLayout = (LinearLayoutCompat) getActivity().findViewById(R.id.website_layout);
@@ -615,7 +615,8 @@ public class PlaceDetailsFragment extends BaseFragment implements View.OnClickLi
                 mGooglePlaceDetails.toString();
                 updateUi();
                 addDynamicView(response, placeTag);
-                TransactionManager.getInstance().findPlaceDetails(response.getPhoneNumber(),
+                TransactionManager.getInstance().findPlaceDetails(response.getInternationalPhoneNumber(),
+                        response.getPhoneNumber(),
                         response.getLatitude(), response.getLongitude());
                 return;
             }

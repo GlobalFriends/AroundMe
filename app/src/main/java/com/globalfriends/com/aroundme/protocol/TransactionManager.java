@@ -62,15 +62,16 @@ public class TransactionManager implements Listener {
         }
     }
 
-    public void findPlaceDetails(final String phoneNumber, final Double latitude, final Double longitude) {
-        if (TextUtils.isEmpty(phoneNumber)) {
+    public void findPlaceDetails(final String internationalNumber, final String phoneNumber,
+                                 final Double latitude, final Double longitude) {
+        if (TextUtils.isEmpty(internationalNumber)) {
             // Proper telephone is not provided, ignore.
             Log.e(TAG, ">>> findPlaceDetails: No phone number <<<");
             return;
         }
 
         for (IFeatureManager feature : mFeatureManagerList) {
-            feature.findPlaceDetails(phoneNumber, latitude, longitude);
+            feature.findPlaceDetails(internationalNumber, phoneNumber, latitude, longitude);
         }
     }
 

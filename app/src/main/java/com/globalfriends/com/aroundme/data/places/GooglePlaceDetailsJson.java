@@ -46,8 +46,10 @@ public class GooglePlaceDetailsJson extends DefaultPlaceDetails {
 
         try {
             if (response.has("international_phone_number")) {
-                mPhoneNumber = response.getString("international_phone_number");
-            } else if (response.has("formatted_phone_number")) {
+                mInternationalNumber = response.getString("international_phone_number");
+            }
+
+            if (response.has("formatted_phone_number")) {
                 mPhoneNumber = response.getString("formatted_phone_number");
                 mPhoneNumber = PhoneNumberUtils.stripSeparators(mPhoneNumber);
             }

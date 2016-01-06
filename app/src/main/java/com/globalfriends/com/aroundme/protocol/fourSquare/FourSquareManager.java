@@ -27,6 +27,7 @@ import java.util.Date;
 public class FourSquareManager extends DefaultFeatureManager {
     Context mContext;
     private String mPlaceNumber;
+    private String mInternationalNumber;
     private String mVenueId;
 
     public FourSquareManager(final Listener listener) {
@@ -35,9 +36,16 @@ public class FourSquareManager extends DefaultFeatureManager {
     }
 
     @Override
-    public void findPlaceDetails(String phoneNumber, Double latitude, Double longitude) {
-        super.findPlaceDetails(phoneNumber, latitude, longitude);
-        mPlaceNumber = phoneNumber.replaceAll("\\D+", "");
+    public void findPlaceDetails(String internationalNumber, String phoneNumber, Double latitude, Double longitude) {
+        super.findPlaceDetails(internationalNumber, phoneNumber, latitude, longitude);
+        if (!TextUtils.isEmpty(phoneNumber)) {
+            mPlaceNumber = phoneNumber.replaceAll("\\D+", "");
+        }
+
+        if (!TextUtils.isEmpty(internationalNumber)) {
+            mInternationalNumber = internationalNumber.replaceAll("\\D+", "");
+        }
+
         FourSquareWebService.Builder builder =
                 new FourSquareWebService.Builder().
                         setSearchType().
@@ -78,9 +86,17 @@ public class FourSquareManager extends DefaultFeatureManager {
                             if (obj.has("contact")) {
                                 JSONObject contact = obj.getJSONObject("contact");
                                 if (contact.has("phone")) {
-                                    place.setPhone(contact.getString("phone"));
-                                    if (mPlaceNumber.endsWith(place.getPhone())) {
-                                        mVenueId = place.getVenueId();
+                                    place.setPhone(contact.getString("phone").replaceAll("\\D+", ""));
+                                    if (!TextUtils.isEmpty(mPlaceNumber)) {
+                                        if (mPlaceNumber.endsWith(place.getPhone())) {
+                                            mVenueId = place.getVenueId();
+                                        }
+                                    }
+
+                                    if (!TextUtils.isEmpty(mInternationalNumber) && TextUtils.isEmpty(mVenueId)) {
+                                        if (mInternationalNumber.endsWith(place.getPhone())) {
+                                            mVenueId = place.getVenueId();
+                                        }
                                     }
                                 }
                             }

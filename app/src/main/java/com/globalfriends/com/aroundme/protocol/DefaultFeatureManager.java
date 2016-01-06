@@ -117,7 +117,7 @@ public class DefaultFeatureManager implements IFeatureManager {
     }
 
     @Override
-    public void findPlaceDetails(String phoneNumber, Double latitude, Double longitude) {
+    public void findPlaceDetails(String internationalPhone, String phoneNumber, Double latitude, Double longitude) {
         //
     }
 
