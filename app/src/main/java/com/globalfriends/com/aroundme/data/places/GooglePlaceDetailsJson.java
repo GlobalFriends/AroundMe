@@ -67,8 +67,8 @@ public class GooglePlaceDetailsJson extends DefaultPlaceDetails {
 
 
         try {
-            if (response.has("url")) {
-                mWebUrl = response.getString("url");
+            if (response.has("website")) {
+                mWebUrl = response.getString("website");
             }
         } catch (JSONException e) {
             e.printStackTrace();
