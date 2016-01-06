@@ -28,7 +28,6 @@ public class FourSquareManager extends DefaultFeatureManager {
     Context mContext;
     private String mPlaceNumber;
     private String mInternationalNumber;
-    private String mVenueId;
 
     public FourSquareManager(final Listener listener) {
         super(listener, AroundMeApplication.getContext().getResources().getString(R.string.four_square_tag));
@@ -38,6 +37,9 @@ public class FourSquareManager extends DefaultFeatureManager {
     @Override
     public void findPlaceDetails(String internationalNumber, String phoneNumber, Double latitude, Double longitude) {
         super.findPlaceDetails(internationalNumber, phoneNumber, latitude, longitude);
+        mPlaceNumber = null;//Reset
+        mInternationalNumber = null;//Reset
+
         if (!TextUtils.isEmpty(phoneNumber)) {
             mPlaceNumber = phoneNumber.replaceAll("\\D+", "");
         }
@@ -66,6 +68,7 @@ public class FourSquareManager extends DefaultFeatureManager {
             return;
         }
 
+        String venueId = null;
         Utility.generateNoteOnSD("FourSquare_list", response.toString());
         switch (operation) {
             case OPERATION_PLACE_LIST:
@@ -89,19 +92,19 @@ public class FourSquareManager extends DefaultFeatureManager {
                                     place.setPhone(contact.getString("phone").replaceAll("\\D+", ""));
                                     if (!TextUtils.isEmpty(mPlaceNumber)) {
                                         if (mPlaceNumber.endsWith(place.getPhone())) {
-                                            mVenueId = place.getVenueId();
+                                            venueId = place.getVenueId();
                                         }
                                     }
 
-                                    if (!TextUtils.isEmpty(mInternationalNumber) && TextUtils.isEmpty(mVenueId)) {
+                                    if (!TextUtils.isEmpty(mInternationalNumber) && TextUtils.isEmpty(venueId)) {
                                         if (mInternationalNumber.endsWith(place.getPhone())) {
-                                            mVenueId = place.getVenueId();
+                                            venueId = place.getVenueId();
                                         }
                                     }
                                 }
                             }
 
-                            if (!TextUtils.isEmpty(mVenueId)) {
+                            if (!TextUtils.isEmpty(venueId)) {
                                 break;
                             }
                         }
@@ -113,14 +116,14 @@ public class FourSquareManager extends DefaultFeatureManager {
                     e.printStackTrace();
                 }
 
-                if (TextUtils.isEmpty(mVenueId)) {
+                if (TextUtils.isEmpty(venueId)) {
                     mListener.onError(mContext.getString(R.string.no_more_results), mModuleTag);
                     return;
                 }
 
                 FourSquareWebService.Builder builder =
                         new FourSquareWebService.Builder().
-                                setPlaceId(mVenueId).
+                                setPlaceId(venueId).
                                 setLocation(PreferenceManager.getLatitude(), PreferenceManager.getLongitude()).
                                 setClientId(mContext.
                                         getResources().getString(R.string.foursquare_client_id)).
