@@ -1,5 +1,7 @@
 package com.globalfriends.com.aroundme.data.fourSquare;
 
+import android.text.TextUtils;
+
 import com.globalfriends.com.aroundme.data.DefaultPlaceDetails;
 import com.globalfriends.com.aroundme.data.PlaceReviewMetadata;
 
@@ -68,7 +70,24 @@ public class FourSquarePlaceInfoJson extends DefaultPlaceDetails {
                                         }
                                         review.setAuthorName(name);
                                     }
+
+                                    if (user.has("photo")) {
+                                        JSONObject profilePhoto = (JSONObject)user.get("photo");
+                                        StringBuffer prefix = new StringBuffer();
+                                        if (profilePhoto.has("prefix")) {
+                                            prefix.append(profilePhoto.getString("prefix"));
+                                            prefix.append("original");
+                                            if (profilePhoto.has("suffix")) {
+                                                prefix.append(profilePhoto.getString("suffix"));
+                                            }
+                                        }
+                                        if (!TextUtils.isEmpty(prefix.toString())) {
+                                            review.setProfilePhotoUrl(prefix.toString());
+                                        }
+                                    }
                                 }
+
+
 
 
                                 if (itemObj.has("lang")) {
