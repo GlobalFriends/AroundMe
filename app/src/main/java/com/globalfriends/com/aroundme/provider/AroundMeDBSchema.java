@@ -33,6 +33,17 @@ interface AroundMeDBSchema {
                 + AroundMeContractProvider.RecentPlacesColumns.PHONE_NUMBER + " TEXT ,"
                 + AroundMeContractProvider.RecentPlacesColumns.PHOTO_REFERENCE + " TEXT ,"
                 + AroundMeContractProvider.RecentPlacesColumns.PLACE_NAME + " TEXT ,"
+                + AroundMeContractProvider.RecentPlacesColumns.TIMESTAMP + " INTEGER ,"
                 + AroundMeContractProvider.RecentPlacesColumns.FORMATTED_ADDRESS + " TEXT "
                 + " )";
+        public final static String TRIGGER_DELETE_RECENT = "CREATE TRIGGER" + " TIGGER_RECENT " + " BEFORE INSERT ON " +
+                AroundMeContractProvider.RecentPlaces.TABLENAME + " WHEN (SELECT COUNT(*) FROM " +
+                AroundMeContractProvider.RecentPlaces.TABLENAME + " ) > 9 " +
+                "BEGIN "
+                + "DELETE FROM "
+                + AroundMeContractProvider.RecentPlaces.TABLENAME
+                + " WHERE "
+                + AroundMeContractProvider.RecentPlacesColumns.TIMESTAMP + " = (SELECT MIN(timestamp) FROM " +
+                AroundMeContractProvider.RecentPlaces.TABLENAME + " ); "
+                + " END ";
 }

@@ -259,6 +259,7 @@ public abstract class AroundMeContractProvider {
         String PHOTO_REFERENCE = "photo_reference";
         String FORMATTED_ADDRESS = "formatted_address";
         String PLACE_NAME = "place_name";
+        String TIMESTAMP = "timestamp";
     }
 
     public static final class RecentPlaces extends AroundMeContractProvider implements RecentPlacesColumns {
@@ -276,6 +277,7 @@ public abstract class AroundMeContractProvider {
         public static final int CONTENT_PHOTO_REFERENCE_COL = 7;
         public static final int CONTENT_FORMATTED_ADDRESS_COL = 8;
         public static final int CONTENT_PLACE_NAME_COL = 9;
+        public static final int CONTENT_TIMESTAMP_COL = 10;
 
 
         private boolean mIsOpenNow;
@@ -287,6 +289,7 @@ public abstract class AroundMeContractProvider {
         private String mPhotoRefrence;
         private String mAddress;
         private String mName;
+        private long mTimeStamp;
 
         public RecentPlaces(boolean isOpenNow, double rating, double latitude,
                       double longitude, String placeId, String phoneNumber,
@@ -301,6 +304,7 @@ public abstract class AroundMeContractProvider {
             mPhotoRefrence = photoRefernce;
             mAddress = address;
             mName = name;
+            mTimeStamp = System.currentTimeMillis();
         }
 
         @Override
@@ -315,6 +319,7 @@ public abstract class AroundMeContractProvider {
             mPhotoRefrence = cursor.getString(CONTENT_PHOTO_REFERENCE_COL);
             mAddress = cursor.getString(CONTENT_FORMATTED_ADDRESS_COL);
             mName = cursor.getString(CONTENT_PLACE_NAME_COL);
+            mTimeStamp = cursor.getLong(CONTENT_TIMESTAMP_COL);
         }
 
         @Override
@@ -330,6 +335,7 @@ public abstract class AroundMeContractProvider {
             values.put(RecentPlacesColumns.PHOTO_REFERENCE, mPhotoRefrence);
             values.put(RecentPlacesColumns.FORMATTED_ADDRESS, mAddress);
             values.put(RecentPlacesColumns.PLACE_NAME, mName);
+            values.put(RecentPlacesColumns.TIMESTAMP, mTimeStamp);
             return values;
         }
 
