@@ -39,7 +39,6 @@ public class PlaceManager extends DefaultFeatureManager {
                         setLocation(PreferenceManager.getLocation()).
                         setRankBy(PlacesRankByEnum.RANK_BY_DISTANCE).
                         setLanguage(PreferenceManager.getPreferredLanguage()).
-                        setSensor(false).
                         setKey(AroundMeApplication.getContext().
                                 getResources().getString(R.string.google_maps_key));
         switch (searchType) {

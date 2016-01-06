@@ -29,10 +29,14 @@ public class PlacesWebService {
             mUrl.append(OPERATION_SEPARATOR).append(b.mQuery);
         }
 
+        if (!TextUtils.isEmpty(b.mLanguage)) {
+            // It should be always from list o Supported languages.
+            mUrl.append(OPERATION_SEPARATOR).append(b.mLanguage);
+        }
+
         if (!TextUtils.isEmpty(b.mKey)) {
             mUrl.append(OPERATION_SEPARATOR).append(b.mKey);
         }
-
     }
 
     private PlacesWebService(Builder b) {
