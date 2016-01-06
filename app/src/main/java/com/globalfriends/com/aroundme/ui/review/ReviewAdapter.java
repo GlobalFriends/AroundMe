@@ -66,10 +66,12 @@ class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewViewHolder>
 
         if (!TextUtils.isEmpty(content.getRating())) {
             holder.mRatingText.setVisibility(View.VISIBLE);
+            holder.mRatingBar.setVisibility(View.VISIBLE);
             holder.mRatingBar.setRating(Float.valueOf(content.getRating()));
             holder.mRatingText.setText(content.getRating());
         } else {
             holder.mRatingText.setVisibility(View.GONE);
+            holder.mRatingBar.setVisibility(View.GONE);
         }
 
         holder.mAvatar.setOnClickListener(new View.OnClickListener() {

@@ -184,7 +184,7 @@ public class Launcher extends AppCompatActivity implements
         String provider = locationManager.getBestProvider(new Criteria(), false);
         Location location = locationManager.getLastKnownLocation(provider);
         if (location == null) {
-            locationManager.requestLocationUpdates(provider, 1000, 50.0f, listener);
+            locationManager.requestLocationUpdates(provider, 10000, 50.0f, listener);
         } else {
             loc = location;
             mSavedCurrentLocationLatitude = Double.toString(loc.getLatitude());
