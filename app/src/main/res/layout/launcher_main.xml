@@ -26,38 +26,48 @@
                 app:popupTheme="@style/AppTheme.PopupOverlay" />
         </android.support.design.widget.AppBarLayout>
 
-        <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/fragment_container"
-            android:layout_below="@id/app_bar"
-            android:layout_above="@+id/custom_location"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
         <RelativeLayout
+            android:background="?attr/colorPrimary"
             android:id="@+id/custom_location"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
+            android:layout_below="@id/app_bar"
             android:visibility="gone">
 
-            <TextView
-                android:id="@+id/label_custom_location"
-                android:layout_width="match_parent"
+            <ImageView
+                android:id="@+id/image_location"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/custom_location"/>
+                android:src="@android:drawable/ic_menu_mylocation"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:layout_margin="8dp"/>
 
             <TextView
+                style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title.Inverse"
                 android:id="@+id/text_current_location"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/label_custom_location"/>
+                android:layout_toEndOf="@id/image_location"
+                android:layout_centerVertical="true"
+                android:layout_margin="8dp"/>
 
-            <Button
-                android:id="@+id/button_clear_custom_location"
+            <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:src="@android:drawable/ic_menu_delete"
                 android:layout_alignParentRight="true"
-                android:text="@string/clear"/>
+                android:layout_centerVertical="true"
+                android:onClick="clearCustomLocation"
+                android:layout_margin="8dp"/>
+
         </RelativeLayout>
+
+        <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/fragment_container"
+            android:layout_below="@id/custom_location"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
     </RelativeLayout>
 </android.support.design.widget.CoordinatorLayout>

@@ -248,19 +248,15 @@ public class Launcher extends AppCompatActivity implements
         //Custom view layout update
         mCustomLocationHolderView = findViewById(R.id.custom_location);
         mCustomLocationTextView = (TextView) findViewById(R.id.text_current_location);
-        mCustomLocationClearButton = (Button) findViewById(R.id.button_clear_custom_location);
-        mCustomLocationClearButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                enableCustomLocation(false, null);
-            }
-        });
 
         // Handle Location
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         validateLocation();
     }
 
+    public void clearCustomLocation(View view) {
+        enableCustomLocation(false, null);
+    }
     /**
      * Create or update fragement aand provide a back stack as per request
      *
