@@ -6,16 +6,11 @@
             android:persistent="true"
             android:title="Miles or Km" />
 
-        <EditTextPreference
-            android:dialogTitle="Set Range"
-            android:key="distance_pref"
-            android:persistent="true"
-            android:summary=""
-            android:title="Distance" />
         <ListPreference
             android:dialogTitle="Select Language"
-            android:persistent="true"
             android:key="language_pref"
+            android:persistent="true"
             android:title="Language" />
+
     </PreferenceCategory>
 </PreferenceScreen>

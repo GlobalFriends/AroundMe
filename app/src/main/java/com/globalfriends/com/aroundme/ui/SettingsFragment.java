@@ -45,20 +45,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                 return true;
             }
         });
-        EditTextPreference editPref = (EditTextPreference) findPreference("distance_pref");
-        editPref.setOnPreferenceChangeListener(new android.support.v7.preference.Preference.OnPreferenceChangeListener() {
-            @Override
-            public boolean onPreferenceChange(android.support.v7.preference.Preference preference, Object o) {
-                preference.setSummary((String) o);
-                PreferenceManager.setRadius(Integer.parseInt((String) o));
-                return true;
-            }
-        });
-        if (editPref.getText() != null) {
-            editPref.setSummary(editPref.getText());
-        } else {
-            editPref.setSummary("" + PreferenceManager.getRadius());
-        }
+
         SwitchPreferenceCompat milesPref = (SwitchPreferenceCompat) findPreference("miles_or_km_pref");
         milesPref.setOnPreferenceChangeListener(new android.support.v7.preference.Preference.OnPreferenceChangeListener() {
             @Override
