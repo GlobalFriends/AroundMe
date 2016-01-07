@@ -118,7 +118,8 @@ public class PlaceManager extends DefaultFeatureManager {
                             IPlaceDetails placeDetails = new GooglePlaceDetailsJson(result);
                             mListener.onGetPlaceDetails(placeDetails, mContext.getString(R.string.google_places_tag));
                         } else {
-                            mListener.onError(response.getString(STATUS), mContext.getString(R.string.google_places_tag));
+                            mListener.onError(PlaceErrorDescription.getErrorString(mContext, response.getString(STATUS)),
+                                    mContext.getString(R.string.google_places_tag));
                         }
                     }
                 } catch (JSONException e) {
@@ -146,7 +147,8 @@ public class PlaceManager extends DefaultFeatureManager {
                             }
                             mListener.onPlacesList(pageToken, placeList);
                         } else {
-                            mListener.onError(response.getString(STATUS), mContext.getString(R.string.google_places_tag));
+                            mListener.onError(PlaceErrorDescription.getErrorString(mContext, response.getString(STATUS)),
+                                    mContext.getString(R.string.google_places_tag));
                         }
                     }
                 } catch (JSONException e) {

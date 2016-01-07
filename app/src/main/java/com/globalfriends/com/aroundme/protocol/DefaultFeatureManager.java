@@ -14,6 +14,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.globalfriends.com.aroundme.AroundMeApplication;
 import com.globalfriends.com.aroundme.R;
+import com.globalfriends.com.aroundme.protocol.places.PlaceErrorDescription;
 import com.globalfriends.com.aroundme.protocol.places.PlaceRequestTypeEnum;
 
 import org.json.JSONObject;
@@ -87,7 +88,12 @@ public class DefaultFeatureManager implements IFeatureManager {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         Log.i(LOGGING_TAG, "response=" + error.toString());
-                        mListener.onError(error.toString(), mModuleTag);
+                        if (mContext.getString(R.string.google_places_tag).equalsIgnoreCase(mModuleTag)) {
+                            mListener.onError(PlaceErrorDescription.getErrorString(mContext, error.toString()), mModuleTag);
+                        } else {
+                            mListener.onError(error.toString(), mModuleTag);
+                        }
+
                     }
                 });
         scheduleRequest(mRequest);
