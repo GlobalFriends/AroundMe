@@ -75,10 +75,12 @@
     <string name="email_subject">Around Me application feedback</string>
     <string name="network_error">Please check your network connection</string>
     <string name="no_more_results">No more results to display...</string>
-
+    <string name="module_launch">Go to %s</string>
     <string name="error_zero_result">No results. Your place do not have any places registered with this TAG. To get results, Please change location and search again.</string>
     <string name="error_invalid_request">Invalid request. Please check your request.</string>
     <string name="error_request_denied">Request denied. Please check your request.</string>
     <string name="error_query_limit">Server limit exceeded. Please try after some time.</string>
     <string name="error_unknown_error">Server limit exceeded. Please leave a email to administrator or try after some time.</string>
+
+
 </resources>

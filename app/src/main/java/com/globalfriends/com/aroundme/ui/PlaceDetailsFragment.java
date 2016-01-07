@@ -45,6 +45,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 
 import java.io.Serializable;
+import java.text.Format;
 import java.util.List;
 
 
@@ -603,6 +604,23 @@ public class PlaceDetailsFragment extends BaseFragment implements View.OnClickLi
                         Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(placeDetails.getWebUrl()));
                         getActivity().startActivity(browserIntent);
                     }
+                }
+            });
+        }
+
+        // Module Launch
+        LinearLayoutCompat moduleLaunch = (LinearLayoutCompat) moduleLayout.findViewById(R.id.launch_module);
+        if (TextUtils.isEmpty(placeDetails.getWebUrl())) {
+            moduleLaunch.setVisibility(View.GONE);
+        } else {
+            moduleLaunch.setVisibility(View.VISIBLE);
+            AppCompatTextView moduleLaunchText = (AppCompatTextView) moduleLaunch.findViewById(R.id.goto_module);
+            moduleLaunchText.setText(String.format(getString(R.string.module_launch), moduleName));
+            moduleLaunch.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(placeDetails.getWebUrl()));
+                    getActivity().startActivity(browserIntent);
                 }
             });
         }

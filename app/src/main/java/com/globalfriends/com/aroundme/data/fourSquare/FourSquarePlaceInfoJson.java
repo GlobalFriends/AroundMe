@@ -29,6 +29,14 @@ public class FourSquarePlaceInfoJson extends DefaultPlaceDetails {
             }
         }
 
+        if (response.has("canonicalUrl")) {
+            try {
+                mWebUrl = response.getString("canonicalUrl");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
         if (response.has("ratingColor")) {
             try {
                 mRatingColor = response.getString("ratingColor");
