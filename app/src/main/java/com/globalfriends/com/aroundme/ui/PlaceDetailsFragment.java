@@ -147,7 +147,7 @@ public class PlaceDetailsFragment extends BaseFragment implements View.OnClickLi
         if (mGooglePlaceDetails.isPermanentlyClosed()) {
             openNow.setText(getActivity().getResources().getString(R.string.permanently_closed));
         } else {
-            if (mPlace.isOpenNow()) {
+            if (mGooglePlaceDetails.isOpenNow()) {
                 openNow.setText(R.string.open);
                 openNow.setTextColor(ColorStateList.valueOf(Color.DKGRAY));
             } else {
@@ -157,9 +157,9 @@ public class PlaceDetailsFragment extends BaseFragment implements View.OnClickLi
         }
 
         // Update rating
-        if (!TextUtils.isEmpty(mPlace.getRating())) {
-            ratingStars.setRating(Float.valueOf(mPlace.getRating()));
-            ratingText.setText(mPlace.getRating());
+        if (!TextUtils.isEmpty(mGooglePlaceDetails.getRating())) {
+            ratingStars.setRating(Float.valueOf(mGooglePlaceDetails.getRating()));
+            ratingText.setText(mGooglePlaceDetails.getRating());
         } else {
             ratingText.setText(getResources().getString(R.string.not_rated));
         }
@@ -251,9 +251,9 @@ public class PlaceDetailsFragment extends BaseFragment implements View.OnClickLi
         switch (v.getId()) {
             case R.id.id_maps:
                 Bundle bundle = new Bundle();
-                bundle.putDouble("LATITUDE", mPlace.getLatitude());
-                bundle.putDouble("LONGITUDE", mPlace.getLongitude());
-                bundle.putString("NAME", mPlace.getName());
+                bundle.putDouble("LATITUDE", mGooglePlaceDetails.getLatitude());
+                bundle.putDouble("LONGITUDE", mGooglePlaceDetails.getLongitude());
+                bundle.putString("NAME", mGooglePlaceDetails.getPlaceName());
                 bundle.putInt("MAP_TYPE", GoogleMap.MAP_TYPE_SATELLITE);
                 mListener.onMapsViewClicked(bundle);
                 break;
@@ -261,8 +261,8 @@ public class PlaceDetailsFragment extends BaseFragment implements View.OnClickLi
                 if (mPlace != null) {
                     double rating = 0;
                     String photoReference = "";
-                    if (mPlace.getRating() != null) {
-                        rating = Double.parseDouble(mPlace.getRating());
+                    if (mGooglePlaceDetails.getRating() != null) {
+                        rating = Double.parseDouble(mGooglePlaceDetails.getRating());
                     }
                     if (mPlace.getPhotoReference() != null) {
                         photoReference = mPlace.getPhotoReference().toString();
@@ -270,38 +270,38 @@ public class PlaceDetailsFragment extends BaseFragment implements View.OnClickLi
                     //Should this be moved to Async task ? on activity exit ?
                     if (!AroundMeContractProvider.Places.exist(getActivity(), mPlace.getPlaceId())) {
                         AroundMeContractProvider.Places fav =
-                                new AroundMeContractProvider.Places(mPlace.isOpenNow(), rating,
-                                        mPlace.getLatitude(), mPlace.getLongitude(), mPlace.getPlaceId(),
+                                new AroundMeContractProvider.Places(mGooglePlaceDetails.isOpenNow(), rating,
+                                        mGooglePlaceDetails.getLatitude(), mGooglePlaceDetails.getLongitude(), mPlace.getPlaceId(),
                                         mGooglePlaceDetails.getInternationalPhoneNumber(), photoReference,
-                                        mGooglePlaceDetails.getAddress(), mPlace.getName());
+                                        mGooglePlaceDetails.getAddress(), mGooglePlaceDetails.getPlaceName());
                         fav.save(getContext());
                         LinearLayoutCompat ll = (LinearLayoutCompat) v;
                         //Uncomment after getting proper image
-                        ImageView img = (ImageView)ll.findViewById(R.id.id_favorite_image);
+                        ImageView img = (ImageView) ll.findViewById(R.id.id_favorite_image);
                         img.setBackgroundResource(R.drawable.favouritenew);
                     }
                 }
                 break;
             case R.id.fab:
                 Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
-                        Uri.parse("geo:0,0?q=" + mPlace.getLatitude() + "," + mPlace.getLongitude()));
+                        Uri.parse("geo:0,0?q=" + mGooglePlaceDetails.getLatitude() + "," + mGooglePlaceDetails.getLongitude()));
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 getActivity().startActivity(intent);
                 if (mPlace != null) {
                     double rating = 0;
                     String photoReference = "";
-                    if (mPlace.getRating() != null) {
-                        rating = Double.parseDouble(mPlace.getRating());
+                    if (mGooglePlaceDetails.getRating() != null) {
+                        rating = Double.parseDouble(mGooglePlaceDetails.getRating());
                     }
                     if (mPlace.getPhotoReference() != null) {
                         photoReference = mPlace.getPhotoReference().toString();
                     }
                     if (!AroundMeContractProvider.RecentPlaces.exist(getActivity(), mPlace.getPlaceId())) {
                         AroundMeContractProvider.RecentPlaces recentPlaces =
-                                new AroundMeContractProvider.RecentPlaces(mPlace.isOpenNow(), rating,
-                                        mPlace.getLatitude(), mPlace.getLongitude(), mPlace.getPlaceId(),
+                                new AroundMeContractProvider.RecentPlaces(mGooglePlaceDetails.isOpenNow(), rating,
+                                        mGooglePlaceDetails.getLatitude(), mGooglePlaceDetails.getLongitude(), mPlace.getPlaceId(),
                                         mGooglePlaceDetails.getInternationalPhoneNumber(), photoReference,
-                                        mGooglePlaceDetails.getAddress(), mPlace.getName());
+                                        mGooglePlaceDetails.getAddress(), mGooglePlaceDetails.getPlaceName());
                         recentPlaces.save(getContext());
                     }
                 }

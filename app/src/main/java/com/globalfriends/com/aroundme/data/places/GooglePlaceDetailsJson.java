@@ -29,10 +29,28 @@ public class GooglePlaceDetailsJson extends DefaultPlaceDetails {
             e.printStackTrace();
         }
 
-        try {
-            mAddress = response.getString("formatted_address");
-        } catch (JSONException e) {
-            e.printStackTrace();
+        if (response.has("rating")) {
+            try {
+                mRating = response.getString("rating");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
+        if (response.has("formatted_address")) {
+            try {
+                mAddress = response.getString("formatted_address");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
+        if (response.has("name")) {
+            try {
+                mName = response.getString("name");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
 
         if (response.has("permanently_closed")) {

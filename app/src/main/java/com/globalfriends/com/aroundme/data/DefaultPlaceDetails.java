@@ -12,6 +12,7 @@ public class DefaultPlaceDetails implements IPlaceDetails {
     protected String mDistance;
     protected String mAddress;
     protected String mInternationalNumber;
+    protected String mRating;
     protected String mPhoneNumber;
     protected String mWebUrl;
     protected String mName;
@@ -70,6 +71,11 @@ public class DefaultPlaceDetails implements IPlaceDetails {
     }
 
     @Override
+    public String getRating() {
+        return mRating;
+    }
+
+    @Override
     public String getInternationalPhoneNumber() {
         return mInternationalNumber;
     }
@@ -102,6 +108,11 @@ public class DefaultPlaceDetails implements IPlaceDetails {
     @Override
     public Double getLongitude() {
         return mLongitude;
+    }
+
+    @Override
+    public boolean isOpenNow() {
+        return mOpenNow;
     }
 
     @Override
