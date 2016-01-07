@@ -129,10 +129,6 @@ public class PlaceDetailsFragment extends BaseFragment implements View.OnClickLi
                             mPlacePhotoReference.getHeight(),
                             mPlacePhotoReference.getWidth()),
                     mGoogleImageLoader);
-        } else {
-            mMapView.setVisibility(View.VISIBLE);
-            mMainDisplayImage.setVisibility(View.GONE);
-            updateMapView();
         }
         TransactionManager.getInstance().findGooglePlaceDetails(mPlaceId, null);
     }
@@ -286,10 +282,6 @@ public class PlaceDetailsFragment extends BaseFragment implements View.OnClickLi
             break;
             case R.id.fab: {
                 {
-                    Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
-                            Uri.parse("geo:0,0?q=" + mGooglePlaceDetails.getLatitude() + "," + mGooglePlaceDetails.getLongitude()));
-                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    getActivity().startActivity(intent);
                     double rating = 0;
                     String photoReference = "";
                     if (mGooglePlaceDetails.getRating() != null) {
@@ -306,6 +298,12 @@ public class PlaceDetailsFragment extends BaseFragment implements View.OnClickLi
                                         mGooglePlaceDetails.getAddress(), mGooglePlaceDetails.getPlaceName());
                         recentPlaces.save(getContext());
                     }
+
+                    Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
+                            Uri.parse("geo:0,0?q=" + mGooglePlaceDetails.getLatitude() + "," + mGooglePlaceDetails.getLongitude()
+                                    + "(" + mGooglePlaceDetails.getPlaceName() + ")"));
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    getActivity().startActivity(intent);
                 }
 
             }
@@ -618,6 +616,13 @@ public class PlaceDetailsFragment extends BaseFragment implements View.OnClickLi
                 // This will make sure that it fetches responses from Yelp and other modules
                 mGooglePlaceDetails = response;
                 mGooglePlaceDetails.toString();
+                // If image is not present then show maps view here
+                if (mPlacePhotoReference == null) {
+                    mMapView.setVisibility(View.VISIBLE);
+                    mMainDisplayImage.setVisibility(View.GONE);
+                    updateMapView();
+                }
+
                 updateUi();
                 addDynamicView(response, placeTag);
                 TransactionManager.getInstance().findPlaceDetails(response.getInternationalPhoneNumber(),
