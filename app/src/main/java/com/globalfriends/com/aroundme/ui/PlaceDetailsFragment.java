@@ -299,11 +299,22 @@ public class PlaceDetailsFragment extends BaseFragment implements View.OnClickLi
                         recentPlaces.save(getContext());
                     }
 
+//                    Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
+//                            Uri.parse("geo:0,0?q=" + mGooglePlaceDetails.getLatitude() + "," + mGooglePlaceDetails.getLongitude()
+//                                    + "(" + mGooglePlaceDetails.getPlaceName() + ")"));
+//                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//                    getActivity().startActivity(intent);
+
                     Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
-                            Uri.parse("geo:0,0?q=" + mGooglePlaceDetails.getLatitude() + "," + mGooglePlaceDetails.getLongitude()
-                                    + "(" + mGooglePlaceDetails.getPlaceName() + ")"));
+                            Uri.parse("geo:0,0?q=" + mGooglePlaceDetails.getAddress()));
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     getActivity().startActivity(intent);
+
+
+//                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("google.navigation:q=" +mGooglePlaceDetails.getLatitude()
+//                            +","+mGooglePlaceDetails.getLongitude()));
+//                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                    startActivity(intent);
                 }
 
             }
