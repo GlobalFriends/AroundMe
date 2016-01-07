@@ -85,10 +85,14 @@ public class FourSquarePlaceInfoJson extends DefaultPlaceDetails {
                                             review.setProfilePhotoUrl(prefix.toString());
                                         }
                                     }
+
+                                    if (user.has("id")) {
+                                        String userId = user.getString("id");
+                                        if (!TextUtils.isEmpty(userId)) {
+                                            review.setAuthorUrl("https://foursquare.com/user/" + userId);
+                                        }
+                                    }
                                 }
-
-
-
 
                                 if (itemObj.has("lang")) {
                                     review.setLanguage(itemObj.getString("lang"));
