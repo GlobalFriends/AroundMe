@@ -437,7 +437,8 @@ public class Launcher extends AppCompatActivity implements
     @Override
     public void OnPlaceListFragmentSelection(final PlaceInfo place) {
         Bundle bundle = new Bundle();
-        bundle.putParcelable("PLACE", place);
+        bundle.putString("PLACE_ID", place.getPlaceId());
+        bundle.putParcelable("PHOTO_ID", place.getPhotoReference());
         Fragment fragment = new PlaceDetailsFragment();
         fragment.setArguments(bundle);
         updateFragment(fragment, false, true);
