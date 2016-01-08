@@ -28,11 +28,16 @@ public class AroundMeContentProvider extends ContentProvider {
     private static final int RECENT_PLACES_LIST = RECENT_PLACES_BASE;
     private static final int RECENT_PLACES_ID = RECENT_PLACES_LIST + 1;
 
+    private static final int PHOTO_REFERENCE_BASE = RECENT_PLACES_BASE + 0x1000;
+    private static final int PHOTO_REFERENCE_LIST = PHOTO_REFERENCE_BASE;
+    private static final int PHOTO_REFERENCE_ID = PHOTO_REFERENCE_BASE + 1;
+
     private static final int BASE_SHIFT = 12;
     private static final UriMatcher URI_MATCHER;
     private static final String sTABLE_NAME[] = {
             AroundMeContractProvider.Places.TABLENAME,
-            AroundMeContractProvider.RecentPlaces.TABLENAME
+            AroundMeContractProvider.RecentPlaces.TABLENAME,
+            AroundMeContractProvider.PhotoRefernce.TABLENAME
     };
 
     private AroundMeDBHelper mDBHelper;
@@ -48,6 +53,10 @@ public class AroundMeContentProvider extends ContentProvider {
                 AroundMeContractProvider.RecentPlaces.PATH + "/#", RECENT_PLACES_ID);
         URI_MATCHER.addURI(AroundMeContractProvider.AUTHORITY,
                 AroundMeContractProvider.RecentPlaces.PATH, RECENT_PLACES_LIST);
+        URI_MATCHER.addURI(AroundMeContractProvider.AUTHORITY,
+                AroundMeContractProvider.PhotoRefernce.PATH + "/#", PHOTO_REFERENCE_ID);
+        URI_MATCHER.addURI(AroundMeContractProvider.AUTHORITY,
+                AroundMeContractProvider.PhotoRefernce.PATH, PHOTO_REFERENCE_LIST);
     }
 
     @Override
@@ -65,10 +74,12 @@ public class AroundMeContentProvider extends ContentProvider {
         switch (match) {
             case PLACES_LIST:
             case RECENT_PLACES_LIST:
+            case PHOTO_REFERENCE_LIST:
                 queryBuilder.setProjectionMap(null);
                 break;
             case PLACES_ID:
             case RECENT_PLACES_ID:
+            case PHOTO_REFERENCE_ID:
                 queryBuilder.appendWhere("_id" + "=" + uri.getLastPathSegment());
                 break;
             default:
@@ -119,10 +130,12 @@ public class AroundMeContentProvider extends ContentProvider {
         switch (match) {
             case PLACES_LIST:
             case RECENT_PLACES_LIST:
+            case PHOTO_REFERENCE_LIST:
                 count = db.delete(tableName, selection, selectionArgs);
                 break;
             case PLACES_ID:
             case RECENT_PLACES_ID:
+            case PHOTO_REFERENCE_ID:
                 String id = uri.getPathSegments().get(1);
                 count = db.delete(tableName, whereWithId(id, selection),
                         selectionArgs);
@@ -145,10 +158,12 @@ public class AroundMeContentProvider extends ContentProvider {
         switch (match) {
             case PLACES_LIST:
             case RECENT_PLACES_LIST:
+            case PHOTO_REFERENCE_LIST:
                 count = db.update(tableName, values, selection, selectionArgs);
                 break;
             case PLACES_ID:
             case RECENT_PLACES_ID:
+            case PHOTO_REFERENCE_ID:
                 String id = uri.getPathSegments().get(1);
                 count = db.update(tableName, values, whereWithId(id, selection),
                         selectionArgs);
@@ -185,6 +200,7 @@ public class AroundMeContentProvider extends ContentProvider {
         switch (match) {
             case PLACES_LIST:
             case RECENT_PLACES_LIST:
+            case PHOTO_REFERENCE_LIST:
                 try {
                     db.beginTransaction();
                     //ArrayList<ContentProviderOperation> ops = new ArrayList<>();

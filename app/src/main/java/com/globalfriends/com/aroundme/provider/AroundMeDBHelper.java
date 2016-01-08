@@ -28,6 +28,7 @@ public class AroundMeDBHelper extends SQLiteOpenHelper {
 
         db.execSQL(AroundMeDBSchema.CREATE_PLACES_TABLE);
         db.execSQL(AroundMeDBSchema.CREATE_RECENT_PLACES_TABLE);
+        //db.execSQL(AroundMeDBSchema.CREATE_PHOTO_REFERNCE_TABLE);
         db.execSQL(AroundMeDBSchema.TRIGGER_DELETE_RECENT);
     }
 

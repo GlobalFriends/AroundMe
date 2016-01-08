@@ -416,4 +416,149 @@ public abstract class AroundMeContractProvider {
             return exists;
         }
     }
+
+    //Image Reference Table
+    public interface PhotoReferenceColumns {
+        String _ID = "_id";
+        String URL = "url";
+        String PHOTO_REF = "ref";
+        String PHOTO_URL = "photo_url";
+        String PHOTO_HEIGHT = "height";
+        String PHOTO_WIDTH = "width";
+        String PHOTO_PLACE_ID = "photo_place_id";
+    }
+
+    public static final class PhotoRefernce extends AroundMeContractProvider implements PhotoReferenceColumns {
+        public static final String TABLENAME = "photometadata";
+        public static final String PATH = "photometadata";
+        public static final Uri CONTENT_URI = Uri.withAppendedPath(AroundMeContractProvider.CONTENT_URI, PATH);
+
+        public static final int CONTENT_ID_COL = 0;
+        public static final int CONTENT_URL = 1;
+        public static final int CONTENT_PHOTO_REF_COL = 2;
+        public static final int CONTENT_PHOTO_URL_COL = 3;
+        public static final int CONTENT_PHOTO_HEIGHT_COL = 4;
+        public static final int CONTENT_PHOTO_WIDTH_COL = 5;
+        public static final int CONTENT_PHOTO_PLACE_ID = 6;
+
+
+        private String mPlaceId;
+        private String mUrl;
+        private String mPhotoRefUrl;
+        private String mPhotoUrl;
+        private int mHeight;
+        private int mWidth;
+
+        public PhotoRefernce(String placeId, String url, String photoUrl, String photoRef, int width, int height) {
+            mBaseUri = CONTENT_URI;
+            mPlaceId = placeId;
+            mUrl = url;
+            mPhotoRefUrl = photoRef;
+            mPhotoUrl = photoUrl;
+            mHeight = height;
+            mWidth = width;
+        }
+
+        @Override
+        public void restore(Cursor cursor) {
+            mBaseUri = Places.CONTENT_URI;
+
+            mPlaceId = cursor.getString(CONTENT_PHOTO_PLACE_ID);
+            mUrl = cursor.getString(CONTENT_PHOTO_URL_COL);
+            mPhotoRefUrl = cursor.getString(CONTENT_PHOTO_REF_COL);
+            mPhotoUrl = cursor.getString(CONTENT_PHOTO_URL_COL);
+            mWidth = cursor.getInt(CONTENT_PHOTO_WIDTH_COL);
+            mHeight = cursor.getInt(CONTENT_PHOTO_HEIGHT_COL);
+        }
+
+        @Override
+        public ContentValues toContentValues() {
+            ContentValues values = new ContentValues();
+            values.put(PhotoReferenceColumns.URL, mUrl);
+            values.put(PhotoReferenceColumns.PHOTO_REF, mPhotoRefUrl);
+            values.put(PhotoReferenceColumns.PHOTO_URL, mPhotoUrl);
+            values.put(PhotoReferenceColumns.PHOTO_PLACE_ID, mPlaceId);
+            values.put(PhotoReferenceColumns.PHOTO_HEIGHT, mHeight);
+            values.put(PhotoReferenceColumns.PHOTO_WIDTH, mWidth);
+            return values;
+        }
+
+        public static int insertMultiple(Context context, HashSet<Places> placesSet) {
+            if (context == null) {
+                return -1;
+            }
+            ContentResolver resolver = context.getContentResolver();
+            if (resolver == null) {
+                return -1;
+            }
+            ContentValues[] values = new ContentValues[placesSet.size()];
+            int count = 0;
+            for (Places place : placesSet) {
+                values[count] = place.toContentValues();
+                count++;
+            }
+            return resolver.bulkInsert(CONTENT_URI, values);
+        }
+
+        public static int deleteAllRecords(Context context) {
+            if (context == null) {
+                return -1;
+            }
+            ContentResolver resolver = context.getContentResolver();
+            if (resolver == null) {
+                return -1;
+            }
+            return resolver.delete(CONTENT_URI, null, null);
+        }
+
+        public static int deleteAllRecordsWhere(Context context, String where, String[] selectionArgs) {
+            if (context == null) {
+                return -1;
+            }
+            ContentResolver resolver = context.getContentResolver();
+            if (resolver == null) {
+                return -1;
+            }
+            return resolver.delete(CONTENT_URI, where, selectionArgs);
+        }
+
+        private static Uri updateExisting(Context context, ContentValues values) {
+            if (context == null) {
+                return null;
+            }
+            ContentResolver resolver = context.getContentResolver();
+            if (resolver == null) {
+                return null;
+            }
+            Uri uri = null;
+            Cursor c = resolver.query(CONTENT_URI, null, null, null, null);
+            int id = c.getInt(CONTENT_ID_COL);
+            uri = ContentUris.withAppendedId(CONTENT_URI, id);
+            resolver.update(uri, values, null, null);
+            resolver.notifyChange(uri, null);
+            if (c != null && !c.isClosed()) {
+                c.close();
+            }
+            return uri;
+        }
+
+        public static boolean exist(Context context, String placeId) {
+            String[] columns = {PlacesColumns.PLACES_ID};
+            String selection = PlacesColumns.PLACES_ID + " =?";
+            String[] selectionArgs = {placeId};
+            String limit = "1";
+            ContentResolver resolver = context.getContentResolver();
+            if (resolver == null) {
+                return false;
+            }
+            Uri uri = null;
+            Cursor c = resolver.query(CONTENT_URI, null, selection, selectionArgs, null);
+            boolean exists = (c.getCount() > 0);
+            if (c != null && !c.isClosed()) {
+                c.close();
+            }
+            return exists;
+        }
+    }
+
 }
