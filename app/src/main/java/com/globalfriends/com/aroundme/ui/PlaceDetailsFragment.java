@@ -369,8 +369,8 @@ public class PlaceDetailsFragment extends BaseFragment implements View.OnClickLi
      */
     private void updateUi() {
         // Photo loading can take time..So lets first start loading it
-        Utility.updateModulePhotoView(getActivity(), mGooglePlaceDetails,
-                mGooglePhotosLayout, mGoogleImageLoader);
+//        Utility.updateModulePhotoView(getActivity(), mGooglePlaceDetails,
+//                mGooglePhotosLayout, mGoogleImageLoader);
 
         // Update details such as Address, Name, rating and distance
         mPlaceName.setText(mGooglePlaceDetails.getPlaceName());
