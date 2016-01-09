@@ -150,4 +150,9 @@ public class DefaultFeatureManager implements IFeatureManager {
     public int getFeatureFullLogo() {
         return 0;
     }
+
+    @Override
+    public boolean isCustomRating() {
+        return false;
+    }
 }

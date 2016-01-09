@@ -70,4 +70,11 @@ public interface IFeatureManager {
      * @return
      */
     public int getFeatureFullLogo();
+
+    /**
+     * Modules which needs a custom rating bar which is neither a image not a android rating bar
+     *
+     * @return
+     */
+    public boolean isCustomRating();
 }

@@ -21,7 +21,7 @@
     <string name="gps_network_not_enabled">GPS is not enabled. Enable GPS to use application effectively.</string>
     <string name="cancel">Cancel</string>
     <string name="yelp_tag">Yelp</string>
-    <string name="four_square_tag">FourSquare</string>
+    <string name="four_square_tag">Foursquare</string>
     <string name="google_places_tag">Google</string>
     <string name="zagat_square_tag">Zagat</string>
     <string name="search_results">Search Results</string>

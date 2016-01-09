@@ -428,7 +428,7 @@ public class PlaceDetailsFragment extends BaseFragment implements View.OnClickLi
      * @param placeDetails
      * @param moduleName
      */
-    private void addDynamicView(final IPlaceDetails placeDetails, final String moduleName) {
+    private void addReviewsFromModules(final IPlaceDetails placeDetails, final String moduleName) {
         if (TextUtils.isEmpty(moduleName)) {
             Log.e(TAG, "module name is empty");
             return;
@@ -501,7 +501,11 @@ public class PlaceDetailsFragment extends BaseFragment implements View.OnClickLi
             if (TextUtils.isEmpty(placeDetails.getRatingUrl())) {
                 ratingImageView.setVisibility(View.GONE);
             } else {
-                ratingImageView.setVisibility(View.VISIBLE);
+                if (getString(R.string.four_square_tag).equalsIgnoreCase(moduleName)) {
+                    ratingImageView.setVisibility(View.GONE);
+                } else {
+                    ratingImageView.setVisibility(View.VISIBLE);
+                }
                 ratingImageView.setImageUrl(placeDetails.getRatingUrl(), imageLoader);
             }
         } else {
@@ -644,14 +648,14 @@ public class PlaceDetailsFragment extends BaseFragment implements View.OnClickLi
                 }
 
                 updateUi();
-                addDynamicView(response, placeTag);
+                addReviewsFromModules(response, placeTag);
                 TransactionManager.getInstance().findPlaceDetails(response.getInternationalPhoneNumber(),
                         response.getPhoneNumber(),
                         response.getLatitude(), response.getLongitude());
                 return;
             }
 
-            addDynamicView(response, placeTag);
+            addReviewsFromModules(response, placeTag);
         }
 
         @Override

@@ -173,4 +173,9 @@ public class FourSquareManager extends DefaultFeatureManager {
     public int getFeatureFullLogo() {
         return R.drawable.foursquare_logo;
     }
+
+    @Override
+    public boolean isCustomRating() {
+        return true;
+    }
 }

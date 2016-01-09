@@ -33,7 +33,7 @@
 
                 <ImageView
                     android:id="@+id/module_logo"
-                    android:layout_width="75dp"
+                    android:layout_width="65dp"
                     android:layout_height="25dp"
                     android:scaleType="fitXY" />
 
