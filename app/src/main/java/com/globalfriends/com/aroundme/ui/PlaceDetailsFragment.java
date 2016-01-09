@@ -245,7 +245,6 @@ public class PlaceDetailsFragment extends BaseFragment implements View.OnClickLi
                 break;
             case R.id.id_favorite: {
                 double rating = 0;
-                boolean isFavorite = false;
                 if (mGooglePlaceDetails.getRating() != null) {
                     rating = Double.parseDouble(mGooglePlaceDetails.getRating());
                 }
@@ -258,18 +257,13 @@ public class PlaceDetailsFragment extends BaseFragment implements View.OnClickLi
                                     mGooglePlaceDetails.getInternationalPhoneNumber(), "",
                                     mGooglePlaceDetails.getAddress(), mGooglePlaceDetails.getPlaceName());
                     fav.save(getContext());
-                    isFavorite = true;
+                    updateFavoriteIcon(true);
                 } else {
                     AroundMeContractProvider.Places places = new AroundMeContractProvider.Places();
                     places.delete(getContext(), AroundMeContractProvider.PlacesColumns.PLACES_ID + "=?",
                             new String[]{mPlaceId});
-                    isFavorite = false;
+                    updateFavoriteIcon(false);
                 }
-
-                LinearLayoutCompat ll = (LinearLayoutCompat) v;
-                //Uncomment after getting proper image
-                ImageView img = (ImageView) ll.findViewById(R.id.id_favorite_image);
-                img.setBackgroundResource(isFavorite ? R.drawable.favouritenew : R.drawable.unfavorite);
             }
             break;
             case R.id.fab: {
@@ -388,8 +382,19 @@ public class PlaceDetailsFragment extends BaseFragment implements View.OnClickLi
         updateRatingBar();
         updatePlaceDetails();
         updatePlaceTiming();
+        updateFavoriteIcon(AroundMeContractProvider.Places.exist(getActivity(), mPlaceId));
     }
 
+    /**
+     * Update favorite status of place
+     *
+     * @param isFavorite
+     */
+    private void updateFavoriteIcon(final boolean isFavorite) {
+        //Uncomment after getting proper image
+        ImageView img = (ImageView) mFavoriteButtonLayout.findViewById(R.id.id_favorite_image);
+        img.setBackgroundResource(isFavorite ? R.drawable.favouritenew : R.drawable.unfavorite);
+    }
 
     /**
      * Updated supported components such as Yelp, Four Square etc..
