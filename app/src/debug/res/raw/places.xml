@@ -22,6 +22,13 @@
         <description></description>
     </placetype>
     <placetype>
+        <name>Bank</name>
+        <intent>com.globalfriends.com.aroundme.finance</intent>
+        <extra>bank</extra>
+        <icon>bank</icon>
+        <description></description>
+    </placetype>
+    <placetype>
         <name>Bar</name>
         <intent>com.globalfriends.com.aroundme.bar</intent>
         <extra>bar,liquor_store</extra>
@@ -36,24 +43,26 @@
         <description></description>
     </placetype>
     <placetype>
-        <name>Education</name>
-        <intent>com.globalfriends.com.aroundme.education</intent>
-        <extra>school,university</extra>
-        <icon>university</icon>
+        <name>Doctors</name>
+        <intent>com.globalfriends.com.aroundme.medical_care</intent>
+        <extra>dentist,doctor,physiotherapist</extra>
+        <icon>medical</icon>
         <description></description>
     </placetype>
     <placetype>
         <name>Entertainment</name>
         <intent>com.globalfriends.com.aroundme.entertainment</intent>
-        <extra>amusement_park,bowling_alley,campground,movie_rental,movie_theater,moving_company,museum,stadium</extra>
+        <extra>
+            amusement_park,bowling_alley,campground,stadium
+        </extra>
         <icon>amusement_park</icon>
         <description></description>
     </placetype>
     <placetype>
-        <name>Finance</name>
-        <intent>com.globalfriends.com.aroundme.finance</intent>
-        <extra>bank,finance</extra>
-        <icon>bank</icon>
+        <name>Fitness</name>
+        <intent>com.globalfriends.com.aroundme.fitness</intent>
+        <extra>gym</extra>
+        <icon>fitness</icon>
         <description></description>
     </placetype>
     <placetype>
@@ -78,37 +87,23 @@
         <description></description>
     </placetype>
     <placetype>
-        <name>Gym and Spa</name>
-        <intent>com.globalfriends.com.aroundme.fitness</intent>
-        <extra>gym,spa</extra>
-        <icon>gym_spa</icon>
-        <description></description>
-    </placetype>
-    <placetype>
-        <name>Medical Care</name>
+        <name>Hospitals</name>
         <intent>com.globalfriends.com.aroundme.medical_care</intent>
-        <extra>dentist,doctor,pharmacy,hospital,health,physiotherapist</extra>
-        <icon>medical</icon>
+        <extra>hospital</extra>
+        <icon>hospital</icon>
         <description></description>
     </placetype>
     <placetype>
-        <name>Movie</name>
+        <name>Movie Theater</name>
         <intent>com.globalfriends.com.aroundme.movie</intent>
-        <extra>Cinema</extra>
+        <extra>movie_theater</extra>
         <icon>cinema</icon>
-        <description></description>
-    </placetype>
-    <placetype>
-        <name>Meal</name>
-        <intent>com.globalfriends.com.aroundme.meal</intent>
-        <extra>meal_delivery,meal_takeaway</extra>
-        <icon>meal</icon>
         <description></description>
     </placetype>
     <placetype>
         <name>Museum and Zoo</name>
         <intent>com.globalfriends.com.aroundme.museum</intent>
-        <extra>aquarium,art_gallery,zoo,park</extra>
+        <extra>museum,aquarium,art_gallery,zoo,park</extra>
         <icon>meuseum</icon>
         <description></description>
     </placetype>
@@ -134,31 +129,31 @@
         <description></description>
     </placetype>
     <placetype>
-        <name>Personal Care</name>
-        <intent>com.globalfriends.com.aroundme.personal_care</intent>
-        <extra>beauty_salon,hair_care</extra>
-        <icon>personal_care</icon>
+        <name>Public Transport</name>
+        <intent>com.globalfriends.com.aroundme.transportation</intent>
+        <extra>subway_station,train_station,bus_station</extra>
+        <icon>transportation</icon>
         <description></description>
     </placetype>
     <placetype>
-        <name>Repair and Contractors</name>
-        <intent>com.globalfriends.com.aroundme.repair_construction</intent>
-        <extra>electrician,general_contractor,painter,plumber,roofing_contractor,car_repair</extra>
-        <icon>repair_construction</icon>
+        <name>Salons</name>
+        <intent>com.globalfriends.com.aroundme.personal_care</intent>
+        <extra>beauty_salon,hair_care</extra>
+        <icon>salon</icon>
+        <description></description>
+    </placetype>
+    <placetype>
+        <name>School</name>
+        <intent>com.globalfriends.com.aroundme.education</intent>
+        <extra>school</extra>
+        <icon>school</icon>
         <description></description>
     </placetype>
     <placetype>
         <name>Shopping</name>
         <intent>com.globalfriends.com.aroundme.shopping</intent>
-        <extra>clothing_store,convenience_store,department_store,electronics_store,grocery_or_supermarket,furniture_store,jewelry_store,shoe_store,shopping_mall,home_goods_store,hardware_store,bicycle_store,book_store</extra>
+        <extra>clothing_store,electronics_store,grocery_or_supermarket,shopping_mall</extra>
         <icon>shopping</icon>
-        <description></description>
-    </placetype>
-    <placetype>
-        <name>Transportation</name>
-        <intent>com.globalfriends.com.aroundme.transportation</intent>
-        <extra>car_rental,subway_station,train_station,taxi_stand,bus_station</extra>
-        <icon>transportation</icon>
         <description></description>
     </placetype>
     <placetype>
@@ -166,13 +161,6 @@
         <intent>com.globalfriends.com.aroundme.worship</intent>
         <extra>church,hindu_temple,mosque,place_of_worship</extra>
         <icon>worship</icon>
-        <description></description>
-    </placetype>
-    <placetype>
-        <name>General</name>
-        <intent>com.globalfriends.com.aroundme.general</intent>
-        <extra>car_dealer,car_wash,establishment,fire_station,florist,funeral_home,insurance_agency,laundry,lawyer,library,locksmith,lodging,pet_store,real_estate_agency,rv_park,storage,store,synagogue,travel_agency,veterinary_care</extra>
-        <icon>general</icon>
         <description></description>
     </placetype>
 </places>
