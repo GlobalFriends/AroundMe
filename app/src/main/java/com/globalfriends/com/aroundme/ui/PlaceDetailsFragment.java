@@ -45,7 +45,6 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 
 import java.io.Serializable;
-import java.text.Format;
 import java.util.List;
 
 

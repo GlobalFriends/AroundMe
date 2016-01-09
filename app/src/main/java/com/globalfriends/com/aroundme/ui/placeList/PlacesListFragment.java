@@ -160,6 +160,11 @@ public class PlacesListFragment extends ListFragment implements SwipeRefreshLayo
                 return;
             }
 
+            if (!getString(R.string.google_places_tag).equalsIgnoreCase(tag)) {
+                Log.i(TAG, "Not a google response. Google=" + tag);
+                return;
+            }
+
             new AlertDialog.Builder(getActivity())
                     .setTitle(getResources().getString(R.string.error_dialog_title))
                     .setMessage(errorMsg)

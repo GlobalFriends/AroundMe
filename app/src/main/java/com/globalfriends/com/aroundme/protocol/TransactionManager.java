@@ -24,8 +24,8 @@ import java.util.List;
 public class TransactionManager implements Listener {
     private static final String TAG = "TransactionManager";
     private static TransactionManager sInstance = null;
+    private CallBackManager mCallBackManager = new CallBackManager();
     private HashSet<IFeatureManager> mFeatureManagerList = new HashSet<>();
-    private HashSet<Result> mListeners = new HashSet<>();
 
     private TransactionManager() {
         //Init all transaction managers which needs to be functional
@@ -51,7 +51,7 @@ public class TransactionManager implements Listener {
     public void findGooglePlaceDetails(final String placeId, final String phoneNumber) {
         if (TextUtils.isEmpty(placeId) && TextUtils.isEmpty(phoneNumber)) {
             Log.e(TAG, "PlaceId and Phone number both are null or empty");
-            for (Result listener : mListeners) {
+            for (Result listener : mCallBackManager.getListeners()) {
                 listener.onError("Invalid Argument", null);
             }
             return;
@@ -175,69 +175,38 @@ public class TransactionManager implements Listener {
 
     @Override
     public void onGetPhoto(final JSONObject response, final String placeTag) {
-        synchronized (mListeners) {
-            for (Result listener : mListeners) {
-                listener.onGetPhoto(response, placeTag);
-            }
+        for (Result listener : mCallBackManager.getListeners()) {
+            listener.onGetPhoto(response, placeTag);
         }
     }
 
     @Override
     public void onGetPlaceDetails(IPlaceDetails response, String placeTag) {
-        synchronized (mListeners) {
-            for (Result listener : mListeners) {
-                listener.onGetPlaceDetails(response, placeTag);
-            }
+        for (Result listener : mCallBackManager.getListeners()) {
+            listener.onGetPlaceDetails(response, placeTag);
         }
     }
 
     @Override
     public void onPlacesList(final String pageToken, List<PlaceInfo> placeList) {
-        synchronized (mListeners) {
-            for (Result listener : mListeners) {
-                listener.onPlacesList(pageToken, placeList);
-            }
+        for (Result listener : mCallBackManager.getListeners()) {
+            listener.onPlacesList(pageToken, placeList);
         }
     }
 
 
     @Override
     public void onError(final String errorMsg, String tag) {
-        synchronized (mListeners) {
-            for (Result listener : mListeners) {
-                listener.onError(errorMsg, tag);
-            }
+        for (Result listener : mCallBackManager.getListeners()) {
+            listener.onError(errorMsg, tag);
         }
     }
 
     @Override
     public void onAutoComplete(List<AutoCompletePrediction> predictions) {
-        synchronized (mListeners) {
-            for (Result listener : mListeners) {
-                listener.onAutoComplete(predictions);
-            }
+        for (Result listener : mCallBackManager.getListeners()) {
+            listener.onAutoComplete(predictions);
         }
-    }
-
-    /**
-     * @param result
-     */
-    public void addResultCallback(final Result result) {
-        synchronized (mListeners) {
-            result.setRegistered(true);
-            mListeners.add(result);
-        }
-    }
-
-    /**
-     * @param result
-     */
-    public void removeResultCallback(final Result result) {
-        synchronized (mListeners) {
-            result.setRegistered(false);
-            mListeners.remove(result);
-        }
-
     }
 
     /**
@@ -245,22 +214,6 @@ public class TransactionManager implements Listener {
      * This will be passed to UI elements who ever registered for these.
      */
     public static abstract class Result {
-        private boolean mRegistered = false;
-
-        /**
-         * @return
-         */
-        protected final boolean isRegistered() {
-            return mRegistered;
-        }
-
-        /**
-         * @param registered
-         */
-        protected void setRegistered(final boolean registered) {
-            mRegistered = registered;
-        }
-
         /**
          * @param response
          * @param placeTag
@@ -292,4 +245,18 @@ public class TransactionManager implements Listener {
         }
     }
 
+
+    /**
+     * @param result
+     */
+    public void addResultCallback(final Result result) {
+        mCallBackManager.addResultCallback(result);
+    }
+
+    /**
+     * @param result
+     */
+    public void removeResultCallback(final Result result) {
+        mCallBackManager.removeResultCallback(result);
+    }
 }
