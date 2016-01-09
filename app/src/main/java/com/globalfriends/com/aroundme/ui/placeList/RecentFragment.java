@@ -66,9 +66,6 @@ public class RecentFragment extends ListFragment implements AbsListView.OnItemCl
         super.onListItemClick(l, v, position, id);
         Cursor cursor = mAdapter.getCursor();
         String placeId = cursor.getString(cursor.getColumnIndex(AroundMeContractProvider.PlacesColumns.PLACES_ID));
-        if (cursor != null && !cursor.isClosed()) {
-            cursor.close();
-        }
         mListener.onRecentViewClicked(placeId);
     }
 
