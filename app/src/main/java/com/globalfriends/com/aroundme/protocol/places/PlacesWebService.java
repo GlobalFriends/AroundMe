@@ -22,7 +22,7 @@ public class PlacesWebService {
         if (!TextUtils.isEmpty(b.mRadius)) {
             mUrl.append(OPERATION_SEPARATOR).append(b.mRadius);
         } else {
-            mUrl.append(OPERATION_SEPARATOR).append("radius" + ASSIGNMENT + "50000"); // Max range
+            mUrl.append(OPERATION_SEPARATOR).append("radius" + ASSIGNMENT + "4000"); // Max range
         }
 
         if (!TextUtils.isEmpty(b.mQuery)) {

@@ -508,7 +508,7 @@ public class Launcher extends AppCompatActivity implements
         }
 
         if (mSearchView != null && !visibility) {
-            mSearchView.setVisibility(visibility ? View.VISIBLE : View.GONE);
+            mSearchView.setVisibility(visibility ? View.VISIBLE : View.INVISIBLE);
         }
     }
 }
