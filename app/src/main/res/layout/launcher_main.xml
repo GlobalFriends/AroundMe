@@ -41,25 +41,27 @@
                 android:src="@android:drawable/ic_menu_mylocation"
                 android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
-                android:layout_margin="8dp"/>
+                android:layout_margin="6dp"/>
 
             <TextView
-                style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title.Inverse"
+                style="@style/TextAppearance.AppCompat.Widget.ActionBar.Subtitle.Inverse"
                 android:id="@+id/text_current_location"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_toEndOf="@id/image_location"
+                android:layout_toLeftOf="@+id/delete_location"
+                android:layout_toRightOf="@+id/image_location"
                 android:layout_centerVertical="true"
-                android:layout_margin="8dp"/>
+                android:layout_margin="6dp"/>
 
             <ImageView
+                android:id="@+id/delete_location"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@android:drawable/ic_menu_delete"
-                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
                 android:onClick="clearCustomLocation"
-                android:layout_margin="8dp"/>
+                android:layout_margin="6dp"/>
 
         </RelativeLayout>
 

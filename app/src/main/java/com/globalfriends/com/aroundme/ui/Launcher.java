@@ -50,7 +50,7 @@ public class Launcher extends AppCompatActivity implements
         PlacesListFragment.OnPlaceListFragmentSelection,
         PlaceDetailsFragment.OnPlaceDetailsFragmentInteractionListener,
         FavoriteFragment.OnFavoriteFragmentInteractionListener,
-RecentFragment.OnRecentFragmentInteractionListener,
+        RecentFragment.OnRecentFragmentInteractionListener,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
         ToolbarUpdateListener {
@@ -173,8 +173,8 @@ RecentFragment.OnRecentFragmentInteractionListener,
                 }
             });
             dialog.show();
-        } else{
-        registerLocationUpdates();
+        } else {
+            registerLocationUpdates();
         }
     }
 
@@ -314,7 +314,7 @@ RecentFragment.OnRecentFragmentInteractionListener,
             case R.id.action_set_location:
                 AutoCompletePredictionProvider.mEnabled = true;
                 mSearchMenu.expandActionView();
-        mSearchView.setQueryHint(getString(R.string.set_location_hint));
+                mSearchView.setQueryHint(getString(R.string.set_location_hint));
                 mSearchType = SEARCH_TYPE_LOCATION;
                 break;
             default:
@@ -364,7 +364,7 @@ RecentFragment.OnRecentFragmentInteractionListener,
     }
 
     @Override
-    public void OnSelectionFragmentSelection(Bundle bundle){
+    public void OnSelectionFragmentSelection(Bundle bundle) {
         launchPlaceListFragment(bundle);
     }
 
@@ -389,8 +389,8 @@ RecentFragment.OnRecentFragmentInteractionListener,
             } else if (mSearchType == SEARCH_TYPE_PLACE) {
                 mSearchMenu.collapseActionView();
                 Bundle bundle = new Bundle();
-        bundle.putString("TEXT_EXTRA",intent.getStringExtra(SearchManager.QUERY).replace(" ", "+"));
-        launchPlaceListFragment(bundle);
+                bundle.putString("TEXT_EXTRA", intent.getStringExtra(SearchManager.QUERY).replace(" ", "+"));
+                launchPlaceListFragment(bundle);
             }
         }
     }
@@ -403,9 +403,9 @@ RecentFragment.OnRecentFragmentInteractionListener,
      */
     private void enableCustomLocation(boolean result, IPlaceDetails response) {
         if (result) {
-        mSearchMenu.collapseActionView();
+            mSearchMenu.collapseActionView();
             mCustomLocationHolderView.setVisibility(View.VISIBLE);
-        mCustomLocationTextView.setText(response.getAddress());
+            mCustomLocationTextView.setText(response.getAddress());
             mIsCustomLocation = true;
             // Set received place details location as a base location for all search queries.
             PreferenceManager.putLocation(response.getLatitude().toString(),
@@ -501,10 +501,14 @@ RecentFragment.OnRecentFragmentInteractionListener,
             } else {
                 TransactionManager.getInstance().removeResultCallback(mSetCustomLocationCallback);
             }
+
+            if (mIsCustomLocation) {
+                mCustomLocationHolderView.setVisibility(visibility ? View.VISIBLE : View.GONE);
+            }
         }
 
         if (mSearchView != null && !visibility) {
-        mSearchView.setVisibility(visibility ? View.VISIBLE : View.INVISIBLE);
+            mSearchView.setVisibility(visibility ? View.VISIBLE : View.GONE);
         }
     }
 }
