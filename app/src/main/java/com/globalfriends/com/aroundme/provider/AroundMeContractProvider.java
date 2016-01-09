@@ -51,6 +51,12 @@ public abstract class AroundMeContractProvider {
         }
     }
 
+    public void delete(Context context, String where, String[] selectionArgs) {
+        if (context != null) {
+            context.getContentResolver().delete(mBaseUri, where, selectionArgs);
+        }
+    }
+
     /**
      * Construct the Uri to query maximum given number of records
      *
@@ -138,6 +144,10 @@ public abstract class AroundMeContractProvider {
             mPhotoRefrence = photoRefernce;
             mAddress = address;
             mName = name;
+        }
+
+        public Places() {
+            mBaseUri = CONTENT_URI;
         }
 
         @Override
@@ -292,8 +302,8 @@ public abstract class AroundMeContractProvider {
         private long mTimeStamp;
 
         public RecentPlaces(boolean isOpenNow, double rating, double latitude,
-                      double longitude, String placeId, String phoneNumber,
-                      String photoRefernce, String address, String name) {
+                            double longitude, String placeId, String phoneNumber,
+                            String photoRefernce, String address, String name) {
             mBaseUri = CONTENT_URI;
             mIsOpenNow = isOpenNow;
             mRating = rating;

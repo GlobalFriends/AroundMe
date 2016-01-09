@@ -245,9 +245,11 @@ public class PlaceDetailsFragment extends BaseFragment implements View.OnClickLi
                 break;
             case R.id.id_favorite: {
                 double rating = 0;
+                boolean isFavorite = false;
                 if (mGooglePlaceDetails.getRating() != null) {
                     rating = Double.parseDouble(mGooglePlaceDetails.getRating());
                 }
+
                 //Should this be moved to Async task ? on activity exit ?
                 if (!AroundMeContractProvider.Places.exist(getActivity(), mPlaceId)) {
                     AroundMeContractProvider.Places fav =
@@ -256,11 +258,18 @@ public class PlaceDetailsFragment extends BaseFragment implements View.OnClickLi
                                     mGooglePlaceDetails.getInternationalPhoneNumber(), "",
                                     mGooglePlaceDetails.getAddress(), mGooglePlaceDetails.getPlaceName());
                     fav.save(getContext());
-                    LinearLayoutCompat ll = (LinearLayoutCompat) v;
-                    //Uncomment after getting proper image
-                    ImageView img = (ImageView) ll.findViewById(R.id.id_favorite_image);
-                    img.setBackgroundResource(R.drawable.favouritenew);
+                    isFavorite = true;
+                } else {
+                    AroundMeContractProvider.Places places = new AroundMeContractProvider.Places();
+                    places.delete(getContext(), AroundMeContractProvider.PlacesColumns.PLACES_ID + "=?",
+                            new String[]{mPlaceId});
+                    isFavorite = false;
                 }
+
+                LinearLayoutCompat ll = (LinearLayoutCompat) v;
+                //Uncomment after getting proper image
+                ImageView img = (ImageView) ll.findViewById(R.id.id_favorite_image);
+                img.setBackgroundResource(isFavorite ? R.drawable.favouritenew : R.drawable.unfavorite);
             }
             break;
             case R.id.fab: {
