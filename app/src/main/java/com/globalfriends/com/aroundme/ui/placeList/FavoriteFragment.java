@@ -3,7 +3,6 @@ package com.globalfriends.com.aroundme.ui.placeList;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ListFragment;
@@ -55,14 +54,14 @@ public class FavoriteFragment extends ListFragment implements AbsListView.OnItem
             throw new ClassCastException(context.toString()
                     + " must implement OnSelectionFragmentSelection");
         }
-        mListener = (OnFavoriteFragmentInteractionListener)context;
+        mListener = (OnFavoriteFragmentInteractionListener) context;
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        Intent myData = getActivity().getIntent();
-        Bundle info = myData.getExtras();
+        Intent data = getActivity().getIntent();
+        Bundle info = data.getExtras();
         mAdapter = new SimpleCursorAdapter(getActivity(), R.layout.layout_fav_places_item, null, new String[]{
                 AroundMeContractProvider.PlacesColumns.PLACE_NAME, AroundMeContractProvider.PlacesColumns.FORMATTED_ADDRESS, AroundMeContractProvider.PlacesColumns.PHONE_NUMBER,
                 AroundMeContractProvider.PlacesColumns.PLACES_ID}
@@ -74,14 +73,16 @@ public class FavoriteFragment extends ListFragment implements AbsListView.OnItem
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         super.onListItemClick(l, v, position, id);
-        Cursor c = mAdapter.getCursor();
-        String placeid = c.getString(c.getColumnIndex(AroundMeContractProvider.PlacesColumns.PLACES_ID));
-        mListener.onFavoriteViewClicked(placeid);
+        Cursor cursor = mAdapter.getCursor();
+        String placeId = cursor.getString(cursor.getColumnIndex(AroundMeContractProvider.PlacesColumns.PLACES_ID));
+        if (cursor != null && !cursor.isClosed()) {
+            cursor.close();
+        }
+        mListener.onFavoriteViewClicked(placeId);
     }
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
     }
 
     @Override

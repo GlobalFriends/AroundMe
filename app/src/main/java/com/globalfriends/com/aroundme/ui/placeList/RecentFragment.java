@@ -3,7 +3,6 @@ package com.globalfriends.com.aroundme.ui.placeList;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.support.v4.app.LoaderManager;
@@ -28,6 +27,7 @@ public class RecentFragment extends ListFragment implements AbsListView.OnItemCl
     private SimpleCursorAdapter mAdapter;
     private ToolbarUpdateListener mToolbarUpdater;
     private OnRecentFragmentInteractionListener mListener;
+
     public interface OnRecentFragmentInteractionListener {
         /**
          * Launch Place Details
@@ -37,6 +37,7 @@ public class RecentFragment extends ListFragment implements AbsListView.OnItemCl
         void onRecentViewClicked(String placeId);
 
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return super.onCreateView(inflater, container, savedInstanceState);
@@ -63,9 +64,12 @@ public class RecentFragment extends ListFragment implements AbsListView.OnItemCl
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         super.onListItemClick(l, v, position, id);
-        Cursor c = mAdapter.getCursor();
-        String placeid = c.getString(c.getColumnIndex(AroundMeContractProvider.PlacesColumns.PLACES_ID));
-        mListener.onRecentViewClicked(placeid);
+        Cursor cursor = mAdapter.getCursor();
+        String placeId = cursor.getString(cursor.getColumnIndex(AroundMeContractProvider.PlacesColumns.PLACES_ID));
+        if (cursor != null && !cursor.isClosed()) {
+            cursor.close();
+        }
+        mListener.onRecentViewClicked(placeId);
     }
 
     @Override
@@ -77,7 +81,7 @@ public class RecentFragment extends ListFragment implements AbsListView.OnItemCl
             throw new ClassCastException(context.toString()
                     + " must implement OnSelectionFragmentSelection");
         }
-        mListener = (OnRecentFragmentInteractionListener)context;
+        mListener = (OnRecentFragmentInteractionListener) context;
     }
 
     @Override
