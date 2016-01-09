@@ -75,9 +75,6 @@ public class FavoriteFragment extends ListFragment implements AbsListView.OnItem
         super.onListItemClick(l, v, position, id);
         Cursor cursor = mAdapter.getCursor();
         String placeId = cursor.getString(cursor.getColumnIndex(AroundMeContractProvider.PlacesColumns.PLACES_ID));
-        if (cursor != null && !cursor.isClosed()) {
-            cursor.close();
-        }
         mListener.onFavoriteViewClicked(placeId);
     }
 
@@ -86,8 +83,14 @@ public class FavoriteFragment extends ListFragment implements AbsListView.OnItem
     }
 
     @Override
+    public void onStop() {
+        super.onStop();
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
+
         mToolbarUpdater.onNavigationEnabled(false);
         mToolbarUpdater.onSearchBarEnabled(false);
         getActivity().setTitle(R.string.favorite_title);

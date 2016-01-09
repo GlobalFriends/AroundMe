@@ -9,6 +9,7 @@
         android:layout_margin="3dp"
         card_view:cardCornerRadius="2dp"
         card_view:cardElevation="3dp"
+        android:descendantFocusability="blocksDescendants"
         card_view:contentPadding="5dp">
 
         <android.support.v7.widget.LinearLayoutCompat
