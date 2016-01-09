@@ -257,6 +257,7 @@ public class Launcher extends AppCompatActivity implements
     public void clearCustomLocation(View view) {
         enableCustomLocation(false, null);
     }
+
     /**
      * Create or update fragement aand provide a back stack as per request
      *
@@ -438,7 +439,6 @@ public class Launcher extends AppCompatActivity implements
     public void OnPlaceListFragmentSelection(final PlaceInfo place) {
         Bundle bundle = new Bundle();
         bundle.putString("PLACE_ID", place.getPlaceId());
-        bundle.putParcelable("PHOTO_ID", place.getPhotoReference());
         Fragment fragment = new PlaceDetailsFragment();
         fragment.setArguments(bundle);
         updateFragment(fragment, false, true);

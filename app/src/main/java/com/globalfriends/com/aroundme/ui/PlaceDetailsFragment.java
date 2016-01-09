@@ -60,7 +60,6 @@ public class PlaceDetailsFragment extends BaseFragment implements View.OnClickLi
     private IPlaceDetails mGooglePlaceDetails;
     private ImageLoader mGoogleImageLoader;
     private String mPlaceId;
-    private PlacePhotoMetadata mPlacePhotoReference;
     // UI Elements
     private TextView mPlaceName;
     private TextView mAddress;
@@ -105,12 +104,10 @@ public class PlaceDetailsFragment extends BaseFragment implements View.OnClickLi
 
         Bundle bundle = getArguments();
         if (bundle != null) {
-            mPlacePhotoReference = bundle.getParcelable("PHOTO_ID");
             mPlaceId = bundle.getString("PLACE_ID");
         }
 
         if (savedInstanceState != null) {
-            mPlacePhotoReference = savedInstanceState.getParcelable("PHOTO_ID");
             mPlaceId = savedInstanceState.getString("PLACE_ID");
         }
 
@@ -122,15 +119,6 @@ public class PlaceDetailsFragment extends BaseFragment implements View.OnClickLi
         }
 
         // Update Image
-        if (mPlacePhotoReference != null) {
-            mMapView.setVisibility(View.GONE);
-            mMainDisplayImage.setVisibility(View.VISIBLE);
-            mMainDisplayImage.setImageUrl(
-                    Utility.getPlacePhotoQuery(mPlacePhotoReference.getReference(),
-                            mPlacePhotoReference.getHeight(),
-                            mPlacePhotoReference.getWidth()),
-                    mGoogleImageLoader);
-        }
         TransactionManager.getInstance().findGooglePlaceDetails(mPlaceId, null);
     }
 
@@ -173,7 +161,6 @@ public class PlaceDetailsFragment extends BaseFragment implements View.OnClickLi
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        outState.putParcelable("PHOTO_ID", mPlacePhotoReference);
         outState.putString("PLACE_ID", mPlaceId);
     }
 
@@ -259,19 +246,15 @@ public class PlaceDetailsFragment extends BaseFragment implements View.OnClickLi
                 break;
             case R.id.id_favorite: {
                 double rating = 0;
-                String photoReference = "";
                 if (mGooglePlaceDetails.getRating() != null) {
                     rating = Double.parseDouble(mGooglePlaceDetails.getRating());
-                }
-                if (mPlacePhotoReference != null) {
-                    photoReference = mPlacePhotoReference.toString();
                 }
                 //Should this be moved to Async task ? on activity exit ?
                 if (!AroundMeContractProvider.Places.exist(getActivity(), mPlaceId)) {
                     AroundMeContractProvider.Places fav =
                             new AroundMeContractProvider.Places(mGooglePlaceDetails.isOpenNow(), rating,
                                     mGooglePlaceDetails.getLatitude(), mGooglePlaceDetails.getLongitude(), mPlaceId,
-                                    mGooglePlaceDetails.getInternationalPhoneNumber(), photoReference,
+                                    mGooglePlaceDetails.getInternationalPhoneNumber(), "",
                                     mGooglePlaceDetails.getAddress(), mGooglePlaceDetails.getPlaceName());
                     fav.save(getContext());
                     LinearLayoutCompat ll = (LinearLayoutCompat) v;
@@ -288,9 +271,7 @@ public class PlaceDetailsFragment extends BaseFragment implements View.OnClickLi
                     if (mGooglePlaceDetails.getRating() != null) {
                         rating = Double.parseDouble(mGooglePlaceDetails.getRating());
                     }
-                    if (mPlacePhotoReference != null) {
-                        photoReference = mPlacePhotoReference.toString();
-                    }
+
                     if (!AroundMeContractProvider.RecentPlaces.exist(getActivity(), mPlaceId)) {
                         AroundMeContractProvider.RecentPlaces recentPlaces =
                                 new AroundMeContractProvider.RecentPlaces(mGooglePlaceDetails.isOpenNow(), rating,
@@ -300,22 +281,10 @@ public class PlaceDetailsFragment extends BaseFragment implements View.OnClickLi
                         recentPlaces.save(getContext());
                     }
 
-//                    Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
-//                            Uri.parse("geo:0,0?q=" + mGooglePlaceDetails.getLatitude() + "," + mGooglePlaceDetails.getLongitude()
-//                                    + "(" + mGooglePlaceDetails.getPlaceName() + ")"));
-//                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-//                    getActivity().startActivity(intent);
-
                     Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
                             Uri.parse("geo:0,0?q=" + mGooglePlaceDetails.getAddress()));
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     getActivity().startActivity(intent);
-
-
-//                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("google.navigation:q=" +mGooglePlaceDetails.getLatitude()
-//                            +","+mGooglePlaceDetails.getLongitude()));
-//                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//                    startActivity(intent);
                 }
 
             }
@@ -646,10 +615,19 @@ public class PlaceDetailsFragment extends BaseFragment implements View.OnClickLi
                 mGooglePlaceDetails = response;
                 mGooglePlaceDetails.toString();
                 // If image is not present then show maps view here
-                if (mPlacePhotoReference == null) {
+                if (response.getPhotos() == null || response.getPhotos().size() == 0) {
                     mMapView.setVisibility(View.VISIBLE);
                     mMainDisplayImage.setVisibility(View.GONE);
                     updateMapView();
+                } else {
+                    mMapView.setVisibility(View.GONE);
+                    mMainDisplayImage.setVisibility(View.VISIBLE);
+                    PlacePhotoMetadata metaData = response.getPhotos().get(0);
+                    mMainDisplayImage.setImageUrl(
+                            Utility.getPlacePhotoQuery(metaData.getReference(),
+                                    metaData.getHeight(),
+                                    metaData.getWidth()),
+                            mGoogleImageLoader);
                 }
 
                 updateUi();
