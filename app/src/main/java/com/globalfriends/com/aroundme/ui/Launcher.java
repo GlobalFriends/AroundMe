@@ -49,6 +49,8 @@ public class Launcher extends AppCompatActivity implements
         SelectionFragment.OnSelectionFragmentSelection,
         PlacesListFragment.OnPlaceListFragmentSelection,
         PlaceDetailsFragment.OnPlaceDetailsFragmentInteractionListener,
+        FavoriteFragment.OnFavoriteFragmentInteractionListener,
+RecentFragment.OnRecentFragmentInteractionListener,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
         ToolbarUpdateListener {
@@ -171,8 +173,8 @@ public class Launcher extends AppCompatActivity implements
                 }
             });
             dialog.show();
-        } else {
-            registerLocationUpdates();
+        } else{
+        registerLocationUpdates();
         }
     }
 
@@ -312,7 +314,7 @@ public class Launcher extends AppCompatActivity implements
             case R.id.action_set_location:
                 AutoCompletePredictionProvider.mEnabled = true;
                 mSearchMenu.expandActionView();
-                mSearchView.setQueryHint(getString(R.string.set_location_hint));
+        mSearchView.setQueryHint(getString(R.string.set_location_hint));
                 mSearchType = SEARCH_TYPE_LOCATION;
                 break;
             default:
@@ -362,7 +364,7 @@ public class Launcher extends AppCompatActivity implements
     }
 
     @Override
-    public void OnSelectionFragmentSelection(Bundle bundle) {
+    public void OnSelectionFragmentSelection(Bundle bundle){
         launchPlaceListFragment(bundle);
     }
 
@@ -387,8 +389,8 @@ public class Launcher extends AppCompatActivity implements
             } else if (mSearchType == SEARCH_TYPE_PLACE) {
                 mSearchMenu.collapseActionView();
                 Bundle bundle = new Bundle();
-                bundle.putString("TEXT_EXTRA", intent.getStringExtra(SearchManager.QUERY).replace(" ", "+"));
-                launchPlaceListFragment(bundle);
+        bundle.putString("TEXT_EXTRA",intent.getStringExtra(SearchManager.QUERY).replace(" ", "+"));
+        launchPlaceListFragment(bundle);
             }
         }
     }
@@ -401,9 +403,9 @@ public class Launcher extends AppCompatActivity implements
      */
     private void enableCustomLocation(boolean result, IPlaceDetails response) {
         if (result) {
-            mSearchMenu.collapseActionView();
+        mSearchMenu.collapseActionView();
             mCustomLocationHolderView.setVisibility(View.VISIBLE);
-            mCustomLocationTextView.setText(response.getAddress());
+        mCustomLocationTextView.setText(response.getAddress());
             mIsCustomLocation = true;
             // Set received place details location as a base location for all search queries.
             PreferenceManager.putLocation(response.getLatitude().toString(),
@@ -455,6 +457,24 @@ public class Launcher extends AppCompatActivity implements
     }
 
     @Override
+    public void onRecentViewClicked(String placeId) {
+        Bundle bundle = new Bundle();
+        bundle.putString("PLACE_ID", placeId);
+        Fragment fragment = new PlaceDetailsFragment();
+        fragment.setArguments(bundle);
+        updateFragment(fragment, false, true);
+    }
+
+    @Override
+    public void onFavoriteViewClicked(final String placeId) {
+        Bundle bundle = new Bundle();
+        bundle.putString("PLACE_ID", placeId);
+        Fragment fragment = new PlaceDetailsFragment();
+        fragment.setArguments(bundle);
+        updateFragment(fragment, false, true);
+    }
+
+    @Override
     public void onMapsViewClicked(Bundle bundle) {
         Fragment fragment = new MapsFragment();
         fragment.setArguments(bundle);
@@ -484,7 +504,7 @@ public class Launcher extends AppCompatActivity implements
         }
 
         if (mSearchView != null && !visibility) {
-            mSearchView.setVisibility(visibility ? View.VISIBLE : View.INVISIBLE);
+        mSearchView.setVisibility(visibility ? View.VISIBLE : View.INVISIBLE);
         }
     }
 }

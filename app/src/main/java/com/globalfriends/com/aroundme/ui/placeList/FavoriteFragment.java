@@ -3,6 +3,7 @@ package com.globalfriends.com.aroundme.ui.placeList;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ListFragment;
@@ -14,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
+import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 
 import com.globalfriends.com.aroundme.R;
@@ -26,6 +28,17 @@ import com.globalfriends.com.aroundme.ui.ToolbarUpdateListener;
 public class FavoriteFragment extends ListFragment implements AbsListView.OnItemClickListener, LoaderManager.LoaderCallbacks<Cursor> {
     private SimpleCursorAdapter mAdapter;
     private ToolbarUpdateListener mToolbarUpdater;
+    private OnFavoriteFragmentInteractionListener mListener;
+
+    public interface OnFavoriteFragmentInteractionListener {
+        /**
+         * Launch Place Details
+         *
+         * @param placeId
+         */
+        void onFavoriteViewClicked(String placeId);
+
+    }
 
     @Nullable
     @Override
@@ -34,14 +47,15 @@ public class FavoriteFragment extends ListFragment implements AbsListView.OnItem
     }
 
     @Override
-    public void onAttach(Context activity) {
-        super.onAttach(activity);
+    public void onAttach(Context context) {
+        super.onAttach(context);
         try {
-            mToolbarUpdater = (ToolbarUpdateListener) activity;
+            mToolbarUpdater = (ToolbarUpdateListener) context;
         } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
+            throw new ClassCastException(context.toString()
                     + " must implement OnSelectionFragmentSelection");
         }
+        mListener = (OnFavoriteFragmentInteractionListener)context;
     }
 
     @Override
@@ -50,10 +64,19 @@ public class FavoriteFragment extends ListFragment implements AbsListView.OnItem
         Intent myData = getActivity().getIntent();
         Bundle info = myData.getExtras();
         mAdapter = new SimpleCursorAdapter(getActivity(), R.layout.layout_fav_places_item, null, new String[]{
-                AroundMeContractProvider.PlacesColumns.PLACE_NAME,AroundMeContractProvider.PlacesColumns.FORMATTED_ADDRESS,AroundMeContractProvider.PlacesColumns.PHONE_NUMBER}
-                , new int[]{R.id.place_name,R.id.vicinity, R.id.phone_number}, 0);
+                AroundMeContractProvider.PlacesColumns.PLACE_NAME, AroundMeContractProvider.PlacesColumns.FORMATTED_ADDRESS, AroundMeContractProvider.PlacesColumns.PHONE_NUMBER,
+                AroundMeContractProvider.PlacesColumns.PLACES_ID}
+                , new int[]{R.id.place_name, R.id.vicinity, R.id.phone_number, R.id.place_id}, 0);
         setListAdapter(mAdapter);
         getLoaderManager().initLoader(0, info, this);
+    }
+
+    @Override
+    public void onListItemClick(ListView l, View v, int position, long id) {
+        super.onListItemClick(l, v, position, id);
+        Cursor c = mAdapter.getCursor();
+        String placeid = c.getString(c.getColumnIndex(AroundMeContractProvider.PlacesColumns.PLACES_ID));
+        mListener.onFavoriteViewClicked(placeid);
     }
 
     @Override
