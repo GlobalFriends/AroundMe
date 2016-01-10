@@ -8,7 +8,6 @@ import android.content.res.ColorStateList;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.drawable.LayerDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -45,6 +44,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.List;
 
 
@@ -118,6 +118,7 @@ public class PlaceDetailsFragment extends BaseFragment implements View.OnClickLi
         }
 
         // Update Image
+        mDisplayedModuleTags.clear();
         TransactionManager.getInstance().findGooglePlaceDetails(mPlaceId, null);
     }
 
@@ -612,6 +613,7 @@ public class PlaceDetailsFragment extends BaseFragment implements View.OnClickLi
         container.addView(moduleLayout);
     }
 
+    private HashSet<String> mDisplayedModuleTags = new HashSet<String>();
     /**
      * Response handler for getting detailed informaiton about place
      */
@@ -651,7 +653,10 @@ public class PlaceDetailsFragment extends BaseFragment implements View.OnClickLi
                 return;
             }
 
-            addReviewsFromModules(response, placeTag);
+            if (!mDisplayedModuleTags.contains(placeTag)) {
+                mDisplayedModuleTags.add(placeTag);
+                addReviewsFromModules(response, placeTag);
+            }
         }
 
         @Override
