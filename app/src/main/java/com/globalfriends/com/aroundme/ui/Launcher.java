@@ -496,13 +496,12 @@ public class Launcher extends AppCompatActivity implements
         // field is specifically enabled.
         if (mSetLocationMenu != null) {
             mSetLocationMenu.setVisible(visibility);
-            if (visibility) {
-                TransactionManager.getInstance().addResultCallback(mSetCustomLocationCallback);
-            } else {
-                TransactionManager.getInstance().removeResultCallback(mSetCustomLocationCallback);
-            }
-
             if (mIsCustomLocation) {
+                if (visibility) {
+                    TransactionManager.getInstance().addResultCallback(mSetCustomLocationCallback);
+                } else {
+                    TransactionManager.getInstance().removeResultCallback(mSetCustomLocationCallback);
+                }
                 mCustomLocationHolderView.setVisibility(visibility ? View.VISIBLE : View.GONE);
             }
         }
