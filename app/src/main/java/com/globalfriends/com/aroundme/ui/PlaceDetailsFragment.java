@@ -501,11 +501,7 @@ public class PlaceDetailsFragment extends BaseFragment implements View.OnClickLi
             if (TextUtils.isEmpty(placeDetails.getRatingUrl())) {
                 ratingImageView.setVisibility(View.GONE);
             } else {
-                if (getString(R.string.four_square_tag).equalsIgnoreCase(moduleName)) {
-                    ratingImageView.setVisibility(View.GONE);
-                } else {
-                    ratingImageView.setVisibility(View.VISIBLE);
-                }
+                ratingImageView.setVisibility(View.VISIBLE);
                 ratingImageView.setImageUrl(placeDetails.getRatingUrl(), imageLoader);
             }
         } else {
@@ -519,17 +515,17 @@ public class PlaceDetailsFragment extends BaseFragment implements View.OnClickLi
                 if (!TextUtils.isEmpty(mGooglePlaceDetails.getRating())) {
                     ratingBar.setRating(Float.valueOf(mGooglePlaceDetails.getRating()));
                 }
+            } else if (moduleName.equalsIgnoreCase(getString(R.string.four_square_tag))){
+                ratingBar.setVisibility(View.GONE);
+                if (!TextUtils.isEmpty(mGooglePlaceDetails.getRating())) {
+                    ratingBar.setRating(Float.valueOf(mGooglePlaceDetails.getRating()));
+                }
             } else {
                 if (TextUtils.isEmpty(placeDetails.getPlaceRating())) {
                     ratingBar.setVisibility(View.GONE);
                 } else {
                     ratingBar.setVisibility(View.VISIBLE);
                     ratingBar.setRating(Float.valueOf(placeDetails.getPlaceRating()));
-                    if (!TextUtils.isEmpty(placeDetails.getRatingColor())) {
-                        LayerDrawable stars = (LayerDrawable) ratingBar.getProgressDrawable();
-//                        stars.setColorFilter(Color.parseColor("0x" + placeDetails.getRatingColor()),
-//                                PorterDuff.Mode.LIGHTEN);
-                    }
                 }
             }
         }
