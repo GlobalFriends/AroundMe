@@ -246,6 +246,7 @@ public class Launcher extends AppCompatActivity implements
 
         mNavigationView = (NavigationView) findViewById(R.id.nav_view);
         mNavigationView.setNavigationItemSelectedListener(this);
+        mNavigationView.setItemIconTintList(null);
 
         //Custom view layout update
         mCustomLocationHolderView = findViewById(R.id.custom_location);
