@@ -38,6 +38,12 @@ public class PlacesListFragment extends ListFragment implements SwipeRefreshLayo
     private String mNextPageToken;
 
     @Override
+    public void onDestroy() {
+        TransactionManager.getInstance().removeResultCallback(mCallBack);
+        super.onDestroy();
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // Register callback to make sure everything will be received
@@ -100,6 +106,11 @@ public class PlacesListFragment extends ListFragment implements SwipeRefreshLayo
             throw new ClassCastException(activity.toString()
                     + " must implement OnSelectionFragmentSelection");
         }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
     }
 
     @Override
