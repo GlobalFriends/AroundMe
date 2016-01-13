@@ -16,7 +16,7 @@
     </group>
 
     <item android:title="Communicate">
-        <menu>
+        <group>
             <item
                 android:id="@+id/drawer_share"
                 android:icon="@drawable/ic_share"
@@ -29,7 +29,7 @@
                 android:id="@+id/drawer_rate_us"
                 android:icon="@drawable/rate_us"
                 android:title="@string/menu_rate_us" />
-        </menu>
+        </group>
     </item>
 
 </menu>
