@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <places>
     <placetype>
+        <name>Adventure</name>
+        <intent>com.globalfriends.com.aroundme.entertainment</intent>
+        <extra>amusement_park,campground</extra>
+        <icon>amusement_park</icon>
+        <description></description>
+    </placetype>
+    <placetype>
         <name>Airport</name>
         <intent>com.globalfriends.com.aroundme.Airport</intent>
         <extra>airport</extra>
@@ -46,21 +53,11 @@
         <name>Doctors</name>
         <intent>com.globalfriends.com.aroundme.medical_care</intent>
         <extra>dentist,doctor,physiotherapist</extra>
-        <icon>medical</icon>
-        <description></description>
-    </placetype>
-    <placetype>
-        <name>Entertainment</name>
-        <intent>com.globalfriends.com.aroundme.entertainment</intent>
-        <extra>
-            amusement_park,bowling_alley,campground,stadium
-        </extra>
-        <icon>amusement_park</icon>
+        <icon>doctor</icon>
         <description></description>
     </placetype>
     <placetype>
         <name>Fitness</name>
-        <intent>com.globalfriends.com.aroundme.fitness</intent>
         <extra>gym</extra>
         <icon>fitness</icon>
         <description></description>
