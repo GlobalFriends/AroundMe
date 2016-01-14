@@ -14,13 +14,17 @@ import com.globalfriends.com.aroundme.protocol.DefaultFeatureManager;
 import com.globalfriends.com.aroundme.protocol.Listener;
 import com.globalfriends.com.aroundme.protocol.OperationEnum;
 import com.globalfriends.com.aroundme.utils.Utility;
+import com.google.android.gms.location.places.Place;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * Created by vishal on 11/19/2015.
@@ -131,16 +135,8 @@ public class PlaceManager extends DefaultFeatureManager {
                 try {
                     if (response.has(STATUS)) {
                         if (STATUS_OK.equalsIgnoreCase(response.getString(STATUS))) {
-                            JSONArray array = response.getJSONArray("results");
-                            List<PlaceInfo> placeList = new ArrayList<PlaceInfo>();
-                            for (int i = 0; i < array.length(); i++) {
-                                try {
-                                    placeList.add(PlaceInfo
-                                            .jsonToPontoReferencia((JSONObject) array.get(i)));
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                }
-                            }
+                            List<PlaceInfo> placeList = getSortedList(response.getJSONArray("results"));
+
                             String pageToken = null;
                             if (response.has("next_page_token")) {
                                 pageToken = response.getString("next_page_token");
@@ -165,6 +161,30 @@ public class PlaceManager extends DefaultFeatureManager {
                 Logger.e(LOGGING_TAG, ">>>> Invalid operation. Should never come here <<<<");
                 mListener.onError("Invalid command type. Internal error", mModuleTag);
         }
+    }
+
+    /**
+     * Returns a sorted result list
+     *
+     * @param array
+     * @return
+     */
+    private List<PlaceInfo> getSortedList(JSONArray array) {
+        TreeMap<String, PlaceInfo> placeMap = new TreeMap<String, PlaceInfo>();
+        for (int i = 0; i < array.length(); i++) {
+            try {
+                PlaceInfo placeInfo = PlaceInfo
+                        .jsonToPontoReferencia((JSONObject) array.get(i));
+                placeMap.put(Utility.distanceFromLatitudeLongitude(Double.valueOf(PreferenceManager.getLatitude()),
+                        Double.valueOf(PreferenceManager.getLongitude()),
+                        placeInfo.getLatitude(),
+                        placeInfo.getLongitude(),
+                        PreferenceManager.getDistanceFormat()), placeInfo);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return new ArrayList<PlaceInfo>(placeMap.values());
     }
 
     @Override
