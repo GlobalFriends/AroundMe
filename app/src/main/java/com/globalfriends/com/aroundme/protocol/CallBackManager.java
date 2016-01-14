@@ -26,6 +26,12 @@ public class CallBackManager {
         }
     }
 
+    public void resetResultCallback() {
+        synchronized (mListeners) {
+            mListeners.clear();
+        }
+    }
+
     public HashSet<TransactionManager.Result> getListeners() {
         synchronized (mListeners) {
             return (HashSet<TransactionManager.Result>) mListeners.clone();

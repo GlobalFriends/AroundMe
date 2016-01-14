@@ -151,6 +151,7 @@ public class Launcher extends AppCompatActivity implements
         if (mGoogleApiClient != null) {
             mGoogleApiClient.disconnect();
         }
+        TransactionManager.getInstance().resetResultCallback();
         super.onDestroy();
     }
 

@@ -41,7 +41,9 @@ public class YelpManager extends DefaultFeatureManager {
             return;
         }
 
-        new YelpNetworkTask(internationalNumber, PLACE_DETAIL_REQUEST).execute();
+        if (!TextUtils.isEmpty(internationalNumber)) {
+            new YelpNetworkTask(internationalNumber, PLACE_DETAIL_REQUEST).execute();
+        }
     }
 
     /**

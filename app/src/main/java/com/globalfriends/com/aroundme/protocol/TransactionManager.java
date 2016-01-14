@@ -259,4 +259,8 @@ public class TransactionManager implements Listener {
     public void removeResultCallback(final Result result) {
         mCallBackManager.removeResultCallback(result);
     }
+
+    public void resetResultCallback() {
+        mCallBackManager.resetResultCallback();
+    }
 }
