@@ -1,6 +1,7 @@
 package com.globalfriends.com.aroundme.ui;
 
 import android.Manifest;
+import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.app.SearchManager;
 import android.content.Context;
@@ -14,6 +15,7 @@ import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -81,7 +83,7 @@ public class Launcher extends AppCompatActivity implements
     private int mSearchType = SEARCH_TYPE_DEFAULT;
 
     //Permission
-    private final static int MY_PERMISSIONS_REQUEST_PHONE_CALL = 0;
+    private final static int PLACE_LOCATOR_PERMISSIONS_ALL = 1;
 
     /**
      * Search type result for location based search
@@ -261,9 +263,12 @@ public class Launcher extends AppCompatActivity implements
 
         // Handle Location
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        validateLocation();
-        //TODO verify on M and then commit
-        //checkPermission();
+        int currentapiVersion = android.os.Build.VERSION.SDK_INT;
+        if (currentapiVersion >= android.os.Build.VERSION_CODES.M){
+            getAllPermissionForApp();
+        } else {
+            validateLocation();
+        }
     }
 
     public void clearCustomLocation(View view) {
@@ -377,34 +382,6 @@ public class Launcher extends AppCompatActivity implements
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
-    }
-
-    private void checkPermission() {
-        if (ContextCompat.checkSelfPermission(Launcher.this,
-                Manifest.permission.CALL_PHONE)
-                != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(Launcher.this,
-                    new String[]{Manifest.permission.CALL_PHONE},
-                    MY_PERMISSIONS_REQUEST_PHONE_CALL);
-        }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-       // super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch (requestCode) {
-            case MY_PERMISSIONS_REQUEST_PHONE_CALL:
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    Logger.i(TAG, "Permission granted");
-
-                } else {
-                    finish();
-                }
-             break;
-            default:
-                break;
-        }
     }
 
     @Override
@@ -554,4 +531,45 @@ public class Launcher extends AppCompatActivity implements
             mSearchView.setVisibility(visibility ? View.VISIBLE : View.INVISIBLE);
         }
     }
+
+    @TargetApi(23)
+    public void getAllPermissionForApp() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE)
+                != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[]{Manifest.permission.CALL_PHONE, Manifest.permission.ACCESS_COARSE_LOCATION,
+                    Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                    "com.google.android.providers.gsf.permission.READ_GSERVICES"},
+                    PLACE_LOCATOR_PERMISSIONS_ALL);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           @NonNull String permissions[],
+                                           @NonNull int[] grantResults) {
+        boolean grantedAccess = true;
+        if (requestCode == PLACE_LOCATOR_PERMISSIONS_ALL) {
+            if (grantResults.length > 0) {
+
+                for (int i = 0; i < grantResults.length; i++) {
+                    if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
+                        grantedAccess = false;
+                    }
+                    if (!grantedAccess) {
+                        finish();
+                    }
+                }
+                if (grantedAccess) {
+                    validateLocation();
+                }
+                Logger.i(TAG, "Read Contacts permission granted");
+            } else {
+                Logger.i(TAG, "Read Contacts permission denied");
+                finish();
+            }
+        } else {
+            super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
+    }
+
 }
