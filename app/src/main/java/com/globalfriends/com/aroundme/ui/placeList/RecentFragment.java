@@ -48,7 +48,7 @@ public class RecentFragment extends ListFragment implements AbsListView.OnItemCl
         super.onActivityCreated(savedInstanceState);
         Intent myData = getActivity().getIntent();
         Bundle info = myData.getExtras();
-        mAdapter = new SimpleCursorAdapter(getActivity(), R.layout.layout_fav_places_item, null, new String[]{
+        mAdapter = new SimpleCursorAdapter(getActivity(), R.layout.layout_recent_places_item, null, new String[]{
                 AroundMeContractProvider.RecentPlacesColumns.PLACE_NAME, AroundMeContractProvider.RecentPlacesColumns.FORMATTED_ADDRESS, AroundMeContractProvider.PlacesColumns.PHONE_NUMBER,
                 AroundMeContractProvider.RecentPlacesColumns.PLACES_ID}
                 , new int[]{R.id.place_name, R.id.vicinity, R.id.phone_number, R.id.place_id}, 0);
