@@ -27,22 +27,26 @@ public class YelpManager extends DefaultFeatureManager {
     @Override
     public void findPlaceDetails(final String internationalNumber, final String contactNumber,
                                  Double latitude, Double longitude) {
-        if (TextUtils.isEmpty(contactNumber) && TextUtils.isEmpty(internationalNumber)) {
-            return; // Not meant for this
-        }
+        try {
+            if (TextUtils.isEmpty(contactNumber) && TextUtils.isEmpty(internationalNumber)) {
+                return; // Not meant for this
+            }
 
-        if (!isNetworkAvailable()) {
-            mListener.onError(mContext.getString(R.string.network_error), mModuleTag);
-            return;
-        }
+            if (!isNetworkAvailable()) {
+                mListener.onError(mContext.getString(R.string.network_error), mModuleTag);
+                return;
+            }
 
-        if (!TextUtils.isEmpty(contactNumber)) {
-            new YelpNetworkTask(contactNumber, PLACE_DETAIL_REQUEST).execute();
-            return;
-        }
+            if (!TextUtils.isEmpty(contactNumber)) {
+                new YelpNetworkTask(contactNumber, PLACE_DETAIL_REQUEST).execute();
+                return;
+            }
 
-        if (!TextUtils.isEmpty(internationalNumber)) {
-            new YelpNetworkTask(internationalNumber, PLACE_DETAIL_REQUEST).execute();
+            if (!TextUtils.isEmpty(internationalNumber)) {
+                new YelpNetworkTask(internationalNumber, PLACE_DETAIL_REQUEST).execute();
+            }
+        } catch (Exception e) { // Sometimes we are getting FC in Yelp library. So, added as a workaround
+
         }
     }
 
