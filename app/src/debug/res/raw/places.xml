@@ -1,13 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <places>
     <placetype>
-        <name>Adventure</name>
-        <intent>com.globalfriends.com.aroundme.entertainment</intent>
-        <extra>amusement_park,campground</extra>
-        <icon>amusement_park</icon>
-        <description></description>
-    </placetype>
-    <placetype>
         <name>Airport</name>
         <intent>com.globalfriends.com.aroundme.Airport</intent>
         <extra>airport</extra>
@@ -47,6 +40,13 @@
         <intent>com.globalfriends.com.aroundme.cafe</intent>
         <extra>cafe</extra>
         <icon>cafe</icon>
+        <description></description>
+    </placetype>
+    <placetype>
+        <name>Camping</name>
+        <intent>com.globalfriends.com.aroundme.entertainment</intent>
+        <extra>campground</extra>
+        <icon>camping</icon>
         <description></description>
     </placetype>
     <placetype>
@@ -95,13 +95,6 @@
         <intent>com.globalfriends.com.aroundme.movie</intent>
         <extra>movie_theater</extra>
         <icon>cinema</icon>
-        <description></description>
-    </placetype>
-    <placetype>
-        <name>Museum and Zoo</name>
-        <intent>com.globalfriends.com.aroundme.museum</intent>
-        <extra>museum,aquarium,art_gallery,zoo,park</extra>
-        <icon>meuseum</icon>
         <description></description>
     </placetype>
     <placetype>
@@ -158,6 +151,13 @@
         <intent>com.globalfriends.com.aroundme.worship</intent>
         <extra>church,hindu_temple,mosque,place_of_worship</extra>
         <icon>worship</icon>
+        <description></description>
+    </placetype>
+    <placetype>
+        <name>Zoo</name>
+        <intent>com.globalfriends.com.aroundme.museum</intent>
+        <extra>aquarium,zoo</extra>
+        <icon>zoo</icon>
         <description></description>
     </placetype>
 </places>

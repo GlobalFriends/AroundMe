@@ -130,6 +130,7 @@ public class SelectionFragment extends BaseFragment implements AbsListView.OnIte
             }
 
             ImageView placeImage = (ImageView) convertView.findViewById(R.id.place_icon);
+            Log.i(TAG, "placeDetail.getIcon()=" + placeDetail.getIcon());
             placeImage.setImageDrawable(getResources().getDrawable(getResources().getIdentifier(placeDetail.getIcon(),
                     "drawable", getActivity().getPackageName())));
 
