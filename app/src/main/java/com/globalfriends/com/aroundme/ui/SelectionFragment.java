@@ -52,14 +52,12 @@ public class SelectionFragment extends BaseFragment implements AbsListView.OnIte
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        Logger.i(TAG, "onCreateView");
         View view = inflater.inflate(R.layout.fragment_item, container, false);
 
         // Set the adapter
         mListView = (AbsListView) view.findViewById(android.R.id.list);
         mListView.setAdapter(mAdapter);
 
-        Logger.i(TAG, "ListItems=" + mAdapter.getCount());
         // Set OnItemClickListener so we can be notified on item clicks
         mListView.setOnItemClickListener(this);
 
@@ -69,7 +67,6 @@ public class SelectionFragment extends BaseFragment implements AbsListView.OnIte
     @Override
     public void onAttach(Context activity) {
         super.onAttach(activity);
-        Logger.i(TAG, "onAttach");
         try {
             mListener = (OnSelectionFragmentSelection) activity;
         } catch (ClassCastException e) {
@@ -86,11 +83,9 @@ public class SelectionFragment extends BaseFragment implements AbsListView.OnIte
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Logger.i(TAG, "onItemClick");
 
         if (null != mListener) {
             PlaceTypeDetail details = (PlaceTypeDetail) parent.getItemAtPosition(position);
-            Log.i(TAG, ">>>> " + details.toString());
             Bundle bundle = new Bundle();
             bundle.putString("PLACE_EXTRA", details.getExtra());
             mListener.OnSelectionFragmentSelection(bundle);
@@ -130,7 +125,6 @@ public class SelectionFragment extends BaseFragment implements AbsListView.OnIte
             }
 
             ImageView placeImage = (ImageView) convertView.findViewById(R.id.place_icon);
-            Log.i(TAG, "placeDetail.getIcon()=" + placeDetail.getIcon());
             placeImage.setImageDrawable(getResources().getDrawable(getResources().getIdentifier(placeDetail.getIcon(),
                     "drawable", getActivity().getPackageName())));
 

@@ -215,7 +215,7 @@ public class PlaceDetailsFragment extends BaseFragment implements View.OnClickLi
         Fragment mapsFragment = new MapsFragment();
         mapsFragment.setArguments(bundle);
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-        transaction.add(R.id.mapView, mapsFragment).commit();
+        transaction.add(R.id.mapView, mapsFragment).commitAllowingStateLoss();
     }
 
     @Override

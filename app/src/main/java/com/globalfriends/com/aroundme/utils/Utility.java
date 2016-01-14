@@ -51,6 +51,7 @@ import static android.util.TypedValue.applyDimension;
  */
 public class Utility {
     private static final String TAG = " Utility";
+    private static final boolean DEBUG = false;
 
     /**
      * @param zipCode
@@ -62,9 +63,12 @@ public class Utility {
     }
 
     public static void generateNoteOnSD(String sFileName, String sBody) {
+        if (!DEBUG) {
+            return;
+        }
+
         try {
-            Logger.i(TAG, "Response=" + sBody);
-            File root = new File(Environment.getExternalStorageDirectory(), "AroundMe");
+           File root = new File(Environment.getExternalStorageDirectory(), "AroundMe");
             if (!root.exists()) {
                 root.mkdirs();
             }

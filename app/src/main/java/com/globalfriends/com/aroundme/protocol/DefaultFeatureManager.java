@@ -70,7 +70,6 @@ public class DefaultFeatureManager implements IFeatureManager {
     }
 
     public final void sendVolleyJsonRequest(final String url, final OperationEnum operation) {
-        Log.i(LOGGING_TAG, "Url=" + url);
         if (!isNetworkAvailable()) {
             mListener.onError(mContext.getString(R.string.network_error), mModuleTag);
             return;
@@ -80,14 +79,12 @@ public class DefaultFeatureManager implements IFeatureManager {
                 (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        Log.i(LOGGING_TAG, "response=" + response);
                         dispatchJsonResponse(operation, response);
                     }
                 }, new Response.ErrorListener() {
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Log.i(LOGGING_TAG, "response=" + error.toString());
                         if (mContext.getString(R.string.google_places_tag).equalsIgnoreCase(mModuleTag)) {
                             mListener.onError(PlaceErrorDescription.getErrorString(mContext, error.toString()), mModuleTag);
                         } else {
