@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">AroundMe</string>
+    <string name="app_name">Place Locator</string>
     <string name="test">Test</string>
     <string name="title_activity_maps">Map</string>
     <string name="action_yelp">Yelp</string>

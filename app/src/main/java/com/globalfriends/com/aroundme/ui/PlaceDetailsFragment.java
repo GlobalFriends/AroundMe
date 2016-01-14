@@ -593,7 +593,7 @@ public class PlaceDetailsFragment extends BaseFragment implements View.OnClickLi
 
         // Module Launch
         LinearLayoutCompat moduleLaunch = (LinearLayoutCompat) moduleLayout.findViewById(R.id.launch_module);
-        if (TextUtils.isEmpty(placeDetails.getWebUrl())) {
+        if (TextUtils.isEmpty(placeDetails.getWebUrl()) || getString(R.string.google_places_tag).equalsIgnoreCase(moduleName)) {
             moduleLaunch.setVisibility(View.GONE);
         } else {
             moduleLaunch.setVisibility(View.VISIBLE);
