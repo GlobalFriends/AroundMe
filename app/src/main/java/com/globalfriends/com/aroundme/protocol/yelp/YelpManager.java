@@ -64,7 +64,12 @@ public class YelpManager extends DefaultFeatureManager {
 
         @Override
         protected String doInBackground(Void... params) {
-            return Yelp.getYelp(mContext).phoneSearch(mPhoneNumber, Utility.getCountryCodeFromLocation());
+            try {
+                return Yelp.getYelp(mContext).phoneSearch(mPhoneNumber, Utility.getCountryCodeFromLocation());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return null;
         }
 
         @Override
