@@ -667,6 +667,7 @@ public class PlaceDetailsFragment extends BaseFragment implements View.OnClickLi
                 return;
             }
 
+
             if (mProgress.isShowing()) {
                 mProgress.dismiss();
             }
@@ -674,6 +675,7 @@ public class PlaceDetailsFragment extends BaseFragment implements View.OnClickLi
             new AlertDialog.Builder(getActivity())
                     .setTitle(getResources().getString(R.string.error_dialog_title))
                     .setMessage(errorMsg)
+                    .setCancelable(false)
                     .setPositiveButton(R.string.action_ok, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {

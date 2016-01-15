@@ -179,6 +179,7 @@ public class PlacesListFragment extends ListFragment implements SwipeRefreshLayo
             new AlertDialog.Builder(getActivity())
                     .setTitle(getResources().getString(R.string.error_dialog_title))
                     .setMessage(errorMsg)
+                    .setCancelable(false)
                     .setPositiveButton(R.string.action_ok, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
