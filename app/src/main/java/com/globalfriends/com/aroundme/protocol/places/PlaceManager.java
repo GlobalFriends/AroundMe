@@ -21,6 +21,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -170,7 +171,7 @@ public class PlaceManager extends DefaultFeatureManager {
      * @return
      */
     private List<PlaceInfo> getSortedList(JSONArray array) {
-        TreeMap<String, PlaceInfo> placeMap = new TreeMap<String, PlaceInfo>();
+        Map<String, PlaceInfo> placeMap = new TreeMap<String, PlaceInfo>();
         for (int i = 0; i < array.length(); i++) {
             try {
                 PlaceInfo placeInfo = PlaceInfo
