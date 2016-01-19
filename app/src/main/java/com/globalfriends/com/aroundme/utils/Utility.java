@@ -27,7 +27,6 @@ import com.globalfriends.com.aroundme.data.DistanceFormatEnum;
 import com.globalfriends.com.aroundme.data.IPlaceDetails;
 import com.globalfriends.com.aroundme.data.PlacePhotoMetadata;
 import com.globalfriends.com.aroundme.data.PreferenceManager;
-import com.globalfriends.com.aroundme.logging.Logger;
 import com.globalfriends.com.aroundme.protocol.places.PlaceRequestTypeEnum;
 import com.globalfriends.com.aroundme.protocol.places.PlaceResponseEnum;
 import com.globalfriends.com.aroundme.protocol.places.PlacesWebService;
@@ -68,7 +67,7 @@ public class Utility {
         }
 
         try {
-           File root = new File(Environment.getExternalStorageDirectory(), "AroundMe");
+            File root = new File(Environment.getExternalStorageDirectory(), "AroundMe");
             if (!root.exists()) {
                 root.mkdirs();
             }
@@ -131,7 +130,7 @@ public class Utility {
      * @return
      */
     public static String distanceFromLatitudeLongitude(double lat1, double lon1, double lat2,
-                                                               double lon2, final DistanceFormatEnum type) {
+                                                       double lon2, final DistanceFormatEnum type) {
         double theta = lon1 - lon2;
         double dist = Math.sin(deg2rad(lat1)) * Math.sin(deg2rad(lat2)) +
                 Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * Math.cos(deg2rad(theta));

@@ -30,6 +30,10 @@ public class DefaultPlaceDetails implements IPlaceDetails {
     protected List<PlacePhotoMetadata> mPhotoList = new ArrayList<PlacePhotoMetadata>();
     protected List<PlaceReviewMetadata> mReviewList = new ArrayList<PlaceReviewMetadata>();
 
+    public DefaultPlaceDetails(JSONObject response) {
+        mResponse = response;
+    }
+
     @Override
     public boolean isPermanentlyClosed() {
         return mPermanentlyClosed;
@@ -53,10 +57,6 @@ public class DefaultPlaceDetails implements IPlaceDetails {
     @Override
     public String getRatingUrl() {
         return mRatingUrl;
-    }
-
-    public DefaultPlaceDetails(JSONObject response) {
-        mResponse = response;
     }
 
     @Override

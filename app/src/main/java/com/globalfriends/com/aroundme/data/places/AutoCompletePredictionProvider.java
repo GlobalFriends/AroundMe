@@ -20,10 +20,9 @@ public class AutoCompletePredictionProvider extends ContentProvider {
             SearchManager.SUGGEST_COLUMN_TEXT_1,
             SearchManager.SUGGEST_COLUMN_INTENT_DATA
     };
-
+    public static boolean mEnabled = false;
     private List<AutoCompletePrediction> mPredictions;
     private ResultCallback mResultCallback = new ResultCallback();
-    public static boolean mEnabled = false;
 
     @Override
     public boolean onCreate() {
@@ -60,7 +59,7 @@ public class AutoCompletePredictionProvider extends ContentProvider {
 
         int i = 0;
         for (AutoCompletePrediction prediction : mPredictions) {
-            cursor.addRow(new String[] {Integer.toString(i), prediction.getDescription(), prediction.getPlaceId() });
+            cursor.addRow(new String[]{Integer.toString(i), prediction.getDescription(), prediction.getPlaceId()});
         }
 
         return cursor;

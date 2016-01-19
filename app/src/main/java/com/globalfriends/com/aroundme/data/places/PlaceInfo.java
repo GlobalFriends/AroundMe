@@ -19,6 +19,15 @@ import java.util.logging.Logger;
  * @Date 10/3/2013
  */
 public class PlaceInfo implements Parcelable {
+    public static final Creator<PlaceInfo> CREATOR = new Creator<PlaceInfo>() {
+        public PlaceInfo createFromParcel(Parcel source) {
+            return new PlaceInfo(source);
+        }
+
+        public PlaceInfo[] newArray(int size) {
+            return new PlaceInfo[size];
+        }
+    };
     private String id;
     private String icon;
     private String name;
@@ -30,6 +39,23 @@ public class PlaceInfo implements Parcelable {
     private String mRating;
     private boolean mOpenNow;
     private int mPriceLevel;
+
+    public PlaceInfo() {
+    }
+
+    private PlaceInfo(Parcel in) {
+        this.id = in.readString();
+        this.icon = in.readString();
+        this.name = in.readString();
+        this.vicinity = in.readString();
+        this.latitude = (Double) in.readValue(Double.class.getClassLoader());
+        this.longitude = (Double) in.readValue(Double.class.getClassLoader());
+        this.mPlace_id = in.readString();
+        this.mPhoto = in.readParcelable(PlacePhotoMetadata.class.getClassLoader());
+        this.mRating = in.readString();
+        this.mOpenNow = in.readByte() != 0;
+        this.mPriceLevel = in.readInt();
+    }
 
     public static PlaceInfo jsonToPontoReferencia(JSONObject pontoReferencia) {
         try {
@@ -179,7 +205,6 @@ public class PlaceInfo implements Parcelable {
         this.mPriceLevel = priceLevel;
     }
 
-
     @Override
     public int describeContents() {
         return 0;
@@ -199,31 +224,4 @@ public class PlaceInfo implements Parcelable {
         dest.writeByte(mOpenNow ? (byte) 1 : (byte) 0);
         dest.writeInt(this.mPriceLevel);
     }
-
-    public PlaceInfo() {
-    }
-
-    private PlaceInfo(Parcel in) {
-        this.id = in.readString();
-        this.icon = in.readString();
-        this.name = in.readString();
-        this.vicinity = in.readString();
-        this.latitude = (Double) in.readValue(Double.class.getClassLoader());
-        this.longitude = (Double) in.readValue(Double.class.getClassLoader());
-        this.mPlace_id = in.readString();
-        this.mPhoto = in.readParcelable(PlacePhotoMetadata.class.getClassLoader());
-        this.mRating = in.readString();
-        this.mOpenNow = in.readByte() != 0;
-        this.mPriceLevel = in.readInt();
-    }
-
-    public static final Creator<PlaceInfo> CREATOR = new Creator<PlaceInfo>() {
-        public PlaceInfo createFromParcel(Parcel source) {
-            return new PlaceInfo(source);
-        }
-
-        public PlaceInfo[] newArray(int size) {
-            return new PlaceInfo[size];
-        }
-    };
 }

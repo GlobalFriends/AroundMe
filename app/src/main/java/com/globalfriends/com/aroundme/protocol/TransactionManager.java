@@ -210,6 +210,24 @@ public class TransactionManager implements Listener {
     }
 
     /**
+     * @param result
+     */
+    public void addResultCallback(final Result result) {
+        mCallBackManager.addResultCallback(result);
+    }
+
+    /**
+     * @param result
+     */
+    public void removeResultCallback(final Result result) {
+        mCallBackManager.removeResultCallback(result);
+    }
+
+    public void resetResultCallback() {
+        mCallBackManager.resetResultCallback();
+    }
+
+    /**
      * Intermediate hop for callbacks from individual Manager modules.
      * This will be passed to UI elements who ever registered for these.
      */
@@ -243,24 +261,5 @@ public class TransactionManager implements Listener {
          */
         public void onError(final String errorMsg, final String tag) {
         }
-    }
-
-
-    /**
-     * @param result
-     */
-    public void addResultCallback(final Result result) {
-        mCallBackManager.addResultCallback(result);
-    }
-
-    /**
-     * @param result
-     */
-    public void removeResultCallback(final Result result) {
-        mCallBackManager.removeResultCallback(result);
-    }
-
-    public void resetResultCallback() {
-        mCallBackManager.resetResultCallback();
     }
 }

@@ -35,19 +35,19 @@ public class AutoCompletePrediction {
         return null;
     }
 
-    public void setDescription(String description) {
-        mDescription = description;
-    }
-
     public String getDescription() {
         return mDescription;
     }
 
-    public void setPlaceId(String placeId) {
-        mPlaceId = placeId;
+    public void setDescription(String description) {
+        mDescription = description;
     }
 
     public String getPlaceId() {
         return mPlaceId;
+    }
+
+    public void setPlaceId(String placeId) {
+        mPlaceId = placeId;
     }
 }

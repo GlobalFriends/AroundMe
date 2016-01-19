@@ -29,16 +29,6 @@ public class FavoriteFragment extends ListFragment implements AbsListView.OnItem
     private ToolbarUpdateListener mToolbarUpdater;
     private OnFavoriteFragmentInteractionListener mListener;
 
-    public interface OnFavoriteFragmentInteractionListener {
-        /**
-         * Launch Place Details
-         *
-         * @param placeId
-         */
-        void onFavoriteViewClicked(String placeId);
-
-    }
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -111,5 +101,15 @@ public class FavoriteFragment extends ListFragment implements AbsListView.OnItem
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
         mAdapter.swapCursor(null);
+    }
+
+    public interface OnFavoriteFragmentInteractionListener {
+        /**
+         * Launch Place Details
+         *
+         * @param placeId
+         */
+        void onFavoriteViewClicked(String placeId);
+
     }
 }

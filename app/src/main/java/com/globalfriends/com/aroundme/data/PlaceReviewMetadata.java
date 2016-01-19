@@ -9,6 +9,15 @@ import com.globalfriends.com.aroundme.data.places.ReviewAspect;
  * Created by Vishal on 12/6/2015.
  */
 public class PlaceReviewMetadata implements Parcelable {
+    public static final Creator<PlaceReviewMetadata> CREATOR = new Creator<PlaceReviewMetadata>() {
+        public PlaceReviewMetadata createFromParcel(Parcel source) {
+            return new PlaceReviewMetadata(source);
+        }
+
+        public PlaceReviewMetadata[] newArray(int size) {
+            return new PlaceReviewMetadata[size];
+        }
+    };
     private String mRating;
     private String mLanguage;
     private String mAuthorName;
@@ -18,6 +27,23 @@ public class PlaceReviewMetadata implements Parcelable {
     private String mAspect;
     private String mRatingImageUrl;
     private ReviewAspect mAspectDesc;
+    private Long mReviewTime;
+
+    public PlaceReviewMetadata() {
+    }
+
+    protected PlaceReviewMetadata(Parcel in) {
+        this.mRating = in.readString();
+        this.mLanguage = in.readString();
+        this.mAuthorName = in.readString();
+        this.mAuthorUrl = in.readString();
+        this.mProfilePhotoUrl = in.readString();
+        this.mReviewContent = in.readString();
+        this.mAspect = in.readString();
+        int tmpMAspectDesc = in.readInt();
+        this.mAspectDesc = tmpMAspectDesc == -1 ? null : ReviewAspect.values()[tmpMAspectDesc];
+        this.mReviewTime = (Long) in.readValue(Long.class.getClassLoader());
+    }
 
     public String getRatingImageUrl() {
         return mRatingImageUrl;
@@ -77,6 +103,10 @@ public class PlaceReviewMetadata implements Parcelable {
         return mReviewTime;
     }
 
+    public void setReviewTime(Long mReviewTime) {
+        this.mReviewTime = mReviewTime;
+    }
+
     @Override
     public String toString() {
         return "PlaceReviewMetadata{" +
@@ -89,12 +119,6 @@ public class PlaceReviewMetadata implements Parcelable {
                 ", mReviewTime=" + mReviewTime +
                 '}';
     }
-
-    public void setReviewTime(Long mReviewTime) {
-        this.mReviewTime = mReviewTime;
-    }
-
-    private Long mReviewTime;
 
     public String getRating() {
         return mRating;
@@ -136,10 +160,6 @@ public class PlaceReviewMetadata implements Parcelable {
         this.mReviewContent = mReviewContent;
     }
 
-    public PlaceReviewMetadata() {
-    }
-
-
     @Override
     public int describeContents() {
         return 0;
@@ -157,28 +177,5 @@ public class PlaceReviewMetadata implements Parcelable {
         dest.writeInt(this.mAspectDesc == null ? -1 : this.mAspectDesc.ordinal());
         dest.writeValue(this.mReviewTime);
     }
-
-    protected PlaceReviewMetadata(Parcel in) {
-        this.mRating = in.readString();
-        this.mLanguage = in.readString();
-        this.mAuthorName = in.readString();
-        this.mAuthorUrl = in.readString();
-        this.mProfilePhotoUrl = in.readString();
-        this.mReviewContent = in.readString();
-        this.mAspect = in.readString();
-        int tmpMAspectDesc = in.readInt();
-        this.mAspectDesc = tmpMAspectDesc == -1 ? null : ReviewAspect.values()[tmpMAspectDesc];
-        this.mReviewTime = (Long) in.readValue(Long.class.getClassLoader());
-    }
-
-    public static final Creator<PlaceReviewMetadata> CREATOR = new Creator<PlaceReviewMetadata>() {
-        public PlaceReviewMetadata createFromParcel(Parcel source) {
-            return new PlaceReviewMetadata(source);
-        }
-
-        public PlaceReviewMetadata[] newArray(int size) {
-            return new PlaceReviewMetadata[size];
-        }
-    };
 }
 

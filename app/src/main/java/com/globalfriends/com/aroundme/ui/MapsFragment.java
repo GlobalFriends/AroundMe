@@ -20,11 +20,11 @@ import com.google.android.gms.maps.model.MarkerOptions;
  * A fragment that launches other parts of the demo application.
  */
 public class MapsFragment extends BaseFragment {
+    MapView mMapView;
     private double mLatitude;
     private double mLongitude;
     private String mName;
     private int mMapType = GoogleMap.MAP_TYPE_HYBRID;
-    MapView mMapView;
     private GoogleMap googleMap;
 
     @Override

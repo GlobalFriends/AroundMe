@@ -14,6 +14,7 @@ public class AroundMeDBHelper extends SQLiteOpenHelper {
         super(context, AroundMeDBSchema.DATABASE_NAME, null, VERSION);
 
     }
+
     @Override
     public void onCreate(SQLiteDatabase db) {
         createDB(db);

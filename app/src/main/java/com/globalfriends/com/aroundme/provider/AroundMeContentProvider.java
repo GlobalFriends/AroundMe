@@ -40,9 +40,6 @@ public class AroundMeContentProvider extends ContentProvider {
             AroundMeContractProvider.PhotoRefernce.TABLENAME
     };
 
-    private AroundMeDBHelper mDBHelper;
-    private final ThreadLocal<Boolean> mIsInBatchMode = new ThreadLocal<>();
-
     static {
         URI_MATCHER = new UriMatcher(UriMatcher.NO_MATCH);
         URI_MATCHER.addURI(AroundMeContractProvider.AUTHORITY,
@@ -58,6 +55,9 @@ public class AroundMeContentProvider extends ContentProvider {
         URI_MATCHER.addURI(AroundMeContractProvider.AUTHORITY,
                 AroundMeContractProvider.PhotoRefernce.PATH, PHOTO_REFERENCE_LIST);
     }
+
+    private final ThreadLocal<Boolean> mIsInBatchMode = new ThreadLocal<>();
+    private AroundMeDBHelper mDBHelper;
 
     @Override
     public boolean onCreate() {

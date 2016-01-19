@@ -28,16 +28,6 @@ public class RecentFragment extends ListFragment implements AbsListView.OnItemCl
     private ToolbarUpdateListener mToolbarUpdater;
     private OnRecentFragmentInteractionListener mListener;
 
-    public interface OnRecentFragmentInteractionListener {
-        /**
-         * Launch Place Details
-         *
-         * @param placeId
-         */
-        void onRecentViewClicked(String placeId);
-
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return super.onCreateView(inflater, container, savedInstanceState);
@@ -103,5 +93,15 @@ public class RecentFragment extends ListFragment implements AbsListView.OnItemCl
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
         mAdapter.swapCursor(null);
+    }
+
+    public interface OnRecentFragmentInteractionListener {
+        /**
+         * Launch Place Details
+         *
+         * @param placeId
+         */
+        void onRecentViewClicked(String placeId);
+
     }
 }

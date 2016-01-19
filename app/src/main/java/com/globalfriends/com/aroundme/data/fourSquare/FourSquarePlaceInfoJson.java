@@ -72,7 +72,7 @@ public class FourSquarePlaceInfoJson extends DefaultPlaceDetails {
                                 }
 
                                 if (itemObj.has("user")) {
-                                    JSONObject user = (JSONObject)itemObj.get("user");
+                                    JSONObject user = (JSONObject) itemObj.get("user");
                                     if (user.has("firstName")) {
                                         String name = user.getString("firstName");
                                         if (user.has("lastName")) {
@@ -82,7 +82,7 @@ public class FourSquarePlaceInfoJson extends DefaultPlaceDetails {
                                     }
 
                                     if (user.has("photo")) {
-                                        JSONObject profilePhoto = (JSONObject)user.get("photo");
+                                        JSONObject profilePhoto = (JSONObject) user.get("photo");
                                         StringBuffer prefix = new StringBuffer();
                                         if (profilePhoto.has("prefix")) {
                                             prefix.append(profilePhoto.getString("prefix"));

@@ -17,7 +17,6 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
@@ -61,6 +60,11 @@ public class Launcher extends AppCompatActivity implements
         GoogleApiClient.OnConnectionFailedListener,
         ToolbarUpdateListener {
     private static final int LOCATION_REQUEST_CODE = 1;
+    private static final int SEARCH_TYPE_PLACE = 1;
+    private static final int SEARCH_TYPE_LOCATION = 2;
+    private static final int SEARCH_TYPE_DEFAULT = SEARCH_TYPE_PLACE;
+    //Permission
+    private final static int PLACE_LOCATOR_PERMISSIONS_ALL = 1;
     private final String TAG = getClass().getSimpleName();
     private Location loc;
     private LocationManager locationManager;
@@ -75,16 +79,7 @@ public class Launcher extends AppCompatActivity implements
     private Button mCustomLocationClearButton;
     private String mSavedCurrentLocationLatitude;
     private String mSavedCurrentLocationLongitude;
-
-    private static final int SEARCH_TYPE_PLACE = 1;
-    private static final int SEARCH_TYPE_LOCATION = 2;
-    private static final int SEARCH_TYPE_DEFAULT = SEARCH_TYPE_PLACE;
-
     private int mSearchType = SEARCH_TYPE_DEFAULT;
-
-    //Permission
-    private final static int PLACE_LOCATOR_PERMISSIONS_ALL = 1;
-
     /**
      * Search type result for location based search
      */
@@ -265,7 +260,7 @@ public class Launcher extends AppCompatActivity implements
         // Handle Location
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         int currentapiVersion = android.os.Build.VERSION.SDK_INT;
-        if (currentapiVersion >= android.os.Build.VERSION_CODES.M){
+        if (currentapiVersion >= android.os.Build.VERSION_CODES.M) {
             getAllPermissionForApp();
         } else {
             validateLocation();
@@ -538,8 +533,8 @@ public class Launcher extends AppCompatActivity implements
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE)
                 != PackageManager.PERMISSION_GRANTED) {
             requestPermissions(new String[]{Manifest.permission.CALL_PHONE, Manifest.permission.ACCESS_COARSE_LOCATION,
-                    Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                    "com.google.android.providers.gsf.permission.READ_GSERVICES"},
+                            Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                            "com.google.android.providers.gsf.permission.READ_GSERVICES"},
                     PLACE_LOCATOR_PERMISSIONS_ALL);
         }
     }

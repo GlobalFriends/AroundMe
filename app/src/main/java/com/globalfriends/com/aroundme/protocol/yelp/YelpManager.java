@@ -50,6 +50,16 @@ public class YelpManager extends DefaultFeatureManager {
         }
     }
 
+    @Override
+    public int getFeatureIcon() {
+        return R.drawable.yelp;
+    }
+
+    @Override
+    public int getFeatureFullLogo() {
+        return R.drawable.yelp_icon;
+    }
+
     /**
      * Network executor task. Currently it supports only Search by phone number network task.
      */
@@ -97,15 +107,5 @@ public class YelpManager extends DefaultFeatureManager {
                 mListener.onError(mContext.getString(R.string.failed_response), mContext.getString(R.string.yelp_tag));
             }
         }
-    }
-
-    @Override
-    public int getFeatureIcon() {
-        return R.drawable.yelp;
-    }
-
-    @Override
-    public int getFeatureFullLogo() {
-        return R.drawable.yelp_icon;
     }
 }

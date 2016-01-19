@@ -3,7 +3,6 @@ package com.globalfriends.com.aroundme.protocol;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.util.Log;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -28,22 +27,10 @@ public class DefaultFeatureManager implements IFeatureManager {
     protected final String STATUS = "status";
     protected Listener mListener;
     protected Context mContext;
+    protected String mModuleTag;
     private RequestQueue mQueue;
     private Request mRequest;
     private ImageLoader mImageLoader;
-    protected String mModuleTag;
-
-    /**
-     * Check if network is present or not
-     *
-     * @return
-     */
-    protected boolean isNetworkAvailable() {
-        ConnectivityManager connectivityManager
-                = (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-        return (activeNetworkInfo != null && activeNetworkInfo.isConnected());
-    }
 
     /**
      * @param listener
@@ -57,6 +44,18 @@ public class DefaultFeatureManager implements IFeatureManager {
         mQueue = Volley.newRequestQueue(AroundMeApplication.getContext());
         mImageLoader = new ImageLoader(mQueue, new LruBitmapCache());
         mQueue.start();
+    }
+
+    /**
+     * Check if network is present or not
+     *
+     * @return
+     */
+    protected boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return (activeNetworkInfo != null && activeNetworkInfo.isConnected());
     }
 
     /**

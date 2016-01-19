@@ -36,48 +36,6 @@ public class PhotoViewer extends AppCompatActivity {
     private ViewPager mViewPager;
     private CustomPagerAdapter mCustomPagerAdapter;
 
-    class CustomPagerAdapter extends PagerAdapter {
-        Context mContext;
-        LayoutInflater mLayoutInflater;
-
-        public CustomPagerAdapter(Context context) {
-            mContext = context;
-            mLayoutInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        }
-
-        @Override
-        public int getCount() {
-            return mPhotoList.size();
-        }
-
-        @Override
-        public boolean isViewFromObject(View view, Object object) {
-            return view == ((LinearLayout) object);
-        }
-
-        @Override
-        public Object instantiateItem(ViewGroup container, int position) {
-            View itemView = mLayoutInflater.inflate(R.layout.activity_photo_viewer, container, false);
-
-            NetworkImageView imageView = (NetworkImageView) itemView.findViewById(R.id.image);
-            PlacePhotoMetadata metaData = mPhotoList.get(position);
-            imageView.setImageUrl(Utility.getPlacePhotoQuery(metaData.getReference(),
-                            Integer.valueOf(metaData.getHeight()),
-                            Integer.valueOf(metaData.getWidth())),
-                    mImageLoader);
-
-            container.addView(itemView);
-
-            return itemView;
-        }
-
-        @Override
-        public void destroyItem(ViewGroup container, int position, Object object) {
-            container.removeView((LinearLayout) object);
-        }
-    }
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -119,7 +77,6 @@ public class PhotoViewer extends AppCompatActivity {
         mViewPager.setCurrentItem(mCurrentPosition);
     }
 
-
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         outState.putSerializable("PHOTO_LIST", (Serializable) mPhotoList);
@@ -127,5 +84,46 @@ public class PhotoViewer extends AppCompatActivity {
         outState.putString("KEY", mImageLoaderKey);
         outState.putInt("POSITION", mCurrentPosition);
         super.onSaveInstanceState(outState);
+    }
+
+    class CustomPagerAdapter extends PagerAdapter {
+        Context mContext;
+        LayoutInflater mLayoutInflater;
+
+        public CustomPagerAdapter(Context context) {
+            mContext = context;
+            mLayoutInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        }
+
+        @Override
+        public int getCount() {
+            return mPhotoList.size();
+        }
+
+        @Override
+        public boolean isViewFromObject(View view, Object object) {
+            return view == ((LinearLayout) object);
+        }
+
+        @Override
+        public Object instantiateItem(ViewGroup container, int position) {
+            View itemView = mLayoutInflater.inflate(R.layout.activity_photo_viewer, container, false);
+
+            NetworkImageView imageView = (NetworkImageView) itemView.findViewById(R.id.image);
+            PlacePhotoMetadata metaData = mPhotoList.get(position);
+            imageView.setImageUrl(Utility.getPlacePhotoQuery(metaData.getReference(),
+                            Integer.valueOf(metaData.getHeight()),
+                            Integer.valueOf(metaData.getWidth())),
+                    mImageLoader);
+
+            container.addView(itemView);
+
+            return itemView;
+        }
+
+        @Override
+        public void destroyItem(ViewGroup container, int position, Object object) {
+            container.removeView((LinearLayout) object);
+        }
     }
 }

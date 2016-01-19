@@ -27,20 +27,14 @@ public class PreferenceManager {
         return mPreference;
     }
 
-    public static void setRadius(int value) {
-        SharedPreferences.Editor editor = mPreference.edit();
-        editor.putInt(PREF_RADIUS, value);
-        editor.commit();
-    }
-
     public static double getRadius() {
         // check distance format and verify if its a miles or kilometers..
         return Utility.distanceInMeters(getDistanceFormat(), mPreference.getInt(PREF_DISTANCE_VALUE, 5));
     }
 
-    public static void setDistanceFormat(int value) {
+    public static void setRadius(int value) {
         SharedPreferences.Editor editor = mPreference.edit();
-        editor.putInt(PREF_DISTANCE_FORMAT, value);
+        editor.putInt(PREF_RADIUS, value);
         editor.commit();
     }
 
@@ -49,14 +43,20 @@ public class PreferenceManager {
                 (PREF_DISTANCE_FORMAT, DistanceFormatEnum.MILES.getValue()));
     }
 
-    public static void setPreferredLanguage(String value) {
+    public static void setDistanceFormat(int value) {
         SharedPreferences.Editor editor = mPreference.edit();
-        editor.putString(PREF_PREFERED_LANGUAGE, value);
+        editor.putInt(PREF_DISTANCE_FORMAT, value);
         editor.commit();
     }
 
     public static String getPreferredLanguage() {
-        return mPreference.getString(PREF_PREFERED_LANGUAGE,"en");
+        return mPreference.getString(PREF_PREFERED_LANGUAGE, "en");
+    }
+
+    public static void setPreferredLanguage(String value) {
+        SharedPreferences.Editor editor = mPreference.edit();
+        editor.putString(PREF_PREFERED_LANGUAGE, value);
+        editor.commit();
     }
 
     public static String getLocation() {

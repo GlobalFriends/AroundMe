@@ -30,8 +30,8 @@ import java.util.List;
  * Review list adapter
  */
 class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewViewHolder> {
-    private List<PlaceReviewMetadata> mContent;
     private final Context mContext;
+    private List<PlaceReviewMetadata> mContent;
     private ImageLoader mImageLoader;
     private Bitmap mProfileBitmap;
     private Bitmap mDefaultProfileBitmap;

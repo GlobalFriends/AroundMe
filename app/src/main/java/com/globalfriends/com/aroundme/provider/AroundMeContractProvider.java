@@ -16,46 +16,13 @@ public abstract class AroundMeContractProvider {
     public static final String TAG = "AroundMeContractProvider";
     // The authority of the AroundMe provider.
     public static final String AUTHORITY = "com.globalfriends.aroundme.provider";
+    public static final String PARAMETER_LIMIT = "limit";
     // The content URI for the top-level AroundMe authority.
     protected static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY);
-    // Record identifier
-    public long mId = -1;
     // URI for the table
     public static Uri mBaseUri;
-    public static final String PARAMETER_LIMIT = "limit";
-
-    /**
-     * Method needs to be overriden to return the fields of table based on database cursor
-     *
-     * @param cursor : Cursor to table for which query was initiated
-     */
-    public abstract void restore(Cursor cursor);
-
-    /**
-     * Method needs to be overridern to map each class member variables to ContentValues class
-     * for Sqlite database query to be executed
-     *
-     * @return ContentValues:
-     */
-    public abstract ContentValues toContentValues();
-
-    public Uri save(Context context) {
-        if (context != null) {
-            Uri res = context.getContentResolver().insert(mBaseUri, toContentValues());
-            if (res == null)
-                return null;
-            mId = Long.parseLong(res.getPathSegments().get(1));
-            return res;
-        } else {
-            return null;
-        }
-    }
-
-    public void delete(Context context, String where, String[] selectionArgs) {
-        if (context != null) {
-            context.getContentResolver().delete(mBaseUri, where, selectionArgs);
-        }
-    }
+    // Record identifier
+    public long mId = -1;
 
     /**
      * Construct the Uri to query maximum given number of records
@@ -91,6 +58,39 @@ public abstract class AroundMeContractProvider {
         return null;
     }
 
+    /**
+     * Method needs to be overriden to return the fields of table based on database cursor
+     *
+     * @param cursor : Cursor to table for which query was initiated
+     */
+    public abstract void restore(Cursor cursor);
+
+    /**
+     * Method needs to be overridern to map each class member variables to ContentValues class
+     * for Sqlite database query to be executed
+     *
+     * @return ContentValues:
+     */
+    public abstract ContentValues toContentValues();
+
+    public Uri save(Context context) {
+        if (context != null) {
+            Uri res = context.getContentResolver().insert(mBaseUri, toContentValues());
+            if (res == null)
+                return null;
+            mId = Long.parseLong(res.getPathSegments().get(1));
+            return res;
+        } else {
+            return null;
+        }
+    }
+
+    public void delete(Context context, String where, String[] selectionArgs) {
+        if (context != null) {
+            context.getContentResolver().delete(mBaseUri, where, selectionArgs);
+        }
+    }
+
     public interface PlacesColumns {
         String _ID = "_id";
         String OPEN_NOW = "open_now";
@@ -102,6 +102,31 @@ public abstract class AroundMeContractProvider {
         String PHOTO_REFERENCE = "photo_reference";
         String FORMATTED_ADDRESS = "formatted_address";
         String PLACE_NAME = "place_name";
+    }
+
+    public interface RecentPlacesColumns {
+        String _ID = "_id";
+        String OPEN_NOW = "open_now";
+        String RATING = "rating";
+        String GEOMETRY_LOCATION_LATITUDE = "latitude";
+        String GEOMETRY_LOCATTION_LONGITUDE = "longitude";
+        String PLACES_ID = "places_id";
+        String PHONE_NUMBER = "phone_number";
+        String PHOTO_REFERENCE = "photo_reference";
+        String FORMATTED_ADDRESS = "formatted_address";
+        String PLACE_NAME = "place_name";
+        String TIMESTAMP = "timestamp";
+    }
+
+    //Image Reference Table
+    public interface PhotoReferenceColumns {
+        String _ID = "_id";
+        String URL = "url";
+        String PHOTO_REF = "ref";
+        String PHOTO_URL = "photo_url";
+        String PHOTO_HEIGHT = "height";
+        String PHOTO_WIDTH = "width";
+        String PHOTO_PLACE_ID = "photo_place_id";
     }
 
     public static final class Places extends AroundMeContractProvider implements PlacesColumns {
@@ -148,36 +173,6 @@ public abstract class AroundMeContractProvider {
 
         public Places() {
             mBaseUri = CONTENT_URI;
-        }
-
-        @Override
-        public void restore(Cursor cursor) {
-            mBaseUri = Places.CONTENT_URI;
-            mIsOpenNow = cursor.getInt(CONTENT_OPEN_NOW_COL) == 1;
-            mRating = cursor.getDouble(CONTENT_RATING_COL);
-            mLatitude = cursor.getDouble(CONTENT_GEMOTERY_LOCATION_LATITUDE);
-            mLongitude = cursor.getDouble(CONTENT_GEMOTERY_LOCATION_LONGITUDE);
-            mPlaceId = cursor.getString(CONTENT_PLACES_ID_COL);
-            mPhoneNumber = cursor.getString(CONTENT_PHONE_NUMBER_COL);
-            mPhotoRefrence = cursor.getString(CONTENT_PHOTO_REFERENCE_COL);
-            mAddress = cursor.getString(CONTENT_FORMATTED_ADDRESS_COL);
-            mName = cursor.getString(CONTENT_PLACE_NAME_COL);
-        }
-
-        @Override
-        public ContentValues toContentValues() {
-            ContentValues values = new ContentValues();
-            values.put(PlacesColumns.OPEN_NOW, mIsOpenNow);
-            values.put(PlacesColumns.RATING, mRating);
-            values.put(PlacesColumns.GEOMETRY_LOCATION_LATITUDE, mLatitude);
-            values.put(PlacesColumns.GEOMETRY_LOCATTION_LONGITUDE, mLongitude);
-            values.put(PlacesColumns.PLACES_ID, mPlaceId);
-            values.put(PlacesColumns.PHONE_NUMBER, mPhoneNumber);
-            values.put(PlacesColumns.PHONE_NUMBER, mPhoneNumber);
-            values.put(PlacesColumns.PHOTO_REFERENCE, mPhotoRefrence);
-            values.put(PlacesColumns.FORMATTED_ADDRESS, mAddress);
-            values.put(PlacesColumns.PLACE_NAME, mName);
-            return values;
         }
 
         public static int insertMultiple(Context context, HashSet<Places> placesSet) {
@@ -256,20 +251,36 @@ public abstract class AroundMeContractProvider {
             }
             return exists;
         }
-    }
 
-    public interface RecentPlacesColumns {
-        String _ID = "_id";
-        String OPEN_NOW = "open_now";
-        String RATING = "rating";
-        String GEOMETRY_LOCATION_LATITUDE = "latitude";
-        String GEOMETRY_LOCATTION_LONGITUDE = "longitude";
-        String PLACES_ID = "places_id";
-        String PHONE_NUMBER = "phone_number";
-        String PHOTO_REFERENCE = "photo_reference";
-        String FORMATTED_ADDRESS = "formatted_address";
-        String PLACE_NAME = "place_name";
-        String TIMESTAMP = "timestamp";
+        @Override
+        public void restore(Cursor cursor) {
+            mBaseUri = Places.CONTENT_URI;
+            mIsOpenNow = cursor.getInt(CONTENT_OPEN_NOW_COL) == 1;
+            mRating = cursor.getDouble(CONTENT_RATING_COL);
+            mLatitude = cursor.getDouble(CONTENT_GEMOTERY_LOCATION_LATITUDE);
+            mLongitude = cursor.getDouble(CONTENT_GEMOTERY_LOCATION_LONGITUDE);
+            mPlaceId = cursor.getString(CONTENT_PLACES_ID_COL);
+            mPhoneNumber = cursor.getString(CONTENT_PHONE_NUMBER_COL);
+            mPhotoRefrence = cursor.getString(CONTENT_PHOTO_REFERENCE_COL);
+            mAddress = cursor.getString(CONTENT_FORMATTED_ADDRESS_COL);
+            mName = cursor.getString(CONTENT_PLACE_NAME_COL);
+        }
+
+        @Override
+        public ContentValues toContentValues() {
+            ContentValues values = new ContentValues();
+            values.put(PlacesColumns.OPEN_NOW, mIsOpenNow);
+            values.put(PlacesColumns.RATING, mRating);
+            values.put(PlacesColumns.GEOMETRY_LOCATION_LATITUDE, mLatitude);
+            values.put(PlacesColumns.GEOMETRY_LOCATTION_LONGITUDE, mLongitude);
+            values.put(PlacesColumns.PLACES_ID, mPlaceId);
+            values.put(PlacesColumns.PHONE_NUMBER, mPhoneNumber);
+            values.put(PlacesColumns.PHONE_NUMBER, mPhoneNumber);
+            values.put(PlacesColumns.PHOTO_REFERENCE, mPhotoRefrence);
+            values.put(PlacesColumns.FORMATTED_ADDRESS, mAddress);
+            values.put(PlacesColumns.PLACE_NAME, mName);
+            return values;
+        }
     }
 
     public static final class RecentPlaces extends AroundMeContractProvider implements RecentPlacesColumns {
@@ -315,38 +326,6 @@ public abstract class AroundMeContractProvider {
             mAddress = address;
             mName = name;
             mTimeStamp = System.currentTimeMillis();
-        }
-
-        @Override
-        public void restore(Cursor cursor) {
-            mBaseUri = RecentPlaces.CONTENT_URI;
-            mIsOpenNow = cursor.getInt(CONTENT_OPEN_NOW_COL) == 1;
-            mRating = cursor.getDouble(CONTENT_RATING_COL);
-            mLatitude = cursor.getDouble(CONTENT_GEMOTERY_LOCATION_LATITUDE);
-            mLongitude = cursor.getDouble(CONTENT_GEMOTERY_LOCATION_LONGITUDE);
-            mPlaceId = cursor.getString(CONTENT_PLACES_ID_COL);
-            mPhoneNumber = cursor.getString(CONTENT_PHONE_NUMBER_COL);
-            mPhotoRefrence = cursor.getString(CONTENT_PHOTO_REFERENCE_COL);
-            mAddress = cursor.getString(CONTENT_FORMATTED_ADDRESS_COL);
-            mName = cursor.getString(CONTENT_PLACE_NAME_COL);
-            mTimeStamp = cursor.getLong(CONTENT_TIMESTAMP_COL);
-        }
-
-        @Override
-        public ContentValues toContentValues() {
-            ContentValues values = new ContentValues();
-            values.put(RecentPlacesColumns.OPEN_NOW, mIsOpenNow);
-            values.put(RecentPlacesColumns.RATING, mRating);
-            values.put(RecentPlacesColumns.GEOMETRY_LOCATION_LATITUDE, mLatitude);
-            values.put(RecentPlacesColumns.GEOMETRY_LOCATTION_LONGITUDE, mLongitude);
-            values.put(RecentPlacesColumns.PLACES_ID, mPlaceId);
-            values.put(RecentPlacesColumns.PHONE_NUMBER, mPhoneNumber);
-            values.put(RecentPlacesColumns.PHONE_NUMBER, mPhoneNumber);
-            values.put(RecentPlacesColumns.PHOTO_REFERENCE, mPhotoRefrence);
-            values.put(RecentPlacesColumns.FORMATTED_ADDRESS, mAddress);
-            values.put(RecentPlacesColumns.PLACE_NAME, mName);
-            values.put(RecentPlacesColumns.TIMESTAMP, mTimeStamp);
-            return values;
         }
 
         public static int insertMultiple(Context context, HashSet<RecentPlaces> placesSet) {
@@ -425,17 +404,38 @@ public abstract class AroundMeContractProvider {
             }
             return exists;
         }
-    }
 
-    //Image Reference Table
-    public interface PhotoReferenceColumns {
-        String _ID = "_id";
-        String URL = "url";
-        String PHOTO_REF = "ref";
-        String PHOTO_URL = "photo_url";
-        String PHOTO_HEIGHT = "height";
-        String PHOTO_WIDTH = "width";
-        String PHOTO_PLACE_ID = "photo_place_id";
+        @Override
+        public void restore(Cursor cursor) {
+            mBaseUri = RecentPlaces.CONTENT_URI;
+            mIsOpenNow = cursor.getInt(CONTENT_OPEN_NOW_COL) == 1;
+            mRating = cursor.getDouble(CONTENT_RATING_COL);
+            mLatitude = cursor.getDouble(CONTENT_GEMOTERY_LOCATION_LATITUDE);
+            mLongitude = cursor.getDouble(CONTENT_GEMOTERY_LOCATION_LONGITUDE);
+            mPlaceId = cursor.getString(CONTENT_PLACES_ID_COL);
+            mPhoneNumber = cursor.getString(CONTENT_PHONE_NUMBER_COL);
+            mPhotoRefrence = cursor.getString(CONTENT_PHOTO_REFERENCE_COL);
+            mAddress = cursor.getString(CONTENT_FORMATTED_ADDRESS_COL);
+            mName = cursor.getString(CONTENT_PLACE_NAME_COL);
+            mTimeStamp = cursor.getLong(CONTENT_TIMESTAMP_COL);
+        }
+
+        @Override
+        public ContentValues toContentValues() {
+            ContentValues values = new ContentValues();
+            values.put(RecentPlacesColumns.OPEN_NOW, mIsOpenNow);
+            values.put(RecentPlacesColumns.RATING, mRating);
+            values.put(RecentPlacesColumns.GEOMETRY_LOCATION_LATITUDE, mLatitude);
+            values.put(RecentPlacesColumns.GEOMETRY_LOCATTION_LONGITUDE, mLongitude);
+            values.put(RecentPlacesColumns.PLACES_ID, mPlaceId);
+            values.put(RecentPlacesColumns.PHONE_NUMBER, mPhoneNumber);
+            values.put(RecentPlacesColumns.PHONE_NUMBER, mPhoneNumber);
+            values.put(RecentPlacesColumns.PHOTO_REFERENCE, mPhotoRefrence);
+            values.put(RecentPlacesColumns.FORMATTED_ADDRESS, mAddress);
+            values.put(RecentPlacesColumns.PLACE_NAME, mName);
+            values.put(RecentPlacesColumns.TIMESTAMP, mTimeStamp);
+            return values;
+        }
     }
 
     public static final class PhotoRefernce extends AroundMeContractProvider implements PhotoReferenceColumns {
@@ -467,30 +467,6 @@ public abstract class AroundMeContractProvider {
             mPhotoUrl = photoUrl;
             mHeight = height;
             mWidth = width;
-        }
-
-        @Override
-        public void restore(Cursor cursor) {
-            mBaseUri = Places.CONTENT_URI;
-
-            mPlaceId = cursor.getString(CONTENT_PHOTO_PLACE_ID);
-            mUrl = cursor.getString(CONTENT_PHOTO_URL_COL);
-            mPhotoRefUrl = cursor.getString(CONTENT_PHOTO_REF_COL);
-            mPhotoUrl = cursor.getString(CONTENT_PHOTO_URL_COL);
-            mWidth = cursor.getInt(CONTENT_PHOTO_WIDTH_COL);
-            mHeight = cursor.getInt(CONTENT_PHOTO_HEIGHT_COL);
-        }
-
-        @Override
-        public ContentValues toContentValues() {
-            ContentValues values = new ContentValues();
-            values.put(PhotoReferenceColumns.URL, mUrl);
-            values.put(PhotoReferenceColumns.PHOTO_REF, mPhotoRefUrl);
-            values.put(PhotoReferenceColumns.PHOTO_URL, mPhotoUrl);
-            values.put(PhotoReferenceColumns.PHOTO_PLACE_ID, mPlaceId);
-            values.put(PhotoReferenceColumns.PHOTO_HEIGHT, mHeight);
-            values.put(PhotoReferenceColumns.PHOTO_WIDTH, mWidth);
-            return values;
         }
 
         public static int insertMultiple(Context context, HashSet<Places> placesSet) {
@@ -568,6 +544,30 @@ public abstract class AroundMeContractProvider {
                 c.close();
             }
             return exists;
+        }
+
+        @Override
+        public void restore(Cursor cursor) {
+            mBaseUri = Places.CONTENT_URI;
+
+            mPlaceId = cursor.getString(CONTENT_PHOTO_PLACE_ID);
+            mUrl = cursor.getString(CONTENT_PHOTO_URL_COL);
+            mPhotoRefUrl = cursor.getString(CONTENT_PHOTO_REF_COL);
+            mPhotoUrl = cursor.getString(CONTENT_PHOTO_URL_COL);
+            mWidth = cursor.getInt(CONTENT_PHOTO_WIDTH_COL);
+            mHeight = cursor.getInt(CONTENT_PHOTO_HEIGHT_COL);
+        }
+
+        @Override
+        public ContentValues toContentValues() {
+            ContentValues values = new ContentValues();
+            values.put(PhotoReferenceColumns.URL, mUrl);
+            values.put(PhotoReferenceColumns.PHOTO_REF, mPhotoRefUrl);
+            values.put(PhotoReferenceColumns.PHOTO_URL, mPhotoUrl);
+            values.put(PhotoReferenceColumns.PHOTO_PLACE_ID, mPlaceId);
+            values.put(PhotoReferenceColumns.PHOTO_HEIGHT, mHeight);
+            values.put(PhotoReferenceColumns.PHOTO_WIDTH, mWidth);
+            return values;
         }
     }
 

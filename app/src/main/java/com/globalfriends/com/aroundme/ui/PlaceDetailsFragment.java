@@ -72,7 +72,7 @@ public class PlaceDetailsFragment extends BaseFragment implements View.OnClickLi
     private LinearLayoutCompat mTimingLayout;
     private LinearLayoutCompat mParenLayout;
     private FloatingActionButton mFab;
-
+    private HashSet<String> mDisplayedModuleTags = new HashSet<String>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -85,7 +85,6 @@ public class PlaceDetailsFragment extends BaseFragment implements View.OnClickLi
 
         TransactionManager.getInstance().addResultCallback(mResultListener);
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -405,25 +404,6 @@ public class PlaceDetailsFragment extends BaseFragment implements View.OnClickLi
     }
 
     /**
-     * Interface for fragment and activity communication
-     */
-    public interface OnPlaceDetailsFragmentInteractionListener {
-        void onFragmentInteraction(Uri uri);
-
-        /**
-         * Move to maps view
-         *
-         * @param bundle
-         */
-        void onMapsViewClicked(Bundle bundle);
-
-        /**
-         * @param tag
-         */
-        void handleFragmentSuicidal(final String tag);
-    }
-
-    /**
      * Add's dynmic layout for provided module
      *
      * @param placeDetails
@@ -519,7 +499,7 @@ public class PlaceDetailsFragment extends BaseFragment implements View.OnClickLi
                 if (!TextUtils.isEmpty(placeDetails.getRating())) {
                     ratingBar.setRating(Float.valueOf(mGooglePlaceDetails.getRating()));
                 }
-            } else if (moduleName.equalsIgnoreCase(getString(R.string.four_square_tag))){
+            } else if (moduleName.equalsIgnoreCase(getString(R.string.four_square_tag))) {
                 ratingBar.setVisibility(View.GONE);
                 if (!TextUtils.isEmpty(placeDetails.getRating())) {
                     fourSquareRating.setVisibility(View.VISIBLE);
@@ -623,7 +603,25 @@ public class PlaceDetailsFragment extends BaseFragment implements View.OnClickLi
         container.addView(moduleLayout);
     }
 
-    private HashSet<String> mDisplayedModuleTags = new HashSet<String>();
+    /**
+     * Interface for fragment and activity communication
+     */
+    public interface OnPlaceDetailsFragmentInteractionListener {
+        void onFragmentInteraction(Uri uri);
+
+        /**
+         * Move to maps view
+         *
+         * @param bundle
+         */
+        void onMapsViewClicked(Bundle bundle);
+
+        /**
+         * @param tag
+         */
+        void handleFragmentSuicidal(final String tag);
+    }
+
     /**
      * Response handler for getting detailed informaiton about place
      */
