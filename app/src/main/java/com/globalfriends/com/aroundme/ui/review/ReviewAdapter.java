@@ -7,6 +7,7 @@ package com.globalfriends.com.aroundme.ui.review;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.support.v7.widget.AppCompatRatingBar;
@@ -32,11 +33,17 @@ class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewViewHolder>
     private List<PlaceReviewMetadata> mContent;
     private final Context mContext;
     private ImageLoader mImageLoader;
+    private Bitmap mProfileBitmap;
+    private Bitmap mDefaultProfileBitmap;
 
     public ReviewAdapter(Activity context, ImageLoader imageLoader, List<PlaceReviewMetadata> items) {
         this.mContent = items;
         mImageLoader = imageLoader;
         mContext = context;
+        mProfileBitmap = Utility.getCircularBitmap(BitmapFactory.decodeResource(
+                mContext.getResources(), R.drawable.profile));
+        mDefaultProfileBitmap = Utility.getCircularBitmap(BitmapFactory.decodeResource(
+                mContext.getResources(), R.drawable.default_profile));
     }
 
     @Override
@@ -56,12 +63,12 @@ class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewViewHolder>
         if (content == null) {
             return; // Should never be the case
         }
+        holder.mAvatar.setImageBitmap(mDefaultProfileBitmap);
         // Lets do a image first so that it gets some time to load
         if (content.getProfilePhotoUrl() != null) {
             holder.mAvatar.setImageUrl(content.getProfilePhotoUrl(), mImageLoader);
         } else {
-            holder.mAvatar.setImageBitmap(Utility.getCircularBitmap(BitmapFactory.decodeResource(
-                    mContext.getResources(), R.drawable.profile)));
+            holder.mAvatar.setImageBitmap(mProfileBitmap);
         }
 
         if (!TextUtils.isEmpty(content.getRating())) {

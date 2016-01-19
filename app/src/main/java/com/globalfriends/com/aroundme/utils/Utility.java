@@ -131,7 +131,7 @@ public class Utility {
      * @return
      */
     public static String distanceFromLatitudeLongitude(double lat1, double lon1, double lat2,
-                                                       double lon2, final DistanceFormatEnum type) {
+                                                               double lon2, final DistanceFormatEnum type) {
         double theta = lon1 - lon2;
         double dist = Math.sin(deg2rad(lat1)) * Math.sin(deg2rad(lat2)) +
                 Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * Math.cos(deg2rad(theta));
@@ -150,6 +150,33 @@ public class Utility {
         }
 
         return String.format("%.2f", dist);
+    }
+
+    /**
+     * CFInds mDistance between 2 places based on latitude and longitude
+     *
+     * @param lat1
+     * @param lon1
+     * @param lat2
+     * @param lon2
+     * @return
+     */
+    public static Double distanceFromLatitudeLongitudeInMeters(double lat1, double lon1, double lat2,
+                                                               double lon2, final DistanceFormatEnum type) {
+        double theta = lon1 - lon2;
+        double dist = Math.sin(deg2rad(lat1)) * Math.sin(deg2rad(lat2)) +
+                Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * Math.cos(deg2rad(theta));
+        dist = Math.acos(dist);
+        dist = rad2deg(dist);
+        switch (type) {
+            case MILES:
+                return (dist * 60 * 1.1515);
+            case KILOMETER:
+                return ((dist * 60 * 1.1515) * 1.609344);
+            default:
+        }
+
+        return dist;
     }
 
     public static double distanceInMeters(final DistanceFormatEnum type, final int unit) {

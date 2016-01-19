@@ -171,12 +171,12 @@ public class PlaceManager extends DefaultFeatureManager {
      * @return
      */
     private List<PlaceInfo> getSortedList(JSONArray array) {
-        Map<String, PlaceInfo> placeMap = new TreeMap<String, PlaceInfo>();
+        TreeMap<Double, PlaceInfo> placeMap = new TreeMap<Double, PlaceInfo>();
         for (int i = 0; i < array.length(); i++) {
             try {
                 PlaceInfo placeInfo = PlaceInfo
                         .jsonToPontoReferencia((JSONObject) array.get(i));
-                placeMap.put(Utility.distanceFromLatitudeLongitude(Double.valueOf(PreferenceManager.getLatitude()),
+                placeMap.put(Utility.distanceFromLatitudeLongitudeInMeters(Double.valueOf(PreferenceManager.getLatitude()),
                         Double.valueOf(PreferenceManager.getLongitude()),
                         placeInfo.getLatitude(),
                         placeInfo.getLongitude(),

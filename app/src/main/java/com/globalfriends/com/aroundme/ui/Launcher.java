@@ -354,11 +354,11 @@ public class Launcher extends AppCompatActivity implements
                 updateFragment(locationFragment, false, true);
                 break;
             case R.id.drawer_recent:
-                updateFragment(new RecentFragment(), false, true);
+                updateFragment(new RecentFragment(), false, false);
                 break;
             case R.id.drawer_favorite:
                 PreferenceManager.dump();
-                updateFragment(new FavoriteFragment(), false, true);
+                updateFragment(new FavoriteFragment(), false, false);
                 break;
             case R.id.drawer_feedback:
                 Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
