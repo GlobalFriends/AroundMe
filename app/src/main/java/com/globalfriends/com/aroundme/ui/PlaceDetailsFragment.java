@@ -523,6 +523,11 @@ public class PlaceDetailsFragment extends BaseFragment implements View.OnClickLi
                 ratingBar.setVisibility(View.GONE);
                 if (!TextUtils.isEmpty(placeDetails.getRating())) {
                     fourSquareRating.setVisibility(View.VISIBLE);
+                    try {
+                        fourSquareRating.setBackgroundColor(Color.parseColor(placeDetails.getPlaceRatingColorCode()));
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                     fourSquareRating.setText("" + placeDetails.getRating() + "/10");
                 }
             } else {

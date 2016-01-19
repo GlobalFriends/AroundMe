@@ -41,9 +41,9 @@ public interface IPlaceDetails {
 
     int getReviewCount();
 
-    String getRatingColor();
-
     boolean isOpenNow();
 
     String getRating();
+
+    String getPlaceRatingColorCode();
 }

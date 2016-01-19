@@ -38,7 +38,10 @@ public class FourSquarePlaceInfoJson extends DefaultPlaceDetails {
 
         if (response.has("ratingColor")) {
             try {
-                mRatingColor = response.getString("ratingColor");
+                mRatingColorCode = response.getString("ratingColor");
+                if (!mRatingColorCode.startsWith("#")) {
+                    mRatingColorCode = "#" + mRatingColorCode;
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }

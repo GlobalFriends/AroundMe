@@ -103,8 +103,7 @@
                     android:layout_marginLeft="5sp"
                     android:paddingLeft="5sp"
                     android:paddingRight="5sp"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                    android:background="@color/four_square_color" />
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
                 <android.support.v7.widget.AppCompatTextView
                     android:id="@+id/rating_count_text"

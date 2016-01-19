@@ -23,7 +23,7 @@ public class DefaultPlaceDetails implements IPlaceDetails {
     protected boolean mOpenNow;
     protected String mIcon;
     protected String mRatingUrl;
-    protected String mRatingColor;
+    protected String mRatingColorCode;
     protected int mReviewCount;
     protected List<String> mWeeklyTimings = new ArrayList<String>();
     protected JSONObject mResponse;
@@ -67,6 +67,11 @@ public class DefaultPlaceDetails implements IPlaceDetails {
     @Override
     public String getRating() {
         return mRating;
+    }
+
+    @Override
+    public String getPlaceRatingColorCode() {
+        return mRatingColorCode;
     }
 
     @Override
@@ -147,10 +152,5 @@ public class DefaultPlaceDetails implements IPlaceDetails {
     @Override
     public List<PlaceReviewMetadata> getReviewList() {
         return mReviewList;
-    }
-
-    @Override
-    public String getRatingColor() {
-        return mRatingColor;
     }
 }
