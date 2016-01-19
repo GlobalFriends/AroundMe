@@ -497,8 +497,10 @@ public class PlaceDetailsFragment extends BaseFragment implements View.OnClickLi
         NetworkImageView ratingImageView = (NetworkImageView) moduleLayout.findViewById(R.id.review_rating_id);
         AppCompatRatingBar ratingBar = (AppCompatRatingBar) moduleLayout.findViewById(R.id.review_rating_bar);
         AppCompatTextView ratingCount = (AppCompatTextView) moduleLayout.findViewById(R.id.rating_count_text);
+        AppCompatTextView fourSquareRating = (AppCompatTextView) moduleLayout.findViewById(R.id.four_square_rating_bar);
         if (placeDetails.getRatingUrl() != null) {
             ratingBar.setVisibility(View.GONE);
+            fourSquareRating.setVisibility(View.GONE);
             if (TextUtils.isEmpty(placeDetails.getRatingUrl())) {
                 ratingImageView.setVisibility(View.GONE);
             } else {
@@ -512,21 +514,24 @@ public class PlaceDetailsFragment extends BaseFragment implements View.OnClickLi
              * So, we have to handle below exception
              */
             if (moduleName.equalsIgnoreCase(getString(R.string.google_places_tag))) {
+                fourSquareRating.setVisibility(View.GONE);
                 ratingBar.setVisibility(View.VISIBLE);
-                if (!TextUtils.isEmpty(mGooglePlaceDetails.getRating())) {
+                if (!TextUtils.isEmpty(placeDetails.getRating())) {
                     ratingBar.setRating(Float.valueOf(mGooglePlaceDetails.getRating()));
                 }
             } else if (moduleName.equalsIgnoreCase(getString(R.string.four_square_tag))){
                 ratingBar.setVisibility(View.GONE);
-                if (!TextUtils.isEmpty(mGooglePlaceDetails.getRating())) {
-                    ratingBar.setRating(Float.valueOf(mGooglePlaceDetails.getRating()));
+                if (!TextUtils.isEmpty(placeDetails.getRating())) {
+                    fourSquareRating.setVisibility(View.VISIBLE);
+                    fourSquareRating.setText("" + placeDetails.getRating() + "/10");
                 }
             } else {
-                if (TextUtils.isEmpty(placeDetails.getPlaceRating())) {
+                fourSquareRating.setVisibility(View.GONE);
+                if (TextUtils.isEmpty(placeDetails.getRating())) {
                     ratingBar.setVisibility(View.GONE);
                 } else {
                     ratingBar.setVisibility(View.VISIBLE);
-                    ratingBar.setRating(Float.valueOf(placeDetails.getPlaceRating()));
+                    ratingBar.setRating(Float.valueOf(placeDetails.getRating()));
                 }
             }
         }

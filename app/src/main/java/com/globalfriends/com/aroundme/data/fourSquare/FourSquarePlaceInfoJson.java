@@ -22,8 +22,7 @@ public class FourSquarePlaceInfoJson extends DefaultPlaceDetails {
     private FourSquarePlaceInfoJson JsonTOPointToReference(JSONObject response) {
         if (response.has("rating")) {
             try {
-                String rating = response.getString("rating");
-                mPlaceRating = Float.toString(Float.valueOf(rating) / 2F);
+                mRating = response.getString("rating");
             } catch (JSONException e) {
                 e.printStackTrace();
             }

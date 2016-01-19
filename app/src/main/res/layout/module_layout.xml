@@ -97,6 +97,16 @@
                     android:scaleType="fitXY" />
 
                 <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/four_square_rating_bar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5sp"
+                    android:paddingLeft="5sp"
+                    android:paddingRight="5sp"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                    android:background="@color/four_square_color" />
+
+                <android.support.v7.widget.AppCompatTextView
                     android:id="@+id/rating_count_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -162,8 +172,8 @@
                     android:layout_marginTop="5sp"
                     android:gravity="center_horizontal"
                     android:text="@string/module_launch"
-                    android:textColor="@color/aspect_color"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                    android:textColor="@color/aspect_color" />
             </android.support.v7.widget.LinearLayoutCompat>
         </android.support.v7.widget.LinearLayoutCompat>
 

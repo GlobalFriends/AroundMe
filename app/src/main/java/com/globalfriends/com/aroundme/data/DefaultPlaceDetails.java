@@ -23,7 +23,6 @@ public class DefaultPlaceDetails implements IPlaceDetails {
     protected boolean mOpenNow;
     protected String mIcon;
     protected String mRatingUrl;
-    protected String mPlaceRating;
     protected String mRatingColor;
     protected int mReviewCount;
     protected List<String> mWeeklyTimings = new ArrayList<String>();
@@ -54,11 +53,6 @@ public class DefaultPlaceDetails implements IPlaceDetails {
     @Override
     public String getRatingUrl() {
         return mRatingUrl;
-    }
-
-    @Override
-    public String getPlaceRating() {
-        return mPlaceRating;
     }
 
     public DefaultPlaceDetails(JSONObject response) {

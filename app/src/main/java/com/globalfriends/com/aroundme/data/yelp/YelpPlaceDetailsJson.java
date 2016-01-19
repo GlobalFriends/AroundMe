@@ -37,7 +37,7 @@ public class YelpPlaceDetailsJson extends DefaultPlaceDetails {
             // Start Business object parser
             // getRatingDetails
             if (busineess.has("rating")) {
-                mPlaceRating = busineess.getString("rating");
+                mRating = busineess.getString("rating");
             }
 
             if (busineess.has("mobile_url")) {

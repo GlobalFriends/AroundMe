@@ -39,8 +39,6 @@ public interface IPlaceDetails {
 
     String getRatingUrl();
 
-    String getPlaceRating();
-
     int getReviewCount();
 
     String getRatingColor();
