@@ -600,7 +600,11 @@ public class PlaceDetailsFragment extends BaseFragment implements View.OnClickLi
 
         LinearLayoutCompat container = (LinearLayoutCompat) mParenLayout.findViewById(R.id.
                 dynamic_layout_container);
-        container.addView(moduleLayout);
+        if (getResources().getString(R.string.yelp_tag).equalsIgnoreCase(moduleName)) {
+            container.addView(moduleLayout, 0);
+        } else {
+            container.addView(moduleLayout);
+        }
     }
 
     /**

@@ -29,8 +29,8 @@ public class TransactionManager implements Listener {
 
     private TransactionManager() {
         //Init all transaction managers which needs to be functional
-        mFeatureManagerList.add(new YelpManager(this));
         mFeatureManagerList.add(new PlaceManager(this));
+        mFeatureManagerList.add(new YelpManager(this));
         mFeatureManagerList.add(new FourSquareManager(this));
     }
 
