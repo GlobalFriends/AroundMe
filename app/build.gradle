@@ -5,7 +5,7 @@ android {
         config {
             keyAlias 'KeyStore'
             keyPassword ''
-            storeFile file('')
+            storeFile file('C:/Users/Vishal/Desktop/KeyStore.jks')
             storePassword ''
         }
     }
