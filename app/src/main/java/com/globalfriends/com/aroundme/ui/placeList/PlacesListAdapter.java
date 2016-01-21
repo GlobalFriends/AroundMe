@@ -96,7 +96,7 @@ public class PlacesListAdapter extends ArrayAdapter<PlaceInfo> {
         for (int i = 0; i < place.getPriceLevel(); i++) {
             ImageView imageView = new ImageView(mContext);
             imageView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-            imageView.setImageResource(R.drawable.dollar);
+//            imageView.setImageResource(R.drawable.dollar);
         }
 
         if (place.getPhotoReference() != null) {

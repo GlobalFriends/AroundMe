@@ -393,7 +393,7 @@ public class PlaceDetailsFragment extends BaseFragment implements View.OnClickLi
     private void updateFavoriteIcon(final boolean isFavorite) {
         //Uncomment after getting proper image
         ImageView img = (ImageView) mFavoriteButtonLayout.findViewById(R.id.id_favorite_image);
-        img.setImageResource(isFavorite ? R.drawable.favorite : R.drawable.ic_unfavorite);
+        img.setImageResource(isFavorite ? R.drawable.ic_favorite : R.drawable.ic_unfavorite);
     }
 
     /**
@@ -534,7 +534,7 @@ public class PlaceDetailsFragment extends BaseFragment implements View.OnClickLi
                 reviewerImage.setImageUrl(metaData.getProfilePhotoUrl(), imageLoader);
             } else {
                 reviewerImage.setImageBitmap(Utility.getCircularBitmap(BitmapFactory.decodeResource(
-                        AroundMeApplication.getContext().getResources(), R.drawable.profile)));
+                        AroundMeApplication.getContext().getResources(), R.drawable.ic_profile)));
             }
 
 

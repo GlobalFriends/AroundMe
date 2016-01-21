@@ -8,7 +8,7 @@
         android:id="@+id/image"
         android:layout_width="match_parent"
         android:layout_height="300dp"
-        android:background="@drawable/loading"
+        android:background="@drawable/ic_loading"
         android:layout_gravity="center_vertical"
         android:scaleType="fitXY" />
 </LinearLayout>

@@ -22,7 +22,7 @@
                 android:layout_height="match_parent"
                 android:layout_alignParentLeft="true"
                 android:scaleType="centerInside"
-                android:src="@drawable/favorite_list_icon" />
+                android:src="@drawable/ic_favorite_list_icon" />
 
             <RelativeLayout
                 android:layout_width="match_parent"

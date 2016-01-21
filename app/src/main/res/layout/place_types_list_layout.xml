@@ -8,17 +8,17 @@
         android:id="@+id/place_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="5sp"
-        android:layout_marginLeft="5sp"
-        android:layout_marginTop="5sp" />
+        android:layout_marginBottom="7dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="7dp" />
 
     <TextView
         android:id="@+id/place_name"
+        style="@style/TextAppearance.AppCompat.Medium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:layout_marginLeft="18sp"
-        android:text="Test"
-        android:textAppearance="@style/TextAppearance.AppCompat.Title" />
+        android:layout_marginLeft="18dp"/>
+    <!--android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
     <!--android:textAppearance="@style/TextAppearance.AppCompat.Medium"-->
 </LinearLayout>

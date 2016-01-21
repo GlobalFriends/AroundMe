@@ -25,7 +25,7 @@
         <name>Bank</name>
         <intent>com.globalfriends.com.aroundme.finance</intent>
         <extra>bank</extra>
-        <icon>bank</icon>
+        <icon>ic_bank</icon>
         <description></description>
     </placetype>
     <placetype>
@@ -53,7 +53,7 @@
         <name>Doctors</name>
         <intent>com.globalfriends.com.aroundme.medical_care</intent>
         <extra>dentist,doctor,physiotherapist</extra>
-        <icon>doctor</icon>
+        <icon>ic_doctor</icon>
         <description></description>
     </placetype>
     <placetype>
@@ -94,7 +94,7 @@
         <name>Movie Theater</name>
         <intent>com.globalfriends.com.aroundme.movie</intent>
         <extra>movie_theater</extra>
-        <icon>cinema</icon>
+        <icon>ic_cinema</icon>
         <description></description>
     </placetype>
     <placetype>
@@ -115,7 +115,7 @@
         <name>Police</name>
         <intent>com.globalfriends.com.aroundme.police</intent>
         <extra>police</extra>
-        <icon>police</icon>
+        <icon>ic_police</icon>
         <description></description>
     </placetype>
     <placetype>
