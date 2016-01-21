@@ -3,11 +3,11 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/drawer_my_location"
-            android:icon="@drawable/ic_menu_maps"
+            android:icon="@drawable/ic_my_location"
             android:title="@string/menu_my_location" />
         <item
             android:id="@+id/drawer_recent"
-            android:icon="@drawable/ic_menu_recent"
+            android:icon="@drawable/ic_recent"
             android:title="@string/menu_recent" />
         <item
             android:id="@+id/drawer_favorite"
@@ -19,15 +19,15 @@
         <group>
             <item
                 android:id="@+id/drawer_share"
-                android:icon="@drawable/ic_share"
+                android:icon="@drawable/ic_menu_share"
                 android:title="@string/menu_share" />
             <item
                 android:id="@+id/drawer_feedback"
-                android:icon="@drawable/ic_email"
+                android:icon="@drawable/ic_menu_email"
                 android:title="@string/menu_feedback" />
             <item
                 android:id="@+id/drawer_rate_us"
-                android:icon="@drawable/rate_us"
+                android:icon="@drawable/ic_menu_rate_us"
                 android:title="@string/menu_rate_us" />
         </group>
     </item>

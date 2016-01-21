@@ -22,7 +22,7 @@
                 android:layout_height="match_parent"
                 android:layout_alignParentLeft="true"
                 android:scaleType="centerInside"
-                android:src="@drawable/recent" />
+                android:src="@drawable/ic_recent" />
 
             <RelativeLayout
                 android:layout_width="match_parent"

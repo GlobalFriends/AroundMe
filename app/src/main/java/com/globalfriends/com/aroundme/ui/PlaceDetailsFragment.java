@@ -393,7 +393,7 @@ public class PlaceDetailsFragment extends BaseFragment implements View.OnClickLi
     private void updateFavoriteIcon(final boolean isFavorite) {
         //Uncomment after getting proper image
         ImageView img = (ImageView) mFavoriteButtonLayout.findViewById(R.id.id_favorite_image);
-        img.setImageResource(isFavorite ? R.drawable.favorite : R.drawable.unfavorite);
+        img.setImageResource(isFavorite ? R.drawable.favorite : R.drawable.ic_unfavorite);
     }
 
     /**

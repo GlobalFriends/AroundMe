@@ -4,14 +4,14 @@
         <name>Airport</name>
         <intent>com.globalfriends.com.aroundme.Airport</intent>
         <extra>airport</extra>
-        <icon>airport</icon>
+        <icon>ic_airport</icon>
         <description></description>
     </placetype>
     <placetype>
         <name>Atm</name>
         <intent>com.globalfriends.com.aroundme.atm</intent>
         <extra>atm</extra>
-        <icon>atm</icon>
+        <icon>ic_atm</icon>
         <description></description>
     </placetype>
     <placetype>
@@ -32,21 +32,21 @@
         <name>Bar</name>
         <intent>com.globalfriends.com.aroundme.bar</intent>
         <extra>bar,liquor_store</extra>
-        <icon>bar</icon>
+        <icon>ic_bar</icon>
         <description></description>
     </placetype>
     <placetype>
         <name>Cafe</name>
         <intent>com.globalfriends.com.aroundme.cafe</intent>
         <extra>cafe</extra>
-        <icon>cafe</icon>
+        <icon>ic_cafe</icon>
         <description></description>
     </placetype>
     <placetype>
         <name>Camping</name>
         <intent>com.globalfriends.com.aroundme.entertainment</intent>
         <extra>campground</extra>
-        <icon>camping</icon>
+        <icon>ic_camping</icon>
         <description></description>
     </placetype>
     <placetype>
@@ -59,35 +59,35 @@
     <placetype>
         <name>Fitness</name>
         <extra>gym</extra>
-        <icon>fitness</icon>
+        <icon>ic_fitness</icon>
         <description></description>
     </placetype>
     <placetype>
         <name>Food</name>
         <intent>com.globalfriends.com.aroundme.food</intent>
         <extra>food,restaurant</extra>
-        <icon>food</icon>
+        <icon>ic_food</icon>
         <description></description>
     </placetype>
     <placetype>
         <name>Gas Station</name>
         <intent>com.globalfriends.com.aroundme.gas_station</intent>
         <extra>gas_station</extra>
-        <icon>gas_station</icon>
+        <icon>ic_gas_station</icon>
         <description></description>
     </placetype>
     <placetype>
         <name>Government Places</name>
-        <intent>com.globalfriends.com.aroundme.goverment</intent>
+        <intent>com.globalfriends.com.aroundme.government</intent>
         <extra>city_hall,courthouse,embassy,local_government_office,post_office,cemetery</extra>
-        <icon>government</icon>
+        <icon>ic_government</icon>
         <description></description>
     </placetype>
     <placetype>
         <name>Hospitals</name>
         <intent>com.globalfriends.com.aroundme.medical_care</intent>
         <extra>hospital</extra>
-        <icon>hospital</icon>
+        <icon>ic_hospital</icon>
         <description></description>
     </placetype>
     <placetype>
@@ -108,7 +108,7 @@
         <name>Parking</name>
         <intent>com.globalfriends.com.aroundme.parking</intent>
         <extra>parking</extra>
-        <icon>parking</icon>
+        <icon>ic_parking</icon>
         <description></description>
     </placetype>
     <placetype>
@@ -122,7 +122,7 @@
         <name>Public Transport</name>
         <intent>com.globalfriends.com.aroundme.transportation</intent>
         <extra>subway_station,train_station,bus_station</extra>
-        <icon>transportation</icon>
+        <icon>ic_transportation</icon>
         <description></description>
     </placetype>
     <placetype>
@@ -136,14 +136,14 @@
         <name>School</name>
         <intent>com.globalfriends.com.aroundme.education</intent>
         <extra>school</extra>
-        <icon>school</icon>
+        <icon>ic_school</icon>
         <description></description>
     </placetype>
     <placetype>
         <name>Shopping</name>
         <intent>com.globalfriends.com.aroundme.shopping</intent>
         <extra>clothing_store,electronics_store,grocery_or_supermarket,shopping_mall</extra>
-        <icon>shopping</icon>
+        <icon>ic_shopping</icon>
         <description></description>
     </placetype>
     <placetype>

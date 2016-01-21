@@ -43,7 +43,7 @@ class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewViewHolder>
         mProfileBitmap = Utility.getCircularBitmap(BitmapFactory.decodeResource(
                 mContext.getResources(), R.drawable.profile));
         mDefaultProfileBitmap = Utility.getCircularBitmap(BitmapFactory.decodeResource(
-                mContext.getResources(), R.drawable.default_profile));
+                mContext.getResources(), R.drawable.ic_default_profile));
     }
 
     @Override
