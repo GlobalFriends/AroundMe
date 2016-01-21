@@ -18,7 +18,7 @@
         <name>Bakery</name>
         <intent>com.globalfriends.com.aroundme.bakery</intent>
         <extra>bakery</extra>
-        <icon>bakery</icon>
+        <icon>ic_bakery</icon>
         <description></description>
     </placetype>
     <placetype>
@@ -101,7 +101,7 @@
         <name>Night Club</name>
         <intent>com.globalfriends.com.aroundme.night_club</intent>
         <extra>night_club,casino</extra>
-        <icon>night_club</icon>
+        <icon>ic_night_club</icon>
         <description></description>
     </placetype>
     <placetype>
@@ -129,7 +129,7 @@
         <name>Salons</name>
         <intent>com.globalfriends.com.aroundme.personal_care</intent>
         <extra>beauty_salon,hair_care</extra>
-        <icon>salon</icon>
+        <icon>ic_salon</icon>
         <description></description>
     </placetype>
     <placetype>
@@ -150,14 +150,14 @@
         <name>Worship</name>
         <intent>com.globalfriends.com.aroundme.worship</intent>
         <extra>church,hindu_temple,mosque,place_of_worship</extra>
-        <icon>worship</icon>
+        <icon>ic_worship</icon>
         <description></description>
     </placetype>
     <placetype>
         <name>Zoo</name>
         <intent>com.globalfriends.com.aroundme.museum</intent>
         <extra>aquarium,zoo</extra>
-        <icon>zoo</icon>
+        <icon>ic_zoo</icon>
         <description></description>
     </placetype>
 </places>
