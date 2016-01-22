@@ -3,6 +3,7 @@ package com.globalfriends.com.aroundme.protocol;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.util.Log;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -15,6 +16,7 @@ import com.globalfriends.com.aroundme.AroundMeApplication;
 import com.globalfriends.com.aroundme.R;
 import com.globalfriends.com.aroundme.protocol.places.PlaceErrorDescription;
 import com.globalfriends.com.aroundme.protocol.places.PlaceRequestTypeEnum;
+import com.globalfriends.com.aroundme.utils.Utility;
 
 import org.json.JSONObject;
 
@@ -22,7 +24,7 @@ import org.json.JSONObject;
  * Created by vishal on 11/19/2015.
  */
 public class DefaultFeatureManager implements IFeatureManager {
-    protected static String LOGGING_TAG;
+    protected static String TAG;
     protected final String STATUS_OK = "OK";
     protected final String STATUS = "status";
     protected Listener mListener;
@@ -40,7 +42,7 @@ public class DefaultFeatureManager implements IFeatureManager {
         mContext = AroundMeApplication.getContext();
         mListener = listener;
         mModuleTag = tag;
-        LOGGING_TAG = getClass().getSimpleName();
+        TAG = getClass().getSimpleName();
         mQueue = Volley.newRequestQueue(AroundMeApplication.getContext());
         mImageLoader = new ImageLoader(mQueue, new LruBitmapCache());
         mQueue.start();
@@ -92,6 +94,9 @@ public class DefaultFeatureManager implements IFeatureManager {
 
                     }
                 });
+        if (Utility.DEBUG) {
+            Log.i(TAG, "mRequest=" + mRequest);
+        }
         scheduleRequest(mRequest);
     }
 

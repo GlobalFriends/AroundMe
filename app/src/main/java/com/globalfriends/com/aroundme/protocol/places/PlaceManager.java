@@ -155,7 +155,7 @@ public class PlaceManager extends DefaultFeatureManager {
                 mListener.onAutoComplete(AutoCompletePrediction.parse(response));
                 break;
             default:
-                Logger.e(LOGGING_TAG, ">>>> Invalid operation. Should never come here <<<<");
+                Logger.e(TAG, ">>>> Invalid operation. Should never come here <<<<");
                 mListener.onError("Invalid command type. Internal error", mModuleTag);
         }
     }

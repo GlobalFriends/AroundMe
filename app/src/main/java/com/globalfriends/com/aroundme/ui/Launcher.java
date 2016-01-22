@@ -47,6 +47,7 @@ import com.globalfriends.com.aroundme.ui.placeList.PlacesListFragment;
 import com.globalfriends.com.aroundme.ui.placeList.RecentFragment;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationServices;
 
 /**
  * Created by vishal on 11/8/2015.
@@ -200,7 +201,7 @@ public class Launcher extends AppCompatActivity implements
         String provider = locationManager.getBestProvider(new Criteria(), false);
         Location location = locationManager.getLastKnownLocation(provider);
         if (location == null) {
-            locationManager.requestLocationUpdates(provider, 10000, 50.0f, listener);
+            locationManager.requestLocationUpdates(provider, 5000, 50.0f, listener);
         } else {
             loc = location;
             mSavedCurrentLocationLatitude = Double.toString(loc.getLatitude());

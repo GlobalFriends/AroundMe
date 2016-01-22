@@ -50,7 +50,7 @@ import static android.util.TypedValue.applyDimension;
  */
 public class Utility {
     private static final String TAG = " Utility";
-    private static final boolean DEBUG = true;
+    public static final boolean DEBUG = true;
 
     /**
      * @param zipCode
