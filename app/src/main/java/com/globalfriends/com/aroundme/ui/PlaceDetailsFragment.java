@@ -82,13 +82,12 @@ public class PlaceDetailsFragment extends BaseFragment implements View.OnClickLi
         mProgress.setMessage(getResources().getString(R.string.please_wait_progress));
         mProgress.isIndeterminate();
         mProgress.show();
-
-        TransactionManager.getInstance().addResultCallback(mResultListener);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        TransactionManager.getInstance().addResultCallback(mResultListener);
         return inflater.inflate(R.layout.place_detail_layout, container, false);
     }
 
@@ -226,8 +225,13 @@ public class PlaceDetailsFragment extends BaseFragment implements View.OnClickLi
     }
 
     @Override
-    public void onDetach() {
+    public void onDestroyView() {
         TransactionManager.getInstance().removeResultCallback(mResultListener);
+        super.onDestroyView();
+    }
+
+    @Override
+    public void onDetach() {
         mListener = null;
         super.onDetach();
     }
