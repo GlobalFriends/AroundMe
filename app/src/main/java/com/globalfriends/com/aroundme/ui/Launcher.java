@@ -306,11 +306,10 @@ public class Launcher extends AppCompatActivity implements
             transaction.replace(R.id.fragment_container, fragment);
             if (isBackStack) {
                 transaction.addToBackStack(fragment.getTag());
-            }
-
-            for(int entry = 0; entry < getSupportFragmentManager().getBackStackEntryCount(); entry++){
-                Log.i(TAG, ">>> Fragment Name=" + getSupportFragmentManager().getBackStackEntryAt(entry).getId()
-                        + " entry=" + entry);
+            } else {
+                for(int entry = 0; entry < getSupportFragmentManager().getBackStackEntryCount(); entry++){
+                    getSupportFragmentManager().popBackStack();
+                }
             }
             transaction.commitAllowingStateLoss();
         }
@@ -389,7 +388,6 @@ public class Launcher extends AppCompatActivity implements
                 Intent intent = new Intent(Intent.ACTION_VIEW);
                 intent.setData(Uri.parse("https://play.google.com/store/apps/details?id=" + getPackageName()));
                 startActivity(intent);
-                Toast.makeText(this, "share", Toast.LENGTH_SHORT).show();
                 break;
             default:
         }
