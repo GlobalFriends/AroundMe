@@ -3,9 +3,9 @@ apply plugin: 'com.android.application'
 android {
     signingConfigs {
         config {
-            keyAlias 'KeyStore'
+            keyAlias 'KeyStoreFinal'
             keyPassword ''
-            storeFile file('C:/Users/Vishal/Desktop/KeyStore.jks')
+            storeFile file('C:/Users/Vishal/Desktop/project/KeyStore_Final.jks')
             storePassword ''
         }
     }
@@ -21,7 +21,7 @@ android {
     }
     buildTypes {
         release {
-            minifyEnabled true
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.config
             zipAlignEnabled true

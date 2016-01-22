@@ -3,6 +3,7 @@ package com.globalfriends.com.aroundme.ui;
 import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
+import android.app.FragmentManager;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -26,6 +27,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -143,6 +145,7 @@ public class Launcher extends AppCompatActivity implements
 
     @Override
     protected void onDestroy() {
+        Log.i(TAG, "onDestroy");
         if (mGoogleApiClient != null) {
             mGoogleApiClient.disconnect();
         }
@@ -174,6 +177,12 @@ public class Launcher extends AppCompatActivity implements
             dialog.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface paramDialogInterface, int paramInt) {
+                    finish();
+                }
+            });
+            dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+                @Override
+                public void onCancel(DialogInterface dialog) {
                     finish();
                 }
             });
@@ -240,6 +249,9 @@ public class Launcher extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_launcher);
 
+        if (savedInstanceState != null) {
+            Log.i(TAG, "OnCreate with savedInstance");
+        }
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -280,6 +292,8 @@ public class Launcher extends AppCompatActivity implements
      */
     private void updateFragment(final Fragment fragment, final boolean first,
                                 boolean isBackStack) {
+        //new Exception().printStackTrace();
+        Log.i(TAG, ">>> updateFragment fragment=" + fragment.getTag() + " first=" + first + " isBackStack" + isBackStack);
         if (findViewById(R.id.fragment_container) != null) {
             // Add the fragment to the 'fragment_container' FrameLayout
             if (first) {
@@ -291,7 +305,12 @@ public class Launcher extends AppCompatActivity implements
             android.support.v4.app.FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             transaction.replace(R.id.fragment_container, fragment);
             if (isBackStack) {
-                transaction.addToBackStack(null);
+                transaction.addToBackStack(fragment.getTag());
+            }
+
+            for(int entry = 0; entry < getSupportFragmentManager().getBackStackEntryCount(); entry++){
+                Log.i(TAG, ">>> Fragment Name=" + getSupportFragmentManager().getBackStackEntryAt(entry).getId()
+                        + " entry=" + entry);
             }
             transaction.commitAllowingStateLoss();
         }

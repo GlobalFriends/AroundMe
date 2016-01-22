@@ -189,7 +189,7 @@ public class PlaceManager extends DefaultFeatureManager {
         return R.drawable.google;
     }
 
-//    public int getFeatureFullLogo() {
-//        return R.drawable.google_logo;
-//    }
+    public int getFeatureFullLogo() {
+        return R.drawable.google_logo;
+    }
 }

@@ -50,7 +50,7 @@ import static android.util.TypedValue.applyDimension;
  */
 public class Utility {
     private static final String TAG = " Utility";
-    private static final boolean DEBUG = false;
+    private static final boolean DEBUG = true;
 
     /**
      * @param zipCode
@@ -212,26 +212,6 @@ public class Utility {
                         setPhotoHeight(maxHeight).
                         setPhotoWidth(maxWidth).
                         setPhotoReference(photoReference).
-                        setKey(AroundMeApplication.getContext().
-                                getResources().getString(R.string.google_maps_key));
-        return builder.build().getUrl();
-    }
-
-    /**
-     * @param placeId
-     * @param contactNumber
-     * @return
-     */
-    public static String findPlaceDetailQuery(String placeId, String contactNumber) {
-        if (TextUtils.isEmpty(placeId)) {
-            return null;
-        }
-
-        PlacesWebService.Builder builder =
-                new PlacesWebService.Builder().
-                        setSearchType(PlaceRequestTypeEnum.SEARCH_TYPE_DETAILS).
-                        setResponseType(PlaceResponseEnum.RESP_JSON).
-                        setPlaceId(placeId).
                         setKey(AroundMeApplication.getContext().
                                 getResources().getString(R.string.google_maps_key));
         return builder.build().getUrl();

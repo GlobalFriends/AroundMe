@@ -145,12 +145,16 @@ public class PlacesListFragment extends ListFragment implements SwipeRefreshLayo
     class ResultCallback extends TransactionManager.Result {
         @Override
         public void onPlacesList(final String nextPageToken, List<PlaceInfo> placeList) {
-            mAdapter.swapItem(placeList);
-            if (mProgress.isShowing()) {
+            if (mProgress != null && mProgress.isShowing()) {
                 mProgress.dismiss();
             }
+
             if (mSwipeRefresh != null) {
                 mSwipeRefresh.setRefreshing(false);
+            }
+
+            if (mAdapter != null) {
+                mAdapter.swapItem(placeList);
             }
             mNextPageToken = nextPageToken;
         }
@@ -167,7 +171,7 @@ public class PlacesListFragment extends ListFragment implements SwipeRefreshLayo
 
 
             if (!isAdded()) {
-                Log.e(TAG, "Fragment is currenlty not isAdded");
+                Log.e(TAG, "Fragment is currently not isAdded");
                 return;
             }
 
