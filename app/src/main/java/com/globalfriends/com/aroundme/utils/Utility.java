@@ -15,7 +15,6 @@ import android.location.Geocoder;
 import android.os.Environment;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutCompat;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -28,7 +27,6 @@ import com.globalfriends.com.aroundme.data.IPlaceDetails;
 import com.globalfriends.com.aroundme.data.PlacePhotoMetadata;
 import com.globalfriends.com.aroundme.data.PreferenceManager;
 import com.globalfriends.com.aroundme.protocol.places.PlaceRequestTypeEnum;
-import com.globalfriends.com.aroundme.protocol.places.PlaceResponseEnum;
 import com.globalfriends.com.aroundme.protocol.places.PlacesWebService;
 import com.globalfriends.com.aroundme.ui.PhotoViewer;
 
@@ -49,8 +47,8 @@ import static android.util.TypedValue.applyDimension;
  * Created by vishal on 11/22/2015.
  */
 public class Utility {
-    private static final String TAG = " Utility";
     public static final boolean DEBUG = true;
+    private static final String TAG = " Utility";
 
     /**
      * @param zipCode

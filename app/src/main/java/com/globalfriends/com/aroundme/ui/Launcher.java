@@ -3,7 +3,6 @@ package com.globalfriends.com.aroundme.ui;
 import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
-import android.app.FragmentManager;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -33,7 +32,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.globalfriends.com.aroundme.R;
 import com.globalfriends.com.aroundme.data.IPlaceDetails;
@@ -47,7 +45,6 @@ import com.globalfriends.com.aroundme.ui.placeList.PlacesListFragment;
 import com.globalfriends.com.aroundme.ui.placeList.RecentFragment;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.LocationServices;
 
 /**
  * Created by vishal on 11/8/2015.
@@ -308,7 +305,7 @@ public class Launcher extends AppCompatActivity implements
             if (isBackStack) {
                 transaction.addToBackStack(fragment.getTag());
             } else {
-                for(int entry = 0; entry < getSupportFragmentManager().getBackStackEntryCount(); entry++){
+                for (int entry = 0; entry < getSupportFragmentManager().getBackStackEntryCount(); entry++) {
                     getSupportFragmentManager().popBackStack();
                 }
             }
