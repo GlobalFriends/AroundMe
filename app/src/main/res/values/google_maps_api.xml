@@ -12,7 +12,7 @@ https://console.developers.google.com/flows/enableapi?apiid=maps_android_backend
     Once you have your key (it starts with "AIza"), replace the "google_maps_key"
     string in this file.
     -->
-    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyDOTDfj8mfyRzUElA-cie1059H3oBFQshU</string>
+    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyCkHDYEGT5Kimenw3vBoC2IrxsQ_Mx_lBg</string>
     <string name="yelp_consumer_key" templateMergeStrategy="preserve" translatable="false">Wph08-HL66j-IP6-o2tDEQ</string>
     <string name="yelp_consumer_secret" templateMergeStrategy="preserve" translatable="false">KrpVULWU6dc8nXDFFqoYQHPMW1c</string>
     <string name="yelp_token" templateMergeStrategy="preserve" translatable="false">9JDzUeNTp-yyq4K9N0blGOYpHDaU4L5F</string>
