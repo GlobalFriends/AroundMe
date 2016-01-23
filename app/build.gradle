@@ -3,9 +3,9 @@ apply plugin: 'com.android.application'
 android {
     signingConfigs {
         config {
-            keyAlias 'KeyStoreFinal'
+            keyAlias 'KeyStore'
             keyPassword ''
-            storeFile file('C:/Users/Vishal/Desktop/project/KeyStore_Final.jks')
+            storeFile file('C:/Users/Vishal/Desktop/project/KeyStore.jks')
             storePassword ''
         }
     }
@@ -15,8 +15,8 @@ android {
         applicationId "com.globalfriends.com.aroundme"
         minSdkVersion 16
         targetSdkVersion 23
-        versionCode 1
-        versionName "1.0"
+        versionCode 2
+        versionName "1.2"
         signingConfig signingConfigs.config
     }
     buildTypes {
@@ -34,7 +34,7 @@ android {
     }
 
     configure(android.lintOptions) {
-        abortOnError true
+        abortOnError false
     }
 }
 
