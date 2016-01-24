@@ -80,6 +80,7 @@ public class PlaceManager extends DefaultFeatureManager {
                         setSearchType(PlaceRequestTypeEnum.SEARCH_TYPE_DETAILS).
                         setResponseType(PlaceResponseEnum.RESP_JSON).
                         setPlaceId(placeId).
+                        setLanguage(PreferenceManager.getPreferredLanguage()).
                         setKey(AroundMeApplication.getContext().
                                 getResources().getString(R.string.google_maps_key));
         sendVolleyJsonRequest(builder.build().getUrl(), OperationEnum.OPERATION_PLACE_DETAIL);
