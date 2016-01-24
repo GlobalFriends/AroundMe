@@ -438,19 +438,32 @@ public class PlaceDetailsFragment extends BaseFragment implements View.OnClickLi
         // First Row
         ImageView moduleImage = (ImageView) moduleLayout.findViewById(R.id.module_image);
         TextView name = (AppCompatTextView) moduleLayout.findViewById(R.id.module_id);
-        ImageView moduleLogo = (ImageView) moduleLayout.findViewById(R.id.module_logo);
+        ImageView largeModuleLogo = (ImageView) moduleLayout.findViewById(R.id.module_logo_large);
+        ImageView mediumModuleLogo = (ImageView) moduleLayout.findViewById(R.id.module_logo_medium);
+        ImageView smallModuleLogo = (ImageView) moduleLayout.findViewById(R.id.module_logo_small);
+
+        largeModuleLogo.setVisibility(View.GONE);
+        mediumModuleLogo.setVisibility(View.GONE);
+        smallModuleLogo.setVisibility(View.GONE);
+        moduleImage.setVisibility(View.GONE);
+        name.setVisibility(View.GONE);
 
         if (TransactionManager.getInstance().getModuleCompleteLogo(moduleName) == 0) {
-            moduleLogo.setVisibility(View.GONE);
             moduleImage.setVisibility(View.VISIBLE);
             name.setVisibility(View.VISIBLE);
             moduleImage.setImageResource(TransactionManager.getInstance().getModuleIcon(moduleName));
             name.setText(moduleName);
         } else {
-            moduleLogo.setVisibility(View.VISIBLE);
-            moduleImage.setVisibility(View.GONE);
-            name.setVisibility(View.GONE);
-            moduleLogo.setImageResource(TransactionManager.getInstance().getModuleCompleteLogo(moduleName));
+            if (placeDetails.isLogoLarge()) {
+                largeModuleLogo.setVisibility(View.VISIBLE);
+                largeModuleLogo.setImageResource(TransactionManager.getInstance().getModuleCompleteLogo(moduleName));
+            } else if (placeDetails.isLogoMedium()) {
+                mediumModuleLogo.setVisibility(View.VISIBLE);
+                mediumModuleLogo.setImageResource(TransactionManager.getInstance().getModuleCompleteLogo(moduleName));
+            } else if (placeDetails.isLogoSmall()) {
+                smallModuleLogo.setVisibility(View.VISIBLE);
+                smallModuleLogo.setImageResource(TransactionManager.getInstance().getModuleCompleteLogo(moduleName));
+            }
         }
 
 

@@ -47,7 +47,7 @@ import static android.util.TypedValue.applyDimension;
  * Created by vishal on 11/22/2015.
  */
 public class Utility {
-    public static final boolean DEBUG = true;
+    public static final boolean DEBUG = false;
     private static final String TAG = " Utility";
 
     /**
@@ -319,7 +319,7 @@ public class Utility {
 
     public static String Epoch2DateString(long epochSeconds) {
         Date updatedate = new Date(epochSeconds * 1000);
-        SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
+        SimpleDateFormat format = new SimpleDateFormat("dd-MMM-yyyy");
         return format.format(updatedate);
     }
 

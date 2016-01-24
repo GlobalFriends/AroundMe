@@ -202,4 +202,10 @@ public class GooglePlaceDetailsJson extends DefaultPlaceDetails {
         }
         return this;
     }
+
+
+    @Override
+    public boolean isLogoMedium() {
+        return true;
+    }
 }

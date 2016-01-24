@@ -118,4 +118,9 @@ public class FourSquarePlaceInfoJson extends DefaultPlaceDetails {
         }
         return this;
     }
+
+    @Override
+    public boolean isLogoLarge() {
+        return true;
+    }
 }

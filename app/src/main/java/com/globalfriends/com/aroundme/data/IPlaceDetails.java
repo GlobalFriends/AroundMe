@@ -46,4 +46,10 @@ public interface IPlaceDetails {
     String getRating();
 
     String getPlaceRatingColorCode();
+
+    boolean isLogoLarge();
+
+    boolean isLogoMedium();
+
+    boolean isLogoSmall();
 }

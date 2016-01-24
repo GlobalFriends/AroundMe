@@ -153,4 +153,19 @@ public class DefaultPlaceDetails implements IPlaceDetails {
     public List<PlaceReviewMetadata> getReviewList() {
         return mReviewList;
     }
+
+    @Override
+    public boolean isLogoLarge() {
+        return false;
+    }
+
+    @Override
+    public boolean isLogoMedium() {
+        return false;
+    }
+
+    @Override
+    public boolean isLogoSmall() {
+        return false;
+    }
 }

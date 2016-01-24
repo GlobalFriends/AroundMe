@@ -18,7 +18,6 @@ public class YelpPlaceDetailsJson extends DefaultPlaceDetails {
         JsonTOPointToReference(mResponse);
     }
 
-
     private YelpPlaceDetailsJson JsonTOPointToReference(JSONObject response) {
         try {
             // For future references
@@ -66,5 +65,10 @@ public class YelpPlaceDetailsJson extends DefaultPlaceDetails {
             e.printStackTrace();
         }
         return null;
+    }
+
+    @Override
+    public boolean isLogoSmall() {
+        return true;
     }
 }
