@@ -67,8 +67,9 @@ public class YelpPlaceDetailsJson extends DefaultPlaceDetails {
         return null;
     }
 
+
     @Override
-    public boolean isLogoSmall() {
+    public boolean isLogoMedium() {
         return true;
     }
 }

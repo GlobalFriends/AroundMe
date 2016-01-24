@@ -245,7 +245,7 @@ public class PlaceDetailsFragment extends BaseFragment implements View.OnClickLi
                 bundle.putDouble("LONGITUDE", mGooglePlaceDetails.getLongitude());
                 bundle.putString("NAME", mGooglePlaceDetails.getPlaceName());
                 bundle.putInt("MAP_TYPE", GoogleMap.MAP_TYPE_SATELLITE);
-                mListener.onMapsViewClicked(bundle);
+                mListener.onMapsStreetViewClicked(bundle);
                 break;
             case R.id.id_favorite: {
                 double rating = 0;
@@ -635,7 +635,7 @@ public class PlaceDetailsFragment extends BaseFragment implements View.OnClickLi
          *
          * @param bundle
          */
-        void onMapsViewClicked(Bundle bundle);
+        void onMapsStreetViewClicked(Bundle bundle);
 
         /**
          * @param tag

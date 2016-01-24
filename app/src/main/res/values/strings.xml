@@ -29,7 +29,7 @@
     <string name="pref_header_general">General</string>
     <string name="please_wait_progress">Please wait....</string>
     <!-- Place details related Strings -->
-    <string name="maps_title">Map</string>
+    <string name="street_title">Street View</string>
     <string name="website_title">Website</string>
     <string name="call_title">Call</string>
     <string name="favorite_title">Favorite</string>
@@ -47,6 +47,7 @@
     <string name="reviews">Reviews</string>
     <!-- Place details end -->
     <string name="error_dialog_title">Error</string>
+    <string name="missing_street_view_error">Street view for this location is not available.</string>
     <string name="action_ok">Ok</string>
     <string name="action_cancel">Cancel</string>
     <string name="rating">Rating: %s</string>

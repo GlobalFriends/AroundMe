@@ -352,6 +352,9 @@ public class Launcher extends AppCompatActivity implements
 
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+
         switch (item.getItemId()) {
             case R.id.drawer_my_location:
                 String provider = locationManager.getBestProvider(new Criteria(), false);
@@ -389,10 +392,17 @@ public class Launcher extends AppCompatActivity implements
                 break;
             default:
         }
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer != null && drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+            return;
+        }
+        super.onBackPressed();
     }
 
     @Override
@@ -507,8 +517,8 @@ public class Launcher extends AppCompatActivity implements
     }
 
     @Override
-    public void onMapsViewClicked(Bundle bundle) {
-        Fragment fragment = new MapsFragment();
+    public void onMapsStreetViewClicked(Bundle bundle) {
+        Fragment fragment = new StreetViewFragment();
         fragment.setArguments(bundle);
         updateFragment(fragment, false, true);
     }
