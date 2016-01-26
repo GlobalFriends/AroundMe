@@ -53,7 +53,7 @@ public class PreferenceManager {
     }
 
     public static String getPreferredLanguage() {
-        return mPreference.getString(PREF_PREFERED_LANGUAGE, "en");
+        return mPreference.getString(PREF_PREFERED_LANGUAGE, "English");
     }
 
     public static void setPreferredLanguage(String value) {
