@@ -394,9 +394,12 @@ public class Launcher extends AppCompatActivity implements
                 startActivity(i);
                 break;
             case R.id.drawer_share:
-                Intent intent = new Intent(Intent.ACTION_VIEW);
-                intent.setData(Uri.parse("https://play.google.com/store/apps/details?id=" + getPackageName()));
-                startActivity(intent);
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                String playStoreLink = "https://play.google.com/store/apps/details?id=" + getPackageName();
+                String text = "Locate using : " + playStoreLink;
+                intent.putExtra(Intent.EXTRA_TEXT, text);
+                intent.setType("text/plain");
+                startActivity(Intent.createChooser(intent,"Send To: "));
                 break;
             default:
         }
