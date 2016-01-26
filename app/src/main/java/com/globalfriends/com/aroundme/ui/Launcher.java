@@ -43,6 +43,7 @@ import com.globalfriends.com.aroundme.ui.placeList.PlacesListFragment;
 import com.globalfriends.com.aroundme.ui.placeList.RecentFragment;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 
@@ -57,7 +58,7 @@ public class Launcher extends AppCompatActivity implements
         FavoriteFragment.OnFavoriteFragmentInteractionListener,
         RecentFragment.OnRecentFragmentInteractionListener,
         GoogleApiClient.ConnectionCallbacks,
-        com.google.android.gms.location.LocationListener,
+        LocationListener,
         GoogleApiClient.OnConnectionFailedListener,
         ToolbarUpdateListener {
     private static final int LOCATION_REQUEST_CODE = 1;
@@ -490,6 +491,11 @@ public class Launcher extends AppCompatActivity implements
 
     @Override
     public void OnPlaceListFragmentSelection(final PlaceInfo place) {
+        if (PreferenceManager.getLocation() == null) {
+            showLocationNotAvailable();
+            return;
+        }
+
         Bundle bundle = new Bundle();
         bundle.putString("PLACE_ID", place.getPlaceId());
         Fragment fragment = new PlaceDetailsFragment();
