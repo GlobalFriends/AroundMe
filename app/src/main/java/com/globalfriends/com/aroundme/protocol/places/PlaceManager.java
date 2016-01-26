@@ -87,15 +87,17 @@ public class PlaceManager extends DefaultFeatureManager {
     }
 
     @Override
-    public void autoComplete(String input) {
+    public void placeAutoComplete(String input) {
         if (TextUtils.isEmpty(input)) {
             return;
         }
 
         PlacesWebService.Builder builder =
                 new PlacesWebService.Builder().
-                        setSearchType(PlaceRequestTypeEnum.SEARCH_TYPE_AUTOCOMPLETE).
+                        setSearchType(PlaceRequestTypeEnum.SEARCH_PLACE_AUTOCOMPLETE).
                         setResponseType(PlaceResponseEnum.RESP_JSON).
+                        setAutoCompletePlaceType(AutoCompletePlaceTypeEnum.AUTOCOMPLETE_PLACE_TYPE_REGIONS).
+                        setLanguage(PreferenceManager.getPreferredLanguage()).
                         setInput(input).
                         setKey(AroundMeApplication.getContext().getResources().getString(R.string.google_maps_key));
 

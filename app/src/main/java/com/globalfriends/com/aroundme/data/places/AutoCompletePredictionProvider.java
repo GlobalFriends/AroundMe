@@ -47,7 +47,7 @@ public class AutoCompletePredictionProvider extends ContentProvider {
         MatrixCursor cursor = new MatrixCursor(SEARCH_SUGGEST_COLUMNS);
 
         TransactionManager.getInstance().addResultCallback(mResultCallback);
-        TransactionManager.getInstance().autoComplete(input);
+        TransactionManager.getInstance().placeAutoComplete(input);
 
         try {
             synchronized (mResultCallback) {

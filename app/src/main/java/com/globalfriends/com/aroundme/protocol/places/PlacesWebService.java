@@ -96,6 +96,10 @@ public class PlacesWebService {
             mUrl.append(OPERATION_SEPARATOR).append(b.mPageToken);
         }
 
+        if (!TextUtils.isEmpty(b.mAutoCompletePlaceType)) {
+            mUrl.append(OPERATION_SEPARATOR).append(b.mAutoCompletePlaceType);
+        }
+
         //Last one has to be API Key...
         if (!TextUtils.isEmpty(b.mKey)) {
             mUrl.append(OPERATION_SEPARATOR).append(b.mKey);
@@ -160,6 +164,7 @@ public class PlacesWebService {
         private String mPhotoMaxHeight;
         private String mInput; // Used for autocomplete
         private String mPageToken;
+        private String mAutoCompletePlaceType;
 
         public Builder setSearchType(final PlaceRequestTypeEnum mOperation) {
             this.mSearchType = mOperation.getSearchType();
@@ -168,6 +173,11 @@ public class PlacesWebService {
 
         public Builder setResponseType(final PlaceResponseEnum mResponseType) {
             this.mResponseType = mResponseType.getResponseType();
+            return this;
+        }
+
+        public Builder setAutoCompletePlaceType(final AutoCompletePlaceTypeEnum placeType) {
+            this.mAutoCompletePlaceType = "types" + ASSIGNMENT + placeType.getAutoCompletePlaceType();
             return this;
         }
 

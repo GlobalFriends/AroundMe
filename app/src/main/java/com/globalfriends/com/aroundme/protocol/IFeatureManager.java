@@ -45,7 +45,7 @@ public interface IFeatureManager {
      *
      * @param input The autocomplete text
      */
-    void autoComplete(final String input);
+    void placeAutoComplete(final String input);
 
     /**
      * Returns Volley Image Loader

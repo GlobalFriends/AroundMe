@@ -167,9 +167,9 @@ public class TransactionManager implements Listener {
         }
     }
 
-    public void autoComplete(final String input) {
+    public void placeAutoComplete(final String input) {
         for (IFeatureManager feature : mFeatureManagerList) {
-            feature.autoComplete(input);
+            feature.placeAutoComplete(input);
         }
     }
 

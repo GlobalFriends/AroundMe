@@ -129,7 +129,7 @@ public class DefaultFeatureManager implements IFeatureManager {
     }
 
     @Override
-    public void autoComplete(String input) {
+    public void placeAutoComplete(String input) {
         //
     }
 
