@@ -64,7 +64,7 @@ public class PlaceDetailsFragment extends BaseFragment implements View.OnClickLi
     private TextView mAddress;
     private TextView mDistance;
     private NetworkImageView mMainDisplayImage;
-    private LinearLayoutCompat mMapButtonLayout;
+    private LinearLayoutCompat mStreetViewButtonLayout;
     private LinearLayoutCompat mFavoriteButtonLayout;
     private MapView mMapView;
     private CardView mGooglePhotosLayout;
@@ -125,6 +125,7 @@ public class PlaceDetailsFragment extends BaseFragment implements View.OnClickLi
      */
     private void updateRatingBar() {
         AppCompatRatingBar ratingStars = (AppCompatRatingBar) mRatingBarLayout.findViewById(R.id.id_rating_star);
+        ratingStars.setVisibility(View.VISIBLE);
         TextView ratingText = (TextView) mRatingBarLayout.findViewById(R.id.id_rating_text);
         TextView openNow = (TextView) mRatingBarLayout.findViewById(R.id.id_open_now_text);
 
@@ -169,20 +170,24 @@ public class PlaceDetailsFragment extends BaseFragment implements View.OnClickLi
      */
     private void initView(View view) {
         mParenLayout = (LinearLayoutCompat) view.findViewById(R.id.parent_layout);
+        // Maps layout in case image is absent
+        mMapView = (MapView) view.findViewById(R.id.mapView);
+
         // Basic and Simple layouts
         mMainDisplayImage = (NetworkImageView) view.findViewById(R.id.id_place_image);
-        mMapView = (MapView) view.findViewById(R.id.mapView);
         mPlaceName = (TextView) view.findViewById(R.id.id_place_name);
         mAddress = (TextView) view.findViewById(R.id.id_address);
         mDistance = (TextView) view.findViewById(R.id.distance_id);
         mRatingBarLayout = (LinearLayoutCompat) view.findViewById(R.id.rating_bar_layout);
 
 
-        // Clickable Layouts
-        mMapButtonLayout = (LinearLayoutCompat) view.findViewById(R.id.id_maps);
-        mMapButtonLayout.setOnClickListener(this);
+        // Shortcut layout
         mFavoriteButtonLayout = (LinearLayoutCompat) view.findViewById(R.id.id_favorite);
         mFavoriteButtonLayout.setOnClickListener(this);
+        mStreetViewButtonLayout = (LinearLayoutCompat) view.findViewById(R.id.id_maps);
+        mStreetViewButtonLayout.setOnClickListener(this);
+
+        // General clickable Layouts
         mTimingLayout = (LinearLayoutCompat) view.findViewById(R.id.id_timings);
         mFab = (FloatingActionButton) view.findViewById(R.id.fab);
         mFab.setOnClickListener(this);
@@ -387,6 +392,9 @@ public class PlaceDetailsFragment extends BaseFragment implements View.OnClickLi
         updateRatingBar();
         updatePlaceDetails();
         updatePlaceTiming();
+
+        mFavoriteButtonLayout.setVisibility(View.VISIBLE);
+        mStreetViewButtonLayout.setVisibility(View.VISIBLE);
         updateFavoriteIcon(AroundMeContractProvider.Places.exist(getActivity(), mPlaceId));
     }
 
