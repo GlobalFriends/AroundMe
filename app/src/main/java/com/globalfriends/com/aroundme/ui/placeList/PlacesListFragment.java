@@ -84,6 +84,7 @@ public class PlacesListFragment extends ListFragment implements SwipeRefreshLayo
         getListView().setDivider(null);
         mToolbarUpdater.onNavigationEnabled(false);
         mToolbarUpdater.onSearchBarEnabled(false);
+        mToolbarUpdater.settingsOptionUpdate(true);
         getActivity().setTitle(R.string.search_results);
     }
 

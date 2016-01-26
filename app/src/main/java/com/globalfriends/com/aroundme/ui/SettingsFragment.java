@@ -116,6 +116,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         super.onResume();
         mToolbarUpdater.onNavigationEnabled(false);
         mToolbarUpdater.onSearchBarEnabled(false);
+        mToolbarUpdater.settingsOptionUpdate(false);
         getActivity().setTitle(R.string.menu_settings);
     }
 

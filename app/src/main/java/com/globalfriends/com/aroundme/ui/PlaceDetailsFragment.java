@@ -221,6 +221,7 @@ public class PlaceDetailsFragment extends BaseFragment implements View.OnClickLi
         super.onResume();
         mToolbarUpdater.onNavigationEnabled(false);
         mToolbarUpdater.onSearchBarEnabled(false);
+        mToolbarUpdater.settingsOptionUpdate(true);
         getActivity().setTitle(mPlaceName.getText());
     }
 

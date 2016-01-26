@@ -8,4 +8,6 @@ public interface ToolbarUpdateListener {
     public void onNavigationEnabled(final boolean visibility);
 
     public void onSearchBarEnabled(final boolean visibility);
+
+    public void settingsOptionUpdate(final boolean visibility);
 }

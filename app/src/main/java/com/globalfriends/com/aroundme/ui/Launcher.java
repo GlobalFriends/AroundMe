@@ -73,6 +73,7 @@ public class Launcher extends AppCompatActivity implements
     private boolean mIsCustomLocation;
     private MenuItem mSearchMenu;
     private MenuItem mSetLocationMenu;
+    private MenuItem mSettingsMenu;
     private SearchView mSearchView;
     private View mCustomLocationHolderView;
     private TextView mCustomLocationTextView;
@@ -319,6 +320,7 @@ public class Launcher extends AppCompatActivity implements
 
         mSearchMenu = menu.findItem(R.id.action_search);
         mSetLocationMenu = menu.findItem(R.id.action_set_location);
+        mSettingsMenu = menu.findItem(R.id.action_settings);
         mSearchView = (SearchView) mSearchMenu.getActionView();
 
         SearchManager searchManager = (SearchManager) getSystemService(SEARCH_SERVICE);
@@ -526,6 +528,11 @@ public class Launcher extends AppCompatActivity implements
     @Override
     public void onNavigationEnabled(final boolean visibility) {
         mNavigationView.setVisibility(visibility ? View.VISIBLE : View.GONE);
+    }
+
+    @Override
+    public void settingsOptionUpdate(boolean visible) {
+        mSettingsMenu.setVisible(visible);
     }
 
     @Override
