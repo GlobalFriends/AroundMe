@@ -31,6 +31,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
             listPref.setSummary(listPref.getValue());
         } else {
             listPref.setSummary(PreferenceManager.getPreferredLanguage());
+            listPref.setValue(PreferenceManager.getPreferredLanguage());
         }
         Set<String> languageList = PlacesSupportedLanguages.getListOfLanguages();
         CharSequence[] langArray = languageList.toArray(new CharSequence[languageList.size()]);
