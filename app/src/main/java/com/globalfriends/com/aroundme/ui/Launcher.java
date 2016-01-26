@@ -17,6 +17,7 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
@@ -361,6 +362,11 @@ public class Launcher extends AppCompatActivity implements
             case R.id.drawer_my_location:
                 String provider = locationManager.getBestProvider(new Criteria(), false);
                 Location location = locationManager.getLastKnownLocation(provider);
+
+                if (location == null) {
+                    Snackbar.make(mNavigationView, getString(R.string.delayed_location_error), Snackbar.LENGTH_SHORT).show();
+                    return true;
+                }
                 Bundle bundle = new Bundle();
                 bundle.putDouble("LATITUDE", location.getLatitude());
                 bundle.putDouble("LONGITUDE", location.getLongitude());
