@@ -73,7 +73,7 @@
     <string name="set_location_hint">Enter city name</string>
     <string name="set_search_hint">Enter search criteria</string>
     <string name="developer_id">globalfriends747@gmail.com</string>
-    <string name="email_subject">Around Me application feedback</string>
+    <string name="email_subject">Place Locator application feedback</string>
     <string name="network_error">Please check your network connection</string>
     <string name="no_more_results">No more results to display...</string>
     <string name="module_launch">Go to %s</string>
@@ -82,6 +82,8 @@
     <string name="error_request_denied">Request denied. Please check your request.</string>
     <string name="error_query_limit">Server limit exceeded. Please try after some time.</string>
     <string name="error_unknown_error">Server limit exceeded. Please leave a email to administrator or try after some time.</string>
-
-
+    <string name="sorting_distance">Distance</string>
+    <string name="sorting_rating">Rating</string>
+    <string name="summary_rating_checkbox">Discard all places without any Google ratings.</string>
+    <string name="title_rating_checkbox">Show rated places only</string>
 </resources>

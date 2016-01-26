@@ -2,6 +2,7 @@ package com.globalfriends.com.aroundme.ui;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v7.preference.CheckBoxPreference;
 import android.support.v7.preference.ListPreference;
 import android.support.v7.preference.PreferenceFragmentCompat;
 import android.support.v7.preference.SwitchPreferenceCompat;
@@ -44,6 +45,40 @@ public class SettingsFragment extends PreferenceFragmentCompat {
             }
         });
 
+        // Set sorting criteria
+        ListPreference sortPref = (ListPreference) findPreference("sorting_criteria");
+        if (sortPref.getValue() != null) {
+            sortPref.setSummary(sortPref.getValue());
+        } else {
+            sortPref.setSummary(PreferenceManager.getPreferredSorting());
+        }
+        CharSequence[] sortingArray = {getString(R.string.sorting_distance), getString(R.string.sorting_rating)};
+        sortPref.setEntries(sortingArray);
+        sortPref.setEntryValues(sortingArray);
+        sortPref.setOnPreferenceChangeListener(new android.support.v7.preference.Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(android.support.v7.preference.Preference preference, Object o) {
+                preference.setSummary((String) o);
+                PreferenceManager.setPreferredSorting((String) o);
+                return true;
+            }
+        });
+
+        //Rated results only
+        final CheckBoxPreference ratingPref = (CheckBoxPreference) findPreference("rating_preference");
+        ratingPref.setChecked(PreferenceManager.getRatedOnlySelection());
+        ratingPref.setOnPreferenceChangeListener(new android.support.v7.preference.Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(android.support.v7.preference.Preference preference, Object val) {
+                if (val instanceof Boolean) {
+                    Boolean boolVal = (Boolean)val;
+                    PreferenceManager.setRatedOnlySelection(boolVal);
+                }
+                return true;
+            }
+        });
+
+        // Miles and KM switch
         SwitchPreferenceCompat milesPref = (SwitchPreferenceCompat) findPreference("miles_or_km_pref");
         milesPref.setOnPreferenceChangeListener(new android.support.v7.preference.Preference.OnPreferenceChangeListener() {
             @Override

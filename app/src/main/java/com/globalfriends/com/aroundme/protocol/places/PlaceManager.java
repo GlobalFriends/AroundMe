@@ -169,21 +169,83 @@ public class PlaceManager extends DefaultFeatureManager {
      */
     private List<PlaceInfo> getSortedList(JSONArray array) {
         TreeMap<Double, PlaceInfo> placeMap = new TreeMap<Double, PlaceInfo>();
+        boolean ratedResults = PreferenceManager.getRatedOnlySelection();
         for (int i = 0; i < array.length(); i++) {
             try {
                 PlaceInfo placeInfo = PlaceInfo
                         .jsonToPontoReferencia((JSONObject) array.get(i));
-                placeMap.put(Utility.distanceFromLatitudeLongitudeInMeters(Double.valueOf(PreferenceManager.getLatitude()),
-                        Double.valueOf(PreferenceManager.getLongitude()),
-                        placeInfo.getLatitude(),
-                        placeInfo.getLongitude(),
-                        PreferenceManager.getDistanceFormat()), placeInfo);
+                if (ratedResults) {
+                    if (Utility.getDefaultDouble(placeInfo.getRating()) > 0d) {
+                        placeMap.put(Utility.distanceFromLatitudeLongitudeInMeters(Double.valueOf(PreferenceManager.getLatitude()),
+                                Double.valueOf(PreferenceManager.getLongitude()),
+                                placeInfo.getLatitude(),
+                                placeInfo.getLongitude(),
+                                PreferenceManager.getDistanceFormat()), placeInfo);
+                    }
+                } else {
+                    placeMap.put(Utility.distanceFromLatitudeLongitudeInMeters(Double.valueOf(PreferenceManager.getLatitude()),
+                            Double.valueOf(PreferenceManager.getLongitude()),
+                            placeInfo.getLatitude(),
+                            placeInfo.getLongitude(),
+                            PreferenceManager.getDistanceFormat()), placeInfo);
+                }
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
         return new ArrayList<PlaceInfo>(placeMap.values());
     }
+
+
+    /*
+    private List<PlaceInfo> getSortedList(JSONArray array) {
+        boolean sortByDistance = mContext.getString(R.string.sorting_distance).equalsIgnoreCase(PreferenceManager.getPreferredSorting());
+        TreeMap<Double, List<PlaceInfo>> placeMap = new TreeMap<Double, List<PlaceInfo>>();
+        for (int i = 0; i < array.length(); i++) {
+            try {
+                PlaceInfo placeInfo = PlaceInfo
+                        .jsonToPontoReferencia((JSONObject) array.get(i));
+                Double key = 0d;
+                if (sortByDistance) {
+                    key = Utility.distanceFromLatitudeLongitudeInMeters(Double.valueOf(PreferenceManager.getLatitude()),
+                            Double.valueOf(PreferenceManager.getLongitude()),
+                            placeInfo.getLatitude(),
+                            placeInfo.getLongitude(),
+                            PreferenceManager.getDistanceFormat());
+                } else {
+                    key = Utility.getDefaultDouble(placeInfo.getRating());
+                }
+
+                if (placeMap.containsKey(key)) {
+                    placeMap.get(key).add(placeInfo);
+                } else {
+                    List<PlaceInfo> list = new ArrayList<>();
+                    list.add(placeInfo);
+                    placeMap.put(key, list);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+
+        ArrayList<PlaceInfo> infoArrayList = new ArrayList<PlaceInfo>();
+        for(Double key: placeMap.keySet()){
+            List<PlaceInfo> list = placeMap.get(key);
+            if (!sortByDistance) {
+                Collections.reverse(list);
+            }
+            for (PlaceInfo content : list) {
+                infoArrayList.add(content);
+            }
+        }
+
+        if (!sortByDistance) {
+            Collections.reverse(infoArrayList);
+        }
+        return infoArrayList;
+    }*/
 
     @Override
     public int getFeatureIcon() {

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.globalfriends.com.aroundme.AroundMeApplication;
+import com.globalfriends.com.aroundme.R;
 import com.globalfriends.com.aroundme.logging.Logger;
 import com.globalfriends.com.aroundme.utils.Utility;
 
@@ -19,6 +20,8 @@ public class PreferenceManager {
     public static final String PREF_PREFERED_LANGUAGE = "language_value"; //String
     public static final String PREF_LATITUDE = "latitude"; //String
     public static final String PREF_LONGITUDE = "longitude"; //String
+    public static final String PREF_SORTING = "sorting"; //String
+    public static final String PREF_RATING = "rating"; //String
     private static final String FILE_NAME = "pref_file";
     private static SharedPreferences mPreference = AroundMeApplication.getContext().
             getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE);
@@ -56,6 +59,27 @@ public class PreferenceManager {
     public static void setPreferredLanguage(String value) {
         SharedPreferences.Editor editor = mPreference.edit();
         editor.putString(PREF_PREFERED_LANGUAGE, value);
+        editor.commit();
+    }
+
+    public static String getPreferredSorting() {
+        return mPreference.getString(PREF_SORTING,
+                AroundMeApplication.getContext().getString(R.string.sorting_distance));
+    }
+
+    public static void setPreferredSorting(String value) {
+        SharedPreferences.Editor editor = mPreference.edit();
+        editor.putString(PREF_SORTING, value);
+        editor.commit();
+    }
+
+    public static Boolean getRatedOnlySelection() {
+        return mPreference.getBoolean(PREF_RATING, false);
+    }
+
+    public static void setRatedOnlySelection(Boolean value) {
+        SharedPreferences.Editor editor = mPreference.edit();
+        editor.putBoolean(PREF_RATING, value);
         editor.commit();
     }
 

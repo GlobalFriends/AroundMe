@@ -12,5 +12,15 @@
             android:persistent="true"
             android:title="Language" />
 
+        <ListPreference
+            android:dialogTitle="Select Sorting Criteria"
+            android:key="sorting_criteria"
+            android:persistent="true"
+            android:title="Sorting Criteria" />
+
+        <CheckBoxPreference
+            android:key="rating_preference"
+            android:summary="@string/summary_rating_checkbox"
+            android:title="@string/title_rating_checkbox" />
     </PreferenceCategory>
 </PreferenceScreen>

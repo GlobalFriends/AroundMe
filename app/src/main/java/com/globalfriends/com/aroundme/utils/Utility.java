@@ -15,6 +15,7 @@ import android.location.Geocoder;
 import android.os.Environment;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutCompat;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -174,6 +175,13 @@ public class Utility {
         }
 
         return dist;
+    }
+
+    public static double getDefaultDouble(String val) {
+        if (TextUtils.isEmpty(val)) {
+            return 0;
+        }
+        return Double.valueOf(val);
     }
 
     public static double distanceInMeters(final DistanceFormatEnum type, final int unit) {
