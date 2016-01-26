@@ -48,6 +48,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
 
         // Set sorting criteria
         ListPreference sortPref = (ListPreference) findPreference("sorting_criteria");
+        sortPref.setVisible(false);// Temporary..
         if (sortPref.getValue() != null) {
             sortPref.setSummary(sortPref.getValue());
         } else {
