@@ -8,9 +8,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.location.Criteria;
 import android.location.Location;
-import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
@@ -31,7 +29,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.globalfriends.com.aroundme.R;
@@ -46,6 +43,8 @@ import com.globalfriends.com.aroundme.ui.placeList.PlacesListFragment;
 import com.globalfriends.com.aroundme.ui.placeList.RecentFragment;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
 
 /**
  * Created by vishal on 11/8/2015.
@@ -58,6 +57,7 @@ public class Launcher extends AppCompatActivity implements
         FavoriteFragment.OnFavoriteFragmentInteractionListener,
         RecentFragment.OnRecentFragmentInteractionListener,
         GoogleApiClient.ConnectionCallbacks,
+        com.google.android.gms.location.LocationListener,
         GoogleApiClient.OnConnectionFailedListener,
         ToolbarUpdateListener {
     private static final int LOCATION_REQUEST_CODE = 1;
@@ -67,8 +67,8 @@ public class Launcher extends AppCompatActivity implements
     //Permission
     private final static int PLACE_LOCATOR_PERMISSIONS_ALL = 1;
     private final String TAG = getClass().getSimpleName();
-    private Location loc;
-    private LocationManager locationManager;
+    private Location mLocation;
+    private LocationManager mAndroidLocationManager;
     private GoogleApiClient mGoogleApiClient;
     private NavigationView mNavigationView;
     private boolean mIsCustomLocation;
@@ -78,10 +78,16 @@ public class Launcher extends AppCompatActivity implements
     private SearchView mSearchView;
     private View mCustomLocationHolderView;
     private TextView mCustomLocationTextView;
-    private Button mCustomLocationClearButton;
     private String mSavedCurrentLocationLatitude;
     private String mSavedCurrentLocationLongitude;
     private int mSearchType = SEARCH_TYPE_DEFAULT;
+
+
+    public static final long LOCATION_UPDATE_INTERVAL = 60000;
+    public static final long FASTEST_LOCATION_UPDATE_INTERVAL =
+            LOCATION_UPDATE_INTERVAL / 3;
+    protected LocationRequest mLocationRequest;
+
     /**
      * Search type result for location based search
      */
@@ -109,44 +115,11 @@ public class Launcher extends AppCompatActivity implements
         }
     };
 
-    /**
-     * Location update listener
-     */
-    private LocationListener listener = new LocationListener() {
-        @Override
-        public void onLocationChanged(Location location) {
-            Logger.e(TAG, "onLocationChanged: " + location);
-            loc = location;
-            mSavedCurrentLocationLatitude = Double.toString(loc.getLatitude());
-            mSavedCurrentLocationLongitude = Double.toString(loc.getLongitude());
-
-            // If Custom location is set then do not update preference..
-            if (!mIsCustomLocation) {
-                PreferenceManager.putLocation(Double.toString(loc.getLatitude()),
-                        Double.toString(loc.getLongitude()));
-            }
-        }
-
-        @Override
-        public void onStatusChanged(String s, int i, Bundle bundle) {
-
-        }
-
-        @Override
-        public void onProviderEnabled(String s) {
-            Logger.i(TAG, "onProviderEnabled extra=" + s);
-        }
-
-        @Override
-        public void onProviderDisabled(String s) {
-            Logger.i(TAG, "onProviderDisabled extra=" + s);
-        }
-    };
-
     @Override
     protected void onDestroy() {
         Log.i(TAG, "onDestroy");
         if (mGoogleApiClient != null) {
+            unregisterLocationUpdates();
             mGoogleApiClient.disconnect();
         }
         TransactionManager.getInstance().resetResultCallback();
@@ -158,8 +131,8 @@ public class Launcher extends AppCompatActivity implements
         boolean gps_enabled = false;
         boolean network_enabled = false;
         try {
-            gps_enabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
-            network_enabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+            gps_enabled = mAndroidLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+            network_enabled = mAndroidLocationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -188,38 +161,40 @@ public class Launcher extends AppCompatActivity implements
             });
             dialog.show();
         } else {
-            registerLocationUpdates();
+            initLocationAndAppFlow();
         }
     }
 
-    private void registerLocationUpdates() {
+    private void initLocationAndAppFlow() {
         initGoogleClient();
         updateFragment(new SelectionFragment(), true, false);
-
-        // Register for location updates
-        String provider = locationManager.getBestProvider(new Criteria(), false);
-        Location location = locationManager.getLastKnownLocation(provider);
-        if (location == null) {
-            locationManager.requestLocationUpdates(provider, 5000, 50.0f, listener);
-        } else {
-            loc = location;
-            mSavedCurrentLocationLatitude = Double.toString(loc.getLatitude());
-            mSavedCurrentLocationLongitude = Double.toString(loc.getLongitude());
-
-            if (!mIsCustomLocation) {
-                PreferenceManager.putLocation(Double.toString(loc.getLatitude()),
-                        Double.toString(loc.getLongitude()));
-            }
-        }
     }
 
     private void initGoogleClient() {
+        Log.i(TAG, "Building GoogleApiClient");
+        createLocationRequest();
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
-                .addApi(com.google.android.gms.location.places.Places.GEO_DATA_API)
+                .addApi(LocationServices.API)
                 .build();
         mGoogleApiClient.connect();
+    }
+
+    private void createLocationRequest() {
+        mLocationRequest = new LocationRequest();
+        mLocationRequest.setInterval(LOCATION_UPDATE_INTERVAL);
+        mLocationRequest.setFastestInterval(FASTEST_LOCATION_UPDATE_INTERVAL);
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
+    }
+
+    private void registerLocationUpdates() {
+        LocationServices.FusedLocationApi.requestLocationUpdates(
+                mGoogleApiClient, mLocationRequest, this);
+    }
+
+    private void unregisterLocationUpdates() {
+        LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
     }
 
     @Override
@@ -232,9 +207,9 @@ public class Launcher extends AppCompatActivity implements
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
             case LOCATION_REQUEST_CODE:
-                if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) &&
-                        locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
-                    registerLocationUpdates();
+                if (mAndroidLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) &&
+                        mAndroidLocationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+                    initLocationAndAppFlow();
                 } else {
                     finish();
                 }
@@ -270,7 +245,7 @@ public class Launcher extends AppCompatActivity implements
         mCustomLocationTextView = (TextView) findViewById(R.id.text_current_location);
 
         // Handle Location
-        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        mAndroidLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         int currentapiVersion = android.os.Build.VERSION.SDK_INT;
         if (currentapiVersion >= android.os.Build.VERSION_CODES.M) {
             getAllPermissionForApp();
@@ -353,6 +328,10 @@ public class Launcher extends AppCompatActivity implements
         return super.onOptionsItemSelected(item);
     }
 
+    private void showLocationNotAvailable() {
+        Snackbar.make(mNavigationView, getString(R.string.delayed_location_error), Snackbar.LENGTH_SHORT).show();
+    }
+
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -360,11 +339,10 @@ public class Launcher extends AppCompatActivity implements
 
         switch (item.getItemId()) {
             case R.id.drawer_my_location:
-                String provider = locationManager.getBestProvider(new Criteria(), false);
-                Location location = locationManager.getLastKnownLocation(provider);
-
+                Location location = LocationServices.FusedLocationApi.getLastLocation(
+                        mGoogleApiClient);
                 if (location == null) {
-                    Snackbar.make(mNavigationView, getString(R.string.delayed_location_error), Snackbar.LENGTH_SHORT).show();
+                    showLocationNotAvailable();
                     return true;
                 }
                 Bundle bundle = new Bundle();
@@ -418,6 +396,10 @@ public class Launcher extends AppCompatActivity implements
 
     @Override
     public void OnSelectionFragmentSelection(Bundle bundle) {
+        if (PreferenceManager.getLocation() == null) {
+            showLocationNotAvailable();
+            return;
+        }
         launchPlaceListFragment(bundle);
     }
 
@@ -477,17 +459,33 @@ public class Launcher extends AppCompatActivity implements
 
     @Override
     public void onConnected(Bundle bundle) {
+        Logger.e(TAG, ">>>>>>>>>> onConnected");
+        // Register for location updates
+        Location location = LocationServices.FusedLocationApi.getLastLocation(
+                mGoogleApiClient);
+        if (location != null) {
+            Logger.e(TAG, ">>>>>>>>>> last location found <<<<<<<<<<<<");
+            mLocation = location;
+            mSavedCurrentLocationLatitude = Double.toString(mLocation.getLatitude());
+            mSavedCurrentLocationLongitude = Double.toString(mLocation.getLongitude());
 
+            if (!mIsCustomLocation) {
+                PreferenceManager.putLocation(Double.toString(mLocation.getLatitude()),
+                        Double.toString(mLocation.getLongitude()));
+            }
+        }
+
+        registerLocationUpdates();
     }
 
     @Override
     public void onConnectionSuspended(int i) {
-
+        mGoogleApiClient.connect();
     }
 
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
-
+        Log.i(TAG, "Connection failed: = " + connectionResult.getErrorCode());
     }
 
     @Override
@@ -541,7 +539,9 @@ public class Launcher extends AppCompatActivity implements
 
     @Override
     public void settingsOptionUpdate(boolean visible) {
-        mSettingsMenu.setVisible(visible);
+        if (mSettingsMenu != null) {
+            mSettingsMenu.setVisible(visible);
+        }
     }
 
     @Override
@@ -609,4 +609,17 @@ public class Launcher extends AppCompatActivity implements
         }
     }
 
+    @Override
+    public void onLocationChanged(Location location) {
+        Logger.e(TAG, ">>>>>>>>>> onLocationChanged: " + location);
+        mLocation = location;
+        mSavedCurrentLocationLatitude = Double.toString(mLocation.getLatitude());
+        mSavedCurrentLocationLongitude = Double.toString(mLocation.getLongitude());
+
+        // If Custom location is set then do not update preference..
+        if (!mIsCustomLocation) {
+            PreferenceManager.putLocation(Double.toString(mLocation.getLatitude()),
+                    Double.toString(mLocation.getLongitude()));
+        }
+    }
 }

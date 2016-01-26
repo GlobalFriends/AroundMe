@@ -84,6 +84,10 @@ public class PreferenceManager {
     }
 
     public static String getLocation() {
+        if (mPreference.getString(PREF_LATITUDE, null) == null ||
+                mPreference.getString(PREF_LONGITUDE, null) == null) {
+            return null;
+        }
         return (mPreference.getString(PREF_LATITUDE, null) + "," + mPreference.getString(PREF_LONGITUDE, null));
     }
 

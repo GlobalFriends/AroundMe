@@ -86,5 +86,5 @@
     <string name="sorting_rating">Rating</string>
     <string name="summary_rating_checkbox">Discard all places without any Google ratings.</string>
     <string name="title_rating_checkbox">Show rated places only</string>
-    <string name="delayed_location_error">We are trying to get your location information. Please wait for some time and try again.</string>
+    <string name="delayed_location_error">We are not able to determine your current location. Please wait for some time and try again.</string>
 </resources>

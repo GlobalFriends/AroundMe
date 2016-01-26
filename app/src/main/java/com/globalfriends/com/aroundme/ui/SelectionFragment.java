@@ -45,6 +45,7 @@ public class SelectionFragment extends BaseFragment implements AbsListView.OnIte
         super.onResume();
         mToolbarUpdater.onNavigationEnabled(true);
         mToolbarUpdater.onSearchBarEnabled(true);
+        mToolbarUpdater.settingsOptionUpdate(true);
         getActivity().setTitle(R.string.app_name);
     }
 
