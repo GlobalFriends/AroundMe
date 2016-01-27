@@ -250,7 +250,9 @@ public class Launcher extends AppCompatActivity implements
         mAndroidLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         int currentapiVersion = android.os.Build.VERSION.SDK_INT;
         if (currentapiVersion >= android.os.Build.VERSION_CODES.M) {
-            getAllPermissionForApp();
+            if (getAllPermissionForApp()) {
+                validateLocation();
+            }
         } else {
             validateLocation();
         }
@@ -615,14 +617,18 @@ public class Launcher extends AppCompatActivity implements
     }
 
     @TargetApi(23)
-    public void getAllPermissionForApp() {
+    public boolean getAllPermissionForApp() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE)
                 != PackageManager.PERMISSION_GRANTED) {
             requestPermissions(new String[]{Manifest.permission.CALL_PHONE, Manifest.permission.ACCESS_COARSE_LOCATION,
                             Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.WRITE_EXTERNAL_STORAGE,
                             "com.google.android.providers.gsf.permission.READ_GSERVICES"},
                     PLACE_LOCATOR_PERMISSIONS_ALL);
+
+            return false;
         }
+
+        return true;
     }
 
     @Override
