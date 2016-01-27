@@ -618,17 +618,21 @@ public class Launcher extends AppCompatActivity implements
 
     @TargetApi(23)
     public boolean getAllPermissionForApp() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE)
-                != PackageManager.PERMISSION_GRANTED) {
-            requestPermissions(new String[]{Manifest.permission.CALL_PHONE, Manifest.permission.ACCESS_COARSE_LOCATION,
-                            Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                            "com.google.android.providers.gsf.permission.READ_GSERVICES"},
-                    PLACE_LOCATOR_PERMISSIONS_ALL);
-
-            return false;
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[] {Manifest.permission.CALL_PHONE}, PLACE_LOCATOR_PERMISSIONS_ALL);
+        } else if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[] {Manifest.permission.ACCESS_COARSE_LOCATION}, PLACE_LOCATOR_PERMISSIONS_ALL);
+        } else if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[] {Manifest.permission.ACCESS_FINE_LOCATION}, PLACE_LOCATOR_PERMISSIONS_ALL);
+        } else if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE}, PLACE_LOCATOR_PERMISSIONS_ALL);
+        } else if (ContextCompat.checkSelfPermission(this, "com.google.android.providers.gsf.permission.READ_GSERVICES") != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[] {"com.google.android.providers.gsf.permission.READ_GSERVICES"}, PLACE_LOCATOR_PERMISSIONS_ALL);
+        } else {
+            return true;
         }
 
-        return true;
+        return false;
     }
 
     @Override
@@ -648,7 +652,9 @@ public class Launcher extends AppCompatActivity implements
                     }
                 }
                 if (grantedAccess) {
-                    validateLocation();
+                    if (getAllPermissionForApp()) {
+                        validateLocation();
+                    }
                 }
                 Logger.i(TAG, "Read Contacts permission granted");
             } else {
