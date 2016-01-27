@@ -28,7 +28,17 @@ public interface Listener {
      */
     void onPlacesList(final String pageToken, List<PlaceInfo> placeList);
 
-    void onAutoComplete(List<AutoCompletePrediction> predictions);
+    /**
+     *
+     * @param predictions
+     */
+    void onPlaceAutoComplete(List<AutoCompletePrediction> predictions);
+
+    /**
+     *
+     * @param predictions
+     */
+    void onQueryAutoComplete(List<AutoCompletePrediction> predictions);
 
     /**
      *

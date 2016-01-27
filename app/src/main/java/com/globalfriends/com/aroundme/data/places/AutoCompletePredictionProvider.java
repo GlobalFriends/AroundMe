@@ -20,7 +20,8 @@ public class AutoCompletePredictionProvider extends ContentProvider {
             SearchManager.SUGGEST_COLUMN_TEXT_1,
             SearchManager.SUGGEST_COLUMN_INTENT_DATA
     };
-    public static boolean mEnabled = false;
+    public static boolean mPlaceSearchEnabled = false;
+    public static boolean mQuerySearchEnabled = false;
     private List<AutoCompletePrediction> mPredictions;
     private ResultCallback mResultCallback = new ResultCallback();
 
@@ -32,13 +33,15 @@ public class AutoCompletePredictionProvider extends ContentProvider {
     @Nullable
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
-        if (!mEnabled) {
+        if (!mPlaceSearchEnabled && !mQuerySearchEnabled) {
             return null;
         }
 
         String input = uri.getLastPathSegment();
 
-        if (TextUtils.isEmpty(input) || input.equals(SearchManager.SUGGEST_URI_PATH_QUERY)) {
+        if (TextUtils.isEmpty(input) || input.equals(SearchManager.SUGGEST_URI_PATH_QUERY)
+                || input.length() < 3) {
+            // To Save queries, we will show results of auto complete only after use enters atleast 3 letters
             return null;
         }
 
@@ -47,7 +50,11 @@ public class AutoCompletePredictionProvider extends ContentProvider {
         MatrixCursor cursor = new MatrixCursor(SEARCH_SUGGEST_COLUMNS);
 
         TransactionManager.getInstance().addResultCallback(mResultCallback);
-        TransactionManager.getInstance().placeAutoComplete(input);
+        if (mPlaceSearchEnabled) {
+            TransactionManager.getInstance().placeAutoComplete(input);
+        } else {
+            TransactionManager.getInstance().queryAutoComplete(input);
+        }
 
         try {
             synchronized (mResultCallback) {
@@ -89,7 +96,16 @@ public class AutoCompletePredictionProvider extends ContentProvider {
 
     class ResultCallback extends TransactionManager.Result {
         @Override
-        public void onAutoComplete(List<AutoCompletePrediction> predictions) {
+        public void onPlaceAutoComplete(List<AutoCompletePrediction> predictions) {
+            mPredictions = predictions;
+
+            synchronized (mResultCallback) {
+                mResultCallback.notify();
+            }
+        }
+
+        @Override
+        public void onQueryAutoComplete(List<AutoCompletePrediction> predictions) {
             mPredictions = predictions;
 
             synchronized (mResultCallback) {

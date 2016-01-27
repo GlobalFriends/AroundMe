@@ -22,7 +22,8 @@ public class PlacesWebService {
 
         mUrl.append(URL_DELIMITER);
 
-        if (b.mSearchType.equals(PlaceRequestTypeEnum.SEARCH_TYPE_TEXT.getSearchType())) {
+        if (b.mSearchType.equals(PlaceRequestTypeEnum.SEARCH_TYPE_TEXT.getSearchType()) ||
+                b.mSearchType.equals(PlaceRequestTypeEnum.SEARCH_QUERY_AUTOCOMPLETE.getSearchType())) {
             generateTextSearchQuery(b);
             return;
         }
@@ -124,6 +125,10 @@ public class PlacesWebService {
         if (!TextUtils.isEmpty(b.mLanguage)) {
             // It should be always from list o Supported languages.
             mUrl.append(OPERATION_SEPARATOR).append(b.mLanguage);
+        }
+
+        if (!TextUtils.isEmpty(b.mInput)) {
+            mUrl.append(OPERATION_SEPARATOR).append(b.mInput);
         }
 
         if (!TextUtils.isEmpty(b.mKey)) {

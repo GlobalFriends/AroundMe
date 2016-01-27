@@ -41,11 +41,18 @@ public interface IFeatureManager {
     void findPlaceDetails(final String internationalNumber, final String phoneNumber, Double latitude, Double longitude);
 
     /**
-     * Do an autocomplete query based on input text
+     * Do an autocomplete query based on input place
      *
      * @param input The autocomplete text
      */
     void placeAutoComplete(final String input);
+
+    /**
+     * * Do an autocomplete query based on input text
+     *
+     * @param input The autocomplete text
+     */
+    void queryAutoComplete(final String input);
 
     /**
      * Returns Volley Image Loader

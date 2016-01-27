@@ -1,5 +1,7 @@
 package com.globalfriends.com.aroundme.data.places;
 
+import android.text.TextUtils;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -22,9 +24,16 @@ public class AutoCompletePrediction {
             for (int i = 0; i < predictionsArray.length(); i++) {
                 JSONObject predictionObject = (JSONObject) predictionsArray.get(i);
                 AutoCompletePrediction prediction = new AutoCompletePrediction();
-                prediction.setDescription(predictionObject.getString("description"));
-                prediction.setPlaceId(predictionObject.getString("place_id"));
-                predictions.add(prediction);
+
+                if (predictionObject.has("description")) {
+                    prediction.setDescription(predictionObject.getString("description"));
+                }
+                if (predictionObject.has("place_id")) {
+                    prediction.setPlaceId(predictionObject.getString("place_id"));
+                }
+                if (!prediction.isEmpty()) {
+                    predictions.add(prediction);
+                }
             }
 
             return predictions;
@@ -33,6 +42,10 @@ public class AutoCompletePrediction {
         }
 
         return null;
+    }
+
+    private boolean isEmpty() {
+        return (TextUtils.isEmpty(mDescription) && TextUtils.isEmpty(mPlaceId));
     }
 
     public String getDescription() {

@@ -173,6 +173,12 @@ public class TransactionManager implements Listener {
         }
     }
 
+    public void queryAutoComplete(final String input) {
+        for (IFeatureManager feature : mFeatureManagerList) {
+            feature.queryAutoComplete(input);
+        }
+    }
+
     @Override
     public void onGetPhoto(final JSONObject response, final String placeTag) {
         for (Result listener : mCallBackManager.getListeners()) {
@@ -203,9 +209,16 @@ public class TransactionManager implements Listener {
     }
 
     @Override
-    public void onAutoComplete(List<AutoCompletePrediction> predictions) {
+    public void onPlaceAutoComplete(List<AutoCompletePrediction> predictions) {
         for (Result listener : mCallBackManager.getListeners()) {
-            listener.onAutoComplete(predictions);
+            listener.onPlaceAutoComplete(predictions);
+        }
+    }
+
+    @Override
+    public void onQueryAutoComplete(List<AutoCompletePrediction> predictions) {
+        for (Result listener : mCallBackManager.getListeners()) {
+            listener.onQueryAutoComplete(predictions);
         }
     }
 
@@ -252,7 +265,16 @@ public class TransactionManager implements Listener {
         public void onPlacesList(final String pageToken, List<PlaceInfo> placeList) {
         }
 
-        public void onAutoComplete(List<AutoCompletePrediction> predictions) {
+        /**
+         * @param predictions
+         */
+        public void onPlaceAutoComplete(List<AutoCompletePrediction> predictions) {
+        }
+
+        /**
+         * @param predictions
+         */
+        public void onQueryAutoComplete(List<AutoCompletePrediction> predictions) {
         }
 
         /**

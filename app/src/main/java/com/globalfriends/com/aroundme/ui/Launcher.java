@@ -298,8 +298,8 @@ public class Launcher extends AppCompatActivity implements
         mSearchMenu = menu.findItem(R.id.action_search);
         mSetLocationMenu = menu.findItem(R.id.action_set_location);
         mSettingsMenu = menu.findItem(R.id.action_settings);
-        mSearchView = (SearchView) mSearchMenu.getActionView();
 
+        mSearchView = (SearchView) mSearchMenu.getActionView();
         SearchManager searchManager = (SearchManager) getSystemService(SEARCH_SERVICE);
         mSearchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
         mSearchView.setIconified(true);
@@ -313,12 +313,15 @@ public class Launcher extends AppCompatActivity implements
                 updateFragment(new SettingsFragment(), false, true);
                 break;
             case R.id.action_search:
-                AutoCompletePredictionProvider.mEnabled = false;
+                AutoCompletePredictionProvider.mQuerySearchEnabled = true;
+                AutoCompletePredictionProvider.mPlaceSearchEnabled = false;
+                mSearchMenu.expandActionView();
                 mSearchView.setQueryHint(getString(R.string.set_search_hint));
                 mSearchType = SEARCH_TYPE_PLACE;
                 break;
             case R.id.action_set_location:
-                AutoCompletePredictionProvider.mEnabled = true;
+                AutoCompletePredictionProvider.mQuerySearchEnabled = false;
+                AutoCompletePredictionProvider.mPlaceSearchEnabled = true;
                 mSearchMenu.expandActionView();
                 mSearchView.setQueryHint(getString(R.string.set_location_hint));
                 mSearchType = SEARCH_TYPE_LOCATION;
@@ -378,7 +381,7 @@ public class Launcher extends AppCompatActivity implements
                 String text = "Locate using : " + playStoreLink;
                 intent.putExtra(Intent.EXTRA_TEXT, text);
                 intent.setType("text/plain");
-                startActivity(Intent.createChooser(intent,"Send To: "));
+                startActivity(Intent.createChooser(intent, "Send To: "));
                 break;
             default:
         }
@@ -412,11 +415,15 @@ public class Launcher extends AppCompatActivity implements
 
     @Override
     protected void onNewIntent(Intent intent) {
+        Log.i(TAG, "### onNewIntent ### Action=" + intent.getAction());
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             if (mSearchType == SEARCH_TYPE_LOCATION) {
-                String placeId = intent.getDataString();
+                //Fail Safe
+                AutoCompletePredictionProvider.mQuerySearchEnabled = false;
+                AutoCompletePredictionProvider.mPlaceSearchEnabled = false;
 
-                if (placeId == null) {
+                String placeId = intent.getDataString();
+                if (TextUtils.isEmpty(placeId)) {
                     return;
                 }
 
@@ -424,8 +431,22 @@ public class Launcher extends AppCompatActivity implements
                 TransactionManager.getInstance().findGooglePlaceDetails(placeId, null);
             } else if (mSearchType == SEARCH_TYPE_PLACE) {
                 mSearchMenu.collapseActionView();
+                //Fail Safe
+                AutoCompletePredictionProvider.mQuerySearchEnabled = false;
+                AutoCompletePredictionProvider.mPlaceSearchEnabled = false;
+
+                String placeId = intent.getDataString();
+                if (!TextUtils.isEmpty(placeId)) {
+                    launchPlaceDetailsFragment(placeId);
+                    return;
+                }
+
+                String extra = intent.getStringExtra(SearchManager.QUERY);
+                if (TextUtils.isEmpty(extra)) {
+                    return;
+                }
                 Bundle bundle = new Bundle();
-                bundle.putString("TEXT_EXTRA", intent.getStringExtra(SearchManager.QUERY).replace(" ", "+"));
+                bundle.putString("TEXT_EXTRA", extra.replace(" ", "+"));
                 launchPlaceListFragment(bundle);
             }
         }
@@ -495,9 +516,12 @@ public class Launcher extends AppCompatActivity implements
             showLocationNotAvailable();
             return;
         }
+        launchPlaceDetailsFragment(place.getPlaceId());
+    }
 
+    private void launchPlaceDetailsFragment(final String placeId) {
         Bundle bundle = new Bundle();
-        bundle.putString("PLACE_ID", place.getPlaceId());
+        bundle.putString("PLACE_ID", placeId);
         Fragment fragment = new PlaceDetailsFragment();
         fragment.setArguments(bundle);
         updateFragment(fragment, false, true);

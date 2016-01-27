@@ -134,6 +134,11 @@ public class DefaultFeatureManager implements IFeatureManager {
     }
 
     @Override
+    public void queryAutoComplete(String input) {
+
+    }
+
+    @Override
     public final ImageLoader getImageLoader() {
         return mImageLoader;
     }

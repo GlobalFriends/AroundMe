@@ -101,7 +101,25 @@ public class PlaceManager extends DefaultFeatureManager {
                         setInput(input).
                         setKey(AroundMeApplication.getContext().getResources().getString(R.string.google_maps_key));
 
-        sendVolleyJsonRequest(builder.build().getUrl(), OperationEnum.OPERATION_AUTOCOMPLETE);
+        sendVolleyJsonRequest(builder.build().getUrl(), OperationEnum.OPERATION_PLACE_AUTOCOMPLETE);
+    }
+
+    @Override
+    public void queryAutoComplete(String input) {
+        if (TextUtils.isEmpty(input)) {
+            return;
+        }
+
+        PlacesWebService.Builder builder =
+                new PlacesWebService.Builder().
+                        setSearchType(PlaceRequestTypeEnum.SEARCH_QUERY_AUTOCOMPLETE).
+                        setResponseType(PlaceResponseEnum.RESP_JSON).
+                        setLocation(PreferenceManager.getLocation()).
+                        setLanguage(PreferenceManager.getPreferredLanguage()).
+                        setInput(input).
+                        setKey(AroundMeApplication.getContext().getResources().getString(R.string.google_maps_key));
+
+        sendVolleyJsonRequest(builder.build().getUrl(), OperationEnum.OPERATION_QUERY_AUTOCOMPLETE);
     }
 
     /**
@@ -114,7 +132,7 @@ public class PlaceManager extends DefaultFeatureManager {
     protected void dispatchJsonResponse(final OperationEnum operation, final JSONObject response) {
         switch (operation) {
             case OPERATION_PLACE_DETAIL:
-                Utility.generateNoteOnSD("placeDetails_google", response.toString());
+                Utility.generateNoteOnSD("OPERATION_PLACE_DETAIL=", response.toString());
                 try {
                     if (response.has(STATUS)) {
                         if (STATUS_OK.equalsIgnoreCase(response.getString(STATUS))) {
@@ -131,7 +149,7 @@ public class PlaceManager extends DefaultFeatureManager {
                 }
                 break;
             case OPERATION_PLACE_LIST:
-                Utility.generateNoteOnSD("placeList_google", response.toString());
+                Utility.generateNoteOnSD("OPERATION_PLACE_LIST=", response.toString());
                 try {
                     if (response.has(STATUS)) {
                         if (STATUS_OK.equalsIgnoreCase(response.getString(STATUS))) {
@@ -154,8 +172,13 @@ public class PlaceManager extends DefaultFeatureManager {
             case OPERATION_PLACE_PHOTO:
                 mListener.onGetPhoto(response, mModuleTag);
                 break;
-            case OPERATION_AUTOCOMPLETE:
-                mListener.onAutoComplete(AutoCompletePrediction.parse(response));
+            case OPERATION_PLACE_AUTOCOMPLETE:
+                Utility.generateNoteOnSD("OPERATION_PLACE_AUTOCOMPLETE=", response.toString());
+                mListener.onPlaceAutoComplete(AutoCompletePrediction.parse(response));
+                break;
+            case OPERATION_QUERY_AUTOCOMPLETE:
+                Utility.generateNoteOnSD("OPERATION_QUERY_AUTOCOMPLETE=", response.toString());
+                mListener.onQueryAutoComplete(AutoCompletePrediction.parse(response));
                 break;
             default:
                 Logger.e(TAG, ">>>> Invalid operation. Should never come here <<<<");
@@ -198,56 +221,6 @@ public class PlaceManager extends DefaultFeatureManager {
         }
         return new ArrayList<PlaceInfo>(placeMap.values());
     }
-
-
-    /*
-    private List<PlaceInfo> getSortedList(JSONArray array) {
-        boolean sortByDistance = mContext.getString(R.string.sorting_distance).equalsIgnoreCase(PreferenceManager.getPreferredSorting());
-        TreeMap<Double, List<PlaceInfo>> placeMap = new TreeMap<Double, List<PlaceInfo>>();
-        for (int i = 0; i < array.length(); i++) {
-            try {
-                PlaceInfo placeInfo = PlaceInfo
-                        .jsonToPontoReferencia((JSONObject) array.get(i));
-                Double key = 0d;
-                if (sortByDistance) {
-                    key = Utility.distanceFromLatitudeLongitudeInMeters(Double.valueOf(PreferenceManager.getLatitude()),
-                            Double.valueOf(PreferenceManager.getLongitude()),
-                            placeInfo.getLatitude(),
-                            placeInfo.getLongitude(),
-                            PreferenceManager.getDistanceFormat());
-                } else {
-                    key = Utility.getDefaultDouble(placeInfo.getRating());
-                }
-
-                if (placeMap.containsKey(key)) {
-                    placeMap.get(key).add(placeInfo);
-                } else {
-                    List<PlaceInfo> list = new ArrayList<>();
-                    list.add(placeInfo);
-                    placeMap.put(key, list);
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-
-
-        ArrayList<PlaceInfo> infoArrayList = new ArrayList<PlaceInfo>();
-        for(Double key: placeMap.keySet()){
-            List<PlaceInfo> list = placeMap.get(key);
-            if (!sortByDistance) {
-                Collections.reverse(list);
-            }
-            for (PlaceInfo content : list) {
-                infoArrayList.add(content);
-            }
-        }
-
-        if (!sortByDistance) {
-            Collections.reverse(infoArrayList);
-        }
-        return infoArrayList;
-    }*/
 
     @Override
     public int getFeatureIcon() {
