@@ -15,7 +15,7 @@ public class AutoCompletePrediction {
     private String mDescription;
     private String mPlaceId;
 
-    public static List<AutoCompletePrediction> parse(JSONObject object) {
+    public static List<AutoCompletePrediction> parse(JSONObject object, final boolean place) {
 
         try {
             JSONArray predictionsArray = object.getJSONArray("predictions");
@@ -31,6 +31,26 @@ public class AutoCompletePrediction {
                 if (predictionObject.has("place_id")) {
                     prediction.setPlaceId(predictionObject.getString("place_id"));
                 }
+
+                if (!place) {
+                    if (predictionObject.has("types")) {
+                        boolean isGeoCode = false;
+                        JSONArray placeTypes = predictionObject.getJSONArray("types");
+                        if (placeTypes != null) {
+                            for (int counter = 0; counter < placeTypes.length(); counter++) {
+                                if ("geocode".equalsIgnoreCase(placeTypes.get(counter).toString())) {
+                                    isGeoCode = true;
+                                    break;
+                                }
+                            }
+                        }
+
+                        if (isGeoCode) {
+                            continue;
+                        }
+                    }
+                }
+
                 if (!prediction.isEmpty()) {
                     predictions.add(prediction);
                 }

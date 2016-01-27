@@ -174,11 +174,11 @@ public class PlaceManager extends DefaultFeatureManager {
                 break;
             case OPERATION_PLACE_AUTOCOMPLETE:
                 Utility.generateNoteOnSD("OPERATION_PLACE_AUTOCOMPLETE=", response.toString());
-                mListener.onPlaceAutoComplete(AutoCompletePrediction.parse(response));
+                mListener.onPlaceAutoComplete(AutoCompletePrediction.parse(response, true));
                 break;
             case OPERATION_QUERY_AUTOCOMPLETE:
                 Utility.generateNoteOnSD("OPERATION_QUERY_AUTOCOMPLETE=", response.toString());
-                mListener.onQueryAutoComplete(AutoCompletePrediction.parse(response));
+                mListener.onQueryAutoComplete(AutoCompletePrediction.parse(response, false));
                 break;
             default:
                 Logger.e(TAG, ">>>> Invalid operation. Should never come here <<<<");
