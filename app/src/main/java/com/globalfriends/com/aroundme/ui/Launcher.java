@@ -420,51 +420,30 @@ public class Launcher extends AppCompatActivity implements
     protected void onNewIntent(Intent intent) {
         Log.i(TAG, "### onNewIntent ### Action=" + intent.getAction());
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+            String intentData = intent.getDataString();
+            if (intentData == null) {
+                return;
+            }
+
+            //Fail Safe
+            AutoCompletePredictionProvider.mQuerySearchEnabled = false;
+            AutoCompletePredictionProvider.mPlaceSearchEnabled = false;
+
             if (mSearchType == SEARCH_TYPE_LOCATION) {
-                //Fail Safe
-                AutoCompletePredictionProvider.mQuerySearchEnabled = false;
-                AutoCompletePredictionProvider.mPlaceSearchEnabled = false;
-
-                String placeId = intent.getDataString();
-                if (TextUtils.isEmpty(placeId)) {
-                    return;
+                if (intentData.startsWith("id")) {
+                    TransactionManager.getInstance().addResultCallback(mSetCustomLocationCallback);
+                    TransactionManager.getInstance().findGooglePlaceDetails(intentData.split(":")[1], null);
                 }
-
-                TransactionManager.getInstance().addResultCallback(mSetCustomLocationCallback);
-                TransactionManager.getInstance().findGooglePlaceDetails(placeId, null);
             } else if (mSearchType == SEARCH_TYPE_PLACE) {
                 mSearchMenu.collapseActionView();
-                //Fail Safe
-                AutoCompletePredictionProvider.mQuerySearchEnabled = false;
-                AutoCompletePredictionProvider.mPlaceSearchEnabled = false;
 
-                String placeId = intent.getDataString();
-                if (!TextUtils.isEmpty(placeId)) {
-                    launchPlaceDetailsFragment(placeId);
-                    return;
-                }
-
-                // On Search click
-                String extra = intent.getStringExtra(SearchManager.QUERY);
-                if (!TextUtils.isEmpty(extra)) {
+                if (intentData.startsWith("id")) {
+                    launchPlaceDetailsFragment(intentData.split(":")[1]);
+                } else if (intentData.startsWith("desc")) {
                     Bundle bundle = new Bundle();
-                    bundle.putString("TEXT_EXTRA", extra.replace(" ", "+"));
+                    bundle.putString("TEXT_EXTRA", intentData.split(":")[1].replace(" ", "+"));
                     launchPlaceListFragment(bundle);
-                    return;
                 }
-
-                // On predictions click
-                Bundle userBundle = intent.getExtras();
-                if (userBundle != null) {
-                    SpannableString userExtra = (SpannableString) userBundle.get(SearchManager.USER_QUERY);
-
-                    if (userExtra != null && !userExtra.toString().isEmpty()) {
-                        Bundle bundle = new Bundle();
-                        bundle.putString("TEXT_EXTRA", userExtra.toString().replace(" ", "+"));
-                        launchPlaceListFragment(bundle);
-                    }
-                }
-
             }
         }
     }
