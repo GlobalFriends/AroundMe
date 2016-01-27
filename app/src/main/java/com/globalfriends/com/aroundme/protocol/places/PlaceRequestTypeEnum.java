@@ -9,7 +9,7 @@ public enum PlaceRequestTypeEnum {
     SEARCH_TYPE_RADAR("radarsearch"),
     SEARCH_TYPE_PHOTO("photo"),
     SEARCH_TYPE_DETAILS("details"),
-    SEARCH_QUERY_AUTOCOMPLETE(""),
+    SEARCH_QUERY_AUTOCOMPLETE("queryautocomplete"),
     SEARCH_PLACE_AUTOCOMPLETE("autocomplete");
 
     private String mSearchType;
