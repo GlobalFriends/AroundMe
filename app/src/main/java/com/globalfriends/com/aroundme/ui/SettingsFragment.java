@@ -1,15 +1,19 @@
 package com.globalfriends.com.aroundme.ui;
 
 import android.content.Context;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v7.preference.CheckBoxPreference;
 import android.support.v7.preference.ListPreference;
+import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceFragmentCompat;
 import android.support.v7.preference.SwitchPreferenceCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.globalfriends.com.aroundme.AroundMeApplication;
 import com.globalfriends.com.aroundme.R;
 import com.globalfriends.com.aroundme.data.DistanceFormatEnum;
 import com.globalfriends.com.aroundme.data.PreferenceManager;
@@ -100,6 +104,17 @@ public class SettingsFragment extends PreferenceFragmentCompat {
             milesPref.setSummary("KM");
         else
             milesPref.setSummary("MILES");
+
+
+        //APk Version
+        final Preference version = (Preference) findPreference("software_version");
+        try {
+            PackageInfo pinfo = AroundMeApplication.getContext().getPackageManager().getPackageInfo(
+                    AroundMeApplication.getContext().getPackageName(), 0);
+            version.setSummary(pinfo.versionName);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

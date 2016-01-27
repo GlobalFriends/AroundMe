@@ -4,5 +4,6 @@
     android:hint="@string/search_hint"
     android:searchMode="queryRewriteFromText"
     android:includeInGlobalSearch="true"
+    android:searchSuggestThreshold="3"
     android:searchSuggestAuthority="com.globalfriends.com.aroundme.autocomplete">
 </searchable>

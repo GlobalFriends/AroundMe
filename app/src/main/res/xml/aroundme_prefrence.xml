@@ -22,5 +22,10 @@
             android:key="rating_preference"
             android:summary="@string/summary_rating_checkbox"
             android:title="@string/title_rating_checkbox" />
+
+        <Preference
+            android:key="software_version"
+            android:title="Software Version"
+            android:summary=""/>
     </PreferenceCategory>
 </PreferenceScreen>

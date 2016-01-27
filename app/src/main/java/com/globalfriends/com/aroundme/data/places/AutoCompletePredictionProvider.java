@@ -39,9 +39,7 @@ public class AutoCompletePredictionProvider extends ContentProvider {
 
         String input = uri.getLastPathSegment();
 
-        if (TextUtils.isEmpty(input) || input.equals(SearchManager.SUGGEST_URI_PATH_QUERY)
-                || input.length() < 3) {
-            // To Save queries, we will show results of auto complete only after use enters atleast 3 letters
+        if (TextUtils.isEmpty(input) || input.equals(SearchManager.SUGGEST_URI_PATH_QUERY)) {
             return null;
         }
 
