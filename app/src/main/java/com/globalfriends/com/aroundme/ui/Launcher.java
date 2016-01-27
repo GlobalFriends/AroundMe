@@ -24,6 +24,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.text.SpannableString;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
@@ -441,13 +442,27 @@ public class Launcher extends AppCompatActivity implements
                     return;
                 }
 
+                // On Search click
                 String extra = intent.getStringExtra(SearchManager.QUERY);
-                if (TextUtils.isEmpty(extra)) {
+                if (!TextUtils.isEmpty(extra)) {
+                    Bundle bundle = new Bundle();
+                    bundle.putString("TEXT_EXTRA", extra.replace(" ", "+"));
+                    launchPlaceListFragment(bundle);
                     return;
                 }
-                Bundle bundle = new Bundle();
-                bundle.putString("TEXT_EXTRA", extra.replace(" ", "+"));
-                launchPlaceListFragment(bundle);
+
+                // On predictions click
+                Bundle userBundle = intent.getExtras();
+                if (userBundle != null) {
+                    SpannableString userExtra = (SpannableString) userBundle.get(SearchManager.USER_QUERY);
+
+                    if (userExtra != null && !userExtra.toString().isEmpty()) {
+                        Bundle bundle = new Bundle();
+                        bundle.putString("TEXT_EXTRA", userExtra.toString().replace(" ", "+"));
+                        launchPlaceListFragment(bundle);
+                    }
+                }
+
             }
         }
     }
