@@ -39,6 +39,7 @@ public class PlacesListFragment extends ListFragment implements SwipeRefreshLayo
 
     @Override
     public void onDestroy() {
+        Log.i(TAG, "onDestroy");
         TransactionManager.getInstance().removeResultCallback(mCallBack);
         super.onDestroy();
     }
@@ -116,6 +117,7 @@ public class PlacesListFragment extends ListFragment implements SwipeRefreshLayo
 
     @Override
     public void onRefresh() {
+        Log.i(TAG, "onRefresh");
         if (mNextPageToken != null) {
             TransactionManager.getInstance().findByNearByByPageToken(mNextPageToken);
             return;
@@ -146,6 +148,7 @@ public class PlacesListFragment extends ListFragment implements SwipeRefreshLayo
     class ResultCallback extends TransactionManager.Result {
         @Override
         public void onPlacesList(final String nextPageToken, List<PlaceInfo> placeList) {
+            Log.i(TAG, "onPlacesList isVisible" + isVisible());
             if (mProgress != null && mProgress.isShowing()) {
                 mProgress.dismiss();
             }
@@ -154,10 +157,16 @@ public class PlacesListFragment extends ListFragment implements SwipeRefreshLayo
                 mSwipeRefresh.setRefreshing(false);
             }
 
+            mNextPageToken = nextPageToken;
+            if (placeList == null || placeList.size() == 0) {
+                Toast.makeText(getActivity(), R.string.no_results, Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            Log.i(TAG, "onPlacesList isAdded" + isAdded());
             if (mAdapter != null) {
                 mAdapter.swapItem(placeList);
             }
-            mNextPageToken = nextPageToken;
         }
 
         @Override
