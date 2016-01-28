@@ -157,6 +157,10 @@ public class PlacesListFragment extends ListFragment implements SwipeRefreshLayo
                 mSwipeRefresh.setRefreshing(false);
             }
 
+            boolean showUpdate = false;
+            if (mNextPageToken != null) {
+                showUpdate = true;
+            }
             mNextPageToken = nextPageToken;
             if (placeList == null || placeList.size() == 0) {
                 Toast.makeText(getActivity(), R.string.no_results, Toast.LENGTH_SHORT).show();
@@ -166,6 +170,9 @@ public class PlacesListFragment extends ListFragment implements SwipeRefreshLayo
             Log.i(TAG, "onPlacesList isAdded" + isAdded());
             if (mAdapter != null) {
                 mAdapter.swapItem(placeList);
+                if (showUpdate) {
+                    Toast.makeText(getActivity(), R.string.updated, Toast.LENGTH_SHORT).show();
+                }
             }
         }
 
@@ -179,6 +186,7 @@ public class PlacesListFragment extends ListFragment implements SwipeRefreshLayo
                 mProgress.dismiss();
             }
 
+            mNextPageToken = null; // Reset to recover
 
             if (!isAdded()) {
                 Log.e(TAG, "Fragment is currently not isAdded");

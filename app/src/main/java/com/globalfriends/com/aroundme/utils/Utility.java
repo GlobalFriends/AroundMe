@@ -16,6 +16,7 @@ import android.os.Environment;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutCompat;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -65,6 +66,7 @@ public class Utility {
             return;
         }
 
+        Log.i(TAG, "Response=" + sBody);
         try {
             File root = new File(Environment.getExternalStorageDirectory(), "AroundMe");
             if (!root.exists()) {

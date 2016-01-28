@@ -24,7 +24,7 @@ import org.json.JSONObject;
  * Created by vishal on 11/19/2015.
  */
 public class DefaultFeatureManager implements IFeatureManager {
-    protected static String TAG;
+    protected String TAG;
     protected final String STATUS_OK = "OK";
     protected final String STATUS = "status";
     protected Listener mListener;
@@ -86,6 +86,10 @@ public class DefaultFeatureManager implements IFeatureManager {
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
+                        if (Utility.DEBUG) {
+                            Log.i(TAG, "onErrorResponse=" + (error == null ? null : error.toString()));
+                        }
+
                         if (mContext.getString(R.string.google_places_tag).equalsIgnoreCase(mModuleTag)) {
                             mListener.onError(PlaceErrorDescription.getErrorString(mContext, error.toString()), mModuleTag);
                         } else {
