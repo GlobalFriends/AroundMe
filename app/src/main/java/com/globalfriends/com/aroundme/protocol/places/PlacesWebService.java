@@ -94,7 +94,7 @@ public class PlacesWebService {
         }
 
         if (!TextUtils.isEmpty(b.mPageToken)) {
-            mUrl.append(OPERATION_SEPARATOR).append(b.mPageToken);
+            mUrl.append(b.mPageToken);
         }
 
         if (!TextUtils.isEmpty(b.mAutoCompletePlaceType)) {

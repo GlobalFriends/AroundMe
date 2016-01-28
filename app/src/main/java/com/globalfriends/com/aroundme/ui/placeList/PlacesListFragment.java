@@ -192,8 +192,6 @@ public class PlacesListFragment extends ListFragment implements SwipeRefreshLayo
                 mProgress.dismiss();
             }
 
-            mNextPageToken = null; // Reset to recover
-
             if (!isAdded()) {
                 Log.e(TAG, "Fragment is currently not isAdded");
                 return;
