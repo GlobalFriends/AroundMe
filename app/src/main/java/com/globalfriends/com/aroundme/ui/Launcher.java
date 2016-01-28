@@ -421,27 +421,32 @@ public class Launcher extends AppCompatActivity implements
         Log.i(TAG, "### onNewIntent ### Action=" + intent.getAction());
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             String intentData = intent.getDataString();
+            intentData = (intentData == null ? intent.getStringExtra(SearchManager.QUERY) : intentData);
             if (intentData == null) {
                 return;
             }
 
-            //Fail Safe
-            AutoCompletePredictionProvider.mQuerySearchEnabled = false;
-            AutoCompletePredictionProvider.mPlaceSearchEnabled = false;
-
             if (mSearchType == SEARCH_TYPE_LOCATION) {
-                if (intentData.startsWith("id")) {
+                if (intentData.startsWith("id") && intentData.split(":").length > 1) {
+                    //Fail Safe
+                    AutoCompletePredictionProvider.mQuerySearchEnabled = false;
+                    AutoCompletePredictionProvider.mPlaceSearchEnabled = false;
+
                     TransactionManager.getInstance().addResultCallback(mSetCustomLocationCallback);
                     TransactionManager.getInstance().findGooglePlaceDetails(intentData.split(":")[1], null);
                 }
             } else if (mSearchType == SEARCH_TYPE_PLACE) {
+                //Fail Safe
+                AutoCompletePredictionProvider.mQuerySearchEnabled = false;
+                AutoCompletePredictionProvider.mPlaceSearchEnabled = false;
+
                 mSearchMenu.collapseActionView();
 
-                if (intentData.startsWith("id")) {
+                if (intentData.startsWith("id") && intentData.split(":").length > 1) {
                     launchPlaceDetailsFragment(intentData.split(":")[1]);
-                } else if (intentData.startsWith("desc")) {
+                } else {
                     Bundle bundle = new Bundle();
-                    bundle.putString("TEXT_EXTRA", intentData.split(":")[1].replace(" ", "+"));
+                    bundle.putString("TEXT_EXTRA", intentData.replace(" ", "+"));
                     launchPlaceListFragment(bundle);
                 }
             }

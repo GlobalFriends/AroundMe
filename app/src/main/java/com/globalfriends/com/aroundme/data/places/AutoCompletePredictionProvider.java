@@ -65,7 +65,7 @@ public class AutoCompletePredictionProvider extends ContentProvider {
         int i = 0;
         for (AutoCompletePrediction prediction : mPredictions) {
             String placeId = prediction.getPlaceId();
-            String intentData = (placeId == null ? "desc:" + prediction.getDescription() : "id:" + placeId);
+            String intentData = (placeId == null ? prediction.getDescription() : "id:" + placeId);
             cursor.addRow(new String[]{Integer.toString(i), prediction.getDescription(), intentData});
         }
 
