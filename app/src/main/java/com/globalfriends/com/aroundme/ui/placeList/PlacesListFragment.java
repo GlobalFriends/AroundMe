@@ -36,6 +36,7 @@ public class PlacesListFragment extends ListFragment implements SwipeRefreshLayo
     private SwipeRefreshLayout mSwipeRefresh;
     private ResultCallback mCallBack = new ResultCallback();
     private String mNextPageToken;
+    private boolean mOngoingRefresh = false;
 
     @Override
     public void onDestroy() {
@@ -119,7 +120,10 @@ public class PlacesListFragment extends ListFragment implements SwipeRefreshLayo
     public void onRefresh() {
         Log.i(TAG, "onRefresh");
         if (mNextPageToken != null) {
-            TransactionManager.getInstance().findByNearByByPageToken(mNextPageToken);
+            if (!mOngoingRefresh) {
+                TransactionManager.getInstance().findByNearByByPageToken(mNextPageToken);
+                mOngoingRefresh = true;
+            }
             return;
         }
 
@@ -149,6 +153,7 @@ public class PlacesListFragment extends ListFragment implements SwipeRefreshLayo
         @Override
         public void onPlacesList(final String nextPageToken, List<PlaceInfo> placeList) {
             Log.i(TAG, "onPlacesList isVisible" + isVisible());
+            mOngoingRefresh= false;
             if (mProgress != null && mProgress.isShowing()) {
                 mProgress.dismiss();
             }
@@ -178,6 +183,7 @@ public class PlacesListFragment extends ListFragment implements SwipeRefreshLayo
 
         @Override
         public void onError(final String errorMsg, final String tag) {
+            mOngoingRefresh = false;
             if (mSwipeRefresh != null) {
                 mSwipeRefresh.setRefreshing(false);
             }
