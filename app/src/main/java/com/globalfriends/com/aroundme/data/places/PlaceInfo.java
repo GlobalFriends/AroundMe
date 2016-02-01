@@ -96,7 +96,6 @@ public class PlaceInfo implements Parcelable {
 
             JSONObject openingHours;
             if (pontoReferencia.has("opening_hours")) {
-                Log.i(">>>>" , "Place Name=" + result.getName());
                 result.setIsOpenClosePresent(true);
                 openingHours = (JSONObject) pontoReferencia.get("opening_hours");
                 if (openingHours.has("open_now")) {
