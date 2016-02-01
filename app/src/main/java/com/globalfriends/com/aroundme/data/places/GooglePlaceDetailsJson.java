@@ -99,6 +99,7 @@ public class GooglePlaceDetailsJson extends DefaultPlaceDetails {
             }
 
             if (openingHours != null && openingHours.has("open_now")) {
+                mIsOpenClosePresent = true;
                 mOpenNow = openingHours.getBoolean("open_now");
             }
 

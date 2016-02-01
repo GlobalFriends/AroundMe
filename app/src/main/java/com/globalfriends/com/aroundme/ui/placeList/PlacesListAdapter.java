@@ -85,11 +85,19 @@ public class PlacesListAdapter extends ArrayAdapter<PlaceInfo> {
                 place.getLongitude(),
                 PreferenceManager.getDistanceFormat()));
 
-        if (place.isOpenNow()) {
-            viewHolder.mOpenNow.setText(R.string.open);
-            viewHolder.mOpenNow.setTextColor(ColorStateList.valueOf(Color.DKGRAY));
-        } else {
-            viewHolder.mOpenNow.setText(R.string.closed);
+        viewHolder.mOpenNow.setVisibility(View.GONE);
+        if (place.getOpenClosePresent()) {
+            viewHolder.mOpenNow.setVisibility(View.VISIBLE);
+            if (place.isOpenNow()) {
+                viewHolder.mOpenNow.setText(R.string.open);
+                viewHolder.mOpenNow.setTextColor(ColorStateList.valueOf(Color.DKGRAY));
+            } else {
+                viewHolder.mOpenNow.setText(R.string.closed);
+                viewHolder.mOpenNow.setTextColor(ColorStateList.valueOf(Color.RED));
+            }
+        } else if (place.getPermanentlyClosed()) {
+            viewHolder.mOpenNow.setVisibility(View.VISIBLE);
+            viewHolder.mOpenNow.setText(R.string.permanently_closed);
             viewHolder.mOpenNow.setTextColor(ColorStateList.valueOf(Color.RED));
         }
 

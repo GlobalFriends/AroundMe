@@ -130,9 +130,13 @@ public class PlaceDetailsFragment extends BaseFragment implements View.OnClickLi
         TextView openNow = (TextView) mRatingBarLayout.findViewById(R.id.id_open_now_text);
 
         // Update open or close status
+        openNow.setVisibility(View.GONE);
         if (mGooglePlaceDetails.isPermanentlyClosed()) {
+            openNow.setVisibility(View.VISIBLE);
             openNow.setText(getActivity().getResources().getString(R.string.permanently_closed));
-        } else {
+            openNow.setTextColor(ColorStateList.valueOf(Color.RED));
+        } else if (mGooglePlaceDetails.isOpenClosePresent()){
+            openNow.setVisibility(View.VISIBLE);
             if (mGooglePlaceDetails.isOpenNow()) {
                 openNow.setText(R.string.open);
                 openNow.setTextColor(ColorStateList.valueOf(Color.DKGRAY));

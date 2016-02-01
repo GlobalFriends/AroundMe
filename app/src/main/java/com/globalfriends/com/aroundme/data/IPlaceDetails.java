@@ -43,6 +43,8 @@ public interface IPlaceDetails {
 
     boolean isOpenNow();
 
+    boolean isOpenClosePresent();
+
     String getRating();
 
     String getPlaceRatingColorCode();

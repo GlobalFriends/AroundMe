@@ -21,6 +21,7 @@ public class DefaultPlaceDetails implements IPlaceDetails {
     protected Double mLongitude;
     protected boolean mPermanentlyClosed;
     protected boolean mOpenNow;
+    protected boolean mIsOpenClosePresent;
     protected String mIcon;
     protected String mRatingUrl;
     protected String mRatingColorCode;
@@ -112,6 +113,11 @@ public class DefaultPlaceDetails implements IPlaceDetails {
     @Override
     public boolean isOpenNow() {
         return mOpenNow;
+    }
+
+    @Override
+    public boolean isOpenClosePresent() {
+        return mIsOpenClosePresent;
     }
 
     @Override

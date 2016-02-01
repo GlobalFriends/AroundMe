@@ -2,6 +2,7 @@ package com.globalfriends.com.aroundme.data.places;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 
 import com.globalfriends.com.aroundme.data.PlacePhotoMetadata;
 
@@ -38,6 +39,8 @@ public class PlaceInfo implements Parcelable {
     private PlacePhotoMetadata mPhoto;
     private String mRating;
     private boolean mOpenNow;
+    private boolean mOpenClosePresent;
+    private boolean mPermanentlyClosed;
     private int mPriceLevel;
 
     public PlaceInfo() {
@@ -71,6 +74,14 @@ public class PlaceInfo implements Parcelable {
                 result.setVicinity(pontoReferencia.getString("vicinity"));
             }
 
+            if (pontoReferencia.has("permanently_closed")) {
+                try {
+                    result.setPermanentlyClosed(pontoReferencia.getBoolean("permanently_closed"));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
             if (pontoReferencia.has("formatted_address")) {
                 result.setVicinity(pontoReferencia.getString("formatted_address"));
             }
@@ -85,6 +96,8 @@ public class PlaceInfo implements Parcelable {
 
             JSONObject openingHours;
             if (pontoReferencia.has("opening_hours")) {
+                Log.i(">>>>" , "Place Name=" + result.getName());
+                result.setIsOpenClosePresent(true);
                 openingHours = (JSONObject) pontoReferencia.get("opening_hours");
                 if (openingHours.has("open_now")) {
                     result.setOpenNow(openingHours.getBoolean("open_now"));
@@ -162,6 +175,14 @@ public class PlaceInfo implements Parcelable {
         this.vicinity = vicinity;
     }
 
+    public void setPermanentlyClosed(boolean permanentlyClosed) {
+        this.mPermanentlyClosed = permanentlyClosed;
+    }
+
+    public boolean getPermanentlyClosed() {
+        return mPermanentlyClosed;
+    }
+
     public void setPlace_id(String id) {
         this.mPlace_id = id;
     }
@@ -195,6 +216,14 @@ public class PlaceInfo implements Parcelable {
 
     public void setOpenNow(boolean openNow) {
         this.mOpenNow = openNow;
+    }
+
+    public void setIsOpenClosePresent(boolean present) {
+        this.mOpenClosePresent = present;
+    }
+
+    public boolean getOpenClosePresent() {
+        return mOpenClosePresent;
     }
 
     public int getPriceLevel() {
