@@ -32,7 +32,7 @@ public class FavoriteFragment extends ListFragment implements AbsListView.OnItem
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return super.onCreateView(inflater, container, savedInstanceState);
+        return inflater.inflate(R.layout.favorite_recent_layout, container, false);
     }
 
     @Override

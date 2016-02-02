@@ -2,7 +2,9 @@ package com.globalfriends.com.aroundme.ui;
 
 import android.Manifest;
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.FragmentManager;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -48,6 +50,8 @@ import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 
+import java.util.List;
+
 /**
  * Created by vishal on 11/8/2015.
  */
@@ -70,6 +74,7 @@ public class Launcher extends AppCompatActivity implements
     private final static int PLACE_LOCATOR_PERMISSIONS_ALL = 1;
     private final String TAG = getClass().getSimpleName();
     private Location mLocation;
+    private Context mContext;
     private LocationManager mAndroidLocationManager;
     private GoogleApiClient mGoogleApiClient;
     private NavigationView mNavigationView;
@@ -83,7 +88,7 @@ public class Launcher extends AppCompatActivity implements
     private String mSavedCurrentLocationLatitude;
     private String mSavedCurrentLocationLongitude;
     private int mSearchType = SEARCH_TYPE_DEFAULT;
-
+    private BackStackListener mBackStackListener = new BackStackListener();
 
     public static final long LOCATION_UPDATE_INTERVAL = 60000;
     public static final long FASTEST_LOCATION_UPDATE_INTERVAL =
@@ -120,6 +125,8 @@ public class Launcher extends AppCompatActivity implements
     @Override
     protected void onDestroy() {
         Log.i(TAG, "onDestroy");
+
+        getSupportFragmentManager().removeOnBackStackChangedListener(mBackStackListener);
         if (mGoogleApiClient != null) {
             unregisterLocationUpdates();
             mGoogleApiClient.disconnect();
@@ -225,7 +232,9 @@ public class Launcher extends AppCompatActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_launcher);
+        mContext = this;
 
+        getSupportFragmentManager().addOnBackStackChangedListener(mBackStackListener);
         if (savedInstanceState != null) {
             Log.i(TAG, "OnCreate with savedInstance");
         }
@@ -258,6 +267,25 @@ public class Launcher extends AppCompatActivity implements
         }
     }
 
+    /**
+     * BackStack change listener for fragments
+     */
+    class BackStackListener implements android.support.v4.app.FragmentManager.OnBackStackChangedListener {
+        @Override
+        public void onBackStackChanged() {
+            {
+                android.support.v4.app.FragmentManager mgr= getSupportFragmentManager();
+                if (mgr != null) {
+                    int backStackEntryCount = mgr.getBackStackEntryCount();
+                    List<Fragment> list = mgr.getFragments();
+                    Log.i(TAG, "Size=" + (list == null ? null : list.size()));
+                    if (backStackEntryCount == 0 && mContext != null) {
+                        ((Activity)mContext).setTitle(R.string.app_name);
+                    }
+                }
+            }
+        }
+    }
     public void clearCustomLocation(View view) {
         enableCustomLocation(false, null);
     }
@@ -282,13 +310,15 @@ public class Launcher extends AppCompatActivity implements
             }
 
             android.support.v4.app.FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.replace(R.id.fragment_container, fragment);
             if (isBackStack) {
                 transaction.addToBackStack(fragment.getTag());
+                transaction.replace(R.id.fragment_container, fragment);
             } else {
                 for (int entry = 0; entry < getSupportFragmentManager().getBackStackEntryCount(); entry++) {
                     getSupportFragmentManager().popBackStack();
                 }
+                transaction.addToBackStack(fragment.getTag());
+                transaction.add(R.id.fragment_container, fragment);
             }
             transaction.commitAllowingStateLoss();
         }
@@ -358,7 +388,7 @@ public class Launcher extends AppCompatActivity implements
                 bundle.putString("NAME", getString(R.string.current_location));
                 Fragment locationFragment = new MapsFragment();
                 locationFragment.setArguments(bundle);
-                updateFragment(locationFragment, false, true);
+                updateFragment(locationFragment, false, false);
                 break;
             case R.id.drawer_recent:
                 updateFragment(new RecentFragment(), false, false);
