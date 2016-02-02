@@ -361,7 +361,7 @@ public class PlaceDetailsFragment extends BaseFragment implements View.OnClickLi
                         return;
                     }
 
-                    more.setText(getActivity().getResources().getString(R.string.closed));
+                    more.setText(getActivity().getResources().getString(R.string.more_close));
                     weekly_timings.setVisibility(View.VISIBLE);
 
                     ((TextView) mTimingLayout.findViewById(R.id.id_monday_hours)).setText(timeMap.get(0));
