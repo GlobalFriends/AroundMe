@@ -277,8 +277,6 @@ public class Launcher extends AppCompatActivity implements
                 android.support.v4.app.FragmentManager mgr= getSupportFragmentManager();
                 if (mgr != null) {
                     int backStackEntryCount = mgr.getBackStackEntryCount();
-                    List<Fragment> list = mgr.getFragments();
-                    Log.i(TAG, "Size=" + (list == null ? null : list.size()));
                     if (backStackEntryCount == 0 && mContext != null) {
                         ((Activity)mContext).setTitle(R.string.app_name);
                     }
