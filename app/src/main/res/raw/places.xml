@@ -31,7 +31,7 @@
     <placetype>
         <name>Bar</name>
         <intent>com.globalfriends.com.aroundme.bar</intent>
-        <extra>bar,liquor_store</extra>
+        <extra>bar</extra>
         <icon>ic_bar</icon>
         <description></description>
     </placetype>
@@ -63,9 +63,9 @@
         <description></description>
     </placetype>
     <placetype>
-        <name>Food</name>
+        <name>Restaurant</name>
         <intent>com.globalfriends.com.aroundme.food</intent>
-        <extra>food,restaurant</extra>
+        <extra>restaurant</extra>
         <icon>ic_food</icon>
         <description></description>
     </placetype>
@@ -128,7 +128,7 @@
     <placetype>
         <name>Salons</name>
         <intent>com.globalfriends.com.aroundme.personal_care</intent>
-        <extra>beauty_salon,hair_care</extra>
+        <extra>beauty_salon</extra>
         <icon>ic_salon</icon>
         <description></description>
     </placetype>
